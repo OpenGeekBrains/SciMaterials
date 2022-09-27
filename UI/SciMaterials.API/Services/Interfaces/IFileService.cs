@@ -2,8 +2,10 @@ using SciMaterials.API.Models;
 
 namespace SciMaterials.API.Services.Interfaces;
 
-public interface IFileService
+public interface IFileService<T>
 {
     Task<FileModel> UploadAsync(Stream fileStream, string fileName, string contentType, CancellationToken cancellationToken = default);
-    Stream GetFileAsStream(string hash);
+    Stream GetFileStream(T id);
+    FileModel GetFileInfoById(T id);
+    FileModel GetFileInfoByHash(string hash);
 }

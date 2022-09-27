@@ -4,19 +4,24 @@ using SciMaterials.API.Models;
 
 namespace SciMaterials.API.Data;
 
-public class FileInfoMemoryRepository : IFileRepository
+public class FileInfoMemoryRepository : IFileRepository<Guid>
 {
-    private readonly ConcurrentDictionary<string, FileModel> _files = new ConcurrentDictionary<string, FileModel>();
+    private readonly ConcurrentDictionary<Guid, FileModel> _files = new();
     public bool Add(FileModel model)
-    {
-        return _files.TryAdd(model.Hash, model);
-    }
+        => _files.TryAdd(model.Id, model);
+
+    public void Update(FileModel model)
+        => _files[model.Id] = model;
+
+    public void Delete(Guid id)
+        => _files.Remove(id, out _);
 
     public FileModel? GetByHash(string hash)
-    {
-        if (_files.TryGetValue(hash, out var fileModel))
-            return fileModel;
+        => _files.Values.SingleOrDefault(item => item.Hash == hash);
 
-        return null;
-    }
+    public FileModel? GetById(Guid id)
+     => _files.GetValueOrDefault(id);
+
+    public FileModel? GetByName(string fileName)
+        => _files.Values.SingleOrDefault(item => item.FileName == fileName);
 }

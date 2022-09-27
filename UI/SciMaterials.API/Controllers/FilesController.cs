@@ -1,5 +1,4 @@
 using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
@@ -14,30 +13,49 @@ namespace SciMaterials.API.Controllers;
 public class FilesController : ControllerBase
 {
     private readonly ILogger<FilesController> _logger;
-    private readonly IFileService _fileService;
-    private readonly IFileRepository _fileRepository;
+    private readonly IFileService<Guid> _fileService;
 
     private void LogError(Exception ex, [CallerMemberName] string methodName = null!)
         => _logger.LogError(ex, "ошибка выполнения {error}", methodName);
 
-    public FilesController(ILogger<FilesController> logger, IFileService fileService, IFileRepository fileRepository)
+    public FilesController(ILogger<FilesController> logger, IFileService<Guid> fileService)
     {
         _logger = logger;
         _fileService = fileService;
-        _fileRepository = fileRepository;
     }
 
-    [HttpGet("{hash}")]
+    [HttpGet("GetByHash/{hash}")]
     public IActionResult GetByHash([FromRoute] string hash)
     {
         try
         {
-            var model = _fileRepository.GetByHash(hash);
-            if (model is null)
-                return BadRequest($"File with hash({hash}) not found");
+            var fileInfo = _fileService.GetFileInfoByHash(hash);
+            var fileStream = _fileService.GetFileStream(fileInfo.Id);
+            return File(fileStream, fileInfo.ContentType, fileInfo.FileName);
+        }
+        catch (FileNotFoundException ex)
+        {
+            return BadRequest($"File with hash({hash}) not found");
+        }
+        catch (Exception ex)
+        {
+            LogError(ex);
+            throw;
+        }
+    }
 
-            var fileStream = _fileService.GetFileAsStream(hash);
-            return File(fileStream, model.ContentType, model.FileName);
+    [HttpGet("GetById/{id}")]
+    public IActionResult GetById([FromRoute] Guid id)
+    {
+        try
+        {
+            var fileInfo = _fileService.GetFileInfoById(id);
+            var fileStream = _fileService.GetFileStream(id);
+            return File(fileStream, fileInfo.ContentType, fileInfo.FileName);
+        }
+        catch (FileNotFoundException ex)
+        {
+            return BadRequest($"File with id({id}) not found");
         }
         catch (Exception ex)
         {
@@ -71,6 +89,7 @@ public class FilesController : ControllerBase
                 if (hasContentDispositionHeader && contentDisposition.DispositionType.Equals("form-data") &&
                     !string.IsNullOrEmpty(contentDisposition.FileName.Value))
                 {
+                    _logger.LogInformation("Section contains file {file}", contentDisposition.FileName.Value);
                     var result = await _fileService.UploadAsync(section.Body, contentDisposition.FileName.Value, section.ContentType ?? "application/octet-stream").ConfigureAwait(false);
                     return Ok(result.ToViewModel());
                 }
