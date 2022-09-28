@@ -7,6 +7,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{3B9D145C-5B99-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.UI.MVC", "UI\SciMaterials.UI.MVC\SciMaterials.UI.MVC.csproj", "{36D45824-FB3C-4B0A-AE2D-DBCA61F36819}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.DAL", "Data\SciMateraials.DAL\SciMaterials.DAL.csproj", "{E214A966-AAB7-4170-BBEE-7324362BFB2C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.MsSqlServerMigrations", "Data\Migrations\SciMaterials.MsSqlServerMigrations\SciMaterials.MsSqlServerMigrations.csproj", "{576D750E-1AEC-42F4-B358-CF15B9EDF67D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.PostgresqlMigrations", "Data\Migrations\SciMaterials.PostgresqlMigrations\SciMaterials.PostgresqlMigrations.csproj", "{D448DEBD-E25A-46F5-BA93-14861228D219}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +23,18 @@ Global
 		{36D45824-FB3C-4B0A-AE2D-DBCA61F36819}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36D45824-FB3C-4B0A-AE2D-DBCA61F36819}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36D45824-FB3C-4B0A-AE2D-DBCA61F36819}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E214A966-AAB7-4170-BBEE-7324362BFB2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E214A966-AAB7-4170-BBEE-7324362BFB2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E214A966-AAB7-4170-BBEE-7324362BFB2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E214A966-AAB7-4170-BBEE-7324362BFB2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{576D750E-1AEC-42F4-B358-CF15B9EDF67D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{576D750E-1AEC-42F4-B358-CF15B9EDF67D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{576D750E-1AEC-42F4-B358-CF15B9EDF67D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{576D750E-1AEC-42F4-B358-CF15B9EDF67D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D448DEBD-E25A-46F5-BA93-14861228D219}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D448DEBD-E25A-46F5-BA93-14861228D219}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D448DEBD-E25A-46F5-BA93-14861228D219}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D448DEBD-E25A-46F5-BA93-14861228D219}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
