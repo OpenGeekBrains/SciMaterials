@@ -1,6 +1,8 @@
-﻿namespace SciMaterials.DAL.Models;
+﻿using SciMaterials.DAL.Models.Base;
 
-public partial class Comment : BaseModel
+namespace SciMaterials.DAL.Models;
+
+public class Comment : BaseModel
 {
     public Guid? ParentId { get; set; }
     public Guid OwnerId { get; set; }

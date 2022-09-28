@@ -1,6 +1,8 @@
-﻿namespace SciMaterials.DAL.Models;
+﻿using SciMaterials.DAL.Models.Base;
 
-public partial class File : NamedModel
+namespace SciMaterials.DAL.Models;
+
+public class File : NamedModel
 {
     public string Title { get; set; } = string.Empty;
     public string? Description { get; set; }

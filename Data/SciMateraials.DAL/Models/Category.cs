@@ -1,6 +1,8 @@
-﻿namespace SciMaterials.DAL.Models;
+﻿using SciMaterials.DAL.Models.Base;
 
-public partial class Category : NamedModel
+namespace SciMaterials.DAL.Models;
+
+public class Category : NamedModel
 {
     public Guid? ParentId { get; set; }
     public string? Description { get; set; }

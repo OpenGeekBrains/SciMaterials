@@ -1,6 +1,8 @@
-﻿namespace SciMaterials.DAL.Models;
+﻿using SciMaterials.DAL.Models.Base;
 
-public partial class ContentType : NamedModel
+namespace SciMaterials.DAL.Models;
+
+public class ContentType : NamedModel
 {
     public ICollection<File> Files { get; set; }
 

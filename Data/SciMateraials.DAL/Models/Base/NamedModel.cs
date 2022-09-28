@@ -1,4 +1,4 @@
-namespace SciMaterials.DAL.Models;
+namespace SciMaterials.DAL.Models.Base;
 
 public class NamedModel : BaseModel
 {

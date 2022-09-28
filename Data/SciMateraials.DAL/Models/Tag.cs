@@ -1,6 +1,8 @@
-﻿namespace SciMaterials.DAL.Models;
+﻿using SciMaterials.DAL.Models.Base;
 
-public partial class Tag : NamedModel
+namespace SciMaterials.DAL.Models;
+
+public class Tag : NamedModel
 {
     public virtual ICollection<File> Files { get; set; }
 
