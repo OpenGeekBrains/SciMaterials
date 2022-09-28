@@ -3,13 +3,13 @@ using SciMaterials.DAL.Models;
 
 namespace SciMaterials.DAL.Contexts
 {
-    public partial class EnergoContext : DbContext
+    public class SciMaterialsContext : DbContext
     {
-        public EnergoContext()
+        public SciMaterialsContext()
         {
         }
 
-        public EnergoContext(DbContextOptions<EnergoContext> options)
+        public SciMaterialsContext(DbContextOptions<SciMaterialsContext> options)
             : base(options)
         {
         }
