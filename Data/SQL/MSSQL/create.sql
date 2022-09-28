@@ -79,7 +79,7 @@ CREATE TABLE comments
     id uniqueidentifier NOT NULL PRIMARY KEY,
 	parent_id uniqueidentifier,
 	owner_id uniqueidentifier NOT NULL,
-	text nvarchar(max),
+	text nvarchar(max) NOT NULL,
 	created_at datetime NOT NULL
 );
 
@@ -94,7 +94,7 @@ CREATE TABLE categories
 (
     id uniqueidentifier NOT NULL PRIMARY KEY,
 	parent_id uniqueidentifier,
-	name nvarchar(200),
+	name nvarchar(200) NOT NULL,
 	description nvarchar(max),
 	created_at datetime NOT NULL
 );
