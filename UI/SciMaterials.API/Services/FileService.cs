@@ -73,6 +73,14 @@ public class FileService : IFileService<Guid>
         sw.Stop();
         _logger.LogInformation("Ellapsed:{ellapsed} сек", sw.Elapsed.TotalSeconds);
 
+        if (CheckFileExistByHash(saveResult.Hash, out var existingFileInfo) && existingFileInfo is not null)
+        {
+            var exception = new FileAlreadyExistException(fileName, $"File with the same hash {existingFileInfo.Hash} already exists with id: {existingFileInfo.Id.ToString()}");
+            _fileStore.Delete(saveToPath);
+            _logger.LogError(exception, null);
+            throw exception;
+        }
+
         if (fileModel is null)
         {
             fileModel = new FileModel
@@ -83,16 +91,28 @@ public class FileService : IFileService<Guid>
                 Hash = saveResult.Hash,
                 Size = saveResult.Size
             };
-            _fileRepository.Add(fileModel);
+            // _fileRepository.Add(fileModel);
         }
         else
         {
             fileModel.Hash = saveResult.Hash;
             fileModel.Size = saveResult.Size;
-            _fileRepository.Update(fileModel);
+            // _fileRepository.Update(fileModel);
         }
+        _fileRepository.AddOrUpdate(fileModel);
 
         await _fileStore.WriteMetadataAsync(metadataPath, fileModel, cancellationToken).ConfigureAwait(false);
         return fileModel;
+    }
+
+    private void AddOrUpdateFileInfo(ref FileModel fileInfo)
+    {
+
+    }
+
+    private bool CheckFileExistByHash(string hash, out FileModel? fileInfo)
+    {
+        fileInfo = _fileRepository.GetByHash(hash);
+        return fileInfo is not null;
     }
 }

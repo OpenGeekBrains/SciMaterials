@@ -13,6 +13,14 @@ public class FileInfoMemoryRepository : IFileRepository<Guid>
     public void Update(FileModel model)
         => _files[model.Id] = model;
 
+    public void AddOrUpdate(FileModel model)
+    {
+        _files.AddOrUpdate(
+            model.Id,
+            model,
+            (id, fileInfo) => fileInfo = model);
+    }
+
     public void Delete(Guid id)
         => _files.Remove(id, out _);
 
