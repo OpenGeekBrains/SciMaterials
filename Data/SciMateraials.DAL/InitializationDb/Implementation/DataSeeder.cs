@@ -1,4 +1,8 @@
-﻿using SciMaterials.DAL.Contexts;
+﻿using System.Text;
+using Newtonsoft.Json;
+using SciMaterials.DAL.Contexts;
+using SciMaterials.DAL.Models;
+using SciMaterials.DAL.Properties;
 
 namespace SciMaterials.DAL.InitializationDb.Implementation
 {
@@ -34,19 +38,21 @@ namespace SciMaterials.DAL.InitializationDb.Implementation
 
             if (!db.FileGroups.Any())
             {
-                await db.FileGroups.AddRangeAsync().ConfigureAwait(false);
+                await db.FileGroups.AddRangeAsync(JsonConvert.DeserializeObject<List<FileGroup>>(Encoding.UTF8.GetString(Resources.Ratings))!, cancel).ConfigureAwait(false);
                 await db.SaveChangesAsync(cancel).ConfigureAwait(false);
             }
 
             if (!db.Tags.Any())
             {
-                await db.Tags.AddRangeAsync().ConfigureAwait(false);
+                await db.Tags.AddRangeAsync(JsonConvert.DeserializeObject<List<Tag>>(Encoding.UTF8.GetString(Resources.Tags))!, cancel)
+                    .ConfigureAwait(false);
                 await db.SaveChangesAsync(cancel).ConfigureAwait(false);
             }
 
             if (!db.Ratings.Any())
             {
-                await db.Ratings.AddRangeAsync().ConfigureAwait(false);
+                await db.Ratings.AddRangeAsync(JsonConvert.DeserializeObject<List<Rating>>(Encoding.UTF8.GetString(Resources.Ratings))!, cancel)
+                    .ConfigureAwait(false);
                 await db.SaveChangesAsync(cancel).ConfigureAwait(false);
             }
 
