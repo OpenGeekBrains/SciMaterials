@@ -20,7 +20,7 @@ namespace SciMaterials.DAL.Contexts
         public virtual DbSet<Models.File> Files { get; set; } = null!;
         public virtual DbSet<Tag> Tags { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
-
+        public virtual DbSet<Rating> Ratings { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -179,6 +179,31 @@ namespace SciMaterials.DAL.Contexts
 
                             j.IndexerProperty<Guid>("TagId").HasColumnName("tag_id");
                         });
+            });
+
+            modelBuilder.Entity<Rating>(entity =>
+            {
+                entity.HasKey(e => new { e.FileId, e.UserId });
+
+                entity.ToTable("ratings");
+
+                entity.Property(e => e.FileId).HasColumnName("file_id");
+
+                entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.Property(e => e.RatingValue).HasColumnName("rating_value");
+
+                entity.HasOne(d => d.File)
+                    .WithMany(p => p.Ratings)
+                    .HasForeignKey(d => d.FileId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("ratings_file_id_fk");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Ratings)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("ratings_user_id_fk");
             });
 
             modelBuilder.Entity<Tag>(entity =>

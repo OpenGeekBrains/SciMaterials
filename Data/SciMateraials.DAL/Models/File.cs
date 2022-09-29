@@ -18,10 +18,12 @@ public class File : NamedModel
 
     public ICollection<Comment> Comments { get; set; }
     public ICollection<Tag> Tags { get; set; }
+    public ICollection<Rating> Ratings { get; set; }
 
     public File()
     {
         Comments = new HashSet<Comment>();
         Tags = new HashSet<Tag>();
+        Ratings = new HashSet<Rating>();
     }
 }
