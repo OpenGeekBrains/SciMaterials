@@ -1,20 +1,43 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <AuthState/>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
 <MudThemeProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
+<MudLayout>
+    <MudAppBar Elevation="0" Style="@($"background:#919eab;")">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudSpacer />
+        <AuthState/>
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="1" Style="@($"background:#d9d9d9;")">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6">SUPER LOGO</MudText>
+        </MudDrawerHeader>
+        <div class="mud-theme-warning border-1 py-2 px-2 mx-4 mb-4 rounded-lg">
+            <MudStack Row="true" Class="align-center">
+                <MudAvatar Color="Color.Primary">M</MudAvatar>
+                <MudText Class="d-flex" Align="Align.Start" GutterBottom="false">User Name</MudText>
+            </MudStack>
+        </div>
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent Style="@($"border-style:dashed;")">
+        <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+
+
+@code {
+    bool _drawerOpen = true;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+
+    }
+
+}
+

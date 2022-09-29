@@ -1,0 +1,30 @@
+﻿@page "/storagev2"
+@using System.Net.Http.Json
+@inject HttpClient httpClient
+
+<MudGrid Spacing="@spacing" Justify="Justify.FlexStart">
+    @for (int i = 0; i < 10; i++)
+    {
+        <MudItem>
+            <MudCard>
+                <MudCardMedia Image="#" Height="200"/>
+                <MudCardContent>
+                    <MudText Typo="Typo.h5">Header #@i</MudText>
+                    <MudText Typo="Typo.body2">1. Some text #@i</MudText>
+                    <MudText Typo="Typo.body2">2. Some text #@i</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    }
+
+</MudGrid>
+
+
+@code {
+
+    public int spacing { get; set; } = 4;
+}
