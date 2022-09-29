@@ -43,9 +43,9 @@ namespace SciMaterials.DAL.Contexts
                         {
                             j.HasKey("CommentId", "FileId");
 
-                            j.IndexerProperty<Guid>("CommentId").HasColumnName("comment_id");
+                            j.IndexerProperty<Guid>("CommentId");
 
-                            j.IndexerProperty<Guid>("FileId").HasColumnName("file_id");
+                            j.IndexerProperty<Guid>("FileId");
                         });
 
                 entity.HasMany(d => d.FileGroups)
@@ -66,9 +66,9 @@ namespace SciMaterials.DAL.Contexts
                         {
                             j.HasKey("CommentId", "FileGroupId");
 
-                            j.IndexerProperty<Guid>("CommentId").HasColumnName("comment_id");
+                            j.IndexerProperty<Guid>("CommentId");
 
-                            j.IndexerProperty<Guid>("FileGroupId").HasColumnName("file_group_id");
+                            j.IndexerProperty<Guid>("FileGroupId");
                         });
             });
 
