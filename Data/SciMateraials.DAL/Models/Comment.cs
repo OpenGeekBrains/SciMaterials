@@ -12,9 +12,11 @@ public class Comment : BaseModel
     public User Owner { get; set; } = null!;
 
     public ICollection<File> Files { get; set; }
+    public ICollection<FileGroup> FileGroups { get; set; }
 
     public Comment()
     {
         Files = new HashSet<File>();
+        FileGroups = new HashSet<FileGroup>();
     }
 }

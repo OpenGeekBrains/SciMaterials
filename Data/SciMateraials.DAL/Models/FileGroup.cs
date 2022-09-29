@@ -2,15 +2,13 @@
 
 namespace SciMaterials.DAL.Models;
 
-public class Tag : NamedModel
+public class FileGroup : Resource
 {
-    public ICollection<File> Files { get; set; }
-    
-    public ICollection<FileGroup> FileGroups { get; set; }
 
-    public Tag()
+    public ICollection<File> Files { get; set; }
+
+    public FileGroup() : base()
     {
         Files = new HashSet<File>();
-        FileGroups = new HashSet<FileGroup>();
     }
 }
