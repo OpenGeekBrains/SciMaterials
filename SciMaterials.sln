@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{3B9D145C-5B99-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.UI.MVC", "UI\SciMaterials.UI.MVC\SciMaterials.UI.MVC.csproj", "{36D45824-FB3C-4B0A-AE2D-DBCA61F36819}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciMaterials.UI.BWASM", "UI\SciMaterials.UI.BWASM\SciMaterials.UI.BWASM.csproj", "{CDE7082F-9DA7-464F-8135-A0FD9C6FFC8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.UI.BWASM", "UI\SciMaterials.UI.BWASM\SciMaterials.UI.BWASM.csproj", "{CDE7082F-9DA7-464F-8135-A0FD9C6FFC8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
