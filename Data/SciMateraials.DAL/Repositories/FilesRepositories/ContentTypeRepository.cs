@@ -36,29 +36,15 @@ public class ContentTypeRepository : IContentTypeRepository
     }
 
     ///
-    /// <inheritdoc cref="IRepository{T}.AddAsync(T)"/>
-    public void AddAsync(ContentType entity)
-    {
-        _logger.Debug($"{nameof(ContentTypeRepository.AddAsync)}");
-    }
-
-    ///
-    /// <inheritdoc cref="IRepository{T}.Delete(Guid)"/>
+    /// <inheritdoc cref="IRepositoryGuid{T}.Delete(Guid)"/>
     public void Delete(Guid id)
     {
         _logger.Debug($"{nameof(ContentTypeRepository.Delete)}");
     }
 
     ///
-    /// <inheritdoc cref="IRepository{T}.DeleteAsync(Guid)"/>
-    public void DeleteAsync(Guid id)
-    {
-        _logger.Debug($"{nameof(ContentTypeRepository.DeleteAsync)}");
-    }
-
-    ///
     /// <inheritdoc cref="IRepository{T}.GetAll"/>
-    public List<ContentType> GetAll(bool disableTracking = true)
+    public List<ContentType> GetAll()
     {
         _logger.Debug($"{nameof(ContentTypeRepository.GetAll)}");
 
@@ -68,32 +54,10 @@ public class ContentTypeRepository : IContentTypeRepository
     }
 
     ///
-    /// <inheritdoc cref="IRepository{T}.GetAllAsync(bool)"/>
-    public Task<List<ContentType>> GetAllAsync(bool disableTracking = true)
-    {
-        _logger.Debug($"{nameof(ContentTypeRepository.GetAllAsync)}");
-
-
-
-        return null!;
-    }
-
-    ///
-    /// <inheritdoc cref="IRepository{T}.GetById(Guid, bool)"/>
-    public ContentType GetById(Guid id, bool disableTracking = true)
+    /// <inheritdoc cref="IRepositoryGuid{T}.GetById(Guid)"/>
+    public ContentType GetById(Guid id)
     {
         _logger.Debug($"{nameof(ContentTypeRepository.GetById)}");
-
-
-
-        return null!;
-    }
-
-    ///
-    /// <inheritdoc cref="IRepository{T}.GetByIdAsync(Guid, bool)"/>
-    public Task<ContentType> GetByIdAsync(Guid id, bool disableTracking = true)
-    {
-        _logger.Debug($"{nameof(ContentTypeRepository.GetByIdAsync)}");
 
 
 
@@ -105,12 +69,5 @@ public class ContentTypeRepository : IContentTypeRepository
     public void Update(ContentType entity)
     {
         _logger.Debug($"{nameof(ContentTypeRepository.Update)}");
-    }
-
-    ///
-    /// <inheritdoc cref="IRepository{T}.UpdateAsync(T)"/>
-    public void UpdateAsync(ContentType entity)
-    {
-        _logger.Debug($"{nameof(ContentTypeRepository.UpdateAsync)}");
     }
 }

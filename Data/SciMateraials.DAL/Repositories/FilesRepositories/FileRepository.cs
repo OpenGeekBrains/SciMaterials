@@ -1,7 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using NLog;
-using SciMaterials.DAL.Repositories.FilesRepositories;
 using SciMaterials.Data.Repositories;
 using File = SciMaterials.DAL.Models.File;
 
@@ -37,29 +36,15 @@ public class FileRepository : IFileRepository
     }
 
     ///
-    /// <inheritdoc cref="IRepository{T}.AddAsync(T)"/>
-    public void AddAsync(File entity)
-    {
-        _logger.Debug($"{nameof(FileRepository.AddAsync)}");
-    }
-
-    ///
-    /// <inheritdoc cref="IRepository{T}.Delete(Guid)"/>
+    /// <inheritdoc cref="IRepositoryGuid{T}.Delete(Guid)"/>
     public void Delete(Guid id)
     {
         _logger.Debug($"{nameof(FileRepository.Delete)}");
     }
 
     ///
-    /// <inheritdoc cref="IRepository{T}.DeleteAsync(Guid)"/>
-    public void DeleteAsync(Guid id)
-    {
-        _logger.Debug($"{nameof(FileRepository.DeleteAsync)}");
-    }
-
-    ///
     /// <inheritdoc cref="IRepository{T}.GetAll"/>
-    public List<File> GetAll(bool disableTracking = true)
+    public List<File> GetAll()
     {
         _logger.Debug($"{nameof(FileRepository.GetAll)}");
 
@@ -69,32 +54,10 @@ public class FileRepository : IFileRepository
     }
 
     ///
-    /// <inheritdoc cref="IRepository{T}.GetAllAsync(bool)"/>
-    public Task<List<File>> GetAllAsync(bool disableTracking = true)
-    {
-        _logger.Debug($"{nameof(FileRepository.GetAllAsync)}");
-
-
-
-        return null!;
-    }
-
-    ///
-    /// <inheritdoc cref="IRepository{T}.GetById(Guid, bool)"/>
-    public File GetById(Guid id, bool disableTracking = true)
+    /// <inheritdoc cref="IRepositoryGuid{T}.GetById(Guid)"/>
+    public File GetById(Guid id)
     {
         _logger.Debug($"{nameof(FileRepository.GetById)}");
-
-
-
-        return null!;
-    }
-
-    ///
-    /// <inheritdoc cref="IRepository{T}.GetByIdAsync(Guid, bool)"/>
-    public Task<File> GetByIdAsync(Guid id, bool disableTracking = true)
-    {
-        _logger.Debug($"{nameof(FileRepository.GetByIdAsync)}");
 
 
 
@@ -106,12 +69,5 @@ public class FileRepository : IFileRepository
     public void Update(File entity)
     {
         _logger.Debug($"{nameof(FileRepository.Update)}");
-    }
-
-    ///
-    /// <inheritdoc cref="IRepository{T}.UpdateAsync(T)"/>
-    public void UpdateAsync(File entity)
-    {
-        _logger.Debug($"{nameof(FileRepository.UpdateAsync)}");
     }
 }
