@@ -63,9 +63,49 @@ namespace SciMaterials.DAL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] Categories {
+            get {
+                object obj = ResourceManager.GetObject("Categories", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Comments {
+            get {
+                object obj = ResourceManager.GetObject("Comments", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] ContentTypes {
+            get {
+                object obj = ResourceManager.GetObject("ContentTypes", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] FileGroups {
             get {
                 object obj = ResourceManager.GetObject("FileGroups", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Files {
+            get {
+                object obj = ResourceManager.GetObject("Files", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -86,6 +126,16 @@ namespace SciMaterials.DAL.Properties {
         internal static byte[] Tags {
             get {
                 object obj = ResourceManager.GetObject("Tags", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Users {
+            get {
+                object obj = ResourceManager.GetObject("Users", resourceCulture);
                 return ((byte[])(obj));
             }
         }
