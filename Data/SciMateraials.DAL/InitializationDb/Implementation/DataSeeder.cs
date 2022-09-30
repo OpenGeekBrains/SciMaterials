@@ -8,9 +8,9 @@ using File = SciMaterials.DAL.Models.File;
 
 namespace SciMaterials.DAL.InitializationDb.Implementation
 {
-    public static class DataSeeder
+    internal static class DataSeeder
     {
-        public static async Task Seed(SciMaterialsContext db, CancellationToken cancel = default)
+        internal static async Task Seed(SciMaterialsContext db, CancellationToken cancel = default)
         {
             await using var transaction = await db.Database.BeginTransactionAsync(cancel).ConfigureAwait(false);
 
