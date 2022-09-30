@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using SciMaterials.DAL.Models;
+using SciMaterials.DAL.Repositories.CategorysRepositories;
 using SciMaterials.Data.Repositories;
 
 namespace SciMaterials.DAL.Repositories.CategorysRepositories;
@@ -37,15 +38,29 @@ public class CategoryRepository : ICategoryRepository
     }
 
     ///
-    /// <inheritdoc cref="IRepositoryGuid{T}.Delete(Guid)"/>
+    /// <inheritdoc cref="IRepository{T}.AddAsync(T)"/>
+    public void AddAsync(Category entity)
+    {
+        _logger.Debug($"{nameof(CategoryRepository.AddAsync)}");
+    }
+
+    ///
+    /// <inheritdoc cref="IRepository{T}.Delete(Guid)"/>
     public void Delete(Guid id)
     {
         _logger.Debug($"{nameof(CategoryRepository.Delete)}");
     }
 
     ///
+    /// <inheritdoc cref="IRepository{T}.DeleteAsync(Guid)"/>
+    public void DeleteAsync(Guid id)
+    {
+        _logger.Debug($"{nameof(CategoryRepository.DeleteAsync)}");
+    }
+
+    ///
     /// <inheritdoc cref="IRepository{T}.GetAll"/>
-    public List<Category> GetAll()
+    public List<Category> GetAll(bool disableTracking = true)
     {
         _logger.Debug($"{nameof(CategoryRepository.GetAll)}");
 
@@ -55,10 +70,32 @@ public class CategoryRepository : ICategoryRepository
     }
 
     ///
-    /// <inheritdoc cref="IRepositoryGuid{T}.GetById(Guid)"/>
-    public Category GetById(Guid id)
+    /// <inheritdoc cref="IRepository{T}.GetAllAsync(bool)"/>
+    public Task<List<Category>> GetAllAsync(bool disableTracking = true)
+    {
+        _logger.Debug($"{nameof(CategoryRepository.GetAllAsync)}");
+
+
+
+        return null!;
+    }
+
+    ///
+    /// <inheritdoc cref="IRepository{T}.GetById(Guid, bool)"/>
+    public Category GetById(Guid id, bool disableTracking = true)
     {
         _logger.Debug($"{nameof(CategoryRepository.GetById)}");
+
+
+
+        return null!;
+    }
+
+    ///
+    /// <inheritdoc cref="IRepository{T}.GetByIdAsync(Guid, bool)"/>
+    public Task<Category> GetByIdAsync(Guid id, bool disableTracking = true)
+    {
+        _logger.Debug($"{nameof(CategoryRepository.GetByIdAsync)}");
 
 
 
@@ -70,5 +107,12 @@ public class CategoryRepository : ICategoryRepository
     public void Update(Category entity)
     {
         _logger.Debug($"{nameof(CategoryRepository.Update)}");
+    }
+
+    ///
+    /// <inheritdoc cref="IRepository{T}.UpdateAsync(T)"/>
+    public void UpdateAsync(Category entity)
+    {
+        _logger.Debug($"{nameof(CategoryRepository.UpdateAsync)}");
     }
 }
