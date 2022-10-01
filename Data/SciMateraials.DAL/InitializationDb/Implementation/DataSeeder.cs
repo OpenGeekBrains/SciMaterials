@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SciMaterials.DAL.Contexts;
 using SciMaterials.DAL.Models;
@@ -14,7 +15,7 @@ namespace SciMaterials.DAL.InitializationDb.Implementation
         {
             await using var transaction = await db.Database.BeginTransactionAsync(cancel).ConfigureAwait(false);
 
-            if (!db.Files.Any())
+            if (!await db.Files.AnyAsync(cancel))
             {
                 try
                 {
@@ -29,7 +30,7 @@ namespace SciMaterials.DAL.InitializationDb.Implementation
                 }
             }
 
-            if (!db.Users.Any())
+            if (!await db.Users.AnyAsync(cancel))
             {
                 try
                 {
@@ -44,7 +45,7 @@ namespace SciMaterials.DAL.InitializationDb.Implementation
                 }
             }
 
-            if (!db.Categories.Any())
+            if (!await db.Categories.AnyAsync(cancel))
             {
                 try
                 {
@@ -59,7 +60,7 @@ namespace SciMaterials.DAL.InitializationDb.Implementation
                 }
             }
 
-            if (!db.Comments.Any())
+            if (!await db.Comments.AnyAsync(cancel))
             {
                 try
                 {
@@ -74,7 +75,7 @@ namespace SciMaterials.DAL.InitializationDb.Implementation
                 }
             }
 
-            if (!db.FileGroups.Any())
+            if (!await db.FileGroups.AnyAsync(cancel))
             {
                 try
                 {
@@ -89,7 +90,7 @@ namespace SciMaterials.DAL.InitializationDb.Implementation
                 }
             }
 
-            if (!db.Tags.Any())
+            if (!await db.Tags.AnyAsync(cancel))
             {
                 try
                 {
@@ -104,7 +105,7 @@ namespace SciMaterials.DAL.InitializationDb.Implementation
                 }
             }
 
-            if (!db.Ratings.Any())
+            if (!await db.Ratings.AnyAsync(cancel))
             {
                 try
                 {
@@ -119,7 +120,7 @@ namespace SciMaterials.DAL.InitializationDb.Implementation
                 }
             }
 
-            if (!db.ContentTypes.Any())
+            if (!await db.ContentTypes.AnyAsync(cancel))
             {
                 try
                 {
