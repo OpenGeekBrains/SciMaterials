@@ -1,14 +1,65 @@
 ﻿@page "/signin"
+@using System.ComponentModel.DataAnnotations
+
 <h3>SignIn</h3>
-<MudStack>
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <MudGrid Justify="Justify.Center">
+        <MudItem xs="12" sm="7">
+            <MudCard Elevation="3">
+                <MudCardContent>
+                    <MudTextField Label="Email" Class="mt-3" Variant="Variant.Outlined"
+                                  @bind-Value="model.Email" For="@(() => model.Email)" />
+                    <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3" Variant="Variant.Outlined"
+                                  @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Sing In</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12" sm="7">
+            <MudPaper Elevation="3">
+                <MudNavLink Href="signup" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AccountCircle">Create an account</MudNavLink>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12">
+            @if (success)
+            {
+                <MudText Color="Color.Success">Success</MudText>
+            }
+            else
+            {
+                <MudText Color="@Color.Error" Align="Align.Center">
+                    <ValidationSummary />
+                </MudText>
+            }
+        </MudItem>
+    </MudGrid>
+</EditForm>
 
-        <MudPaper Elevation="3" Height="140px" Width="140px">
-
-        </MudPaper>
-
-
-</MudStack>
 
 @code {
+    LogInForm model = new LogInForm();
+    bool success;
+
+    public class LogInForm
+    {
+
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
+        public string Password { get; set; }
+
+    }
+
+    private void OnValidSubmit(EditContext context)
+    {
+        success = true;
+        StateHasChanged();
+    }
 
 }
