@@ -1,27 +1,37 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{FABBD061-7E69-4818-A8A6-122E1EC79804}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciMaterials.API", "UI\SciMaterials.API\SciMaterials.API.csproj", "{1C47353B-768D-42A1-9442-507C9B2498E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.API", "UI\SciMaterials.API\SciMaterials.API.csproj", "{1C47353B-768D-42A1-9442-507C9B2498E6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.UI.MVC", "UI\SciMaterials.UI.MVC\SciMaterials.UI.MVC.csproj", "{54089C85-A85A-40A7-AD41-A95F820F4658}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{1C47353B-768D-42A1-9442-507C9B2498E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1C47353B-768D-42A1-9442-507C9B2498E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C47353B-768D-42A1-9442-507C9B2498E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C47353B-768D-42A1-9442-507C9B2498E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54089C85-A85A-40A7-AD41-A95F820F4658}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54089C85-A85A-40A7-AD41-A95F820F4658}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54089C85-A85A-40A7-AD41-A95F820F4658}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54089C85-A85A-40A7-AD41-A95F820F4658}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1C47353B-768D-42A1-9442-507C9B2498E6} = {FABBD061-7E69-4818-A8A6-122E1EC79804}
+		{54089C85-A85A-40A7-AD41-A95F820F4658} = {FABBD061-7E69-4818-A8A6-122E1EC79804}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {69CA7005-2892-4D9A-9575-8BCEC07E43F2}
 	EndGlobalSection
 EndGlobal
