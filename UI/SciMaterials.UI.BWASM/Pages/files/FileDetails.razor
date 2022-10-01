@@ -1,6 +1,9 @@
-﻿@page "/filedetails"
-<h3>FileDetails</h3>
+﻿@page "/filedetails/{id:int}"
+
+<MudText Typo="Typo.h3">FileDetails</MudText>
+<MudText Typo="Typo.h4">File #@Id</MudText>
 
 @code {
-
+    [Parameter]
+    public int Id { get; set; }
 }

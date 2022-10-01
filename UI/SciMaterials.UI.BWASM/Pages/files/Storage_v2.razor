@@ -3,19 +3,21 @@
 @inject HttpClient httpClient
 
 <MudGrid Spacing="@spacing" Justify="Justify.FlexStart">
-    @for (int i = 0; i < 10; i++)
+    @foreach (var id in Ids)
     {
         <MudItem>
             <MudCard>
                 <MudCardMedia Image="#" Height="200"/>
                 <MudCardContent>
-                    <MudText Typo="Typo.h5">Header #@i</MudText>
-                    <MudText Typo="Typo.body2">1. Some text #@i</MudText>
-                    <MudText Typo="Typo.body2">2. Some text #@i</MudText>
+                    <MudText Typo="Typo.h5">File #@id</MudText>
+                    <MudText Typo="Typo.body2">1. Some text #@id</MudText>
+                    <MudText Typo="Typo.body2">2. Some text #@id</MudText>
                 </MudCardContent>
                 <MudCardActions>
                     <MudButton Variant="Variant.Text" Color="Color.Primary">Share</MudButton>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary">
+                        <MudLink Href="@($"/filedetails/{id}")">Learn More</MudLink>
+                    </MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>
@@ -25,6 +27,12 @@
 
 
 @code {
-
+    private IEnumerable<int> Ids;
     public int spacing { get; set; } = 4;
+
+    protected override async Task OnInitializedAsync()
+    {
+    
+        Ids = Enumerable.Range(1, 10);
+    }
 }
