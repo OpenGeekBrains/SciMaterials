@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciMaterials.AUTH", "UI\Sci
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciMaterials.MySql.Auth.Migrations", "Data\Migrations\SciMaterials.MySql.Auth.Migrations\SciMaterials.MySql.Auth.Migrations.csproj", "{99C94ADD-E147-4A79-90CC-87C648A7C003}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciMaterials.DAL.AUTH", "Data\SciMaterials.DAL.AUTH\SciMaterials.DAL.AUTH.csproj", "{06CE434A-AF3B-47EA-B9AB-3E9224E3B3A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{99C94ADD-E147-4A79-90CC-87C648A7C003}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99C94ADD-E147-4A79-90CC-87C648A7C003}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99C94ADD-E147-4A79-90CC-87C648A7C003}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06CE434A-AF3B-47EA-B9AB-3E9224E3B3A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06CE434A-AF3B-47EA-B9AB-3E9224E3B3A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06CE434A-AF3B-47EA-B9AB-3E9224E3B3A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06CE434A-AF3B-47EA-B9AB-3E9224E3B3A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +98,7 @@ Global
 		{74820A12-68EE-4D74-8FBE-15D842295271} = {0C1B56A8-FB6A-405A-9990-D7B76E56411F}
 		{A2CE546E-7671-40B2-AD07-09B9698C99CA} = {FABBD061-7E69-4818-A8A6-122E1EC79804}
 		{99C94ADD-E147-4A79-90CC-87C648A7C003} = {B4E3FF22-0421-42D5-9F32-86D6BE0867BF}
+		{06CE434A-AF3B-47EA-B9AB-3E9224E3B3A0} = {0C1B56A8-FB6A-405A-9990-D7B76E56411F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {69CA7005-2892-4D9A-9575-8BCEC07E43F2}
