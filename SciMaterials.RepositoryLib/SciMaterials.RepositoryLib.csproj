@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Data\SciMateraials.DAL\SciMaterials.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.9" />
+  </ItemGroup>
+
 </Project>
