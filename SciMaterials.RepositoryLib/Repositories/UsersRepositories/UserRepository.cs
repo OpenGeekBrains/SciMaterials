@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NLog;
 using SciMaterials.DAL.Models;
+using SciMaterials.Data.Repositories;
 
-namespace SciMaterials.Data.Repositories.UserRepositories;
+namespace SciMaterials.RepositoryLib.Repositories.UsersRepositories;
 
 /// <summary> Интерфейс репозитория для <see cref="User"/>. </summary>
 public interface IUserRepository : IRepository<User> { }

@@ -9,7 +9,7 @@ using SciMaterials.DAL.Repositories.ContentTypesRepositories;
 using SciMaterials.DAL.Repositories.FilesRepositories;
 using SciMaterials.DAL.UnitOfWork;
 using SciMaterials.Data.Repositories;
-using SciMaterials.Data.Repositories.UserRepositories;
+using SciMaterials.RepositoryLib.Repositories.UsersRepositories;
 using File = SciMaterials.DAL.Models.File;
 
 namespace SciMaterials.Data.UnitOfWork;

@@ -27,6 +27,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.UI.BWASM", "UI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.RepositoryLib", "SciMaterials.RepositoryLib\SciMaterials.RepositoryLib.csproj", "{74820A12-68EE-4D74-8FBE-15D842295271}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciMaterials.AUTH", "UI\SciMaterials.AUTH\SciMaterials.AUTH.csproj", "{A2CE546E-7671-40B2-AD07-09B9698C99CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciMaterials.MySql.Auth.Migrations", "Data\Migrations\SciMaterials.MySql.Auth.Migrations\SciMaterials.MySql.Auth.Migrations.csproj", "{99C94ADD-E147-4A79-90CC-87C648A7C003}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +69,14 @@ Global
 		{74820A12-68EE-4D74-8FBE-15D842295271}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74820A12-68EE-4D74-8FBE-15D842295271}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74820A12-68EE-4D74-8FBE-15D842295271}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2CE546E-7671-40B2-AD07-09B9698C99CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2CE546E-7671-40B2-AD07-09B9698C99CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2CE546E-7671-40B2-AD07-09B9698C99CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2CE546E-7671-40B2-AD07-09B9698C99CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99C94ADD-E147-4A79-90CC-87C648A7C003}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99C94ADD-E147-4A79-90CC-87C648A7C003}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99C94ADD-E147-4A79-90CC-87C648A7C003}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99C94ADD-E147-4A79-90CC-87C648A7C003}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +90,8 @@ Global
 		{5465AE9E-191E-4EFD-A949-F02768DBB0E9} = {2DCB8316-A1A3-4A2A-9C6E-4C834963DAD1}
 		{54089C85-A85A-40A7-AD41-A95F820F4658} = {FABBD061-7E69-4818-A8A6-122E1EC79804}
 		{74820A12-68EE-4D74-8FBE-15D842295271} = {0C1B56A8-FB6A-405A-9990-D7B76E56411F}
+		{A2CE546E-7671-40B2-AD07-09B9698C99CA} = {FABBD061-7E69-4818-A8A6-122E1EC79804}
+		{99C94ADD-E147-4A79-90CC-87C648A7C003} = {B4E3FF22-0421-42D5-9F32-86D6BE0867BF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {69CA7005-2892-4D9A-9575-8BCEC07E43F2}
