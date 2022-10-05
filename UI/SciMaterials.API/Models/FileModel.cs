@@ -1,4 +1,4 @@
-namespace SciMaterials.API.Models
+namespace SciMaterials.FilesAPI.Models
 {
     public class FileModel
     {

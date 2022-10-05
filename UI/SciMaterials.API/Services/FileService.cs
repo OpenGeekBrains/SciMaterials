@@ -1,11 +1,11 @@
 using System.Diagnostics;
 using System.Security.Cryptography;
-using SciMaterials.API.Data.Interfaces;
 using SciMaterials.API.Exceptions;
-using SciMaterials.API.Models;
-using SciMaterials.API.Services.Interfaces;
+using SciMaterials.FilesAPI.Data.Interfaces;
+using SciMaterials.FilesAPI.Models;
+using SciMaterials.FilesAPI.Services.Interfaces;
 
-namespace SciMaterials.API.Services;
+namespace SciMaterials.FilesAPI.Services;
 
 public class FileService : IFileService<Guid>
 {

@@ -1,6 +1,6 @@
-namespace SciMaterials.API.DTO;
+namespace SciMaterials.FilesAPI.DTO;
 
-public class FileUploadResponse
+public class FileUploadResponse : ResponseFileModel
 {
     public string Hash { get; set; } = string.Empty;
     public string FileName { get; set; } = string.Empty;

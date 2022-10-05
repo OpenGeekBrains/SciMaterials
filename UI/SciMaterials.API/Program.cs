@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Http.Features;
-using SciMaterials.API.Data;
-using SciMaterials.API.Data.Interfaces;
-using SciMaterials.API.Helpers;
-using SciMaterials.API.Services;
-using SciMaterials.API.Services.Interfaces;
-using SciMaterials.API.Services.Stores;
+using SciMaterials.FilesAPI.Data;
+using SciMaterials.FilesAPI.Data.Interfaces;
+using SciMaterials.FilesAPI.Helpers;
+using SciMaterials.FilesAPI.Services;
+using SciMaterials.FilesAPI.Services.Interfaces;
+using SciMaterials.FilesAPI.Services.Stores;
 
 var builder = WebApplication.CreateBuilder(args);
 

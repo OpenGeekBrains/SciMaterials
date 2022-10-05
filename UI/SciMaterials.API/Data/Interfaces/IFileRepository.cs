@@ -1,6 +1,6 @@
-using SciMaterials.API.Models;
+using SciMaterials.FilesAPI.Models;
 
-namespace SciMaterials.API.Data.Interfaces;
+namespace SciMaterials.FilesAPI.Data.Interfaces;
 
 public interface IFileRepository<T>
 {

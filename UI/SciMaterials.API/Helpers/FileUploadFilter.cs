@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace SciMaterials.API.Helpers;
+namespace SciMaterials.FilesAPI.Helpers;
 
 public class FileUploadFilter : IOperationFilter
 {
@@ -62,6 +62,6 @@ public static class Helper
 
         return source == BindingSource.Form
             || source == BindingSource.FormFile
-            || (elementType != null && typeof(IFormFile).IsAssignableFrom(elementType));
+            || elementType != null && typeof(IFormFile).IsAssignableFrom(elementType);
     }
 }

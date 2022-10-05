@@ -1,6 +1,6 @@
-using SciMaterials.API.Models;
+using SciMaterials.FilesAPI.Models;
 
-namespace SciMaterials.API.Services.Interfaces;
+namespace SciMaterials.FilesAPI.Services.Interfaces;
 
 public interface IFileStore
 {

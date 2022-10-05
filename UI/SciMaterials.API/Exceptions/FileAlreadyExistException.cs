@@ -1,4 +1,4 @@
-namespace SciMaterials.API.Exceptions;
+namespace SciMaterials.FilesAPI.Exceptions;
 
 public class FileAlreadyExistException : Exception
 {

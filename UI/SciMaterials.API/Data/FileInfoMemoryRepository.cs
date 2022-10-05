@@ -1,8 +1,8 @@
 using System.Collections.Concurrent;
-using SciMaterials.API.Data.Interfaces;
-using SciMaterials.API.Models;
+using SciMaterials.FilesAPI.Data.Interfaces;
+using SciMaterials.FilesAPI.Models;
 
-namespace SciMaterials.API.Data;
+namespace SciMaterials.FilesAPI.Data;
 
 public class FileInfoMemoryRepository : IFileRepository<Guid>
 {

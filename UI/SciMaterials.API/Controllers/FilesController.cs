@@ -1,8 +1,10 @@
+using System.Net;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
 using SciMaterials.API.Data.Interfaces;
+using SciMaterials.API.DTO;
 using SciMaterials.API.Mappings;
 using SciMaterials.API.Services.Interfaces;
 
@@ -30,12 +32,24 @@ public class FilesController : ControllerBase
         try
         {
             var fileInfo = _fileService.GetFileInfoByHash(hash);
-            var fileStream = _fileService.GetFileStream(fileInfo.Id);
-            return File(fileStream, fileInfo.ContentType, fileInfo.FileName);
+            var response = new FileGotResponse()
+            {
+                ContentType = fileInfo.ContentType,
+                FileName = fileInfo.FileName,
+                Hash = fileInfo.GetHashCode().ToString(),
+                Size = fileInfo.Size,
+                Code = Ok().StatusCode
+            };
+            return Ok(response);
         }
         catch (FileNotFoundException ex)
         {
-            return BadRequest($"File with hash({hash}) not found");
+            LogError(ex);
+            var response = new FileNotFoundResponse()
+            {
+                Code = new NotFoundResult().StatusCode
+            };
+            return Ok(response);
         }
         catch (Exception ex)
         {
@@ -50,12 +64,23 @@ public class FilesController : ControllerBase
         try
         {
             var fileInfo = _fileService.GetFileInfoById(id);
-            var fileStream = _fileService.GetFileStream(id);
-            return File(fileStream, fileInfo.ContentType, fileInfo.FileName);
+            var response = new FileGotResponse()
+            {
+                ContentType = fileInfo.ContentType,
+                FileName = fileInfo.FileName,
+                Hash = fileInfo.GetHashCode().ToString(),
+                Size = fileInfo.Size,
+            };
+            return Ok(response);
         }
         catch (FileNotFoundException ex)
         {
-            return BadRequest($"File with id({id}) not found");
+            LogError(ex);
+            var response = new FileNotFoundResponse()
+            {
+                Code = new NotFoundResult().StatusCode
+            };
+            return Ok(response);
         }
         catch (Exception ex)
         {

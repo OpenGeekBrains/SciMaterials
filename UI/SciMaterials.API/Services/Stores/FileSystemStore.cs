@@ -1,9 +1,9 @@
 using System.Security.Cryptography;
 using System.Text.Json;
-using SciMaterials.API.Models;
-using SciMaterials.API.Services.Interfaces;
+using SciMaterials.FilesAPI.Models;
+using SciMaterials.FilesAPI.Services.Interfaces;
 
-namespace SciMaterials.API.Services.Stores;
+namespace SciMaterials.FilesAPI.Services.Stores;
 
 public class FileSystemStore : IFileStore
 {

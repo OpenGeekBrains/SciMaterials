@@ -1,7 +1,7 @@
-using SciMaterials.API.DTO;
-using SciMaterials.API.Models;
+using SciMaterials.FilesAPI.DTO;
+using SciMaterials.FilesAPI.Models;
 
-namespace SciMaterials.API.Mappings;
+namespace SciMaterials.FilesAPI.Mappings;
 
 public static class FileModelMappings
 {
