@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using SciMaterials.DAL.Models;
-using SciMaterials.DAL.Repositories.CategorysRepositories;
 using SciMaterials.Data.Repositories;
 
 namespace SciMaterials.DAL.Repositories.CategorysRepositories;

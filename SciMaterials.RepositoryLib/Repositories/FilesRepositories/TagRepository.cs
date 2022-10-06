@@ -113,3 +113,4 @@ public class TagRepository : ITagRepository
     {
         _logger.Debug($"{nameof(TagRepository.UpdateAsync)}");
     }
+}
