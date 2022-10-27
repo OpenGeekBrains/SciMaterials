@@ -116,10 +116,10 @@ public class ContentTypeRepositoryTests
     {
         //arrange
         var expected = (await _contentTypeRepository.GetAllAsync())!.Count + 1;
-        var category = ContentTypeHelper.GetOne();
+        var contentType = ContentTypeHelper.GetOne();
 
         //act
-        await _contentTypeRepository.AddAsync(category);
+        await _contentTypeRepository.AddAsync(contentType);
         await _context.SaveChangesAsync();
 
         var contentTypes = await _contentTypeRepository.GetAllAsync();
@@ -127,15 +127,15 @@ public class ContentTypeRepositoryTests
         if (contentTypes is not null)
             count = contentTypes.Count;
 
-        var categoryDb = await _contentTypeRepository.GetByIdAsync(category.Id, include: true);
+        var contentTypeDb = await _contentTypeRepository.GetByIdAsync(contentType.Id, include: true);
 
         //assert
         Assert.Equal(expected, count);
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Id, categoryDb!.Id);
-        Assert.Equal(category.Name, categoryDb.Name);
-        Assert.Equal(category.FileExtension, categoryDb.FileExtension);
-        Assert.Equal(category.Files.ToList()[0].Id, categoryDb.Files.ToList()[0].Id);
+        Assert.NotNull(contentTypeDb);
+        Assert.Equal(contentType.Id, contentTypeDb!.Id);
+        Assert.Equal(contentType.Name, contentTypeDb.Name);
+        Assert.Equal(contentType.FileExtension, contentTypeDb.FileExtension);
+        Assert.Equal(contentType.Files.ToList()[0].Id, contentTypeDb.Files.ToList()[0].Id);
     }
 
     [Fact]
@@ -144,10 +144,10 @@ public class ContentTypeRepositoryTests
     {
         //arrange
         var expected = _contentTypeRepository.GetAll()!.Count + 1;
-        var category = ContentTypeHelper.GetOne();
+        var contentType = ContentTypeHelper.GetOne();
 
         //act
-        _contentTypeRepository.Add(category);
+        _contentTypeRepository.Add(contentType);
         _context.SaveChanges();
 
         var contentTypes = _contentTypeRepository.GetAll();
@@ -155,15 +155,15 @@ public class ContentTypeRepositoryTests
         if (contentTypes is not null)
             count = contentTypes.Count;
 
-        var categoryDb = _contentTypeRepository.GetById(category.Id, include: true);
+        var contentTypeDb = _contentTypeRepository.GetById(contentType.Id, include: true);
 
         //assert
         Assert.Equal(expected, count);
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Id, categoryDb!.Id);
-        Assert.Equal(category.Name, categoryDb.Name);
-        Assert.Equal(category.FileExtension, categoryDb.FileExtension);
-        Assert.Equal(category.Files.ToList()[0].Id, categoryDb.Files.ToList()[0].Id);
+        Assert.NotNull(contentTypeDb);
+        Assert.Equal(contentType.Id, contentTypeDb!.Id);
+        Assert.Equal(contentType.Name, contentTypeDb.Name);
+        Assert.Equal(contentType.FileExtension, contentTypeDb.FileExtension);
+        Assert.Equal(contentType.Files.ToList()[0].Id, contentTypeDb.Files.ToList()[0].Id);
     }
 
     #endregion
@@ -175,13 +175,13 @@ public class ContentTypeRepositoryTests
     public async void DeleteAsync_ItShould_entity_removed()
     {
         //arrange
-        var category = ContentTypeHelper.GetOne();
-        await _contentTypeRepository.AddAsync(category);
+        var contentType = ContentTypeHelper.GetOne();
+        await _contentTypeRepository.AddAsync(contentType);
         await _context.SaveChangesAsync();
         var expected = (await _contentTypeRepository.GetAllAsync())!.Count - 1;
 
         //act
-        await _contentTypeRepository.DeleteAsync(category.Id);
+        await _contentTypeRepository.DeleteAsync(contentType.Id);
         await _context.SaveChangesAsync();
 
         var contentTypes = await _contentTypeRepository.GetAllAsync();
@@ -189,7 +189,7 @@ public class ContentTypeRepositoryTests
         if (contentTypes is not null)
             count = contentTypes.Count;
 
-        var removedContentType = await _contentTypeRepository.GetByIdAsync(category.Id);
+        var removedContentType = await _contentTypeRepository.GetByIdAsync(contentType.Id);
 
         //assert
         Assert.Equal(expected, count);
@@ -201,13 +201,13 @@ public class ContentTypeRepositoryTests
     public void Delete_ItShould_entity_removed()
     {
         //arrange
-        var category = ContentTypeHelper.GetOne();
-        _contentTypeRepository.Add(category);
+        var contentType = ContentTypeHelper.GetOne();
+        _contentTypeRepository.Add(contentType);
         _context.SaveChanges();
         var expected = _contentTypeRepository.GetAll()!.Count - 1;
 
         //act
-        _contentTypeRepository.Delete(category.Id);
+        _contentTypeRepository.Delete(contentType.Id);
         _context.SaveChanges();
 
         var contentTypes = _contentTypeRepository.GetAll();
@@ -215,7 +215,7 @@ public class ContentTypeRepositoryTests
         if (contentTypes is not null)
             count = contentTypes.Count;
 
-        var removedContentType = _contentTypeRepository.GetById(category.Id);
+        var removedContentType = _contentTypeRepository.GetById(contentType.Id);
 
         //assert
         Assert.Equal(expected, count);
@@ -232,17 +232,17 @@ public class ContentTypeRepositoryTests
     {
         //arrange
         const EntityState expecedState = EntityState.Unchanged;
-        var category = ContentTypeHelper.GetOne();
-        await _contentTypeRepository.AddAsync(category);
+        var contentType = ContentTypeHelper.GetOne();
+        await _contentTypeRepository.AddAsync(contentType);
         await _context.SaveChangesAsync();
 
         //act
-        var categoryDb = await _contentTypeRepository.GetByIdAsync(category.Id, false);
+        var contentTypeDb = await _contentTypeRepository.GetByIdAsync(contentType.Id, false);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Id, categoryDb!.Id);
-        Assert.Equal(expecedState, _context.Entry(categoryDb).State);
+        Assert.NotNull(contentTypeDb);
+        Assert.Equal(contentType.Id, contentTypeDb!.Id);
+        Assert.Equal(expecedState, _context.Entry(contentTypeDb).State);
     }
 
     [Fact]
@@ -251,17 +251,17 @@ public class ContentTypeRepositoryTests
     {
         //arrange
         const EntityState expecedState = EntityState.Detached;
-        var category = ContentTypeHelper.GetOne();
-        await _contentTypeRepository.AddAsync(category);
+        var contentType = ContentTypeHelper.GetOne();
+        await _contentTypeRepository.AddAsync(contentType);
         await _context.SaveChangesAsync();
 
         //act
-        var categoryDb = await _contentTypeRepository.GetByIdAsync(category.Id, true);
+        var contentTypeDb = await _contentTypeRepository.GetByIdAsync(contentType.Id, true);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Id, categoryDb!.Id);
-        Assert.Equal(expecedState, _context.Entry(categoryDb).State);
+        Assert.NotNull(contentTypeDb);
+        Assert.Equal(contentType.Id, contentTypeDb!.Id);
+        Assert.Equal(expecedState, _context.Entry(contentTypeDb).State);
     }
 
     [Fact]
@@ -270,17 +270,17 @@ public class ContentTypeRepositoryTests
     {
         //arrange
         const EntityState expecedState = EntityState.Unchanged;
-        var category = ContentTypeHelper.GetOne();
-        _contentTypeRepository.Add(category);
+        var contentType = ContentTypeHelper.GetOne();
+        _contentTypeRepository.Add(contentType);
         _context.SaveChanges();
 
         //act
-        var categoryDb = _contentTypeRepository.GetById(category.Id, false);
+        var contentTypeDb = _contentTypeRepository.GetById(contentType.Id, false);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Id, categoryDb!.Id);
-        Assert.Equal(expecedState, _context.Entry(categoryDb).State);
+        Assert.NotNull(contentTypeDb);
+        Assert.Equal(contentType.Id, contentTypeDb!.Id);
+        Assert.Equal(expecedState, _context.Entry(contentTypeDb).State);
     }
 
     [Fact]
@@ -289,17 +289,17 @@ public class ContentTypeRepositoryTests
     {
         //arrange
         const EntityState expecedState = EntityState.Detached;
-        var category = ContentTypeHelper.GetOne();
-        _contentTypeRepository.Add(category);
+        var contentType = ContentTypeHelper.GetOne();
+        _contentTypeRepository.Add(contentType);
         _context.SaveChanges();
 
         //act
-        var categoryDb = _contentTypeRepository.GetById(category.Id, true);
+        var contentTypeDb = _contentTypeRepository.GetById(contentType.Id, true);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Id, categoryDb!.Id);
-        Assert.Equal(expecedState, _context.Entry(categoryDb).State);
+        Assert.NotNull(contentTypeDb);
+        Assert.Equal(contentType.Id, contentTypeDb!.Id);
+        Assert.Equal(expecedState, _context.Entry(contentTypeDb).State);
     }
 
     [Fact]
@@ -307,16 +307,16 @@ public class ContentTypeRepositoryTests
     public async void GetByIdAsync_ItShould_entity_not_null_and_equals_id()
     {
         //arrange
-        var category = ContentTypeHelper.GetOne();
-        await _contentTypeRepository.AddAsync(category);
+        var contentType = ContentTypeHelper.GetOne();
+        await _contentTypeRepository.AddAsync(contentType);
         await _context.SaveChangesAsync();
 
         //act
-        var categoryDb = await _contentTypeRepository.GetByIdAsync(category.Id);
+        var contentTypeDb = await _contentTypeRepository.GetByIdAsync(contentType.Id);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Id, categoryDb!.Id);
+        Assert.NotNull(contentTypeDb);
+        Assert.Equal(contentType.Id, contentTypeDb!.Id);
     }
 
     [Fact]
@@ -324,16 +324,16 @@ public class ContentTypeRepositoryTests
     public void GetById_ItShould_entity_not_null_and_equals_id()
     {
         //arrange
-        var category = ContentTypeHelper.GetOne();
-        _contentTypeRepository.Add(category);
+        var contentType = ContentTypeHelper.GetOne();
+        _contentTypeRepository.Add(contentType);
         _context.SaveChanges();
 
         //act
-        var categoryDb = _contentTypeRepository.GetById(category.Id);
+        var contentTypeDb = _contentTypeRepository.GetById(contentType.Id);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Id, categoryDb!.Id);
+        Assert.NotNull(contentTypeDb);
+        Assert.Equal(contentType.Id, contentTypeDb!.Id);
     }
 
     #endregion
@@ -346,17 +346,17 @@ public class ContentTypeRepositoryTests
     {
         //arrange
         const EntityState expecedState = EntityState.Detached;
-        var category = ContentTypeHelper.GetOne();
-        await _contentTypeRepository.AddAsync(category);
+        var contentType = ContentTypeHelper.GetOne();
+        await _contentTypeRepository.AddAsync(contentType);
         await _context.SaveChangesAsync();
 
         //act
-        var categoryDb = await _contentTypeRepository.GetByNameAsync(category.Name, true);
+        var contentTypeDb = await _contentTypeRepository.GetByNameAsync(contentType.Name, true);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Name, categoryDb!.Name);
-        Assert.Equal(expecedState, _context.Entry(categoryDb).State);
+        Assert.NotNull(contentTypeDb);
+        Assert.Equal(contentType.Name, contentTypeDb!.Name);
+        Assert.Equal(expecedState, _context.Entry(contentTypeDb).State);
     }
 
     [Fact]
@@ -365,17 +365,17 @@ public class ContentTypeRepositoryTests
     {
         //arrange
         const EntityState expecedState = EntityState.Unchanged;
-        var category = ContentTypeHelper.GetOne();
-        _contentTypeRepository.Add(category);
+        var contentType = ContentTypeHelper.GetOne();
+        _contentTypeRepository.Add(contentType);
         _context.SaveChanges();
 
         //act
-        var categoryDb = _contentTypeRepository.GetByName(category.Name, false);
+        var contentTypeDb = _contentTypeRepository.GetByName(contentType.Name, false);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Name, categoryDb!.Name);
-        Assert.Equal(expecedState, _context.Entry(categoryDb).State);
+        Assert.NotNull(contentTypeDb);
+        Assert.Equal(contentType.Name, contentTypeDb!.Name);
+        Assert.Equal(expecedState, _context.Entry(contentTypeDb).State);
     }
 
     [Fact]
@@ -384,17 +384,17 @@ public class ContentTypeRepositoryTests
     {
         //arrange
         const EntityState expecedState = EntityState.Unchanged;
-        var category = ContentTypeHelper.GetOne();
-        await _contentTypeRepository.AddAsync(category);
+        var contentType = ContentTypeHelper.GetOne();
+        await _contentTypeRepository.AddAsync(contentType);
         await _context.SaveChangesAsync();
 
         //act
-        var categoryDb = await _contentTypeRepository.GetByNameAsync(category.Name, false);
+        var contentTypeDb = await _contentTypeRepository.GetByNameAsync(contentType.Name, false);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Name, categoryDb!.Name);
-        Assert.Equal(expecedState, _context.Entry(categoryDb).State);
+        Assert.NotNull(contentTypeDb);
+        Assert.Equal(contentType.Name, contentTypeDb!.Name);
+        Assert.Equal(expecedState, _context.Entry(contentTypeDb).State);
     }
 
     [Fact]
@@ -403,17 +403,17 @@ public class ContentTypeRepositoryTests
     {
         //arrange
         const EntityState expecedState = EntityState.Detached;
-        var category = ContentTypeHelper.GetOne();
-        _contentTypeRepository.Add(category);
+        var contentType = ContentTypeHelper.GetOne();
+        _contentTypeRepository.Add(contentType);
         _context.SaveChanges();
 
         //act
-        var categoryDb = _contentTypeRepository.GetByName(category.Name, true);
+        var contentTypeDb = _contentTypeRepository.GetByName(contentType.Name, true);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Name, categoryDb!.Name);
-        Assert.Equal(expecedState, _context.Entry(categoryDb).State);
+        Assert.NotNull(contentTypeDb);
+        Assert.Equal(contentType.Name, contentTypeDb!.Name);
+        Assert.Equal(expecedState, _context.Entry(contentTypeDb).State);
     }
 
     [Fact]
@@ -421,16 +421,16 @@ public class ContentTypeRepositoryTests
     public async void GetByNameAsync_ItShould_entity_not_null_and_equals_name()
     {
         //arrange
-        var category = ContentTypeHelper.GetOne();
-        await _contentTypeRepository.AddAsync(category);
+        var contentType = ContentTypeHelper.GetOne();
+        await _contentTypeRepository.AddAsync(contentType);
         await _context.SaveChangesAsync();
 
         //act
-        var categoryDb = await _contentTypeRepository.GetByNameAsync(category.Name);
+        var contentTypeDb = await _contentTypeRepository.GetByNameAsync(contentType.Name);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Name, categoryDb!.Name);
+        Assert.NotNull(contentTypeDb);
+        Assert.Equal(contentType.Name, contentTypeDb!.Name);
     }
 
     [Fact]
@@ -438,16 +438,16 @@ public class ContentTypeRepositoryTests
     public void GetByName_ItShould_entity_not_null_and_equals_name()
     {
         //arrange
-        var category = ContentTypeHelper.GetOne();
-        _contentTypeRepository.Add(category);
+        var contentType = ContentTypeHelper.GetOne();
+        _contentTypeRepository.Add(contentType);
         _context.SaveChanges();
 
         //act
-        var categoryDb = _contentTypeRepository.GetByName(category.Name);
+        var contentTypeDb = _contentTypeRepository.GetByName(contentType.Name);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Name, categoryDb!.Name);
+        Assert.NotNull(contentTypeDb);
+        Assert.Equal(contentType.Name, contentTypeDb!.Name);
     }
 
     #endregion
@@ -461,20 +461,20 @@ public class ContentTypeRepositoryTests
         //arrange
         var expectedName = "new content type name";
 
-        var category = ContentTypeHelper.GetOne();
-        await _contentTypeRepository.AddAsync(category);
+        var contentType = ContentTypeHelper.GetOne();
+        await _contentTypeRepository.AddAsync(contentType);
         await _context.SaveChangesAsync();
 
         //act
-        category.Name = expectedName;
-        await _contentTypeRepository.UpdateAsync(category);
+        contentType.Name = expectedName;
+        await _contentTypeRepository.UpdateAsync(contentType);
         await _context.SaveChangesAsync();
 
-        var categoryDb = await _contentTypeRepository.GetByIdAsync(category.Id);
+        var contentTypeDb = await _contentTypeRepository.GetByIdAsync(contentType.Id);
 
         //assert
-        Assert.Equal(category.Id, categoryDb!.Id);
-        Assert.Equal(category.Name, expectedName);
+        Assert.Equal(contentType.Id, contentTypeDb!.Id);
+        Assert.Equal(contentType.Name, expectedName);
     }
 
     [Fact]
@@ -484,20 +484,20 @@ public class ContentTypeRepositoryTests
         //arrange
         var expectedName = "new content type name";
 
-        var category = ContentTypeHelper.GetOne();
-        _contentTypeRepository.Add(category);
+        var contentType = ContentTypeHelper.GetOne();
+        _contentTypeRepository.Add(contentType);
         _context.SaveChanges();
 
         //act
-        category.Name = expectedName;
-        _contentTypeRepository.Update(category);
+        contentType.Name = expectedName;
+        _contentTypeRepository.Update(contentType);
         _context.SaveChanges();
 
-        var categoryDb = _contentTypeRepository.GetById(category.Id);
+        var contentTypeDb = _contentTypeRepository.GetById(contentType.Id);
 
         //assert
-        Assert.Equal(category.Id, categoryDb!.Id);
-        Assert.Equal(category.Name, expectedName);
+        Assert.Equal(contentType.Id, contentTypeDb!.Id);
+        Assert.Equal(contentType.Name, expectedName);
     }
 
     #endregion
@@ -511,10 +511,10 @@ public class ContentTypeRepositoryTests
     //    //arrange
 
     //    //act
-    //    var categoryDb = await _contentTypeRepository.GetByHashAsync(String.Empty);
+    //    var contentTypeDb = await _contentTypeRepository.GetByHashAsync(String.Empty);
 
     //    //assert
-    //    Assert.Null(categoryDb);
+    //    Assert.Null(contentTypeDb);
     //}
 
     //[Fact]
@@ -524,10 +524,10 @@ public class ContentTypeRepositoryTests
     //    //arrange
 
     //    //act
-    //    var categoryDb = _contentTypeRepository.GetByHash(String.Empty);
+    //    var contentTypeDb = _contentTypeRepository.GetByHash(String.Empty);
 
     //    //assert
-    //    Assert.Null(categoryDb);
+    //    Assert.Null(contentTypeDb);
     //}
 
     #endregion
