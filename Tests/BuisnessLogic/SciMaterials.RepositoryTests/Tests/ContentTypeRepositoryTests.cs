@@ -28,39 +28,31 @@ public class ContentTypeRepositoryTests
 
     [Fact]
     [Trait("ContentTypeRepositoryTests", nameof(ContentType))]
-    public void GetAll_AsNoTracking_ItShould_contains_contentType_1()
+    public void GetAll_AsNoTracking_ItShould_contains_contentTypes()
     {
         //arrange
-        const int expected = 1;
         const EntityState expecedState = EntityState.Detached;
 
         //act
         var contentTypes = _contentTypeRepository.GetAll();
-        var count = 0;
-        if (contentTypes is not null)
-            count = contentTypes.Count;
 
         //assert
-        Assert.Equal(expected, count);
+        Assert.NotNull(contentTypes);
         Assert.Equal(expecedState, _context.Entry(contentTypes![0]).State);
     }
 
     [Fact]
     [Trait("ContentTypeRepositoryTests", nameof(ContentType))]
-    public void GetAll_Tracking_ItShould_contains_contentType_1()
+    public void GetAll_Tracking_ItShould_contains_contentTypes()
     {
         //arrange
-        const int expected = 1;
         const EntityState expecedSstate = EntityState.Unchanged;
 
         //act
         var contentTypes = _contentTypeRepository.GetAll(false);
-        var count = 0;
-        if (contentTypes is not null)
-            count = contentTypes.Count;
 
         //assert
-        Assert.Equal(expected, count);
+        Assert.NotNull(contentTypes);
         Assert.Equal(expecedSstate, _context.Entry(contentTypes![0]).State);
     }
 
@@ -70,39 +62,31 @@ public class ContentTypeRepositoryTests
 
     [Fact]
     [Trait("ContentTypeRepositoryTests", nameof(ContentType))]
-    public async void GetAllAsync_AsNoTracking_ItShould_contains_contentType_1()
+    public async void GetAllAsync_AsNoTracking_ItShould_contains_contentTypes()
     {
         //arrange
-        const int expected = 1;
         const EntityState expecedSstate = EntityState.Detached;
 
         //act
         var contentTypes = await _contentTypeRepository.GetAllAsync();
-        var count = 0;
-        if (contentTypes is not null)
-            count = contentTypes.Count;
 
         //assert
-        Assert.Equal(expected, count);
+        Assert.NotNull(contentTypes);
         Assert.Equal(expecedSstate, _context.Entry(contentTypes![0]).State);
     }
 
     [Fact]
     [Trait("ContentTypeRepositoryTests", nameof(ContentType))]
-    public async void GetAllAsync_Tracking_ItShould_contains_contentType_1()
+    public async void GetAllAsync_Tracking_ItShould_contains_contentTypes()
     {
         //arrange
-        const int expected = 1;
         const EntityState expecedSstate = EntityState.Unchanged;
 
         //act
         var contentTypes = await _contentTypeRepository.GetAllAsync(false);
-        var count = 0;
-        if (contentTypes is not null)
-            count = contentTypes.Count;
 
         //assert
-        Assert.Equal(expected, count);
+        Assert.NotNull(contentTypes);
         Assert.Equal(expecedSstate, _context.Entry(contentTypes![0]).State);
     }
 

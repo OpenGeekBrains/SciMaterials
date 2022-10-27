@@ -28,40 +28,32 @@ public class FileGroupRepositoryTests
 
     [Fact]
     [Trait("FileGroupRepositoryTests", nameof(FileGroup))]
-    public void GetAll_AsNoTracking_ItShould_contains_fileGroup_1()
+    public void GetAll_AsNoTracking_ItShould_contains_fileGroups()
     {
         //arrange
-        const int expected = 1;
         const EntityState expecedState = EntityState.Detached;
 
         //act
-        var contentTypes = _fileGroupRepository.GetAll();
-        var count = 0;
-        if (contentTypes is not null)
-            count = contentTypes.Count;
+        var fileGroups = _fileGroupRepository.GetAll();
 
         //assert
-        Assert.Equal(expected, count);
-        Assert.Equal(expecedState, _context.Entry(contentTypes![0]).State);
+        Assert.NotNull(fileGroups);
+        Assert.Equal(expecedState, _context.Entry(fileGroups![0]).State);
     }
 
     [Fact]
     [Trait("FileGroupRepositoryTests", nameof(FileGroup))]
-    public void GetAll_Tracking_ItShould_contains_fileGroup_1()
+    public void GetAll_Tracking_ItShould_contains_fileGroups()
     {
         //arrange
-        const int expected = 1;
         const EntityState expecedSstate = EntityState.Unchanged;
 
         //act
-        var contentTypes = _fileGroupRepository.GetAll(false);
-        var count = 0;
-        if (contentTypes is not null)
-            count = contentTypes.Count;
+        var fileGroups = _fileGroupRepository.GetAll(false);
 
         //assert
-        Assert.Equal(expected, count);
-        Assert.Equal(expecedSstate, _context.Entry(contentTypes![0]).State);
+        Assert.NotNull(fileGroups);
+        Assert.Equal(expecedSstate, _context.Entry(fileGroups![0]).State);
     }
 
     #endregion
@@ -70,40 +62,32 @@ public class FileGroupRepositoryTests
 
     [Fact]
     [Trait("FileGroupRepositoryTests", nameof(FileGroup))]
-    public async void GetAllAsync_AsNoTracking_ItShould_contains_fileGroup_1()
+    public async void GetAllAsync_AsNoTracking_ItShould_contains_fileGroups()
     {
         //arrange
-        const int expected = 1;
         const EntityState expecedSstate = EntityState.Detached;
 
         //act
-        var contentTypes = await _fileGroupRepository.GetAllAsync();
-        var count = 0;
-        if (contentTypes is not null)
-            count = contentTypes.Count;
+        var fileGroups = await _fileGroupRepository.GetAllAsync();
 
         //assert
-        Assert.Equal(expected, count);
-        Assert.Equal(expecedSstate, _context.Entry(contentTypes![0]).State);
+        Assert.NotNull(fileGroups);
+        Assert.Equal(expecedSstate, _context.Entry(fileGroups![0]).State);
     }
 
     [Fact]
     [Trait("FileGroupRepositoryTests", nameof(FileGroup))]
-    public async void GetAllAsync_Tracking_ItShould_contains_fileGroup_1()
+    public async void GetAllAsync_Tracking_ItShould_contains_fileGroups()
     {
         //arrange
-        const int expected = 1;
         const EntityState expecedSstate = EntityState.Unchanged;
 
         //act
-        var contentTypes = await _fileGroupRepository.GetAllAsync(false);
-        var count = 0;
-        if (contentTypes is not null)
-            count = contentTypes.Count;
+        var fileGroups = await _fileGroupRepository.GetAllAsync(false);
 
         //assert
-        Assert.Equal(expected, count);
-        Assert.Equal(expecedSstate, _context.Entry(contentTypes![0]).State);
+        Assert.NotNull(fileGroups);
+        Assert.Equal(expecedSstate, _context.Entry(fileGroups![0]).State);
     }
 
     #endregion
@@ -122,10 +106,10 @@ public class FileGroupRepositoryTests
         await _fileGroupRepository.AddAsync(fileGroup);
         await _context.SaveChangesAsync();
 
-        var contentTypes = await _fileGroupRepository.GetAllAsync();
+        var fileGroups = await _fileGroupRepository.GetAllAsync();
         var count = 0;
-        if (contentTypes is not null)
-            count = contentTypes.Count;
+        if (fileGroups is not null)
+            count = fileGroups.Count;
 
         var fileGroupDb = await _fileGroupRepository.GetByIdAsync(fileGroup.Id, include: true);
 
@@ -157,10 +141,10 @@ public class FileGroupRepositoryTests
         _fileGroupRepository.Add(fileGroup);
         _context.SaveChanges();
 
-        var contentTypes = _fileGroupRepository.GetAll();
+        var fileGroups = _fileGroupRepository.GetAll();
         var count = 0;
-        if (contentTypes is not null)
-            count = contentTypes.Count;
+        if (fileGroups is not null)
+            count = fileGroups.Count;
 
         var fileGroupDb = _fileGroupRepository.GetById(fileGroup.Id, include: true);
 
@@ -198,10 +182,10 @@ public class FileGroupRepositoryTests
         await _fileGroupRepository.DeleteAsync(fileGroup.Id);
         await _context.SaveChangesAsync();
 
-        var contentTypes = await _fileGroupRepository.GetAllAsync();
+        var fileGroups = await _fileGroupRepository.GetAllAsync();
         var count = 0;
-        if (contentTypes is not null)
-            count = contentTypes.Count;
+        if (fileGroups is not null)
+            count = fileGroups.Count;
 
         var removedFileGroup = await _fileGroupRepository.GetByIdAsync(fileGroup.Id);
 
@@ -224,10 +208,10 @@ public class FileGroupRepositoryTests
         _fileGroupRepository.Delete(fileGroup.Id);
         _context.SaveChanges();
 
-        var contentTypes = _fileGroupRepository.GetAll();
+        var fileGroups = _fileGroupRepository.GetAll();
         var count = 0;
-        if (contentTypes is not null)
-            count = contentTypes.Count;
+        if (fileGroups is not null)
+            count = fileGroups.Count;
 
         var removedFileGroup = _fileGroupRepository.GetById(fileGroup.Id);
 

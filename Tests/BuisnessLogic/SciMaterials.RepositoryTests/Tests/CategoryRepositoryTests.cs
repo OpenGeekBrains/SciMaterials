@@ -28,39 +28,31 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
 
     [Fact]
     [Trait("CategoryRepositoryTests", nameof(Category))]
-    public void GetAll_AsNoTracking_ItShould_contains_category_1()
+    public void GetAll_AsNoTracking_ItShould_contains_categories()
     {
         //arrange
-        const int expected = 1;
         const EntityState expecedState = EntityState.Detached;
 
         //act
         var categories = _categoryRepository.GetAll();
-        var count = 0;
-        if(categories is not null)
-            count = categories.Count;
 
         //assert
-        Assert.Equal(expected, count);
+        Assert.NotNull(categories);
         Assert.Equal(expecedState, _context.Entry(categories![0]).State);
     }
 
     [Fact]
     [Trait("CategoryRepositoryTests", nameof(Category))]
-    public void GetAll_Tracking_ItShould_contains_category_1()
+    public void GetAll_Tracking_ItShould_contains_categories()
     {
         //arrange
-        const int expected = 1;
         const EntityState expecedSstate = EntityState.Unchanged;
 
         //act
         var categories = _categoryRepository.GetAll(false);
-        var count = 0;
-        if (categories is not null)
-            count = categories.Count;
 
         //assert
-        Assert.Equal(expected, count);
+        Assert.NotNull(categories);
         Assert.Equal(expecedSstate, _context.Entry(categories![0]).State);
     }
 
@@ -70,39 +62,31 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
 
     [Fact]
     [Trait("CategoryRepositoryTests", nameof(Category))]
-    public async void GetAllAsync_AsNoTracking_ItShould_contains_category_1()
+    public async void GetAllAsync_AsNoTracking_ItShould_contains_categories()
     {
         //arrange
-        const int expected = 1;
         const EntityState expecedSstate = EntityState.Detached;
 
         //act
         var categories = await _categoryRepository.GetAllAsync();
-        var count = 0;
-        if (categories is not null)
-            count = categories.Count;
 
         //assert
-        Assert.Equal(expected, count);
+        Assert.NotNull(categories);
         Assert.Equal(expecedSstate, _context.Entry(categories![0]).State);
     }
 
     [Fact]
     [Trait("CategoryRepositoryTests", nameof(Category))]
-    public async void GetAllAsync_Tracking_ItShould_contains_category_1()
+    public async void GetAllAsync_Tracking_ItShould_contains_categories()
     {
         //arrange
-        const int expected = 1;
         const EntityState expecedSstate = EntityState.Unchanged;
 
         //act
         var categories = await _categoryRepository.GetAllAsync(false);
-        var count = 0;
-        if (categories is not null)
-            count = categories.Count;
 
         //assert
-        Assert.Equal(expected, count);
+        Assert.NotNull(categories);
         Assert.Equal(expecedSstate, _context.Entry(categories![0]).State);
     }
 

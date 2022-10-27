@@ -23,7 +23,10 @@ public class SciMateralsContextHelper
 
         Context.AddRange(CategoryHelper.GetMany());
         Context.AddRange(AuthorHelper.GetMany());
+        Context.AddRange(CommentHelper.GetMany());
         Context.AddRange(ContentTypeHelper.GetMany());
+        Context.AddRange(FileGroupHelper.GetMany());
+        Context.AddRange(FileHelper.GetMany());
 
         Context.SaveChanges();
     }
