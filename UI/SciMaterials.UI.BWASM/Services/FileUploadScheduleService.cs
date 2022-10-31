@@ -60,7 +60,7 @@ public class FileUploadScheduleService : IDisposable
                     ContentTypeName = data.File.ContentType,
                     Categories = data.Category.ToString(),
                     AuthorId = data.AuthorId,
-                    Title = data.Title
+                    ShortInfo = data.ShortInfo
                 },
                 data.CancellationToken);
 

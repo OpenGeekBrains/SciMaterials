@@ -88,7 +88,7 @@ public class FileUploadEffects
                 File = data.BrowserFile,
                 FileName = data.FileName,
                 Category = data.CategoryId,
-                Title = data.Title,
+                ShortInfo = data.Title,
                 AuthorId = data.AuthorId,
                 CancellationToken = fileUploadCancellationSource.Token
             });

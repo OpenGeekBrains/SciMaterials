@@ -32,7 +32,7 @@ public class SendFileTest
         var upload_file_request = new UploadFileRequest
         {
             Name = file_name,
-            Title = "Файл " + file_info.Name,
+            ShortInfo = "Файл " + file_info.Name,
             Description = "Содержит файл " + file_info.Name,
             Size = file_info.Length,
             Tags = "текст,книга,txt",

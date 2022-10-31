@@ -34,13 +34,12 @@ public static class DataSeeder
         {
             try
             {
-                await db.Users.AddRangeAsync(JsonConvert.DeserializeObject<List<User>>(Encoding.UTF8.GetString(Resources.Users))!, Cancel)
-                   .ConfigureAwait(false);
-                await db.SaveChangesAsync(Cancel).ConfigureAwait(false);
+                await db.Users.AddRangeAsync(JsonConvert.DeserializeObject<List<User>>(Encoding.UTF8.GetString(Resources.Users))!, Cancel);
+                await db.SaveChangesAsync(Cancel);
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Error loading data Authors", e.Message);
+                Debug.WriteLine("Error loading data Users", e.Message);
                 throw;
             }
         }
@@ -49,9 +48,8 @@ public static class DataSeeder
         {
             try
             {
-                await db.Authors.AddRangeAsync(JsonConvert.DeserializeObject<List<Author>>(Encoding.UTF8.GetString(Resources.Authors))!, Cancel)
-                   .ConfigureAwait(false);
-                await db.SaveChangesAsync(Cancel).ConfigureAwait(false);
+                await db.Authors.AddRangeAsync(JsonConvert.DeserializeObject<List<Author>>(Encoding.UTF8.GetString(Resources.Authors))!, Cancel);
+                await db.SaveChangesAsync(Cancel);
             }
             catch (Exception e)
             {
@@ -64,9 +62,8 @@ public static class DataSeeder
         {
             try
             {
-                await db.ContentTypes.AddRangeAsync(JsonConvert.DeserializeObject<List<ContentType>>(Encoding.UTF8.GetString(Resources.ContentTypes))!, Cancel)
-                   .ConfigureAwait(false);
-                await db.SaveChangesAsync(Cancel).ConfigureAwait(false);
+                await db.ContentTypes.AddRangeAsync(JsonConvert.DeserializeObject<List<ContentType>>(Encoding.UTF8.GetString(Resources.ContentTypes))!, Cancel);
+                await db.SaveChangesAsync(Cancel);
             }
             catch (Exception e)
             {
@@ -75,43 +72,12 @@ public static class DataSeeder
             }
         }
 
-        if (!await db.Tags.AnyAsync(Cancel))
-        {
-            try
-            {
-                await db.Tags.AddRangeAsync(JsonConvert.DeserializeObject<List<Tag>>(Encoding.UTF8.GetString(Resources.Tags))!, Cancel)
-                   .ConfigureAwait(false);
-                await db.SaveChangesAsync(Cancel).ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Error loading data Tags", e.Message);
-                throw;
-            }
-        }
-
-        if (!await db.Categories.AnyAsync(Cancel))
-        {
-            try
-            {
-                await db.Categories.AddRangeAsync(JsonConvert.DeserializeObject<List<Category>>(Encoding.UTF8.GetString(Resources.Categories))!, Cancel)
-                   .ConfigureAwait(false);
-                await db.SaveChangesAsync(Cancel).ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Error loading data Categories", e.Message);
-                throw;
-            }
-        }
-
         if (!await db.FileGroups.AnyAsync(Cancel))
         {
             try
             {
-                await db.FileGroups.AddRangeAsync(JsonConvert.DeserializeObject<List<FileGroup>>(Encoding.UTF8.GetString(Resources.FileGroups))!, Cancel)
-                   .ConfigureAwait(false);
-                await db.SaveChangesAsync(Cancel).ConfigureAwait(false);
+                await db.FileGroups.AddRangeAsync(JsonConvert.DeserializeObject<List<FileGroup>>(Encoding.UTF8.GetString(Resources.FileGroups))!, Cancel);
+                await db.SaveChangesAsync(Cancel);
             }
             catch (Exception e)
             {
@@ -124,9 +90,8 @@ public static class DataSeeder
         {
             try
             {
-                await db.Files.AddRangeAsync(JsonConvert.DeserializeObject<List<File>>(Encoding.UTF8.GetString(Resources.Files))!, Cancel)
-                   .ConfigureAwait(false);
-                await db.SaveChangesAsync(Cancel).ConfigureAwait(false);
+                await db.Files.AddRangeAsync(JsonConvert.DeserializeObject<List<File>>(Encoding.UTF8.GetString(Resources.Files))!, Cancel);
+                await db.SaveChangesAsync(Cancel);
             }
             catch (Exception e)
             {
@@ -135,13 +100,54 @@ public static class DataSeeder
             }
         }
 
+        if (!await db.Links.AnyAsync(Cancel))
+        {
+            try
+            {
+                await db.Links.AddRangeAsync(JsonConvert.DeserializeObject<List<Link>>(Encoding.UTF8.GetString(Resources.Links))!, Cancel);
+                await db.SaveChangesAsync(Cancel);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error loading data Links", e.Message);
+                throw;
+            }
+        }
+
+        if (!await db.Tags.AnyAsync(Cancel))
+        {
+            try
+            {
+                await db.Tags.AddRangeAsync(JsonConvert.DeserializeObject<List<Tag>>(Encoding.UTF8.GetString(Resources.Tags))!, Cancel);
+                await db.SaveChangesAsync(Cancel);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error loading data Tags", e.Message);
+                throw;
+            }
+        }
+
+        if (!await db.Categories.AnyAsync(Cancel))
+        {
+            try
+            {
+                await db.Categories.AddRangeAsync(JsonConvert.DeserializeObject<List<Category>>(Encoding.UTF8.GetString(Resources.Categories))!, Cancel);
+                await db.SaveChangesAsync(Cancel);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error loading data Categories", e.Message);
+                throw;
+            }
+        }
+
         if (!await db.Comments.AnyAsync(Cancel))
         {
             try
             {
-                await db.Comments.AddRangeAsync(JsonConvert.DeserializeObject<List<Comment>>(Encoding.UTF8.GetString(Resources.Comments))!, Cancel)
-                   .ConfigureAwait(false);
-                await db.SaveChangesAsync(Cancel).ConfigureAwait(false);
+                await db.Comments.AddRangeAsync(JsonConvert.DeserializeObject<List<Comment>>(Encoding.UTF8.GetString(Resources.Comments))!, Cancel);
+                await db.SaveChangesAsync(Cancel);
             }
             catch (Exception e)
             {
@@ -154,9 +160,8 @@ public static class DataSeeder
         {
             try
             {
-                await db.Ratings.AddRangeAsync(JsonConvert.DeserializeObject<List<Rating>>(Encoding.UTF8.GetString(Resources.Ratings))!, Cancel)
-                   .ConfigureAwait(false);
-                await db.SaveChangesAsync(Cancel).ConfigureAwait(false);
+                await db.Ratings.AddRangeAsync(JsonConvert.DeserializeObject<List<Rating>>(Encoding.UTF8.GetString(Resources.Ratings))!, Cancel);
+                await db.SaveChangesAsync(Cancel);
             }
             catch (Exception e)
             {
@@ -165,8 +170,20 @@ public static class DataSeeder
             }
         }
 
-        await transaction.CommitAsync(Cancel).ConfigureAwait(false);
+        if (!await db.Urls.AnyAsync(Cancel))
+        {
+            try
+            {
+                await db.Urls.AddRangeAsync(JsonConvert.DeserializeObject<List<Url>>(Encoding.UTF8.GetString(Resources.Urls))!, Cancel);
+                await db.SaveChangesAsync(Cancel);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error loading data Urls", e.Message);
+                throw;
+            }
+        }
 
-        loggger.LogInformation("Инициализация БД тестовыми данными выполнена успешно.");
+        await transaction.CommitAsync(Cancel);
     }
 }

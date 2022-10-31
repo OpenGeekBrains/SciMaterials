@@ -5,12 +5,14 @@ namespace SciMaterials.Domain.Models;
 public class Comment : BaseModel
 {
     public Guid? ParentId { get; set; }
-    public Guid OwnerId { get; set; }
-    public string Text { get; set; } = string.Empty;
+    public Guid AuthorId { get; set; }
+    public string Text { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
-    public Guid ResourceId { get; set; }
+    
+    public Guid? FileId { get; set; }
+    public Guid? FileGroupId { get; set; }
 
-    public User Owner { get; set; } = null!;
-    public File FileResource { get; set; } = null!;
-    public FileGroup FileGroupResource { get; set; } = null!;
+    public Author Author { get; set; } = null!;
+    public File? File { get; set; } = null!;
+    public FileGroup? FileGroup { get; set; } = null!;
 }

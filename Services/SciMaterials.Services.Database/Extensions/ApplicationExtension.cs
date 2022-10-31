@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SciMaterials.Contracts.Auth;
 using SciMaterials.Contracts.Database.Configuration;
 using SciMaterials.Contracts.Database.Initialization;
+using SciMaterials.DAL.Contexts;
 
 namespace SciMaterials.Services.Database.Extensions;
 
@@ -13,14 +15,23 @@ public static class ApplicationExtension
     {
         await using var scope = app.ApplicationServices.CreateAsyncScope();
 
-        var db_setting = configuration.GetSection("DbSettings").Get<DbSettings>();
+        var dbSetting = configuration.GetSection("DbSettings").Get<DbSettings>();
         
-        var db_domain = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-        await db_domain.InitializeDbAsync(db_setting.RemoveAtStart, db_setting.UseDataSeeder);
+        if (dbSetting.DbProvider.Equals("SQLite"))
+        {
+            var context = scope.ServiceProvider.GetRequiredService<SciMaterialsContext>();
+            await context.Database.MigrateAsync().ConfigureAwait(false);
+        }
 
-        var auth_db = scope.ServiceProvider.GetRequiredService<IAuthDbInitializer>();
-        await auth_db.InitializeAsync();
-        
+        var authDb = scope.ServiceProvider.GetRequiredService<IAuthDbInitializer>();
+        await authDb.InitializeAsync();
+
+        var initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        await initializer.InitializeDbAsync(
+                RemoveAtStart: dbSetting.RemoveAtStart,
+                UseDataSeeder: dbSetting.UseDataSeeder)
+           .ConfigureAwait(false);
+
         return app;
     }
 }

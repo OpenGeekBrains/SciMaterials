@@ -9,7 +9,6 @@
 		"Name": "erat eget",
 		"Size": 6155,
 		"ShortInfo": "Quisque ornare tortor at risus. Nunc ac sem ut dolor",
-		"Url": "https://twitter.com/site",
 		"Hash": "32de73bec5e2a522b0bb22dda723f31aabee6ed3cb3bab9646f7b598662732d5f9579441bf04607187b99eb054f33db78220176b0fc0cb7a7ee3ce70917f28ff",
 		"IsDeleted": "false"
 	},
@@ -23,7 +22,6 @@
 		"Name": "malesuada ut,",
 		"Size": 4450,
 		"ShortInfo": "Curabitur sed tortor. Integer aliquam adipiscing lacus. Ut nec urna",
-		"Url": "https://bbc.co.uk/en-ca",
 		"Hash": "e287124f915457220a229902ab9b3b661758f61025f66e53dc893d390691e56db41282426a45eded95d8fd3d79328a7bc626e6c23ca3240719e9defd52462957",
 		"IsDeleted": "false"
 	},
@@ -37,7 +35,6 @@
 		"Name": "elit, pellentesque",
 		"Size": 9631,
 		"ShortInfo": "Phasellus in felis. Nulla tempor augue ac ipsum. Phasellus vitae",
-		"Url": "https://bbc.co.uk/en-us",
 		"Hash": "de9bf8f2924db9ccde15fd3b101d2335136196b8fa1431228374fbf5a1385336c79632b42b277aa344d702db9a116cc3335d1c078dc3d6da031b3f01e4621afa",
 		"IsDeleted": "false"
 	},
@@ -51,7 +48,6 @@
 		"Name": "Ut semper",
 		"Size": 4566,
 		"ShortInfo": "purus. Nullam scelerisque neque sed sem egestas blandit. Nam nulla",
-		"Url": "http://netflix.com/sub",
 		"Hash": "19d6e70549bdbe6f908ebc8ee8c0b11c19a2ad2ab00b3c12c3e1bd245d5e2ec6a39ace1fbcfba02effa9153461f1b471d1208a370bb25a89154d14f691408e5b",
 		"IsDeleted": "false"
 	},
@@ -65,7 +61,6 @@
 		"Name": "ridiculus mus.",
 		"Size": 5345,
 		"ShortInfo": "tincidunt aliquam arcu. Aliquam ultrices iaculis odio. Nam interdum enim",
-		"Url": "https://zoom.us/sub/cars",
 		"Hash": "7454d6d8d288a7f1ba895de17c7e5cd0491f4f4129284f4b4fe8639fad27abcc7cf76f0f8222ab60b0e5e4ab806b6bd0e8fe4d796b629d72858c167f47fed5ef",
 		"IsDeleted": "false"
 	},
@@ -79,7 +74,6 @@
 		"Name": "dui, in",
 		"Size": 5582,
 		"ShortInfo": "diam at pretium aliquet, metus urna convallis erat, eget tincidunt",
-		"Url": "http://guardian.co.uk/en-us",
 		"Hash": "8e36a976b38bd1c72f192dcab49bcf6a8e8a93547e8689544a63f5fd6ad6ab9c9504656ad3d439862d785d42fc7c8742e1b30c122b9bd5d36f3cc19fc11b730f",
 		"IsDeleted": "false"
 	},
@@ -93,7 +87,6 @@
 		"Name": "neque. Nullam",
 		"Size": 1510,
 		"ShortInfo": "massa. Suspendisse eleifend. Cras sed leo. Cras vehicula aliquet libero.",
-		"Url": "http://bbc.co.uk/sub/cars",
 		"Hash": "db651b067fbf9e380aef93e835ab8667105383a769a09b6ac64905657f0df97c7ea0adfa84e20b4f20b3292713658058ef43d48b97de9af93ebd2b95529f9874",
 		"IsDeleted": "false"
 	},
@@ -107,7 +100,6 @@
 		"Name": "tristique senectus",
 		"Size": 7156,
 		"ShortInfo": "ultricies ornare, elit elit fermentum risus, at fringilla purus mauris",
-		"Url": "http://zoom.us/site",
 		"Hash": "468a12fa21527fadbd17a59ac6a8148cd1d9b9235ca0bd05a08699bf921c556b46f496485e4c9c0d4fb7c65488a09527783d02ebca2a14d4decaa16e0b680b81",
 		"IsDeleted": "false"
 	},
@@ -121,7 +113,6 @@
 		"Name": "malesuada malesuada.",
 		"Size": 1029,
 		"ShortInfo": "Sed auctor odio a purus. Duis elementum, dui quis accumsan",
-		"Url": "https://cnn.com/settings",
 		"Hash": "1646db0219d0740d2ff5d3306bc7d685e99ff3407c25a10a15548798a56dfb56a1b4836241f5c6dfae387c63bb17f176175a510831a32e1e6c7b516d39c14c9a",
 		"IsDeleted": "false"
 	},
@@ -135,7 +126,6 @@
 		"Name": "est. Nunc",
 		"Size": 5187,
 		"ShortInfo": "est ac facilisis facilisis, magna tellus faucibus leo, in lobortis",
-		"Url": "http://baidu.com/settings",
 		"Hash": "7277d6adfd5e8fbfaee85182492eefa65cceb9b8f8e724cf800cf4094cb83860b3f732efdf3ac9c75cd9430189e8be260772077a631994bed8e1fc64e7cfacdc",
 		"IsDeleted": "false"
 	},
@@ -149,7 +139,6 @@
 		"Name": "tincidunt. Donec",
 		"Size": 1227,
 		"ShortInfo": "at, libero. Morbi accumsan laoreet ipsum. Curabitur consequat, lectus sit",
-		"Url": "http://reddit.com/settings",
 		"Hash": "b3bc4c5be1f2c5f9f6213a875856016e9d579e84bd3decd91a4fe61c452986441f104c3f22d081e23f1299b4f181cfba83266801207b0e32cfdd353e7430278b",
 		"IsDeleted": "false"
 	},
@@ -163,7 +152,6 @@
 		"Name": "ornare, lectus",
 		"Size": 7071,
 		"ShortInfo": "leo elementum sem, vitae aliquam eros turpis non enim. Mauris",
-		"Url": "http://whatsapp.com/fr",
 		"Hash": "8edc1824a0647fc436bc0188e398a97b618d600890849247ba5b2afe65b66993ae8e81ed8b8fcbe576d70fdf881ffd0235968fb2de65d1112207f73428fd61b0",
 		"IsDeleted": "false"
 	},
@@ -177,7 +165,6 @@
 		"Name": "Maecenas mi",
 		"Size": 9210,
 		"ShortInfo": "Sed eu nibh vulputate mauris sagittis placerat. Cras dictum ultricies",
-		"Url": "http://whatsapp.com/group/9",
 		"Hash": "c9e99cd8a92064681cc0a7fa3f91d2870b68efec5282b55a7164cb71c27883c88d177b539eee7b24f06da530058c3d40824dfeae327e3adb42e4a318bab20879",
 		"IsDeleted": "false"
 	},
@@ -191,7 +178,6 @@
 		"Name": "fermentum arcu.",
 		"Size": 6822,
 		"ShortInfo": "Phasellus dolor elit, pellentesque a, facilisis non, bibendum sed, est.",
-		"Url": "http://facebook.com/en-ca",
 		"Hash": "9802ebddc77488671a6cc16507af7a28ed127720821535a717fd6de10e9948a5285c45470d803641448879c84a3b05bcc681bc722305db1c02b694ec4790444e",
 		"IsDeleted": "false"
 	},
@@ -205,7 +191,6 @@
 		"Name": "Phasellus ornare.",
 		"Size": 6274,
 		"ShortInfo": "dictum ultricies ligula. Nullam enim. Sed nulla ante, iaculis nec,",
-		"Url": "http://yahoo.com/group/9",
 		"Hash": "feee938a1bef5f09fb0b76647923f29479545542efb7737147d52e703fed1fa72f9cd58458730caeaedfceef067c3f8d3bd8e953f358a2afa6405de33e2ff0a1",
 		"IsDeleted": "false"
 	}

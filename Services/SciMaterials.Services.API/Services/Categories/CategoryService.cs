@@ -60,10 +60,10 @@ public class CategoryService : ICategoryService
 
     public async Task<Result<Guid>> EditAsync(EditCategoryRequest request, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<Category>().GetByIdAsync(request.Id) is not { })
+        if (await _unitOfWork.GetRepository<Category>().GetByIdAsync(request.Id) is not { } existedCategory)
             return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Category with ID {request.Id} not found");
 
-        var category = _mapper.Map<Category>(request);
+        var category = _mapper.Map(request, existedCategory);
         await _unitOfWork.GetRepository<Category>().UpdateAsync(category);
 
         if (await _unitOfWork.SaveContextAsync() > 0)

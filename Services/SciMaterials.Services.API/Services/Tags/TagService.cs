@@ -59,10 +59,10 @@ public class TagService : ITagService
 
     public async Task<Result<Guid>> EditAsync(EditTagRequest request, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<Tag>().GetByIdAsync(request.Id) is not { })
+        if (await _unitOfWork.GetRepository<Tag>().GetByIdAsync(request.Id) is not { } existedTag)
             return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Tag with ID {request.Id} not found");
 
-        var tag = _mapper.Map<Tag>(request);
+        var tag = _mapper.Map(request, existedTag);
         await _unitOfWork.GetRepository<Tag>().UpdateAsync(tag);
 
         if (await _unitOfWork.SaveContextAsync() > 0)

@@ -63,11 +63,11 @@ public class CommentService : ICommentService
 
     public async Task<Result<Guid>> EditAsync(EditCommentRequest request, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<Comment>().GetByIdAsync(request.Id) is not { })
+        if (await _unitOfWork.GetRepository<Comment>().GetByIdAsync(request.Id) is not { } existedComment)
             return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Comment with ID {request.Id} not found");
 
 
-        var comment = _mapper.Map<Comment>(request);
+        var comment = _mapper.Map(request, existedComment);
         if (await VerifyRelatedData(comment) is { Succeeded: false } verifyResult)
             return verifyResult;
 

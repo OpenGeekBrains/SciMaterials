@@ -59,10 +59,10 @@ public class AuthorService : IAuthorService
 
     public async Task<Result<Guid>> EditAsync(EditAuthorRequest request, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<Author>().GetByIdAsync(request.Id) is not { })
+        if (await _unitOfWork.GetRepository<Author>().GetByIdAsync(request.Id) is not { } existedAuthor)
             return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Author with ID {request.Id} not found");
 
-        var author = _mapper.Map<Author>(request);
+        var author = _mapper.Map(request, existedAuthor);
         await _unitOfWork.GetRepository<Author>().UpdateAsync(author);
 
         if (await _unitOfWork.SaveContextAsync() > 0)

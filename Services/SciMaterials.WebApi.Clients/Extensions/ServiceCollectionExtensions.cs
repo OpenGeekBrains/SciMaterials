@@ -14,13 +14,13 @@ namespace SciMaterials.WebApi.Clients.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddApiClients(this IServiceCollection services, Uri apiAdress)
+    public static IServiceCollection AddApiClients(this IServiceCollection services, Uri apiAddress)
     {
-        services.AddHttpClient<IFilesClient, FilesClient>("FilesClient", c => c.BaseAddress = apiAdress);
-        services.AddHttpClient<ICategoriesClient, CategoriesClient>("FilesClient", c => c.BaseAddress = apiAdress);
-        services.AddHttpClient<ICommentsClient, CommentsClient>("FilesClient", c => c.BaseAddress = apiAdress);
-        services.AddHttpClient<IContentTypesClient, ContentTypesClient>("FilesClient", c => c.BaseAddress = apiAdress);
-        services.AddHttpClient<ITagsClient, TagsClient>("FilesClient", c => c.BaseAddress = apiAdress);
+        services.AddHttpClient<IFilesClient, FilesClient>("FilesClient", c => c.BaseAddress = apiAddress);
+        services.AddHttpClient<ICategoriesClient, CategoriesClient>("FilesClient", c => c.BaseAddress = apiAddress);
+        services.AddHttpClient<ICommentsClient, CommentsClient>("FilesClient", c => c.BaseAddress = apiAddress);
+        services.AddHttpClient<IContentTypesClient, ContentTypesClient>("FilesClient", c => c.BaseAddress = apiAddress);
+        services.AddHttpClient<ITagsClient, TagsClient>("FilesClient", c => c.BaseAddress = apiAddress);
         return services;
     }
 }

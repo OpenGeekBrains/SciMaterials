@@ -136,11 +136,17 @@
   <data name="Files" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Files.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Links" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Links.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="Ratings" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Ratings.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Tags" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Tags.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Urls" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Urls.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Users" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Users.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

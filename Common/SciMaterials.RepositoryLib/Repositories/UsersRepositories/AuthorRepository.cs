@@ -130,7 +130,7 @@ public class AuthorRepository : IAuthorRepository
 
         if (include)
             query = query.Include(u => u.Comments)
-                .Include(u => u.Files)
+                .Include(u => u.Resources)
                 .Include(u => u.Ratings)
                 .Include(u => u.User);
 
@@ -148,7 +148,7 @@ public class AuthorRepository : IAuthorRepository
 
         if (include)
             query = query.Include(u => u.Comments)
-                .Include(u => u.Files)
+                .Include(u => u.Resources)
                 .Include(u => u.Ratings)
                 .Include(u => u.User);
 
@@ -167,7 +167,7 @@ public class AuthorRepository : IAuthorRepository
 
         if (include)
             query = query.Include(u => u.Comments)
-                .Include(u => u.Files)
+                .Include(u => u.Resources)
                 .Include(u => u.Ratings)
                 .Include(u => u.User);
 
@@ -186,7 +186,7 @@ public class AuthorRepository : IAuthorRepository
 
         if (include)
             query = query.Include(u => u.Comments)
-                .Include(u => u.Files)
+                .Include(u => u.Resources)
                 .Include(u => u.Ratings)
                 .Include(u => u.User);
 
@@ -253,7 +253,7 @@ public class AuthorRepository : IAuthorRepository
         
         if (include)
             query = query.Include(u => u.Comments)
-                .Include(u => u.Files)
+                .Include(u => u.Resources)
                 .Include(u => u.Ratings)
                 .Include(u => u.User);
 
@@ -272,7 +272,7 @@ public class AuthorRepository : IAuthorRepository
 
         if (include)
             query = query.Include(u => u.Comments)
-                .Include(u => u.Files)
+                .Include(u => u.Resources)
                 .Include(u => u.Ratings)
                 .Include(u => u.User);
 
@@ -304,12 +304,12 @@ public class AuthorRepository : IAuthorRepository
     /// <inheritdoc cref="IRepository{T}.GetPage(int, int, bool, bool)"/>
     public List<Author>? GetPage(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        IQueryable<Author> query = new List<Author>().AsQueryable();
+        IQueryable<Author> query = _context.Authors.AsQueryable();
 
         if (include)
             query = query
                 .Include(u => u.Comments)
-                .Include(u => u.Files)
+                .Include(u => u.Resources)
                 .Include(u => u.Ratings)
                 .Include(u => u.User);
 
@@ -326,12 +326,12 @@ public class AuthorRepository : IAuthorRepository
     /// <inheritdoc cref="IRepository{T}.GetPageAsync(int, int, bool, bool)"/>
     public async Task<List<Author>?> GetPageAsync(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        IQueryable<Author> query = new List<Author>().AsQueryable();
+        IQueryable<Author> query = _context.Authors.AsQueryable();
 
         if (include)
             query = query
                 .Include(u => u.Comments)
-                .Include(u => u.Files)
+                .Include(u => u.Resources)
                 .Include(u => u.Ratings)
                 .Include(u => u.User);
 
@@ -343,9 +343,6 @@ public class AuthorRepository : IAuthorRepository
             .Take(pageSize)
             .ToListAsync();
     }
-
-
-
 
     /// <summary> Обновить данные экземпляра каегории. </summary>
     /// <param name="sourse"> Источник. </param>
@@ -362,7 +359,7 @@ public class AuthorRepository : IAuthorRepository
         recipient.Surname = sourse.Surname;
         recipient.User = sourse.User;
         recipient.Comments = sourse.Comments;
-        recipient.Files = sourse.Files;
+        recipient.Resources = sourse.Resources;
         recipient.Ratings = sourse.Ratings;
 
         return recipient;

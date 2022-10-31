@@ -59,10 +59,10 @@ public class ContentTypeService : IContentTypeService
 
     public async Task<Result<Guid>> EditAsync(EditContentTypeRequest request, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<ContentType>().GetByIdAsync(request.Id) is not { })
+        if (await _unitOfWork.GetRepository<ContentType>().GetByIdAsync(request.Id) is not { } existedCommentType)
             return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"ContentType with ID {request.Id} not found");
 
-        var contentType = _mapper.Map<ContentType>(request);
+        var contentType = _mapper.Map(request, existedCommentType);
         await _unitOfWork.GetRepository<ContentType>().UpdateAsync(contentType);
 
         if (await _unitOfWork.SaveContextAsync() > 0)

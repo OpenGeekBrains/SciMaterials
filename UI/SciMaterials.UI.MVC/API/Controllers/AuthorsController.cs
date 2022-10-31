@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SciMaterials.Contracts.API.Constants;
 using SciMaterials.Contracts.API.DTO.Authors;
+using SciMaterials.Contracts.API.DTO.Categories;
 using SciMaterials.Contracts.API.Services.Authors;
+using SciMaterials.Contracts.Result;
 
 namespace SciMaterials.UI.MVC.API.Controllers;
 
@@ -20,6 +22,7 @@ public class AuthorsController : ApiBaseController<AuthorsController>
     /// <summary> Get All Authors. </summary>
     /// <returns> Status 200 OK. </returns>
     [HttpGet]
+    [ProducesDefaultResponseType(typeof(Result<IEnumerable<GetAuthorResponse>>))]
     public async Task<IActionResult> GetAllAsync()
     {
         var сategories = await _authorService.GetAllAsync();
@@ -29,6 +32,7 @@ public class AuthorsController : ApiBaseController<AuthorsController>
     /// <summary> Get Author by Id. </summary>
     /// <param name="id"> Author Id. </param>
     [HttpGet("{id}")]
+    [ProducesDefaultResponseType(typeof(Result<GetAuthorResponse>))]
     public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
     {
         var products = await _authorService.GetByIdAsync(id);
@@ -39,6 +43,7 @@ public class AuthorsController : ApiBaseController<AuthorsController>
     /// <param name="request"> Add Request DTO. </param>
     /// <returns> Status 200 OK. </returns>
     [HttpPost("Add")]
+    [ProducesDefaultResponseType(typeof(Guid))]
     public async Task<IActionResult> AddAsync([FromBody] AddAuthorRequest request)
     {
         var result = await _authorService.AddAsync(request);
@@ -48,7 +53,8 @@ public class AuthorsController : ApiBaseController<AuthorsController>
     /// <summary> Edit a Author. </summary>
     /// <param name="request"> Edit Request DTO. </param>
     /// <returns> Status 200 OK. </returns>
-    [HttpPost("Edit")]
+    [HttpPut("Edit")]
+    [ProducesDefaultResponseType(typeof(Guid))]
     public async Task<IActionResult> EditAsync([FromBody] EditAuthorRequest request)
     {
         var result = await _authorService.EditAsync(request);
@@ -59,6 +65,7 @@ public class AuthorsController : ApiBaseController<AuthorsController>
     /// <param name="id"> Author Id. </param>
     /// <returns> Status 200 OK response. </returns>
     [HttpDelete("{id}")]
+    [ProducesDefaultResponseType(typeof(Guid))]
     public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _authorService.DeleteAsync(id);

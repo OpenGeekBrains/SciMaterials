@@ -1,11 +1,15 @@
-﻿namespace SciMaterials.Domain.Models;
+using SciMaterials.Domain.Models.Base;
 
-public partial class Rating
+namespace SciMaterials.Domain.Models;
+
+public class Rating : BaseModel
 {
-    public Guid FileId { get; set; }
-    public Guid UserId { get; set; }
+    public Guid? FileId { get; set; }
+    public Guid? FileGroupId { get; set; }
+    public Guid AuthorId { get; set; }
     public int RatingValue { get; set; }
 
-    public File File { get; set; } = null!;
-    public User User { get; set; } = null!;
+    public File? File { get; set; } = null!;
+    public FileGroup? FileGroup { get; set; } = null!;
+    public Author User { get; set; } = null!;
 }

@@ -8,7 +8,7 @@ public class FileUploadData
     public IBrowserFile File { get; init; } = null!;
     public string FileName { get; init; } = null!;
     
-    public string Title { get; init; } = null!;
+    public string ShortInfo { get; init; } = null!;
     public Guid Category { get; init; }
 
     public CancellationToken CancellationToken { get; init; }

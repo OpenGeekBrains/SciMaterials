@@ -78,11 +78,14 @@ public class FileService : IFileService
 
     public async Task<Result<Guid>> EditAsync(EditFileRequest editFileRequest, CancellationToken Cancel = default)
     {
+        if (await _unitOfWork.GetRepository<File>().GetByIdAsync(editFileRequest.Id) is not { } existingFile)
+            return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Resource with ID {editFileRequest.Id} not found");
+
         var verifyCategoriesResult = await VerifyCategories(editFileRequest.Categories);
         if (!verifyCategoriesResult.Succeeded)
             return await Result<Guid>.ErrorAsync(verifyCategoriesResult.Code, verifyCategoriesResult.Messages);
 
-        var file = _mapper.Map<File>(editFileRequest);
+        var file = _mapper.Map(editFileRequest, existingFile);
 
         if (verifyCategoriesResult.Data is { })
             file.Categories = verifyCategoriesResult.Data;
@@ -118,7 +121,6 @@ public class FileService : IFileService
             return await Result<FileStreamInfo>.ErrorAsync((int)ResultCodes.ServerError, "Download error");
         }
     }
-
 
     public async Task<Result<FileStreamInfo>> DownloadById(Guid id)
     {

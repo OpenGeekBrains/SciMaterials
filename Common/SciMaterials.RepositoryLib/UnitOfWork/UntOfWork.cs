@@ -1,13 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
+
 using SciMaterials.DAL.Contexts;
 using SciMaterials.DAL.Models;
 using SciMaterials.DAL.UnitOfWork;
 using SciMaterials.RepositoryLib.Repositories;
 using SciMaterials.RepositoryLib.Repositories.FilesRepositories;
 using SciMaterials.RepositoryLib.Repositories.RatingRepositories;
+using SciMaterials.RepositoryLib.Repositories.UrlsRepositories;
 using SciMaterials.RepositoryLib.Repositories.UsersRepositories;
+
 using File = SciMaterials.DAL.Models.File;
 
 namespace SciMaterials.Data.UnitOfWork;
@@ -113,6 +116,7 @@ public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbCon
         _repositories!.Add(typeof(Rating), new RatingRepository((ISciMaterialsContext)_context, _logger));
         _repositories!.Add(typeof(Tag), new TagRepository((ISciMaterialsContext)_context, _logger));
         _repositories!.Add(typeof(Author), new AuthorRepository((ISciMaterialsContext)_context, _logger));
+        _repositories!.Add(typeof(Url), new UrlRepository((ISciMaterialsContext)_context, _logger));
     }
 
     #region Dispose

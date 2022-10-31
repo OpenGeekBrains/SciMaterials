@@ -2,76 +2,91 @@
 	{
 		"Id": "0853E794-8271-C3CA-5468-305D507E3D2A",
 		"Name": "программирование",
-		"IsDeleted": false
+		"IsDeleted": false,
+		"ResourceId": "553191C4-3EF8-3313-24A3-BA3ECAA2F966"
 	},
 	{
 		"Id": "EC93ECB9-EBED-55DD-DEE2-26B59061A6A3",
 		"Name": ".NET6",
-		"IsDeleted": false
+		"IsDeleted": false,
+		"ResourceId": "A6C20CF1-32D2-E8BA-771B-BD974BBA92DE"
 	},
 	{
 		"Id": "3F422CA5-48C7-94B4-BC76-2CADD8E69EE2",
 		"Name": ".NET7",
-		"IsDeleted": false
+		"IsDeleted": false,
+		"ResourceId": "AE81B92B-535E-7DB4-B4B7-D7A3A4EEC0B6"
 	},
 	{
 		"Id": "53C2A4EC-A19D-29B2-C5C4-FB2E67ED97DD",
 		"Name": "математика",
-		"IsDeleted": false
+		"IsDeleted": false,
+		"ResourceId": "AADB6519-4354-CC31-CA22-985FDD5CBC21"
 	},
 	{
 		"Id": "4751FE1E-406A-B763-D318-666CEB8C5E82",
 		"Name": "логарифмы",
-		"IsDeleted": false
+		"IsDeleted": false,
+		"ResourceId": "617A2479-3590-2B2D-3725-88A03A0BCC63"
 	},
 	{
 		"Id": "1655727E-62AA-CA7B-EDDC-7995E4D18868",
 		"Name": "база данных",
-		"IsDeleted": false
+		"IsDeleted": false,
+		"ResourceId": "A7C5FD87-5144-EAED-0205-1E40FCBDBCCD"
 	},
 	{
 		"Id": "AE731C71-EC06-57D1-4AB7-B8915C623C2B",
 		"Name": "тестирование",
-		"IsDeleted": false
+		"IsDeleted": false,
+		"ResourceId": "B8478D22-12C9-B284-581C-DAAFE936C11B"
 	},
 	{
 		"Id": "8AB65CE6-DB93-5751-8B97-448EA907F7C6",
 		"Name": "ASP.NET Core",
-		"IsDeleted": false
+		"IsDeleted": false,
+		"ResourceId": "488DC2AC-18EE-EAD6-A7DE-2EB1661CCA9D"
 	},
 	{
 		"Id": "7B46CD12-AC97-67F6-BC02-39F514C982C7",
 		"Name": "книги",
-		"IsDeleted": false
+		"IsDeleted": false,
+		"ResourceId": "32C61729-AB4E-6FCB-1D39-241C1EFF32AD"
 	},
 	{
 		"Id": "4B0971ED-576D-9212-8B53-8C4EB4B1A212",
 		"Name": "архитектура",
-		"IsDeleted": false
+		"IsDeleted": false,
+		"ResourceId": "9918B17E-DD75-47E9-CA15-93A1BAED1176"
 	},
 	{
 		"Id": "664B8A13-2397-5B1D-3997-B6ECDECB2AD6",
 		"Name": "веб",
-		"IsDeleted": false
+		"IsDeleted": false,
+		"ResourceId": "9A6A3CE2-6574-DD4B-4DFD-C90AD104B4A8"
 	},
 	{
 		"Id": "088E2112-1310-5662-B76C-5C912B98B047",
 		"Name": "статьи",
-		"IsDeleted": false
+		"IsDeleted": false,
+		"ResourceId": "4D1BEA95-23A9-13E1-6F8F-43D981E382C1"
 	},
 	{
 		"Id": "47FD91E3-A91C-6578-678B-7A4EEB9DF9C9",
 		"Name": "код",
-		"IsDeleted": false
+		"IsDeleted": false,
+		"ResourceId": "1E499DCA-C8BE-93F2-8EC9-4413AD4AA3EB"
 	},
 	{
 		"Id": "C1866FA0-48A2-4557-7D34-11FB5D913A23",
 		"Name": "microsoft",
-		"IsDeleted": false
+		"IsDeleted": false,
+		"ResourceId": "54F7EEC1-CE29-4713-9DE6-772A7B856868"
 	},
 	{
 		"Id": "4A3C7396-7387-74EC-CC8A-4B71756740BC",
 		"Name": "железо",
-		"IsDeleted": false
+		"IsDeleted": false,
+		"ResourceId": "7CBB6048-D55F-3452-F4D9-3F4AB5A99C6C"
 	}
 ]

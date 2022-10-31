@@ -116,7 +116,7 @@ public class CategoryRepository : ICategoryRepository
     /// <inheritdoc cref="IRepository{T}.GetAll(bool, bool)"/>
     public List<Category>? GetAll(bool disableTracking = true, bool include = false)
     {
-        IQueryable<Category> query = _context.Categories.Where(c => !c.IsDeleted);
+        var query = _context.Categories.Where(c => !c.IsDeleted);
 
         if (include)
             query = query.Include(c => c.Files)
@@ -132,7 +132,7 @@ public class CategoryRepository : ICategoryRepository
     /// <inheritdoc cref="IRepository{T}.GetAllAsync(bool, bool)"/>
     public async Task<List<Category>?> GetAllAsync(bool disableTracking = true, bool include = false)
     {
-        IQueryable<Category> query = _context.Categories.Where(c => !c.IsDeleted);
+        var query = _context.Categories.Where(c => !c.IsDeleted);
 
         if (include)
             query = query.Include(c => c.Files)
@@ -148,7 +148,7 @@ public class CategoryRepository : ICategoryRepository
     /// <inheritdoc cref="IRepository{T}.GetById(Guid, bool, bool)"/>
     public Category? GetById(Guid id, bool disableTracking = true, bool include = false)
     {
-        IQueryable<Category> query = _context.Categories
+        var query = _context.Categories
                 .Where(c => c.Id == id && !c.IsDeleted);
 
         if (include)
@@ -166,7 +166,7 @@ public class CategoryRepository : ICategoryRepository
     /// <inheritdoc cref="IRepository{T}.GetByIdAsync(Guid, bool, bool)"/>
     public async Task<Category?> GetByIdAsync(Guid id, bool disableTracking = true, bool include = false)
     {
-        IQueryable<Category> query = _context.Categories
+        var query = _context.Categories
                  .Where(c => c.Id == id && !c.IsDeleted);
 
         if (include)
@@ -183,7 +183,7 @@ public class CategoryRepository : ICategoryRepository
     /// <inheritdoc cref="IRepository{T}.GetByNameAsync(string, bool, bool)"/>
     public async Task<Category?> GetByNameAsync(string name, bool disableTracking = true, bool include = false)
     {
-        IQueryable<Category> query = _context.Categories
+        var query = _context.Categories
                 .Where(c => c.Name == name && !c.IsDeleted);
 
         if (include)
@@ -200,8 +200,9 @@ public class CategoryRepository : ICategoryRepository
     /// <inheritdoc cref="IRepository{T}.GetByName(string, bool, bool)"/>
     public Category? GetByName(string name, bool disableTracking = true, bool include = false)
     {
-        IQueryable<Category> query = _context.Categories
-                .Where(c => c.Name == name && !c.IsDeleted);
+        var query = _context.Categories
+                .Where(c => c.Name == name && !c.IsDeleted)
+                .AsQueryable();
 
         if (include)
             query = query.Include(c => c.Files)
@@ -283,7 +284,9 @@ public class CategoryRepository : ICategoryRepository
     /// <inheritdoc cref="IRepository{T}.GetPage(int, int, bool, bool)"/>
     public List<Category>? GetPage(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        IQueryable<Category> query = new List<Category>().AsQueryable();
+        var query = _context.Categories
+            .Where(c => !c.IsDeleted)
+            .AsQueryable();
 
         if (include)
             query = query.Include(c => c.Files)
@@ -302,10 +305,13 @@ public class CategoryRepository : ICategoryRepository
     /// <inheritdoc cref="IRepository{T}.GetPageAsync(int, int, bool, bool)"/>
     public async Task<List<Category>?> GetPageAsync(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        IQueryable<Category> query = new List<Category>().AsQueryable();
+        var query = _context.Categories
+            .Where(c => !c.IsDeleted)
+            .AsQueryable();
 
         if (include)
-            query = query.Include(c => c.Files)
+            query = query
+                .Include(c => c.Files)
                 .Include(c => c.FileGroups);
 
         if (disableTracking)

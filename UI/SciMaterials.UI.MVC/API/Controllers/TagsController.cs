@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SciMaterials.Contracts.API.Constants;
+using SciMaterials.Contracts.API.DTO.Authors;
 using SciMaterials.Contracts.API.DTO.Tags;
 using SciMaterials.Contracts.API.Services.Tags;
+using SciMaterials.Contracts.Result;
 
 namespace SciMaterials.UI.MVC.API.Controllers;
 
@@ -20,6 +22,7 @@ public class TagsController : ApiBaseController<TagsController>
     /// <summary> Get All Tags. </summary>
     /// <returns> Status 200 OK. </returns>
     [HttpGet]
+    [ProducesDefaultResponseType(typeof(Result<IEnumerable<GetTagResponse>>))]
     public async Task<IActionResult> GetAllAsync()
     {
         var сategories = await _authorService.GetAllAsync();
@@ -29,6 +32,7 @@ public class TagsController : ApiBaseController<TagsController>
     /// <summary> Get Tag by Id. </summary>
     /// <param name="id"> Tag Id. </param>
     [HttpGet("{id}")]
+    [ProducesDefaultResponseType(typeof(Result<GetTagResponse>))]
     public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
     {
         var products = await _authorService.GetByIdAsync(id);
@@ -39,6 +43,7 @@ public class TagsController : ApiBaseController<TagsController>
     /// <param name="request"> Add Request DTO. </param>
     /// <returns> Status 200 OK. </returns>
     [HttpPost("Add")]
+    [ProducesDefaultResponseType(typeof(Guid))]
     public async Task<IActionResult> AddAsync([FromBody] AddTagRequest request)
     {
         var result = await _authorService.AddAsync(request);
@@ -48,7 +53,8 @@ public class TagsController : ApiBaseController<TagsController>
     /// <summary> Edit a Tag. </summary>
     /// <param name="request"> Edit Request DTO. </param>
     /// <returns> Status 200 OK. </returns>
-    [HttpPost("Edit")]
+    [HttpPut("Edit")]
+    [ProducesDefaultResponseType(typeof(Guid))]
     public async Task<IActionResult> EditAsync([FromBody] EditTagRequest request)
     {
         var result = await _authorService.EditAsync(request);
@@ -59,6 +65,7 @@ public class TagsController : ApiBaseController<TagsController>
     /// <param name="id"> Tag Id. </param>
     /// <returns> Status 200 OK response. </returns>
     [HttpDelete("{id}")]
+    [ProducesDefaultResponseType(typeof(Guid))]
     public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _authorService.DeleteAsync(id);
