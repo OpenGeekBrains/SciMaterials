@@ -117,13 +117,4 @@ public static class AuthServiceCollectionExtensions
     {
         return Services.AddSingleton<IAuthUtilits, AuthUtils>();
     }
-
-    public static IServiceCollection AddAuthHttpClient(this IServiceCollection Services)
-    {
-        Services
-            .AddHttpClient()
-            .AddSingleton<IIdentityClient, IdentityClient>();
-
-        return Services;
-    }
 }

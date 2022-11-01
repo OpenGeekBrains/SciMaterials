@@ -4,10 +4,12 @@ using SciMaterials.UI.MVC.API.Middlewares;
 using SciMaterials.UI.MVC.API.Extensions;
 using SciMaterials.Services.Database.Extensions;
 using SciMaterials.UI.MVC.Identity.Extensions;
+using SciMaterials.WebApi.Clients.Identity.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var config = builder.Configuration;
+
 builder.WebHost.ConfigureKestrel(opt =>
 {
     var api_settings = config.GetSection(ApiSettings.SectionName);
@@ -26,7 +28,7 @@ services.AddApiServices(config);
 services.AddAuthApiServices(config);
 services.AddAuthDbInitializer();
 services.AddAuthUtils();
-services.AddAuthHttpClient();
+services.AddIdentityClients(new Uri("http://localhost:5185"));
 services.AddAuthJwtAndSwaggerApiServices(builder.Configuration);
 
 builder.Services.AddCors(o => o.AddPolicy("test", p => p.WithOrigins("http://localhost:5159").AllowAnyMethod().AllowAnyHeader()));

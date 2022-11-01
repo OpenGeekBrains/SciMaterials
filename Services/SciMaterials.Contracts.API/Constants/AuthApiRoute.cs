@@ -6,14 +6,9 @@ namespace SciMaterials.Contracts.API.Constants;
 public static class AuthApiRoute
 {
     /// <summary>
-    /// Uri адрес сервиса
-    /// </summary>
-    public const string AuthApiUri = "http://localhost:5185/";
-    
-    /// <summary>
     /// Контроллер аутентификации
     /// </summary>
-    public const string AuthControllerName = "auth/";
+    public const string AuthControllerName = "auth";
 
     /// <summary>
     /// Регистрация пользователя
@@ -58,7 +53,7 @@ public static class AuthApiRoute
     /// <summary>
     /// Получение роли по идентификатору
     /// </summary>
-    public const string GetRoleById = "get_role_by_id/";
+    public const string GetRoleById = "get_role_by_id";
 
     /// <summary>
     /// Изменение названия роли по идентификатору роли
@@ -68,7 +63,7 @@ public static class AuthApiRoute
     /// <summary>
     /// Удаление роли по идентификатору
     /// </summary>
-    public const string DeleteRoleById = "delete_role_by_id/";
+    public const string DeleteRoleById = "delete_role_by_id";
     
     /// <summary>
     /// Добавление роли к пользователю
@@ -78,12 +73,12 @@ public static class AuthApiRoute
     /// <summary>
     /// Удаление роли у пользователя
     /// </summary>
-    public const string DeleteUserRoleByEmail = "delete_user_role_by_email/";
+    public const string DeleteUserRoleByEmail = "delete_user_role_by_email";
     
     /// <summary>
     /// Получение списка всех ролей у конкретного пользователя
     /// </summary>
-    public const string GetAllUserRolesByEmail = "get_all_user_roles_by_email/";
+    public const string GetAllUserRolesByEmail = "get_all_user_roles_by_email";
     
     /// <summary>
     /// Создание пользователя админом
@@ -93,7 +88,7 @@ public static class AuthApiRoute
     /// <summary>
     /// Получение инф. о пользовател по email
     /// </summary>
-    public const string GetUserByEmail = "get_user_by_email/";
+    public const string GetUserByEmail = "get_user_by_email";
     
     /// <summary>
     /// Получение инф. о всех пользователях в системе
@@ -108,7 +103,7 @@ public static class AuthApiRoute
     /// <summary>
     /// Удаление пользователя по email
     /// </summary>
-    public const string DeleteUserByEmail = "delete_user_by_email/";
+    public const string DeleteUserByEmail = "delete_user_by_email";
     
     /// <summary>
     /// Удаление всех не подтвердивших свою почту пользователей в системе (для чистки БД админом)

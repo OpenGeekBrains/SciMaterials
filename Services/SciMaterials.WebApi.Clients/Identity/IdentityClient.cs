@@ -39,8 +39,8 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Post,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
                                  $"{AuthApiRoute.Register}"),
             Content = body_content,
         };
@@ -64,8 +64,8 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Post,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
                                  $"{AuthApiRoute.Login}"),
             Content = body_content
         };
@@ -89,8 +89,8 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Post,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
                                  $"{AuthApiRoute.Logout}"),
         };
         
@@ -114,8 +114,8 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Post,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
                                  $"{AuthApiRoute.ChangePassword}"),
             Content = body_content
         };
@@ -139,8 +139,8 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Post,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
                                  $"{AuthApiRoute.CreateRole}"),
             Content = body_content
         };
@@ -161,8 +161,8 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Get,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
                                  $"{AuthApiRoute.GetAllRoles}"),
         };
         
@@ -183,9 +183,9 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Get,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
-                                 $"{AuthApiRoute.GetRoleById}"+ 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
+                                 $"{AuthApiRoute.GetRoleById}/"+ 
                                  $"{RoleId}"),
         };
 
@@ -208,8 +208,8 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Put,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
                                  $"{AuthApiRoute.EditRoleNameById}"),
             Content = bodyContent
         };
@@ -231,9 +231,9 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Delete,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
-                                 $"{AuthApiRoute.DeleteRoleById}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
+                                 $"{AuthApiRoute.DeleteRoleById}/" + 
                                  $"{RoleId}"),
         };
         
@@ -256,8 +256,8 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Post,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
                                  $"{AuthApiRoute.AddRoleToUser}"),
             Content = bodyContent
         };
@@ -279,9 +279,9 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Delete,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
-                                 $"{AuthApiRoute.DeleteUserRoleByEmail}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
+                                 $"{AuthApiRoute.DeleteUserRoleByEmail}/" + 
                                  $"{Email}/" + 
                                  $"{RoleName}"),
         };
@@ -303,9 +303,9 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Get,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
-                                 $"{AuthApiRoute.GetAllUserRolesByEmail}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
+                                 $"{AuthApiRoute.GetAllUserRolesByEmail}/" + 
                                  $"{Email}"),
         };
         
@@ -328,8 +328,8 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Post,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
                                  $"{AuthApiRoute.CreateUser}"),
             Content = bodyContent
         };
@@ -351,9 +351,9 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Get,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
-                                 $"{AuthApiRoute.GetUserByEmail}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
+                                 $"{AuthApiRoute.GetUserByEmail}/" + 
                                  $"{Email}"),
         };
         
@@ -373,8 +373,8 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Get,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
                                  $"{AuthApiRoute.GetAllUsers}"),
         };
         
@@ -398,8 +398,8 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Put,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
                                  $"{AuthApiRoute.EditUserByEmail}"),
             Content = bodyContent
         };
@@ -421,9 +421,9 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Delete,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
-                                 $"{AuthApiRoute.DeleteUserByEmail}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
+                                 $"{AuthApiRoute.DeleteUserByEmail}/" + 
                                  $"{Email}"),
         };
         
@@ -443,8 +443,8 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Delete,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
                                  $"{AuthApiRoute.DeleteUserWithoutConfirm}"),
         };
         
@@ -459,8 +459,8 @@ public class IdentityClient : IIdentityClient
         var request = new HttpRequestMessage()
         {
             Method = HttpMethod.Get,
-            RequestUri = new Uri($"{AuthApiRoute.AuthApiUri}" + 
-                                 $"{AuthApiRoute.AuthControllerName}" + 
+            RequestUri = new Uri($"{_client.BaseAddress}" + 
+                                 $"{AuthApiRoute.AuthControllerName}/" + 
                                  $"{AuthApiRoute.RefreshToken}"),
         };
         
