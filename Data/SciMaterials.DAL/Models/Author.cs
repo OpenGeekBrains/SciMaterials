@@ -4,10 +4,10 @@ namespace SciMaterials.DAL.Models;
 
 public class Author : NamedModel
 {
-    public string Email { get; set; } = null!;
+    public string Email { get; set; } = string.Empty;
     public Guid? UserId { get; set; }
-    public string Phone { get; set; } = null!;
-    public string Surname { get; set; } = null!;
+    public string Phone { get; set; } = string.Empty;
+    public string Surname { get; set; } = string.Empty;
 
     public User? User { get; set; }
     public ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
