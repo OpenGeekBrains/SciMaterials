@@ -271,7 +271,7 @@ public class RatingRepository : IRatingRepository
     /// <inheritdoc cref="IRepository{T}.GetPage(int, int, bool, bool)"/>
     public List<Rating>? GetPage(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        IQueryable<Rating> query = new List<Rating>().AsQueryable();
+        IQueryable<Rating> query = _context.Ratings.AsQueryable();
 
         if (include)
             query = query
@@ -292,7 +292,7 @@ public class RatingRepository : IRatingRepository
     /// <inheritdoc cref="IRepository{T}.GetPageAsync(int, int, bool, bool)"/>
     public async Task<List<Rating>?> GetPageAsync(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        IQueryable<Rating> query = new List<Rating>().AsQueryable();
+        IQueryable<Rating> query =_context.Ratings.AsQueryable();
 
         if (include)
             query = query

@@ -1,4 +1,6 @@
 ﻿using SciMaterials.DAL.Models;
+using SciMaterials.DAL.Models.Base;
+
 using File = SciMaterials.DAL.Models.File;
 
 namespace SciMaterials.RepositoryTests.Helpers.ModelsHelpers;
@@ -23,9 +25,9 @@ internal static class AuthorHelper
             {
                 Id= Guid.NewGuid(),
             },
-            Files =
+            Resources =
             {
-                new File { Id = Guid.NewGuid(), }
+                new Resource { Id = Guid.NewGuid(), }
             },
             Comments =
             {

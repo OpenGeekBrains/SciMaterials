@@ -1,10 +1,11 @@
 ﻿@page "/signin"
+@using Severity = MudBlazor.Severity
 @inject IAuthenticationService AuthenticationService
 @inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+@inject IValidator<SignInForm> Validator
 
-<EditForm Model="@_model" OnValidSubmit="OnValidSubmit">
-    <DataAnnotationsValidator />
- 
+<MudForm Model="@_model" @ref="@_form" Validation="@(Validator.ValidateValue())" ValidationDelay="5">
     <MudGrid Justify="Justify.Center">
         <MudItem xs="12" sm="7">
             <MudCard Elevation="0">
@@ -23,44 +24,44 @@
 
                 <MudCardContent>
                     <MudTextField Label="Email" Class="mt-3 mx-0" Variant="Variant.Outlined"
-                                  @bind-Value="_model.Email" For="@(() => _model.Email)"/>
+                                  @bind-Value="_model.Email" Immediate="true" For="@(() => _model.Email)" />
                     <MudTextField Label="Password" Class="mt-3 mx-0" Variant="Variant.Outlined"
-                                  @bind-Value="_model.Password" For="@(() => _model.Password)" InputType="InputType.Password"/>
+                                  @bind-Value="_model.Password" Immediate="true" For="@(() => _model.Password)" InputType="InputType.Password"/>
                 </MudCardContent>
                 <MudCardActions Class="d-flex justify-space-between flex-grow-1 gap-4">
                     <MudCheckBox @bind-Checked="@RememberMe" Label="Remember me"></MudCheckBox>
                     <MudLink Href="#">Forgot Password?</MudLink>
                 </MudCardActions>
                 <MudCardActions>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mx-2" FullWidth="true">Login</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mx-2" FullWidth="true" OnClick="Submit">Login</MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>
-
-        <MudItem xs="12">
-            @if (_success)
-            {
-                <MudText Color="Color.Success">Success</MudText>
-            }
-            else
-            {
-                <MudText Color="@Color.Error" Align="Align.Center">
-                    <ValidationSummary />
-                </MudText>
-            }
-        </MudItem>
     </MudGrid>
-</EditForm>
+</MudForm>
 
 
 @code {
+	private MudForm? _form;
 	readonly SignInForm _model = new ();
-  bool _success;
+    // TODO: react to remember me
 	private bool RememberMe { get; set; } = true;
   
-	private async Task OnValidSubmit(EditContext context)
+	private async Task Submit()
 	{
-		    await AuthenticationService.SignIn(_model);
+		await _form!.Validate();
+
+		if (!_form.IsValid)
+		{
+			Snackbar.Add("Not all values in form is valid!", Severity.Warning);
+			return;
+		}
+
+		if (!await AuthenticationService.SignIn(_model))
+		{
+			Snackbar.Add("Fail to Login", Severity.Error);
+            return;
+		}
         NavigationManager.NavigateTo("/");
   }
 }

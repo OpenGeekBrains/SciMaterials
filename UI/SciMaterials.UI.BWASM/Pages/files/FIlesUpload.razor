@@ -1,42 +1,69 @@
 ﻿@page "/files_upload"
-@inject FileUploadScheduleService FileUploadScheduleService
+
+@using SciMaterials.UI.BWASM.States.FileUpload
+@using SciMaterials.UI.BWASM.Dialogs
+@using SciMaterials.UI.BWASM.States.Categories
+@using System.Text.Json
+@using SciMaterials.UI.BWASM.States.Authors
+
+@inherits FluxorComponent
+
+@inject IDispatcher Dispatcher
+@inject IState<FilesUploadState> State
+@inject IState<FilesContentTypesFilterState> ContentTypesState
+@inject IDialogService DialogService
 
 <MudDrawerContainer>
 	<MudDrawer @bind-Open="@_openFileDetails" Width="300px" Anchor="Anchor.Right" Variant="@DrawerVariant.Persistent">
 		<MudIconButton Variant="Variant.Filled" Size="Size.Medium" Icon="@Icons.Material.Filled.Close" OnClick="CloseFileDetails" />
 		
 		<MudForm Model="@_formModel" @bind-IsValid="@_fileDetailsFormFilledCorrectly" @bind-Errors="@_fileDetailsFormError">
-			<MudTextField T="string" Label="FileName" @bind-Value="_formModel.FileName"
-			              Required="true" RequiredError="File cannot live without it's name!'" />
+			<MudTextField T="string" Label="FileName"
+			              @bind-Value="@_formModel.FileName"
+			              Required="true" RequiredError="File cannot live without it's name!'"/>
+			<MudTextField T="string" Label="Short info"
+			              @bind-Value="@_formModel.Title"
+			              Required="true" RequiredError="You must provide some information to identify file!'"/>
 
-			<MudTextField T="string" Label="Category" @bind-Value="_formModel.Category" />
-
+			<MudStack Row="true">
+				<MudText>Category:</MudText>
+				<MudText>@_formModel.CategoryName</MudText>
+				<MudButton OnClick="ChangeFormFileCategory">Change</MudButton>
+			</MudStack>
+			
+			<MudStack Row="true">
+				<MudText>Author:</MudText>
+				<MudText>@_formModel.AuthorName</MudText>
+				<MudButton OnClick="ChangeFormFileAuthor">Change</MudButton>
+			</MudStack>
+			
+			<MudText>ContentType: @_formModel.ContentType</MudText>
 			<MudText>Size: @_formModel.Size</MudText>
-
-			<div>
-				<MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!_fileDetailsFormFilledCorrectly)" Class="ml-auto" OnClick="SaveFormData">Save</MudButton>
-			</div>
+			
+			<MudButton OnClick="SaveFormData">Save</MudButton>
 		</MudForm>   
 	</MudDrawer>
 
 	<div>
 		<div>
-			<InputFile id="fileInput" hidden OnChange="OnFilesListChange" multiple/>
-			<MudButton HtmlTag="label" for="fileInput" Variant="Variant.Filled" Size="Size.Small" OnClick="Upload">Add more</MudButton>
+			<InputFile id="fileInput" hidden OnChange="OnFilesListChange" accept="@ContentTypesState.Value.Filter" multiple />
+			<MudButton HtmlTag="label" for="fileInput" Variant="Variant.Filled" Size="Size.Small">Add more</MudButton>
 		</div>
 
-		<TableView Data="_files">
+		<TableView Data="State.Value.Files">
 			<TableHeader>
 				<MudTh>Name</MudTh>
 				<MudTh>Category</MudTh>
 				<MudTh>Size</MudTh>
+				<MudTh>State</MudTh>
 				<MudTh></MudTh>
 			</TableHeader>
 
 			<RowTemplate>
 				<MudTd DataLabel="Name">@context.FileName</MudTd>
-				<MudTd DataLabel="Category">@context.Category</MudTd>
-				<MudTd DataLabel="Size">@context.File.Size</MudTd>
+				<MudTd DataLabel="Category">@context.CategoryName</MudTd>
+				<MudTd DataLabel="Size">@context.Size</MudTd>
+				<MudTd DataLabel="State">@context.State</MudTd>
 				<MudTd>
 					<MudButton Variant="Variant.Filled" Size="Size.Small" OnClick="() => Details(context)">Details</MudButton>
 					<MudButton Variant="Variant.Filled" Size="Size.Small" OnClick="() => Delete(context)">Delete</MudButton>
@@ -51,8 +78,6 @@
 </MudDrawerContainer>
 
 @code {
-	private readonly List<FileUploadData> _files = new();
-
 	private bool _cantUploadFiles = true;
 
 	private UploadFileDetailsForm _formModel = UploadFileDetailsForm.Empty;
@@ -62,32 +87,42 @@
 
 	protected override void OnAfterRender(bool firstRender)
 	{
-		_cantUploadFiles = _files.Count <= 0;
+		_cantUploadFiles = State.Value.Files.Length <= 0;
 	}
 
 	private void OnFilesListChange(InputFileChangeEventArgs e)
 	{
 		if (e.FileCount <= 0) return;
 
-		_files.AddRange(e.GetMultipleFiles().Select(file => new FileUploadData(file)));
-		StateHasChanged();
+		Dispatcher.Dispatch(new RegisterMultipleFilesUpload(e.GetMultipleFiles()));
 	}
 
 	private void Upload()
 	{
-		FileUploadScheduleService.ScheduleUpload(_files);
+		var toUpload = State.Value.Files.Where(x => x.State == UploadState.NotScheduled).ToList();
+		Dispatcher.Dispatch(new ScheduleFilesUpload(toUpload));
 	}
 
-	private void Delete(FileUploadData context)
+	private void Delete(FileUploadState context)
 	{
-		_files.Remove(context);
-		StateHasChanged();
+		Dispatcher.Dispatch(new DeleteFileUpload(context.Id));
 	}
 
-	private void Details(FileUploadData context)
+	private void Details(FileUploadState context)
 	{
 		_openFileDetails = true;
-		_formModel = context;
+		_formModel = new UploadFileDetailsForm()
+		{
+			Id = context.Id,
+			CategoryName = context.CategoryName,
+			CategoryId = context.CategoryId,
+			FileName = context.FileName,
+			Size = context.Size,
+			ContentType = context.ContentType,
+			Title = context.Title,
+			AuthorName = context.AuthorName,
+			AuthorId = context.AuthorId
+		};
 	}
 
 	private void CloseFileDetails()
@@ -96,11 +131,28 @@
 		_openFileDetails = false;
 	}
 
+	private async Task ChangeFormFileCategory()
+	{
+		var reference = DialogService.Show<FilesCategoriesSelector>();
+		var result = await reference.Result;
+		if (result.Cancelled || result.Data is not TreeFileCategory category) return;
+		_formModel.CategoryName = category.Name;
+		_formModel.CategoryId = category.Id;
+	}
+
 	private void SaveFormData()
 	{
-		var formData = _formModel;
-		CloseFileDetails();
-		var file = _files.Find(x => x.Id == formData.Id);
-		formData.UpdateSource(file);
+		var formCopy = JsonSerializer.Deserialize<UploadFileDetailsForm>(JsonSerializer.Serialize(_formModel));
+		Dispatcher.Dispatch(new UpdateFileStateFromEditForm(formCopy.Id, formCopy));
 	}
+
+	private async Task ChangeFormFileAuthor()
+	{
+		var reference = DialogService.Show<AuthorSelector>();
+		var result = await reference.Result;
+		if (result.Cancelled || result.Data is not AuthorState author) return;
+		_formModel.AuthorName = author.Name;
+		_formModel.AuthorId = author.Id;
+	}
+
 }

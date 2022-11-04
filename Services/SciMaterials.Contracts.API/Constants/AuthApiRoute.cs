@@ -34,6 +34,11 @@ public static class AuthApiRoute
     /// Смена пароля пользователя
     /// </summary>
     public const string ChangePassword = "change_password";
+
+    /// <summary>
+    /// Обновление токена пользователя
+    /// </summary>
+    public const string RefreshToken = "refresh_token";
     
     /// <summary>
     /// Подтверждение почты при регистрации
@@ -58,7 +63,7 @@ public static class AuthApiRoute
     /// <summary>
     /// Изменение названия роли по идентификатору роли
     /// </summary>
-    public const string EditRoleById = "edit_role_by_id";
+    public const string EditRoleNameById = "edit_role_name_by_id";
     
     /// <summary>
     /// Удаление роли по идентификатору
@@ -78,7 +83,7 @@ public static class AuthApiRoute
     /// <summary>
     /// Получение списка всех ролей у конкретного пользователя
     /// </summary>
-    public const string ListOfUserRolesByEmail = "list_of_user_roles_by_email/";
+    public const string GetAllUserRolesByEmail = "get_all_user_roles_by_email/";
     
     /// <summary>
     /// Создание пользователя админом

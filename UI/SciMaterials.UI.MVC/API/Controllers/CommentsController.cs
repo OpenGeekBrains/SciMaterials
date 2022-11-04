@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SciMaterials.Contracts.API.Constants;
+using SciMaterials.Contracts.API.DTO.Authors;
 using SciMaterials.Contracts.API.DTO.Comments;
 using SciMaterials.Contracts.API.Services.Comments;
+using SciMaterials.Contracts.Result;
 
 namespace SciMaterials.UI.MVC.API.Controllers;
 
@@ -20,6 +22,7 @@ public class CommentsController : ApiBaseController<CommentsController>
     /// <summary> Get All Comments. </summary>
     /// <returns> Status 200 OK. </returns>
     [HttpGet]
+    [ProducesDefaultResponseType(typeof(Result<IEnumerable<GetCommentResponse>>))]
     public async Task<IActionResult> GetAllAsync()
     {
         var сategories = await _commentService.GetAllAsync();
@@ -29,6 +32,7 @@ public class CommentsController : ApiBaseController<CommentsController>
     /// <summary> Get Comment by Id. </summary>
     /// <param name="id"> Comment Id. </param>
     [HttpGet("{id}")]
+    [ProducesDefaultResponseType(typeof(Result<GetCommentResponse>))]
     public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
     {
         var products = await _commentService.GetByIdAsync(id);
@@ -39,6 +43,7 @@ public class CommentsController : ApiBaseController<CommentsController>
     /// <param name="request"> Add Request DTO. </param>
     /// <returns> Status 200 OK. </returns>
     [HttpPost("Add")]
+    [ProducesDefaultResponseType(typeof(Guid))]
     public async Task<IActionResult> AddAsync([FromBody] AddCommentRequest request)
     {
         var result = await _commentService.AddAsync(request);
@@ -48,7 +53,8 @@ public class CommentsController : ApiBaseController<CommentsController>
     /// <summary> Edit a Comment. </summary>
     /// <param name="request"> Edit Request DTO. </param>
     /// <returns> Status 200 OK. </returns>
-    [HttpPost("Edit")]
+    [HttpPut("Edit")]
+    [ProducesDefaultResponseType(typeof(Guid))]
     public async Task<IActionResult> EditAsync([FromBody] EditCommentRequest request)
     {
         var result = await _commentService.EditAsync(request);
@@ -59,6 +65,7 @@ public class CommentsController : ApiBaseController<CommentsController>
     /// <param name="id"> Comment Id. </param>
     /// <returns> Status 200 OK response. </returns>
     [HttpDelete("{id}")]
+    [ProducesDefaultResponseType(typeof(Guid))]
     public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _commentService.DeleteAsync(id);

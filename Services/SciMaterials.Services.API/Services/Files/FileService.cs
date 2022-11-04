@@ -41,23 +41,23 @@ public class FileService : IFileService
             throw new ArgumentNullException(nameof(apiSettings.BasePath));
     }
 
-    public async Task<Result<IEnumerable<GetFileResponse>>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<IEnumerable<GetFileResponse>>> GetAllAsync(CancellationToken Cancel = default)
     {
         var files = await _unitOfWork.GetRepository<File>().GetAllAsync(include: true);
         var result = _mapper.Map<List<GetFileResponse>>(files);
         return result;
     }
 
-    public async Task<PageResult<GetFileResponse>> GetPageAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
+    public async Task<PageResult<GetFileResponse>> GetPageAsync(int pageNumber, int pageSize, CancellationToken Cancel = default)
     {
         var files = await _unitOfWork.GetRepository<File>().GetPageAsync(pageNumber, pageSize, include: true);
         var result = _mapper.Map<List<GetFileResponse>>(files);
         return await PageResult<GetFileResponse>.SuccessAsync(result);
     }
 
-    public async Task<Result<GetFileResponse>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result<GetFileResponse>> GetByIdAsync(Guid id, CancellationToken Cancel = default)
     {
-        if ((await _unitOfWork.GetRepository<File>().GetByIdAsync(id, include: true)) is File file)
+        if (await _unitOfWork.GetRepository<File>().GetByIdAsync(id, include: true) is File file)
         {
             return _mapper.Map<GetFileResponse>(file);
         }
@@ -65,9 +65,9 @@ public class FileService : IFileService
         return Result<GetFileResponse>.Error((int)ResultCodes.NotFound, $"File with ID {id} not found");
     }
 
-    public async Task<Result<GetFileResponse>> GetByHashAsync(string hash, CancellationToken cancellationToken = default)
+    public async Task<Result<GetFileResponse>> GetByHashAsync(string hash, CancellationToken Cancel = default)
     {
-        if ((await _unitOfWork.GetRepository<File>().GetByHashAsync(hash, include: true)) is File file)
+        if (await _unitOfWork.GetRepository<File>().GetByHashAsync(hash, include: true) is File file)
         {
             return _mapper.Map<GetFileResponse>(file);
         }
@@ -76,13 +76,16 @@ public class FileService : IFileService
     }
 
 
-    public async Task<Result<Guid>> EditAsync(EditFileRequest editFileRequest, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> EditAsync(EditFileRequest editFileRequest, CancellationToken Cancel = default)
     {
+        if (await _unitOfWork.GetRepository<File>().GetByIdAsync(editFileRequest.Id) is not { } existingFile)
+            return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Resource with ID {editFileRequest.Id} not found");
+
         var verifyCategoriesResult = await VerifyCategories(editFileRequest.Categories);
         if (!verifyCategoriesResult.Succeeded)
             return await Result<Guid>.ErrorAsync(verifyCategoriesResult.Code, verifyCategoriesResult.Messages);
 
-        var file = _mapper.Map<File>(editFileRequest);
+        var file = _mapper.Map(editFileRequest, existingFile);
 
         if (verifyCategoriesResult.Data is { })
             file.Categories = verifyCategoriesResult.Data;
@@ -119,7 +122,6 @@ public class FileService : IFileService
         }
     }
 
-
     public async Task<Result<FileStreamInfo>> DownloadById(Guid id)
     {
         if (await GetByIdAsync(id) is not { } getFileResponse)
@@ -137,9 +139,9 @@ public class FileService : IFileService
         }
     }
 
-    public async Task<Result<Guid>> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> DeleteAsync(Guid id, CancellationToken Cancel = default)
     {
-        if ((await DeleteFileFromFileSystem(id, cancellationToken)) is { Succeeded: false } deleteFromFileSystemResult)
+        if (await DeleteFileFromFileSystem(id, Cancel) is { Succeeded: false } deleteFromFileSystemResult)
         {
             return deleteFromFileSystemResult;
         }
@@ -147,7 +149,7 @@ public class FileService : IFileService
         return await DeleteFileFromDatabase(id);
     }
 
-    public async Task<Result<Guid>> UploadAsync(Stream fileStream, UploadFileRequest uploadFileRequest, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> UploadAsync(Stream fileStream, UploadFileRequest uploadFileRequest, CancellationToken Cancel = default)
     {
         if (await VerifyFileUploadRequest(uploadFileRequest) is { Succeeded: false } verifyFileUploadRequestResult)
         {
@@ -155,11 +157,11 @@ public class FileService : IFileService
             return verifyFileUploadRequestResult;
         }
 
-        var writeToStoreResult = await WriteToStore(uploadFileRequest, fileStream, cancellationToken);
+        var writeToStoreResult = await WriteToStore(uploadFileRequest, fileStream, Cancel);
         if (!writeToStoreResult.Succeeded)
             return await Result<Guid>.ErrorAsync(writeToStoreResult.Code, writeToStoreResult.Messages);
 
-        var writeToDatabaseResult = await WriteToDatabase(writeToStoreResult.Data, cancellationToken);
+        var writeToDatabaseResult = await WriteToDatabase(writeToStoreResult.Data, Cancel);
         if (!writeToDatabaseResult.Succeeded)
         {
             _ = DeleteFileFromFileSystem(writeToStoreResult.Data.Id);
@@ -233,7 +235,7 @@ public class FileService : IFileService
         return result;
     }
 
-    private async Task<Result<Guid>> WriteToDatabase(FileMetadata metadata, CancellationToken cancellationToken = default)
+    private async Task<Result<Guid>> WriteToDatabase(FileMetadata metadata, CancellationToken Cancel = default)
     {
         if (await VerifyAuthor(metadata.AuthorId) is { Succeeded: false } verifyAuthorResult)
             return await Result<Guid>.ErrorAsync(verifyAuthorResult.Code, verifyAuthorResult.Messages);
@@ -266,13 +268,13 @@ public class FileService : IFileService
         return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
     }
 
-    private async Task<Result<FileMetadata>> WriteToStore(UploadFileRequest uploadFileRequest, Stream fileStream, CancellationToken cancellationToken = default)
+    private async Task<Result<FileMetadata>> WriteToStore(UploadFileRequest uploadFileRequest, Stream fileStream, CancellationToken Cancel = default)
     {
         try
         {
             var id = Guid.NewGuid();
             var path = Path.Combine(_path, id.ToString());
-            var fileWriteResult = await _fileStore.WriteAsync(path, fileStream, cancellationToken).ConfigureAwait(false);
+            var fileWriteResult = await _fileStore.WriteAsync(path, fileStream, Cancel).ConfigureAwait(false);
 
             var metadata = _mapper.Map<FileMetadata>(uploadFileRequest);
             metadata.Id = id;
@@ -288,7 +290,7 @@ public class FileService : IFileService
             }
 
             var metadataJsonString = JsonSerializer.Serialize(metadata);
-            _ = await _fileStore.WriteAsync(GetMetadataPath(path), metadataJsonString, cancellationToken).ConfigureAwait(false);
+            _ = await _fileStore.WriteAsync(GetMetadataPath(path), metadataJsonString, Cancel).ConfigureAwait(false);
 
             return metadata;
         }
@@ -299,7 +301,7 @@ public class FileService : IFileService
         return await Result<FileMetadata>.ErrorAsync((int)ResultCodes.ApiError, "Error when saving a file to storage");
     }
 
-    private async Task<Result<Guid>> DeleteFileFromFileSystem(Guid id, CancellationToken cancellationToken = default)
+    private async Task<Result<Guid>> DeleteFileFromFileSystem(Guid id, CancellationToken Cancel = default)
     {
         try
         {
@@ -319,7 +321,7 @@ public class FileService : IFileService
         return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, $"Error when deleting a file with ID {id} from storage.");
     }
 
-    private async Task<Result<Guid>> DeleteFileFromDatabase(Guid id, CancellationToken cancellationToken = default)
+    private async Task<Result<Guid>> DeleteFileFromDatabase(Guid id, CancellationToken Cancel = default)
     {
         var fileRepository = _unitOfWork.GetRepository<File>();
 

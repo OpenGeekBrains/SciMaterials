@@ -1,0 +1,77 @@
+﻿@page "/users"
+@attribute [Authorize(Roles = "admin")]
+@inject IAccountsService AccountsService
+@inject IRolesService RolesService
+@*@inject IAuthoritiesService AuthoritiesService*@
+@inject IDialogService DialogService
+
+<TableView Data="_users">
+	<TableHeader>
+		<MudTh>Name</MudTh>
+		<MudTh>Email</MudTh>
+		<MudTh>Authority</MudTh>
+		<MudTh></MudTh>
+	</TableHeader>
+
+	<RowTemplate>
+		<MudTd DataLabel="Name">@context.UserName</MudTd>
+		<MudTd DataLabel="Email">@context.Email</MudTd>
+		<MudTd DataLabel="Authority">@context.Authority</MudTd>
+		<MudTh>
+			<MudButton Variant="Variant.Filled" Size="Size.Small" OnClick="() => ChangeAuthority(context)">Change Authority Group</MudButton>
+			<MudButton Variant="Variant.Filled" Size="Size.Small" OnClick="() => Delete(context)">Delete</MudButton>
+		</MudTh>
+	</RowTemplate>
+</TableView>
+
+@code {
+	private IReadOnlyList<UserInfo> _users = null!;
+
+	protected override async Task OnInitializedAsync()
+	{
+		_users = await AccountsService.UsersList();
+	}
+
+	private async Task ChangeAuthority(UserInfo context)
+	{
+		//// ReSharper disable once VariableHidesOuterVariable
+		//string LabelSelection(AuthorityGroup authority) => authority.Name;
+
+		//var parameters = new DialogParameters
+		//{
+		//	["Items"] = AuthoritiesService.AuthoritiesGroupsList(),
+		//	["OptionLabel"] = (Func<AuthorityGroup, string>)LabelSelection
+		//};
+
+		//var reference = DialogService.Show<ListSelectionDialog<AuthorityGroup>>("Select user authority", parameters);
+		//var result = await reference.Result;
+		//if (result.Cancelled || result.Data is not AuthorityGroup authority) return;
+
+		// ReSharper disable once VariableHidesOuterVariable
+		string LabelSelection(UserRole authority) => authority.Name;
+
+		var parameters = new DialogParameters
+		{
+			["Items"] = RolesService.RolesList(),
+			["OptionLabel"] = (Func<UserRole, string>)LabelSelection
+		};
+
+		var reference = DialogService.Show<ListSelectionDialog<UserRole>>("Select user authority", parameters);
+		var result = await reference.Result;
+		if (result.Cancelled || result.Data is not UserRole authority) return;
+		AccountsService.ChangeAuthority(context.Email, authority.Name);
+		await RefreshData();
+	}
+
+	private async Task Delete(UserInfo context)
+	{
+		AccountsService.Delete(context.Email);
+		await RefreshData();
+	}
+
+	private async Task RefreshData()
+	{
+		_users = await AccountsService.UsersList();
+		StateHasChanged();
+	}
+}

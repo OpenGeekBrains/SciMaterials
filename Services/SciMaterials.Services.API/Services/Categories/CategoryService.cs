@@ -24,21 +24,21 @@ public class CategoryService : ICategoryService
         _mapper = mapper;
     }
 
-    public async Task<Result<IEnumerable<GetCategoryResponse>>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<IEnumerable<GetCategoryResponse>>> GetAllAsync(CancellationToken Cancel = default)
     {
         var categories = await _unitOfWork.GetRepository<Category>().GetAllAsync();
         var result = _mapper.Map<List<GetCategoryResponse>>(categories);
         return result;
     }
 
-    public async Task<PageResult<GetCategoryResponse>> GetPageAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
+    public async Task<PageResult<GetCategoryResponse>> GetPageAsync(int pageNumber, int pageSize, CancellationToken Cancel = default)
     {
         var categories = await _unitOfWork.GetRepository<Category>().GetPageAsync(pageNumber, pageSize);
         var result = _mapper.Map<List<GetCategoryResponse>>(categories);
         return await PageResult<GetCategoryResponse>.SuccessAsync(result);
     }
 
-    public async Task<Result<GetCategoryResponse>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result<GetCategoryResponse>> GetByIdAsync(Guid id, CancellationToken Cancel = default)
     {
         if (await _unitOfWork.GetRepository<Category>().GetByIdAsync(id) is { } category)
             return _mapper.Map<GetCategoryResponse>(category);
@@ -46,7 +46,7 @@ public class CategoryService : ICategoryService
         return await Result<GetCategoryResponse>.ErrorAsync((int)ResultCodes.NotFound, $"Category with ID {id} not found");
     }
 
-    public async Task<Result<Guid>> AddAsync(AddCategoryRequest request, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> AddAsync(AddCategoryRequest request, CancellationToken Cancel = default)
     {
         var category = _mapper.Map<Category>(request);
         category.CreatedAt = DateTime.Now;
@@ -58,12 +58,12 @@ public class CategoryService : ICategoryService
         return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
     }
 
-    public async Task<Result<Guid>> EditAsync(EditCategoryRequest request, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> EditAsync(EditCategoryRequest request, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<Category>().GetByIdAsync(request.Id) is not { })
+        if (await _unitOfWork.GetRepository<Category>().GetByIdAsync(request.Id) is not { } existedCategory)
             return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Category with ID {request.Id} not found");
 
-        var category = _mapper.Map<Category>(request);
+        var category = _mapper.Map(request, existedCategory);
         await _unitOfWork.GetRepository<Category>().UpdateAsync(category);
 
         if (await _unitOfWork.SaveContextAsync() > 0)
@@ -72,7 +72,7 @@ public class CategoryService : ICategoryService
         return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
     }
 
-    public async Task<Result<Guid>> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> DeleteAsync(Guid id, CancellationToken Cancel = default)
     {
         if (await _unitOfWork.GetRepository<Category>().GetByIdAsync(id) is not { } category)
             return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Category with ID {id} not found");

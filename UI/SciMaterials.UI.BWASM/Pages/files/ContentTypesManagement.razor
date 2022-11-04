@@ -1,0 +1,77 @@
+﻿@page "/content_types"
+
+@using SciMaterials.UI.BWASM.States.FileUpload
+@using System.Collections.Immutable
+@inherits FluxorComponent
+
+@inject IDispatcher Dispatcher
+@inject IState<FilesContentTypesFilterState> State
+
+<MudPaper Class="pa-2">
+	<MudStack>
+		<MudStack Row="true">
+			<MudText>Selected filter:</MudText>
+			<MudText>@State.Value.Filter</MudText>
+		</MudStack>
+
+		<MudButton OnClick="Save">Save</MudButton>
+	</MudStack>
+	<MudStack>
+		@{
+			var grouped = State.Value.ContentTypes
+				.Select(x => (x.Name, x))
+				.GroupBy(t => t.Name[..t.Name.IndexOf('/')].ToUpper())
+				.ToDictionary(x => x.Key, x => x.GroupBy(k => k.Name));
+		}
+		@foreach (var group in grouped)
+		{
+			<MudStack >
+				<MudText Typo="Typo.h5" Color="Color.Primary">@group.Key</MudText>
+				<MudStack Class="ms-2">
+					@foreach (var subGroup in group.Value)
+					{
+						<MudPaper Class="pa-2" Outlined="true">
+							<MudText Typo="Typo.h6">@subGroup.Key[(subGroup.Key.IndexOf('/') + 1)..].ToUpper()</MudText>
+							<MudChipSet SelectedValuesChanged="AddSelected" MultiSelection="true" Filter="false">
+								@foreach (var (_, context) in subGroup)
+								{
+									<MudChip Text="@context.Extension" Value="@context"
+									         Default="@(State.Value.Selected.Contains(context))"
+									         Variant="Variant.Text"
+									         SelectedColor="Color.Primary"/>
+								}
+							</MudChipSet>
+						</MudPaper>
+					}
+				</MudStack>
+			</MudStack>
+		}
+		<MudScrollToTop>
+			<MudFab Color="Color.Tertiary" Icon="@Icons.Filled.ArrowCircleUp" />
+		</MudScrollToTop>
+	</MudStack>
+</MudPaper>
+
+@code {
+	private readonly HashSet<object> _selected = new();
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		Dispatcher.Dispatch(new LoadContentTypes());
+	}
+
+	private void Save()
+	{
+		var data = _selected.Cast<ContentTypeState>().ToImmutableArray();
+		Dispatcher.Dispatch(new UpdateContentTypesFilter(data));
+	}
+
+	private void AddSelected(ICollection<object> selected)
+	{
+		foreach (var val in selected)
+		{
+			_selected.Add(val);
+		}
+	}
+}

@@ -1,0 +1,125 @@
+﻿@*@page "/authority"*@
+
+@attribute [Authorize]
+@inject IAuthoritiesService AuthoritiesService
+@inject IDialogService DialogService
+
+<MudGrid>
+	@*Groups*@
+	<MudItem xs="6">
+		@foreach (var group in _authorityGroups)
+		{
+			<MudPaper Class="pa-4 ma-2">
+				<MudStack>
+					<MudStack Row="true">
+						<MudText>@group.Name</MudText>
+						<MudIconButton Icon="@Icons.Filled.Delete" Disabled="@(group.Name is "Admin" or "User")" OnClick="() => Delete(group)"></MudIconButton>
+					</MudStack>
+					
+					@foreach (var authority in group.Authorities)
+					{
+						<MudStack Row="true">
+							<MudText>@authority.Name</MudText>
+							<MudIconButton Icon="@Icons.Filled.Delete" OnClick="() => RemoveAuthorityFromGroup(group, authority)"/>
+						</MudStack>
+					}
+
+					<MudStack Row="true">
+						<MudIconButton Icon="@Icons.Filled.Add" OnClick="() => AddAuthorityToGroup(group)"></MudIconButton>
+					</MudStack>
+				</MudStack>
+			</MudPaper>
+		}
+		<MudButton StartIcon="@Icons.Filled.Add" OnClick="AddAuthorityGroup">Add Group</MudButton>
+	</MudItem>
+
+	@*Authorities*@
+	<MudItem xs="6">
+		<MudPaper Class="pa-4 ma-2">
+			@foreach (var authority in _authorities)
+			{
+				<MudStack Row="true">
+					<MudText>@authority.Name</MudText>
+					<MudIconButton Icon="@Icons.Filled.Delete" OnClick="() => Delete(authority)"/>
+				</MudStack>
+			}
+			<MudStack Row="true">
+				<MudIconButton Icon="@Icons.Filled.Add" OnClick="AddAuthority"></MudIconButton>
+			</MudStack>
+		</MudPaper>
+	</MudItem>
+</MudGrid>
+
+@code {
+	private List<AuthorityGroup> _authorityGroups = null!;
+	private List<Authority> _authorities = null!;
+
+	protected override void OnInitialized()
+	{
+		_authorityGroups = AuthoritiesService.AuthoritiesGroupsList();
+		_authorities = AuthoritiesService.AuthoritiesList();
+	}
+
+	private void Delete(Authority authority)
+	{
+		AuthoritiesService.Delete(authority);
+		RefreshData();
+	}
+
+	private async Task AddAuthority()
+	{
+		// TODO: add validation values as parameters
+		var reference = DialogService.Show<InputDialog>("With what name?");
+		var result = await reference.Result;
+		if (result.Cancelled || result.Data is not string authorityName) return;
+
+		AuthoritiesService.AddAuthority(authorityName);
+		RefreshData();
+	}
+
+	private void RemoveAuthorityFromGroup(AuthorityGroup group, Authority authority)
+	{
+		AuthoritiesService.RemoveAuthorityFromGroup(group, authority);
+		RefreshData();
+	}
+
+	private async Task AddAuthorityToGroup(AuthorityGroup group)
+	{
+		string LabelSelection(Authority authority) => authority.Name;
+
+		var parameters = new DialogParameters
+		{
+			["Items"] = AuthoritiesService.AuthoritiesList(),
+			["OptionLabel"] = (Func<Authority, string>)LabelSelection
+		};
+		var reference = DialogService.Show<ListSelectionDialog<Authority>>("Select authority", parameters);
+		var result = await reference.Result;
+
+		if (result.Cancelled || result.Data is not Authority selected) return;
+		AuthoritiesService.AddAuthorityToGroup(group, selected);
+		RefreshData();
+	}
+
+	private void Delete(AuthorityGroup group)
+	{
+		AuthoritiesService.Delete(group);
+		RefreshData();
+	}
+
+	private async Task AddAuthorityGroup()
+	{
+		var reference = DialogService.Show<InputDialog>("With what name?");
+		var result = await reference.Result;
+		if (result.Cancelled || result.Data is not string authorityName) return;
+
+		AuthoritiesService.AddAuthorityGroup(authorityName);
+		RefreshData();
+	}
+
+	private void RefreshData()
+	{
+		_authorityGroups = AuthoritiesService.AuthoritiesGroupsList();
+		_authorities = AuthoritiesService.AuthoritiesList();
+		StateHasChanged();
+	}
+}

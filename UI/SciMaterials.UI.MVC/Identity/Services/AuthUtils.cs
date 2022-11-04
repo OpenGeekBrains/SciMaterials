@@ -1,16 +1,17 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+
+using SciMaterials.Contracts.Auth;
 
 namespace SciMaterials.UI.MVC.Identity.Services;
 
 /// <summary>
 /// Утилиты по работе с jwt токенами
 /// </summary>
-public class AuthUtils : IAuthUtils
+public class AuthUtils : IAuthUtilits
 {
     private readonly IConfiguration _Configuration;
     private string _SecretKey;
@@ -23,10 +24,10 @@ public class AuthUtils : IAuthUtils
     /// <summary>
     /// Метод создает jwt токен сессии
     /// </summary>
-    /// <param name="user">Пользователь</param>
-    /// <param name="roles">Список ролей в системе</param>
+    /// <param name="User">Пользователь</param>
+    /// <param name="Roles">Список ролей в системе</param>
     /// <returns>Возращает токен</returns>
-    public string CreateSessionToken(IdentityUser user, IList<string> roles)
+    public string CreateSessionToken(IdentityUser User, IList<string> Roles)
     {
         var config = _Configuration.GetSection("AuthApiSettings:SecretTokenKey");
         _SecretKey = config["key"];
@@ -38,18 +39,18 @@ public class AuthUtils : IAuthUtils
         //Claims
         var claims = new List<Claim>
         {
-            new(ClaimTypes.NameIdentifier, user.Id),
-            new(ClaimTypes.Name, user.Email),
-            new(ClaimTypes.Email, user.Email)
+            new(ClaimTypes.NameIdentifier, User.Id),
+            new(ClaimTypes.Name, User.UserName),
+            new(ClaimTypes.Email, User.Email)
         };
 
-        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+        claims.AddRange(Roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
         var security_token_descriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims.ToArray()),
                 
-            Expires = DateTime.Now.AddMinutes(15),
+            Expires = DateTime.Now.AddMinutes(1),
 
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
@@ -57,5 +58,19 @@ public class AuthUtils : IAuthUtils
         var security_token = jwt_security_token_handler.CreateToken(security_token_descriptor);
 
         return jwt_security_token_handler.WriteToken(security_token);
+    }
+    
+    public bool CheckTokenIsEmptyOrInvalid(string token)
+    {
+        if (string.IsNullOrEmpty(token))
+        {
+            return true;
+        }
+
+        var jwtToken = new JwtSecurityToken(token);
+        var now = DateTime.UtcNow;
+        return jwtToken is null 
+            || jwtToken.ValidFrom >  now 
+            || jwtToken.ValidTo < now;
     }
 }

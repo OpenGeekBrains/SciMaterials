@@ -291,7 +291,7 @@ public class TagRepository : ITagRepository
     /// <inheritdoc cref="IRepository{T}.GetPage(int, int, bool, bool)"/>
     public List<Tag>? GetPage(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        IQueryable<Tag> query = new List<Tag>().AsQueryable();
+        IQueryable<Tag> query = _context.Tags.AsQueryable();
 
         if (include)
             query = query
@@ -311,7 +311,7 @@ public class TagRepository : ITagRepository
     /// <inheritdoc cref="IRepository{T}.GetPageAsync(int, int, bool, bool)"/>
     public async Task<List<Tag>?> GetPageAsync(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        IQueryable<Tag> query = new List<Tag>().AsQueryable();
+        IQueryable<Tag> query = _context.Tags.AsQueryable();
 
         if (include)
             query = query

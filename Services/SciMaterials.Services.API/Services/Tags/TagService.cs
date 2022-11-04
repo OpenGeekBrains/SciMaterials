@@ -24,21 +24,21 @@ public class TagService : ITagService
         _mapper = mapper;
     }
 
-    public async Task<Result<IEnumerable<GetTagResponse>>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<IEnumerable<GetTagResponse>>> GetAllAsync(CancellationToken Cancel = default)
     {
         var categories = await _unitOfWork.GetRepository<Tag>().GetAllAsync();
         var result = _mapper.Map<List<GetTagResponse>>(categories);
         return result;
     }
 
-    public async Task<PageResult<GetTagResponse>> GetPageAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
+    public async Task<PageResult<GetTagResponse>> GetPageAsync(int pageNumber, int pageSize, CancellationToken Cancel = default)
     {
         var categories = await _unitOfWork.GetRepository<Tag>().GetPageAsync(pageNumber, pageSize);
         var result = _mapper.Map<List<GetTagResponse>>(categories);
         return await PageResult<GetTagResponse>.SuccessAsync(result);
     }
 
-    public async Task<Result<GetTagResponse>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result<GetTagResponse>> GetByIdAsync(Guid id, CancellationToken Cancel = default)
     {
         if (await _unitOfWork.GetRepository<Tag>().GetByIdAsync(id) is { } tag)
             return _mapper.Map<GetTagResponse>(tag);
@@ -46,7 +46,7 @@ public class TagService : ITagService
         return await Result<GetTagResponse>.ErrorAsync((int)ResultCodes.NotFound, $"Tag with ID {id} not found");
     }
 
-    public async Task<Result<Guid>> AddAsync(AddTagRequest request, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> AddAsync(AddTagRequest request, CancellationToken Cancel = default)
     {
         var tag = _mapper.Map<Tag>(request);
         await _unitOfWork.GetRepository<Tag>().AddAsync(tag);
@@ -57,12 +57,12 @@ public class TagService : ITagService
         return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
     }
 
-    public async Task<Result<Guid>> EditAsync(EditTagRequest request, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> EditAsync(EditTagRequest request, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<Tag>().GetByIdAsync(request.Id) is not { })
+        if (await _unitOfWork.GetRepository<Tag>().GetByIdAsync(request.Id) is not { } existedTag)
             return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Tag with ID {request.Id} not found");
 
-        var tag = _mapper.Map<Tag>(request);
+        var tag = _mapper.Map(request, existedTag);
         await _unitOfWork.GetRepository<Tag>().UpdateAsync(tag);
 
         if (await _unitOfWork.SaveContextAsync() > 0)
@@ -71,7 +71,7 @@ public class TagService : ITagService
         return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
     }
 
-    public async Task<Result<Guid>> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> DeleteAsync(Guid id, CancellationToken Cancel = default)
     {
         if (await _unitOfWork.GetRepository<Tag>().GetByIdAsync(id) is not { } tag)
             return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Tag with ID {id} not found");

@@ -2,7 +2,7 @@
 
 namespace SciMaterials.Contracts.WebApi.Clients;
 
-public interface IApiEditClient<TId, TRequest>
+public interface IApiEditClient<TId, in TRequest>
 {
-    Task<Result<TId>> EditAsync(TRequest request, CancellationToken cancellationToken = default);
+    Task<Result<TId>> EditAsync(TRequest request, CancellationToken Cancel = default);
 }

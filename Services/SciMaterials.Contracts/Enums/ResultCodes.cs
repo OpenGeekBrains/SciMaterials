@@ -10,3 +10,11 @@ public enum ResultCodes
     FormDataFileMissing = 5,
     NotFound = 6,
 }
+
+public static class FailureCodes
+{
+    public static class Authentication
+    {
+        public const int NoAccessRightsToResource = 401;
+    }
+}

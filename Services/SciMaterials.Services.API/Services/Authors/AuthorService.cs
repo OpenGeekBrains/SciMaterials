@@ -24,21 +24,21 @@ public class AuthorService : IAuthorService
         _mapper = mapper;
     }
 
-    public async Task<Result<IEnumerable<GetAuthorResponse>>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<IEnumerable<GetAuthorResponse>>> GetAllAsync(CancellationToken Cancel = default)
     {
         var categories = await _unitOfWork.GetRepository<Author>().GetAllAsync();
         var result = _mapper.Map<List<GetAuthorResponse>>(categories);
         return result;
     }
 
-    public async Task<PageResult<GetAuthorResponse>> GetPageAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
+    public async Task<PageResult<GetAuthorResponse>> GetPageAsync(int pageNumber, int pageSize, CancellationToken Cancel = default)
     {
         var categories = await _unitOfWork.GetRepository<Author>().GetPageAsync(pageNumber, pageSize);
         var result = _mapper.Map<List<GetAuthorResponse>>(categories);
         return await PageResult<GetAuthorResponse>.SuccessAsync(result); 
     }
 
-    public async Task<Result<GetAuthorResponse>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result<GetAuthorResponse>> GetByIdAsync(Guid id, CancellationToken Cancel = default)
     {
         if (await _unitOfWork.GetRepository<Author>().GetByIdAsync(id) is { } author)
             return _mapper.Map<GetAuthorResponse>(author);
@@ -46,7 +46,7 @@ public class AuthorService : IAuthorService
         return await Result<GetAuthorResponse>.ErrorAsync((int)ResultCodes.NotFound, $"Author with ID {id} not found");
     }
 
-    public async Task<Result<Guid>> AddAsync(AddAuthorRequest request, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> AddAsync(AddAuthorRequest request, CancellationToken Cancel = default)
     {
         var author = _mapper.Map<Author>(request);
         await _unitOfWork.GetRepository<Author>().AddAsync(author);
@@ -57,12 +57,12 @@ public class AuthorService : IAuthorService
         return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
     }
 
-    public async Task<Result<Guid>> EditAsync(EditAuthorRequest request, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> EditAsync(EditAuthorRequest request, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<Author>().GetByIdAsync(request.Id) is not { })
+        if (await _unitOfWork.GetRepository<Author>().GetByIdAsync(request.Id) is not { } existedAuthor)
             return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Author with ID {request.Id} not found");
 
-        var author = _mapper.Map<Author>(request);
+        var author = _mapper.Map(request, existedAuthor);
         await _unitOfWork.GetRepository<Author>().UpdateAsync(author);
 
         if (await _unitOfWork.SaveContextAsync() > 0)
@@ -71,7 +71,7 @@ public class AuthorService : IAuthorService
         return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
     }
 
-    public async Task<Result<Guid>> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> DeleteAsync(Guid id, CancellationToken Cancel = default)
     {
         if (await _unitOfWork.GetRepository<Author>().GetByIdAsync(id) is not { } author)
             return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Author with ID {id} not found");

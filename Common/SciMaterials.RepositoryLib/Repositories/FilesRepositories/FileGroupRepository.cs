@@ -319,7 +319,7 @@ public class FileGroupRepository : IFileGroupRepository
     /// <inheritdoc cref="IRepository{T}.GetPage(int, int, bool, bool)"/>
     public List<FileGroup>? GetPage(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        IQueryable<FileGroup> query = new List<FileGroup>().AsQueryable();
+        IQueryable<FileGroup> query = _context.FileGroups.AsQueryable();
 
         if (include)
             query = query
@@ -343,7 +343,7 @@ public class FileGroupRepository : IFileGroupRepository
     /// <inheritdoc cref="IRepository{T}.GetPageAsync(int, int, bool, bool)"/>
     public async Task<List<FileGroup>?> GetPageAsync(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        IQueryable<FileGroup> query = new List<FileGroup>().AsQueryable();
+        IQueryable<FileGroup> query = _context.FileGroups.AsQueryable();
 
         if (include)
             query = query

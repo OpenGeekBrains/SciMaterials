@@ -1,0 +1,48 @@
+﻿@page "/roles"
+@using Microsoft.AspNetCore.Identity
+
+@attribute [Authorize(Roles = "admin")]
+
+@inject IRolesService RolesService
+@inject IDialogService DialogService
+
+<MudPaper Class="pa-4 ma-2">
+    @foreach (var role in _roles)
+    {
+        <MudStack Row="true">
+            <MudText>@role.Name</MudText>
+            <MudIconButton Icon="@Icons.Filled.Delete" OnClick="() => Delete(role)"/>
+        </MudStack>
+    }
+    <MudStack Row="true">
+        <MudIconButton Icon="@Icons.Filled.Add" OnClick="Add"></MudIconButton>
+    </MudStack>
+</MudPaper>
+
+@code {
+    private List<IdentityRole> _roles = new();
+
+    protected override async Task OnInitializedAsync() => await RefreshData();
+
+    private async Task Delete(IdentityRole role)
+    {
+        if (!await RolesService.DeleteRole(role.Id)) return;
+        await RefreshData();
+    }
+
+    private async Task Add()
+    {
+        // TODO: add validation values as parameters
+        var reference = DialogService.Show<InputDialog>("With what name?");
+        var result = await reference.Result;
+        if (result.Cancelled || result.Data is not string roleName) return;
+
+        if(!await RolesService.AddRole(roleName)) return;
+        await RefreshData();
+    }
+
+    private async Task RefreshData()
+    {
+        _roles = await RolesService.RolesList();
+    }
+}

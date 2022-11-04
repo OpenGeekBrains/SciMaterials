@@ -1,0 +1,24 @@
+﻿<MudDialog>
+	<DialogContent>
+		<MudTextField @bind-Value="@Value" Label="@Label"/>
+	</DialogContent>
+	<DialogActions>
+		<MudButton OnClick="Cancel">Cancel</MudButton>
+		<MudButton Color="Color.Success" OnClick="Ok">Ok</MudButton>
+	</DialogActions>
+</MudDialog>
+
+@code {
+	[CascadingParameter]
+	public MudDialogInstance MudDialog { get; set; } = null!;
+
+	[Parameter]
+	public string? Label { get; set; }
+
+	[Parameter]
+	public string? Value { get; set; }
+
+	private void Cancel() => MudDialog.Cancel();
+
+	private void Ok() => MudDialog.Close(DialogResult.Ok(Value));
+}

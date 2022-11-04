@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using SciMaterials.Contracts.API.Services.Identity;
 using SciMaterials.Contracts.Auth;
+using SciMaterials.Contracts.Identity.Clients.Clients;
 using SciMaterials.DAL.AUTH.Context;
 using SciMaterials.DAL.AUTH.InitializationDb;
 using SciMaterials.UI.MVC.Identity.Services;
@@ -15,17 +15,17 @@ namespace SciMaterials.UI.MVC.Identity.Extensions;
 
 public static class AuthServiceCollectionExtensions
 {
-    public static IServiceCollection AddAuthApiServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddAuthApiServices(this IServiceCollection Services, IConfiguration Configuration)
     {
-        var provider = configuration["AuthApiSettings:Provider"];
+        var provider = Configuration["AuthApiSettings:Provider"];
         
-        services.AddDbContext<AuthDbContext>(opt => _ = provider switch
+        Services.AddDbContext<AuthDbContext>(opt => _ = provider switch
         {
-            "Sqlite" => opt.UseSqlite(AuthConnectionStrings.Sqlite(configuration), OptionsBuilder =>
+            "Sqlite" => opt.UseSqlite(AuthConnectionStrings.Sqlite(Configuration), OptionsBuilder =>
             {
                 OptionsBuilder.MigrationsAssembly("SciMaterials.SqlLite.Auth.Migrations");
             }),
-            "MySql" => opt.UseMySql(AuthConnectionStrings.MySql(configuration), new MySqlServerVersion(new Version(8,0,30)), 
+            "MySql" => opt.UseMySql(AuthConnectionStrings.MySql(Configuration), new MySqlServerVersion(new Version(8,0,30)), 
             OptionBuilder =>
             {
                 OptionBuilder.MigrationsAssembly("SciMaterials.MySql.Auth.Migrations");
@@ -33,7 +33,7 @@ public static class AuthServiceCollectionExtensions
             _ => throw new Exception($"Unsupported provider: {provider}")
         });
 
-        services.AddIdentity<IdentityUser, IdentityRole>(opt =>
+        Services.AddIdentity<IdentityUser, IdentityRole>(opt =>
         {
             opt.Password.RequiredLength = 5;
             opt.Password.RequireNonAlphanumeric = false;
@@ -44,14 +44,14 @@ public static class AuthServiceCollectionExtensions
         .AddEntityFrameworkStores<AuthDbContext>()
         .AddDefaultTokenProviders();
         
-        services.AddHttpContextAccessor();
+        Services.AddHttpContextAccessor();
         
-        return services;
+        return Services;
     }
 
-    public static IServiceCollection AddAuthJwtAndSwaggerApiServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddAuthJwtAndSwaggerApiServices(this IServiceCollection Services, IConfiguration Configuration)
     {
-        services.AddSwaggerGen(opt =>
+        Services.AddSwaggerGen(opt =>
         {
             opt.SwaggerDoc("v1", new OpenApiInfo
             {
@@ -82,7 +82,7 @@ public static class AuthServiceCollectionExtensions
             });
         });
         
-        services.AddAuthentication(x => 
+        Services.AddAuthentication(x => 
         {
             x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             x.DefaultChallengeScheme    = JwtBearerDefaults.AuthenticationScheme;
@@ -94,36 +94,36 @@ public static class AuthServiceCollectionExtensions
             x.TokenValidationParameters = new TokenValidationParameters
             {
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(
-                    configuration.GetSection("AuthApiSettings:SecretTokenKey:key").Value)),
+                    Configuration.GetSection("AuthApiSettings:SecretTokenKey:key").Value)),
                 ValidateIssuer           = false,
                 ValidateAudience         = false,
-                ValidateLifetime         = false,
+                ValidateLifetime         = true,
                 ValidateIssuerSigningKey = true,
                 ClockSkew                = TimeSpan.Zero
             };
         });
 
-        services.AddAuthorization();
+        Services.AddAuthorization();
         
-        return services;
+        return Services;
     }
     
-    public static IServiceCollection AddAuthDbInitializer(this IServiceCollection services)
+    public static IServiceCollection AddAuthDbInitializer(this IServiceCollection Services)
     {
-        return services.AddScoped<IAuthDbInitializer, AuthDbInitializer>();
+        return Services.AddScoped<IAuthDbInitializer, AuthDbInitializer>();
     }
     
-    public static IServiceCollection AddAuthUtils(this IServiceCollection services)
+    public static IServiceCollection AddAuthUtils(this IServiceCollection Services)
     {
-        return services.AddSingleton<IAuthUtils, AuthUtils>();
+        return Services.AddSingleton<IAuthUtilits, AuthUtils>();
     }
 
-    public static IServiceCollection AddAuthHttpClient(this IServiceCollection services)
+    public static IServiceCollection AddAuthHttpClient(this IServiceCollection Services)
     {
-        services
+        Services
             .AddHttpClient()
             .AddSingleton<IIdentityClient, IdentityClient>();
 
-        return services;
+        return Services;
     }
 }

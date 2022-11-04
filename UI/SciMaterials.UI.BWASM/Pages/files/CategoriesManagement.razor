@@ -1,0 +1,48 @@
+﻿@page "/categories"
+
+@using SciMaterials.UI.BWASM.States.Categories
+@inherits FluxorComponent
+
+@inject IDispatcher Dispatcher
+@inject IState<FilesCategoriesState> State
+
+<MudStack>
+	@foreach (var category in State.Value.Categories)
+	{
+		<MudPaper Class="pa-2">
+			<MudGrid>
+				<MudItem xs="12" sm="7">
+					<MudStack>
+						<MudText Typo="Typo.body1" Color="Color.Primary">@category.Name</MudText>
+						<MudText Typo="Typo.body2">@category.Description</MudText>
+					</MudStack>
+				</MudItem>
+				<MudItem xs="12" sm="2">
+					<MudStack Justify="Justify.FlexEnd" Class="ms-2">
+						<MudText Typo="Typo.subtitle2" Color="Color.Secondary">Parent:</MudText>
+						<MudText Typo="Typo.body1" Color="Color.Secondary">
+							@State.Value.Categories.FirstOrDefault(c=>c.Id == category.ParentId)?.Name
+						</MudText>
+					</MudStack>
+				</MudItem>
+				<MudItem xs="12" sm="3">
+					<MudStack Row="true" Justify="Justify.FlexEnd" AlignItems="AlignItems.Start">
+						<MudButton>Edit</MudButton>
+						<MudButton>Delete</MudButton>
+					</MudStack>
+				</MudItem>
+			</MudGrid>
+		</MudPaper>
+	}
+	<MudScrollToTop>
+		<MudFab Color="Color.Tertiary" Icon="@Icons.Filled.ArrowCircleUp" />
+	</MudScrollToTop>
+</MudStack>
+
+@code {
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		Dispatcher.Dispatch(new LoadCategories());
+	}
+}

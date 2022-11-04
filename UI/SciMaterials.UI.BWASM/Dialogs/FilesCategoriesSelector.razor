@@ -1,0 +1,37 @@
+﻿@using SciMaterials.UI.BWASM.States.Categories
+@inherits FluxorComponent
+
+@inject IDispatcher Dispatcher
+@inject IState<FilesCategoriesState> State
+
+<MudDialog>
+	<DialogContent>
+		<MudTreeView @bind-SelectedValue="SelectedValue" Items="State.Value.Tree">
+			<ItemTemplate>
+				<MudTreeViewItem Value="@context" Items="@context.Categories" Text="@context.Name" />
+			</ItemTemplate>
+		</MudTreeView>
+	</DialogContent>
+	
+	<DialogActions>
+		<MudButton OnClick="Cancel">Cancel</MudButton>
+		<MudButton Color="Color.Success" Disabled="@(SelectedValue is null)" OnClick="Ok">Ok</MudButton>
+	</DialogActions>
+</MudDialog>
+
+@code {
+	[CascadingParameter]
+	public MudDialogInstance MudDialog { get; set; } = null!;
+
+	private TreeFileCategory? SelectedValue { get; set; }
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		Dispatcher.Dispatch(new LoadCategories());
+	}
+
+	private void Cancel() => MudDialog.Cancel();
+
+	private void Ok() => MudDialog.Close(DialogResult.Ok(SelectedValue));
+}

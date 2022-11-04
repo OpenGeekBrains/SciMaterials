@@ -2,27 +2,16 @@
 
 public class UploadFileDetailsForm
 {
-    public static UploadFileDetailsForm Empty { get; } = new UploadFileDetailsForm();
+    public static readonly UploadFileDetailsForm Empty = new UploadFileDetailsForm();
 
-    public Guid Id { get; private init; }
+    public Guid Id { get; init; }
     public string FileName { get; set; } = null!;
-    public string? Category { get; set; }
-    public long Size { get; private init; }
-
-    public void UpdateSource(FileUploadData? source)
-    {
-        // source may be already deleted! TODO: why it already not handled on delete?
-        if (source is null) return;
-
-        source.FileName = FileName;
-        source.Category = Category;
-    }
-
-    public static implicit operator UploadFileDetailsForm(FileUploadData data) => new()
-    {
-        Id = data.Id,
-        FileName = data.FileName,
-        Category = data.Category,
-        Size = data.File.Size
-    };
+    public long Size { get; init; }
+    public string ContentType { get; init; } = null!;
+    
+    public string Title { get; set; } = string.Empty;
+    public string CategoryName { get; set; } = string.Empty;
+    public Guid CategoryId { get; set; }
+    public string AuthorName { get; set; } = string.Empty;
+    public Guid AuthorId { get; set; }
 }

@@ -126,7 +126,9 @@ public class FileRepository : IFileRepository
     /// <inheritdoc cref="IRepository{T}.GetAll(bool, bool)"/>
     public List<File>? GetAll(bool disableTracking = true, bool include = false)
     {
-        IQueryable<File> query = _context.Files.Where(f => !f.IsDeleted);
+        var query = _context.Files
+            .Where(f => !f.IsDeleted)
+            .AsQueryable();
 
         if (include)
             query = query.Include(f => f.ContentType)
@@ -147,7 +149,9 @@ public class FileRepository : IFileRepository
     /// <inheritdoc cref="IRepository{T}.GetAllAsync(bool, bool)"/>
     public async Task<List<File>?> GetAllAsync(bool disableTracking = true, bool include = false)
     {
-        IQueryable<File> query = _context.Files.Where(f => !f.IsDeleted);
+        var query = _context.Files
+            .Where(f => !f.IsDeleted)
+            .AsQueryable();
 
         if (include)
             query = query.Include(f => f.ContentType)
@@ -168,8 +172,9 @@ public class FileRepository : IFileRepository
     /// <inheritdoc cref="IRepository{T}.GetById(Guid, bool, bool)"/>
     public File? GetById(Guid id, bool disableTracking = true, bool include = false)
     {
-        IQueryable<File> query = _context.Files
-            .Where(c => c.Id == id && !c.IsDeleted);
+        var query = _context.Files
+            .Where(c => c.Id == id && !c.IsDeleted)
+            .AsQueryable();
 
         if (include)
             query = query.Include(f => f.ContentType)
@@ -190,8 +195,9 @@ public class FileRepository : IFileRepository
     /// <inheritdoc cref="IRepository{T}.GetByIdAsync(Guid, bool, bool)"/>
     public async Task<File?> GetByIdAsync(Guid id, bool disableTracking = true, bool include = false)
     {
-        IQueryable<File> query = _context.Files
-            .Where(c => c.Id == id);
+        var query = _context.Files
+            .Where(c => c.Id == id)
+            .AsQueryable();
         
         if (include)
             query = query.Include(f => f.ContentType)
@@ -260,8 +266,9 @@ public class FileRepository : IFileRepository
     /// <inheritdoc cref="IRepository{T}.GetByNameAsync(string, bool, bool)"/>
     public async Task<File?> GetByNameAsync(string name, bool disableTracking = true, bool include = false)
     {
-        IQueryable<File> query = _context.Files
-                .Where(c => c.Name == name && !c.IsDeleted);
+        var query = _context.Files
+                .Where(c => c.Name == name && !c.IsDeleted)
+                .AsQueryable();
 
         if (include)
             query = query.Include(f => f.ContentType)
@@ -282,8 +289,9 @@ public class FileRepository : IFileRepository
     /// <inheritdoc cref="IRepository{T}.GetByName(string, bool, bool)"/>
     public File? GetByName(string name, bool disableTracking = true, bool include = false)
     {
-        IQueryable<File> query = _context.Files
-                .Where(c => c.Name == name && !c.IsDeleted);
+        var query = _context.Files
+                .Where(c => c.Name == name && !c.IsDeleted)
+                .AsQueryable();
 
         if (include)
             query = query.Include(f => f.ContentType)
@@ -304,8 +312,9 @@ public class FileRepository : IFileRepository
     /// <inheritdoc cref="IRepository{T}.GetByHashAsync(string, bool, bool)"/>
     public async Task<File?> GetByHashAsync(string hash, bool disableTracking = true, bool include = false)
     {
-        IQueryable<File> query = _context.Files
-                .Where(c => c.Hash == hash && !c.IsDeleted);
+        var query = _context.Files
+                .Where(c => c.Hash == hash && !c.IsDeleted)
+                .AsQueryable();
         
         if (include)
             query = query.Include(f => f.ContentType)
@@ -336,7 +345,9 @@ public class FileRepository : IFileRepository
     /// <inheritdoc cref="IRepository{T}.GetPage(int, int, bool, bool)"/>
     public List<File>? GetPage(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        IQueryable<File> query = new List<File>().AsQueryable();
+        var query = _context.Files
+            .Where(f => !f.IsDeleted)
+            .AsQueryable();
 
         if (include)
             query = query
@@ -361,8 +372,9 @@ public class FileRepository : IFileRepository
     /// <inheritdoc cref="IRepository{T}.GetPageAsync(int, int, bool, bool)"/>
     public async Task<List<File>?> GetPageAsync(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        //IQueryable<File> query = new List<File>().AsQueryable();
-        IQueryable<File> query = _context.Files.Where(f => !f.IsDeleted);
+        var query = _context.Files
+            .Where(f => !f.IsDeleted)
+            .AsQueryable();
 
         if (include)
             query = query
@@ -387,8 +399,9 @@ public class FileRepository : IFileRepository
     /// <inheritdoc cref="IRepository{T}.GetByHash(string, bool, bool)"/>
     public File? GetByHash(string hash, bool disableTracking = true, bool include = false)
     {
-        IQueryable<File> query = _context.Files
-                .Where(c => c.Hash == hash && !c.IsDeleted);
+        var query = _context.Files
+                .Where(c => c.Hash == hash && !c.IsDeleted)
+                .AsQueryable();
 
         if (include)
             query = query.Include(f => f.ContentType)
@@ -425,7 +438,6 @@ public class FileRepository : IFileRepository
         recipient.Categories = sourse.Categories;
         recipient.Ratings = sourse.Ratings;
 
-        recipient.Url = sourse.Url;
         recipient.Size = sourse.Size;
         recipient.Hash = sourse.Hash;
         recipient.ContentTypeId = sourse.ContentTypeId;

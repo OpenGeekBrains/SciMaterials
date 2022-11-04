@@ -1,71 +1,135 @@
 ﻿@page "/files_storage"
 
+@using SciMaterials.UI.BWASM.States.FilesStorage
+@using SciMaterials.UI.BWASM.States.Categories
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@inherits FluxorComponent
+
+@inject IDispatcher Dispatcher
+@inject IState<FilesStorageState> State
+
 @inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject IJSRuntime JsRuntime
+@inject IWebAssemblyHostEnvironment HostEnvironment
+
 
 <MudText Class="mb-5" Typo="Typo.h3" Align="Align.Start">Files</MudText>
 
-<MudNavLink Class="rounded-lg" Href="files_upload" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.UploadFile">Upload</MudNavLink>
-<FilesFilter ItemsPresentationMode="_itemsPresentationMode" OnItemsPresentationModeChanged="ChangeItemsPresentationMode"/>
+<MudPaper Elevation="5" Class="mb-3">
+	<MudToolBar Dense="true">
+		<MudNavLink Class="rounded-lg" Style="width:15%" Href="files_upload" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.UploadFile">Upload</MudNavLink>
+		<MudNavLink Class="rounded-lg" Style="width:15%" Href="content_types" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Filter">Files upload filter</MudNavLink>
+		<MudNavLink Class="rounded-lg" Style="width:15%" Href="categories" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Category">Categories</MudNavLink>
+		<MudSpacer />
+		<FilesFilter ItemsPresentationMode="_itemsPresentationMode" OnItemsPresentationModeChanged="ChangeItemsPresentationMode" />
+	</MudToolBar>
+</MudPaper>
 
 @switch (_itemsPresentationMode)
 {
 	case ItemsPresentationMode.Table:
-		<TableView Data="Files">
+		<TableView Data="State.Value.Files">
 			<TableHeader>
 				<MudTh></MudTh>
 				<MudTh>Name</MudTh>
+				<MudTh>Category</MudTh>
 				<MudTh>Size</MudTh>
 				<MudTh></MudTh>
 			</TableHeader>
 
 			<RowTemplate>
-				@if (true)
-				{
-					<MudTd><MudIcon Icon="@Icons.Material.Filled.FilePresent" /></MudTd>
-				}
-				else
-				{
-					<MudTd><MudIcon Icon="@Icons.Material.Filled.Folder"/></MudTd>
-				}
+				@*@if (true)
+		{*@
+				<MudTd><MudIcon Icon="@Icons.Material.Filled.FilePresent" /></MudTd>
+				@*}
+		else
+		{
+		<MudTd><MudIcon Icon="@Icons.Material.Filled.Folder"/></MudTd>
+		}*@
 
-				<MudTd DataLabel="Name">@($"Name #{context}")</MudTd>
-				<MudTd DataLabel="Size">@($"{context} gb")</MudTd>
+				<MudTd DataLabel="Name">@context.FileName</MudTd>
+				<MudTd DataLabel="Category">
+					@context.Category
+					<MudButton Variant="Variant.Filled" Size="Size.Small" OnClick="() => ChangeCategory(context)">Change</MudButton>
+				</MudTd>
+				<MudTd DataLabel="Size">@context.Size</MudTd>
 				<MudTh>
+					<MudIconButton Icon="@Icons.Filled.Download" OnClick="()=>DownloadFileFromUrl(context)"></MudIconButton>
 					<MudButton Variant="Variant.Filled" Size="Size.Small" OnClick="() => NavigateToFileDetailsUrl(context)">Edit</MudButton>
 					<MudButton Variant="Variant.Filled" Size="Size.Small" OnClick="() => Delete(context)">Delete</MudButton>
 				</MudTh>
 			</RowTemplate>
 		</TableView>
 		break;
-	case ItemsPresentationMode.LargeGrid:
-		<FilesGridView Files="Files" OnFileSelected="NavigateToFileDetailsUrl"/>
-		break;
+		@*case ItemsPresentationMode.LargeGrid:
+		<FilesGridView Files="State.Value.Files" OnFileSelected="NavigateToFileDetailsUrl"/>
+		break;*@
 }
 
 
 @code {
-	private List<int> Files = new();
-
-    private string filterValue { get; set; }
-    private string sortValue { get; set; }
+	private string filterValue { get; set; }
+	private string sortValue { get; set; }
 	private ItemsPresentationMode _itemsPresentationMode;
+	private IJSObjectReference downloadFilesModule;
 
-    protected override async Task OnInitializedAsync()
-    {
-	    Files = Enumerable.Range(1, 20).ToList();
-    }
+	protected override async Task OnInitializedAsync()
+	{
+		Refresh();
+	}
 
-    private void NavigateToFileDetailsUrl(int id)
-    {
-        NavigationManager.NavigateTo($"/filedetails/{id}");
-    }
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			downloadFilesModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./js/files-download.js");
+		}
+	}
+
+	private void NavigateToFileDetailsUrl(FileStorageState context)
+	{
+		NavigationManager.NavigateTo($"/filedetails/{context.Id}");
+	}
 
 	private void ChangeItemsPresentationMode(ItemsPresentationMode mode)
 	{
 		_itemsPresentationMode = mode;
 	}
 
-	private void Delete(int context)
+	private void Delete(FileStorageState context)
 	{
+		Dispatcher.Dispatch(new DeleteFile(context.Id));
+	}
+
+	private void Refresh()
+	{
+		Dispatcher.Dispatch(new LoadFiles());
+	}
+
+	private async Task ChangeCategory(FileStorageState context)
+	{
+		var reference = DialogService.Show<FilesCategoriesSelector>();
+		var result = await reference.Result;
+		if (result.Cancelled || result.Data is not TreeFileCategory category) return;
+		Snackbar.Add($"Category {category}");
+	}
+
+	private async Task DownloadFileFromStream()
+	{
+		//var fileStream = GetFileStream();
+		//var fileName = "log.bin";
+
+		//using var streamRef = new DotNetStreamReference(stream: fileStream);
+
+		//await JsRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+	}
+
+	private async Task DownloadFileFromUrl(FileStorageState context)
+	{
+		var fileName = context.FileName;
+		var fileUrl = HostEnvironment.BaseAddress + $"api/files/DownloadById/{context.Id}";
+		await downloadFilesModule.InvokeVoidAsync("triggerFileDownload", fileName, fileUrl);
 	}
 }

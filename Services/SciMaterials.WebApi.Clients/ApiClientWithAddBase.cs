@@ -15,15 +15,15 @@ public abstract class ApiClientWithAddBase<TId, TResult, TAddRequest, TEditReque
         : base(httpClient, logger)
     { }
 
-    public virtual async Task<Result<TId>> AddAsync(TAddRequest request, CancellationToken cancellationToken = default)
+    public virtual async Task<Result<TId>> AddAsync(TAddRequest request, CancellationToken Cancel = default)
     {
         _logger.LogInformation("Add entity {request}", request);
 
-        var response = await _httpClient.PutAsJsonAsync($"{_webApiRoute}/Add", request, cancellationToken);
+        var response = await _httpClient.PutAsJsonAsync($"{_webApiRoute}/Add", request, Cancel);
         var result = await response
             .EnsureSuccessStatusCode()
             .Content
-            .ReadFromJsonAsync<Result<TId>>(cancellationToken: cancellationToken)
+            .ReadFromJsonAsync<Result<TId>>(cancellationToken: Cancel)
             ?? throw new InvalidOperationException("No response received from the server.");
         return result;
     }

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
 using SciMaterials.Contracts.API.Constants;
+using SciMaterials.Contracts.API.DTO.ContentTypes;
 using SciMaterials.Contracts.API.DTO.Files;
 using SciMaterials.Contracts.API.Services.Files;
 using SciMaterials.Contracts.Enums;
@@ -22,6 +23,7 @@ public class FilesApiController : ApiBaseController<FilesApiController>
     }
 
     [HttpGet]
+    [ProducesDefaultResponseType(typeof(Result<IEnumerable<GetFileResponse>>))]
     public async Task<IActionResult> GetAllAsync()
     {
         _logger.LogDebug("Get all files");
@@ -33,6 +35,7 @@ public class FilesApiController : ApiBaseController<FilesApiController>
     /// <param name="pageNumber"> Page number. </param>
     /// <param name="pageNumber"> Page size. </param>
     [HttpGet("page/{pageNumber}/{pageSize}")]
+    [ProducesDefaultResponseType(typeof(PageResult<GetFileResponse>))]
     public async Task<IActionResult> GetPageAsync([FromRoute] int pageNumber, [FromRoute] int pageSize)
     {
         _logger.LogDebug("Get paged files");
@@ -43,6 +46,7 @@ public class FilesApiController : ApiBaseController<FilesApiController>
     /// <summary> Get file metadata by Id. </summary>
     /// <param name="id"> File Id. </param>
     [HttpGet("{id}")]
+    [ProducesDefaultResponseType(typeof(Result<GetFileResponse>))]
     public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
         _logger.LogDebug("Get by id {id}", id);
@@ -51,6 +55,7 @@ public class FilesApiController : ApiBaseController<FilesApiController>
     }
 
     [HttpPut("Edit")]
+    [ProducesDefaultResponseType(typeof(Guid))]
     public async Task<IActionResult> EditAsync([FromBody] EditFileRequest request)
     {
         var result = await _fileService.EditAsync(request);
@@ -58,6 +63,7 @@ public class FilesApiController : ApiBaseController<FilesApiController>
     }
 
     [HttpGet("DownloadByHash/{hash}")]
+    [ProducesDefaultResponseType(typeof(FileStreamResult))]
     public async Task<IActionResult> DownloadByHash([FromRoute] string hash)
     {
         _logger.LogDebug("Get file by hash");
@@ -70,6 +76,7 @@ public class FilesApiController : ApiBaseController<FilesApiController>
     }
 
     [HttpGet("DownloadById/{id}")]
+    [ProducesDefaultResponseType(typeof(FileStreamResult))]
     public async Task<IActionResult> DownloadByIdAsync([FromRoute] Guid id)
     {
         _logger.LogDebug("Download by Id");
@@ -83,6 +90,7 @@ public class FilesApiController : ApiBaseController<FilesApiController>
 
     [DisableFormValueModelBinding]
     [HttpPost("Upload")]
+    [ProducesDefaultResponseType(typeof(Guid))]
     public async Task<IActionResult> UploadAsync()
     {
         _logger.LogDebug("Upload file");
@@ -133,6 +141,7 @@ public class FilesApiController : ApiBaseController<FilesApiController>
     /// <param name="id"> File Id. </param>
     /// <returns> Status 200 OK response. </returns>
     [HttpDelete("{id}")]
+    [ProducesDefaultResponseType(typeof(Guid))]
     public async Task<IActionResult> DeleteAsync(Guid id)
     {
         var result = await _fileService.DeleteAsync(id);

@@ -1,0 +1,39 @@
+﻿@using SciMaterials.UI.BWASM.States.Authors
+@inherits FluxorComponent
+
+@inject IDispatcher Dispatcher
+@inject IState<AuthorsState> State
+
+<MudDialog>
+	<DialogContent>
+		<div class="d-flex flex-column py-1">
+			@foreach (var author in State.Value.Authors)
+			{
+				<MudButton OnClick="() => SelectOption(author)">@author.Name</MudButton>
+			}
+		</div>
+	</DialogContent>
+</MudDialog>
+
+@code {
+	[CascadingParameter]
+	public MudDialogInstance MudDialog { get; set; } = null!;
+
+	protected override void OnInitialized()
+	{
+		MudDialog.SetOptions(new DialogOptions()
+			{
+				CloseButton = true,
+				CloseOnEscapeKey = true,
+				MaxWidth = MaxWidth.ExtraSmall,
+				FullWidth = true
+			});
+		base.OnInitialized();
+		Dispatcher.Dispatch(new LoadAuthors());
+	}
+
+	private void SelectOption(AuthorState author)
+	{
+		MudDialog.Close(DialogResult.Ok(author));
+	}
+}

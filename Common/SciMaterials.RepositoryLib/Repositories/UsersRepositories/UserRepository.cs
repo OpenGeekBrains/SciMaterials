@@ -267,7 +267,7 @@ public class UserRepository : IUserRepository
     /// <inheritdoc cref="IRepository{T}.GetPage(int, int, bool, bool)"/>
     public List<User>? GetPage(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        IQueryable<User> query = new List<User>().AsQueryable();
+        IQueryable<User> query = _context.Users.AsQueryable();
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -282,7 +282,7 @@ public class UserRepository : IUserRepository
     /// <inheritdoc cref="IRepository{T}.GetPageAsync(int, int, bool, bool)"/>
     public async Task<List<User>?> GetPageAsync(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        IQueryable<User> query = new List<User>().AsQueryable();
+        IQueryable<User> query = _context.Users.AsQueryable();
 
         if (disableTracking)
             query = query.AsNoTracking();

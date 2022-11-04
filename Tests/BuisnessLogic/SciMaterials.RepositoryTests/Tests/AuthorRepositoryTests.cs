@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using SciMaterials.DAL.Contexts;
 using SciMaterials.DAL.Models;
+using SciMaterials.DAL.Models.Base;
 using SciMaterials.Data.UnitOfWork;
 using SciMaterials.RepositoryLib.Repositories.UsersRepositories;
 using SciMaterials.RepositoryTests.Helpers;
@@ -124,7 +125,7 @@ public class AuthorRepositoryTests
         Assert.Equal(author.Email, authorDb.Email);
         Assert.Equal(author.Phone, authorDb.Phone);
         Assert.Equal(author.User!.Id, authorDb.User!.Id);
-        Assert.Equal(author.Files.ToList()[0].Id, authorDb.Files.ToList()[0].Id);
+        Assert.Equal(author.Resources.ToList()[0].Id, authorDb.Resources.ToList()[0].Id);
         Assert.Equal(author.Comments.ToList()[0].Id, authorDb.Comments.ToList()[0].Id);
         Assert.Equal(author.Ratings.ToList()[0].Id, authorDb.Ratings.ToList()[0].Id);
     }
@@ -157,7 +158,7 @@ public class AuthorRepositoryTests
         Assert.Equal(author.Email, authorDb.Email);
         Assert.Equal(author.Phone, authorDb.Phone);
         Assert.Equal(author.User!.Id, authorDb.User!.Id);
-        Assert.Equal(author.Files.ToList()[0].Id, authorDb.Files.ToList()[0].Id);
+        Assert.Equal(author.Resources.ToList()[0].Id, authorDb.Resources.ToList()[0].Id);
         Assert.Equal(author.Comments.ToList()[0].Id, authorDb.Comments.ToList()[0].Id);
         Assert.Equal(author.Ratings.ToList()[0].Id, authorDb.Ratings.ToList()[0].Id);
     }
@@ -318,7 +319,7 @@ public class AuthorRepositoryTests
         Assert.Equal(author.Email, authorDb.Email);
         Assert.Equal(author.Phone, authorDb.Phone);
         Assert.Equal(author.User!.Id, authorDb.User!.Id);
-        Assert.Equal(author.Files.ToList()[0].Id, authorDb.Files.ToList()[0].Id);
+        Assert.Equal(author.Resources.ToList()[0].Id, authorDb.Resources.ToList()[0].Id);
         Assert.Equal(author.Comments.ToList()[0].Id, authorDb.Comments.ToList()[0].Id);
         Assert.Equal(author.Ratings.ToList()[0].Id, authorDb.Ratings.ToList()[0].Id);
     }
@@ -343,7 +344,7 @@ public class AuthorRepositoryTests
         Assert.Equal(author.Email, authorDb.Email);
         Assert.Equal(author.Phone, authorDb.Phone);
         Assert.Equal(author.User!.Id, authorDb.User!.Id);
-        Assert.Equal(author.Files.ToList()[0].Id, authorDb.Files.ToList()[0].Id);
+        Assert.Equal(author.Resources.ToList()[0].Id, authorDb.Resources.ToList()[0].Id);
         Assert.Equal(author.Comments.ToList()[0].Id, authorDb.Comments.ToList()[0].Id);
         Assert.Equal(author.Ratings.ToList()[0].Id, authorDb.Ratings.ToList()[0].Id);
     }
@@ -447,7 +448,7 @@ public class AuthorRepositoryTests
         Assert.NotNull(authorDb.Email);
         Assert.NotNull(authorDb.Phone);
         Assert.NotNull(authorDb.User!);
-        Assert.NotNull(authorDb.Files.ToList()[0]);
+        Assert.NotNull(authorDb.Resources.ToList()[0]);
         Assert.NotNull(authorDb.Comments.ToList()[0]);
         Assert.NotNull(authorDb.Ratings.ToList()[0]);
     }
@@ -470,7 +471,7 @@ public class AuthorRepositoryTests
         Assert.NotNull(authorDb.Surname);
         Assert.NotNull(authorDb.Email);
         Assert.NotNull(authorDb.Phone);
-        Assert.NotNull(authorDb.Files.ToList()[0]);
+        Assert.NotNull(authorDb.Resources.ToList()[0]);
         Assert.NotNull(authorDb.Comments.ToList()[0]);
         Assert.NotNull(authorDb.Ratings.ToList()[0]);
     }
@@ -488,7 +489,7 @@ public class AuthorRepositoryTests
         var expectedSurname  = "new surname";
         var expectedEmail    = "newEmail@mail.ru";
         var expectedPhone    = "+0 (987) 654-32-10";
-        var expectedFiles    = new List<File> { new() { Id    = Guid.NewGuid() } };
+        var expectedResources    = new List<Resource> { new() { Id    = Guid.NewGuid() } };
         var expectedComments = new List<Comment> { new() { Id = Guid.NewGuid() } };
         var expectedRatings  = new List<Rating> { new() { Id  = Guid.NewGuid() } };
 
@@ -499,7 +500,7 @@ public class AuthorRepositoryTests
             Surname = expectedSurname,
             Email = expectedEmail,
             Phone = expectedPhone,
-            Files = expectedFiles,
+            Resources = expectedResources,
             Comments = expectedComments,
             Ratings = expectedRatings,
         };
@@ -519,8 +520,8 @@ public class AuthorRepositoryTests
         Assert.Equal(expectedSurname, authorDb.Surname);
         Assert.Equal(expectedEmail, authorDb.Email);
         Assert.Equal(expectedPhone, authorDb.Phone);
-        Assert.Equal(expectedFiles[0].Id, authorDb.Files.ToList()[0].Id);
-        Assert.Equal(expectedFiles.Count, authorDb.Files.Count);
+        Assert.Equal(expectedResources[0].Id, authorDb.Resources.ToList()[0].Id);
+        Assert.Equal(expectedResources.Count, authorDb.Resources.Count);
         Assert.Equal(expectedComments[0].Id, authorDb.Comments.ToList()[0].Id);
         Assert.Equal(expectedComments.Count, authorDb.Comments.Count);
         Assert.Equal(expectedRatings[0].Id, authorDb.Ratings.ToList()[0].Id);
@@ -536,7 +537,7 @@ public class AuthorRepositoryTests
         var expectedSurname  = "new surname";
         var expectedEmail    = "newEmail@mail.ru";
         var expectedPhone    = "+0 (987) 654-32-10";
-        var expectedFiles    = new List<File> { new() { Id    = Guid.NewGuid() } };
+        var expectedResources    = new List<Resource> { new() { Id    = Guid.NewGuid() } };
         var expectedComments = new List<Comment> { new() { Id = Guid.NewGuid() } };
         var expectedRatings  = new List<Rating> { new() { Id  = Guid.NewGuid() } };
 
@@ -547,7 +548,7 @@ public class AuthorRepositoryTests
             Surname = expectedSurname,
             Email = expectedEmail,
             Phone = expectedPhone,
-            Files = expectedFiles,
+            Resources = expectedResources,
             Comments = expectedComments,
             Ratings = expectedRatings,
         };
@@ -567,8 +568,8 @@ public class AuthorRepositoryTests
         Assert.Equal(expectedSurname, authorDb.Surname);
         Assert.Equal(expectedEmail, authorDb.Email);
         Assert.Equal(expectedPhone, authorDb.Phone);
-        Assert.Equal(expectedFiles[0].Id, authorDb.Files.ToList()[0].Id);
-        Assert.Equal(expectedFiles.Count, authorDb.Files.Count);
+        Assert.Equal(expectedResources[0].Id, authorDb.Resources.ToList()[0].Id);
+        Assert.Equal(expectedResources.Count, authorDb.Resources.Count);
         Assert.Equal(expectedComments[0].Id, authorDb.Comments.ToList()[0].Id);
         Assert.Equal(expectedComments.Count, authorDb.Comments.Count);
         Assert.Equal(expectedRatings[0].Id, authorDb.Ratings.ToList()[0].Id);

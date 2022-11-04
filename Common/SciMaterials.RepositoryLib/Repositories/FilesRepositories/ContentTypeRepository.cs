@@ -286,7 +286,7 @@ public class ContentTypeRepository : IContentTypeRepository
     /// <inheritdoc cref="IRepository{T}.GetPage(int, int, bool, bool)"/>
     public List<ContentType>? GetPage(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        IQueryable<ContentType> query = new List<ContentType>().AsQueryable();
+        IQueryable<ContentType> query = _context.ContentTypes.AsQueryable();
 
         if (include)
             query = query
@@ -305,7 +305,7 @@ public class ContentTypeRepository : IContentTypeRepository
     /// <inheritdoc cref="IRepository{T}.GetPageAsync(int, int, bool, bool)"/>
     public async Task<List<ContentType>?> GetPageAsync(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        IQueryable<ContentType> query = new List<ContentType>().AsQueryable();
+        IQueryable<ContentType> query = _context.ContentTypes.AsQueryable();
 
         if (include)
             query = query

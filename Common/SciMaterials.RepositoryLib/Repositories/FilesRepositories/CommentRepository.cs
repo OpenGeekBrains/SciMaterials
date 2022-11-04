@@ -270,7 +270,7 @@ public class CommentRepository : ICommentRepository
     /// <inheritdoc cref="IRepository{T}.GetPage(int, int, bool, bool)"/>
     public List<Comment>? GetPage(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        IQueryable<Comment> query = new List<Comment>().AsQueryable();
+        IQueryable<Comment> query = _context.Comments.AsQueryable();
 
         if (include)
             query = query
@@ -291,7 +291,7 @@ public class CommentRepository : ICommentRepository
     /// <inheritdoc cref="IRepository{T}.GetPageAsync(int, int, bool, bool)"/>
     public async Task<List<Comment>?> GetPageAsync(int pageNumb, int pageSize, bool disableTracking = true, bool include = false)
     {
-        IQueryable<Comment> query = new List<Comment>().AsQueryable();
+        IQueryable<Comment> query = _context.Comments.AsQueryable();
 
         if (include)
             query = query

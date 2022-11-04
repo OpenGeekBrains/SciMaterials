@@ -23,8 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!--<ProjectReference Include="..\SciMaterials.AUTH\SciMaterials.AUTH.csproj" />-->
     <ProjectReference Include="..\SciMaterials.Contracts.API\SciMaterials.Contracts.API.csproj" />
+    <ProjectReference Include="..\SciMaterials.Contracts.Identity.API\SciMaterials.Contracts.Identity.API.csproj" />
+    <ProjectReference Include="..\SciMaterials.Contracts.Identity.Clients\SciMaterials.Contracts.Identity.Clients.csproj" />
     <ProjectReference Include="..\SciMaterials.Contracts.WebApi.Clients\SciMaterials.Contracts.WebApi.Clients.csproj" />
   </ItemGroup>
 

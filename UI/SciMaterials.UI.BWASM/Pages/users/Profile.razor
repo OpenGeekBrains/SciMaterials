@@ -1,0 +1,49 @@
+﻿@page "/profile"
+@using System.Security.Claims
+@using Severity = MudBlazor.Severity
+
+@attribute [Authorize]
+
+@inject ISnackbar Snackbar
+
+<h3>Profile</h3>
+
+<MudStack>
+	@foreach (var claim in _userClaims)
+	{
+		<MudPaper>
+			@claim.Type: @claim.Value
+		</MudPaper>
+	}
+
+	<MudTextField T="string" @bind-Value="RoleCheckValue" />
+	<MudButton OnClick="CheckThatUserInRole">Check</MudButton>
+</MudStack>
+
+@code {
+
+	[CascadingParameter]
+	public Task<AuthenticationState> AuthenticationState { get; set; } = null!;
+
+	private List<Claim> _userClaims = null!;
+
+	private string RoleCheckValue { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		var state = await AuthenticationState;
+		_userClaims = state.User.Claims.ToList();
+	}
+
+	private async Task CheckThatUserInRole()
+	{
+		var role = RoleCheckValue;
+		var state = await AuthenticationState;
+		var isInRole = state.User.IsInRole(role);
+		var roles = state.User.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x=>x.Value).ToArray();
+		Snackbar.Add(
+			"User is" + (isInRole ? "" : " not ") + $"in role {role}, \n user roles:\n {string.Join(", ", roles)}",
+			isInRole ? Severity.Success : Severity.Error);
+	}
+
+}

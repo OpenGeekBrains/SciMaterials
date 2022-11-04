@@ -1,18 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace SciMaterials.UI.BWASM.Models;
+﻿namespace SciMaterials.UI.BWASM.Models;
 
 public class SignUpForm
 {
-    [Required]
-    [StringLength(255, ErrorMessage = "Name length can't be more than 255.")]
-    public string? Username { get; set; }
-
-    [Required]
-    [EmailAddress]
-    public string? Email { get; set; }
-
-    [Required]
-    [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
-    public string? Password { get; set; }
+    public string Username { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
 }

@@ -123,6 +123,16 @@ namespace SciMaterials.DAL.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] Links {
+            get {
+                object obj = ResourceManager.GetObject("Links", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] Ratings {
             get {
                 object obj = ResourceManager.GetObject("Ratings", resourceCulture);
@@ -136,6 +146,16 @@ namespace SciMaterials.DAL.Properties {
         internal static byte[] Tags {
             get {
                 object obj = ResourceManager.GetObject("Tags", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] Urls {
+            get {
+                object obj = ResourceManager.GetObject("Urls", resourceCulture);
                 return ((byte[])(obj));
             }
         }

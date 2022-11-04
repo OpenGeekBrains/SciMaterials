@@ -17,13 +17,13 @@ public class FileSystemStore : IFileStore
         _logger = logger;
     }
 
-    public async Task<FileWriteResult> WriteAsync(string path, string text, CancellationToken cancellationToken = default)
+    public async Task<FileWriteResult> WriteAsync(string path, string text, CancellationToken Cancel = default)
     {
         using var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(text));
-        return await WriteAsync(path, memoryStream, cancellationToken);
+        return await WriteAsync(path, memoryStream, Cancel);
     }
 
-    public async Task<FileWriteResult> WriteAsync(string path, Stream stream, CancellationToken cancellationToken = default)
+    public async Task<FileWriteResult> WriteAsync(string path, Stream stream, CancellationToken Cancel = default)
     {
         try
         {
@@ -34,9 +34,9 @@ public class FileSystemStore : IFileStore
             long totalBytesRead = 0;
             using var writeStream = File.Create(path);
             using var hashAlgorithm = SHA512.Create();
-            while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false)) > 0)
+            while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, Cancel).ConfigureAwait(false)) > 0)
             {
-                await writeStream.WriteAsync(buffer, 0, bytesRead, cancellationToken).ConfigureAwait(false);
+                await writeStream.WriteAsync(buffer, 0, bytesRead, Cancel).ConfigureAwait(false);
                 hashAlgorithm.TransformBlock(buffer, 0, bytesRead, null, 0);
                 totalBytesRead += bytesRead;
             }
@@ -83,7 +83,7 @@ public class FileSystemStore : IFileStore
         return stream;
     }
 
-    public async Task<T> ReadMetadataAsync<T>(string path, CancellationToken cancellationToken = default)
+    public async Task<T> ReadMetadataAsync<T>(string path, CancellationToken Cancel = default)
     {
         if (!File.Exists(path))
             throw new FileNotFoundException($"Metadata file {Path.GetFileName(path)}  not found");

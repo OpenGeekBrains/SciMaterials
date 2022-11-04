@@ -4,5 +4,5 @@ namespace SciMaterials.Contracts.WebApi.Clients;
 
 public interface IApiDeleteClient<TId>
 {
-    Task<Result<TId>> DeleteAsync(TId id, CancellationToken cancellationToken = default);
+    Task<Result<TId>> DeleteAsync(TId id, CancellationToken Cancel = default);
 }

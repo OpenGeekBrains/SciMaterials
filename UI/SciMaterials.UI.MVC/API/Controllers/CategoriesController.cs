@@ -2,6 +2,7 @@
 using SciMaterials.Contracts.API.Constants;
 using SciMaterials.Contracts.API.DTO.Categories;
 using SciMaterials.Contracts.API.Services.Categories;
+using SciMaterials.Contracts.Result;
 
 namespace SciMaterials.UI.MVC.API.Controllers;
 
@@ -20,6 +21,7 @@ public class CategoriesController : ApiBaseController<CategoriesController>
     /// <summary> Get All Categories. </summary>
     /// <returns> Status 200 OK. </returns>
     [HttpGet]
+    [ProducesDefaultResponseType(typeof(Result<IEnumerable<GetCategoryResponse>>))]
     public async Task<IActionResult> GetAllAsync()
     {
         var сategories = await _сategoryService.GetAllAsync();
@@ -29,6 +31,7 @@ public class CategoriesController : ApiBaseController<CategoriesController>
     /// <summary> Get Category by Id. </summary>
     /// <param name="id"> Category Id. </param>
     [HttpGet("{id}")]
+    [ProducesDefaultResponseType(typeof(Result<GetCategoryResponse>))]
     public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
     {
         var products = await _сategoryService.GetByIdAsync(id);
@@ -39,6 +42,7 @@ public class CategoriesController : ApiBaseController<CategoriesController>
     /// <param name="request"> Add Request DTO. </param>
     /// <returns> Status 200 OK. </returns>
     [HttpPost("Add")]
+    [ProducesDefaultResponseType(typeof(Guid))]
     public async Task<IActionResult> AddAsync([FromBody] AddCategoryRequest request)
     {
         var result = await _сategoryService.AddAsync(request);
@@ -48,7 +52,8 @@ public class CategoriesController : ApiBaseController<CategoriesController>
     /// <summary> Edit a Category. </summary>
     /// <param name="request"> Edit Request DTO. </param>
     /// <returns> Status 200 OK. </returns>
-    [HttpPost("Edit")]
+    [HttpPut("Edit")]
+    [ProducesDefaultResponseType(typeof(Guid))]
     public async Task<IActionResult> EditAsync([FromBody] EditCategoryRequest request)
     {
         var result = await _сategoryService.EditAsync(request);
@@ -59,6 +64,7 @@ public class CategoriesController : ApiBaseController<CategoriesController>
     /// <param name="id"> Category Id. </param>
     /// <returns> Status 200 OK response. </returns>
     [HttpDelete("{id}")]
+    [ProducesDefaultResponseType(typeof(Guid))]
     public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _сategoryService.DeleteAsync(id);

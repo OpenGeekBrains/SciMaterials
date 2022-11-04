@@ -1,0 +1,40 @@
+﻿@typeparam TItem
+
+<MudDialog>
+	<DialogContent>
+		<div class="d-flex flex-column py-1">
+			@foreach (var item in Items)
+			{
+				<MudButton OnClick="() => SelectOption(item)">@OptionLabel.Invoke(item)</MudButton>
+			}
+		</div>
+	</DialogContent>
+</MudDialog>
+
+@code {
+
+	[CascadingParameter]
+	public MudDialogInstance MudDialog { get; set; } = null!;
+
+	[Parameter]
+	public List<TItem> Items { get; set; } = new();
+
+	[Parameter]
+	public Func<TItem, string> OptionLabel { get; set; } = null!;
+
+	protected override void OnInitialized()
+	{
+		MudDialog.SetOptions(new DialogOptions()
+		{
+			CloseButton = true,
+			CloseOnEscapeKey = true,
+			MaxWidth = MaxWidth.ExtraSmall,
+			FullWidth = true
+		});
+	}
+
+	private void SelectOption(TItem item)
+	{
+		MudDialog.Close(DialogResult.Ok(item));
+	}
+}
