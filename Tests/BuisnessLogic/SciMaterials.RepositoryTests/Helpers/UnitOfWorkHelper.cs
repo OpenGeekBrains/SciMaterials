@@ -31,6 +31,7 @@ public static class UnitOfWorkHelper
         unitOfWork.Setup(x => x.GetRepository<FileGroup>()).Returns(new FileGroupRepository(context, logger));
         unitOfWork.Setup(x => x.GetRepository<Url>()).Returns(new UrlRepository(context, logger));
         unitOfWork.Setup(x => x.GetRepository<Rating>()).Returns(new RatingRepository(context, logger));
+        unitOfWork.Setup(x => x.GetRepository<Tag>()).Returns(new TagRepository(context, logger));
 
         return unitOfWork;
     }
