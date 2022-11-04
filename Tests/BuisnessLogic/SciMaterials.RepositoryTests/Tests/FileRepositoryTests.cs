@@ -123,7 +123,6 @@ public class FileRepositoryTests
         Assert.Equal(file.ShortInfo, fileDb.ShortInfo);
         Assert.Equal(file.Description, fileDb.Description);
         Assert.Equal(file.CreatedAt, fileDb.CreatedAt);
-        Assert.Equal(file.Url, fileDb.Url);
         Assert.Equal(file.Size, fileDb.Size);
         Assert.Equal(file.Hash, fileDb.Hash);
         Assert.Equal(file.Author.Id, fileDb.Author.Id);
@@ -162,7 +161,6 @@ public class FileRepositoryTests
         Assert.Equal(file.ShortInfo, fileDb.ShortInfo);
         Assert.Equal(file.Description, fileDb.Description);
         Assert.Equal(file.CreatedAt, fileDb.CreatedAt);
-        Assert.Equal(file.Url, fileDb.Url);
         Assert.Equal(file.Size, fileDb.Size);
         Assert.Equal(file.Hash, fileDb.Hash);
         Assert.Equal(file.Author.Id, fileDb.Author.Id);

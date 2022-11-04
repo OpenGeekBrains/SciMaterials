@@ -1,29 +1,26 @@
-﻿using NLog.Time;
-
-using SciMaterials.DAL.Models;
+﻿using SciMaterials.DAL.Models;
 
 using File = SciMaterials.DAL.Models.File;
 
 namespace SciMaterials.RepositoryTests.Helpers.ModelsHelpers;
 
-internal class FileHelper
+internal class UrlHelper
 {
-    public static IEnumerable<File> GetMany()
+    public static IEnumerable<Url> GetMany()
     {
         yield return GetOne();
     }
 
-    public static File GetOne()
+    public static Url GetOne()
     {
-        return new File
+        return new Url
         {
             Id = Guid.NewGuid(),
             Name = "FileGroupName",
             ShortInfo = "ShortInfo",
             Description = "Description",
+           
             CreatedAt = DateTime.UtcNow,
-            Size = long.MaxValue,
-            Hash = "Hash",
             Author = new Author
             {
                 Id = Guid.NewGuid(),
@@ -44,14 +41,7 @@ internal class FileHelper
             {
                 new Rating {Id = Guid.NewGuid(), }
             },
-            FileGroup = new FileGroup
-            {
-                Id = Guid.NewGuid(),
-            },
-            ContentType = new ContentType
-            {
-                Id = Guid.NewGuid(),
-            },
+            Link = "Link",
         };
     }
 }
