@@ -29,24 +29,19 @@ public class IdentityClient : IIdentityClient
     /// Метод клиента для регистрации пользователя в Identity
     /// </summary>
     /// <param name="RegisterRequest">Запрос на регистрацию</param>
-    /// <param name="CancellationToken">Токен отмены</param>
+    /// <param name="Cancel">Токен отмены</param>
     /// <returns>IdentityClientResponse</returns>
-    public async Task<ClientCreateUserResponse> RegisterUserAsync(RegisterRequest RegisterRequest, CancellationToken CancellationToken = default)
+    public async Task<ClientCreateUserResponse> RegisterUserAsync(RegisterRequest RegisterRequest, CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "RegisterUser {Email}", RegisterRequest.Email);
         var content = JsonSerializer.Serialize(RegisterRequest, _options);
         var body_content = new StringContent(content, Encoding.UTF8, "application/json");
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Post,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.Register}"),
-            Content = body_content,
-        };
         
-        var registration_result = await _client.SendAsync(request, CancellationToken);
-        var result = await registration_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientCreateUserResponse>(cancellationToken: CancellationToken);
+        var registration_result = 
+            await _client.PostAsync($"{_client.BaseAddress}" + 
+                                    $"{AuthApiRoute.AuthControllerName}/" + 
+                                    $"{AuthApiRoute.Register}", body_content, Cancel);
+        var result = await registration_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientCreateUserResponse>(cancellationToken: Cancel);
         return result;
     }
 
@@ -56,22 +51,17 @@ public class IdentityClient : IIdentityClient
     /// <param name="loginRegister">Запрос на авторизацию</param>
     /// <param name="Cancel">Токен отмены</param>
     /// <returns>IdentityClientResponse</returns>
-    public async Task<ClientLoginResponse> LoginUserAsync(LoginRequest loginRegister, CancellationToken CancellationToken = default)
+    public async Task<ClientLoginResponse> LoginUserAsync(LoginRequest loginRegister, CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "LoginUser {Email}", loginRegister.Email);
         var content = JsonSerializer.Serialize(loginRegister, _options);
         var body_content = new StringContent(content, Encoding.UTF8, "application/json");
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Post,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.Login}"),
-            Content = body_content
-        };
-        
-        var login_result = await _client.SendAsync(request, CancellationToken);
-        var result = await login_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientLoginResponse>(cancellationToken: CancellationToken);
+
+        var login_result =
+            await _client.PostAsync($"{_client.BaseAddress}" +
+                                    $"{AuthApiRoute.AuthControllerName}/" +
+                                    $"{AuthApiRoute.Login}", body_content, Cancel);
+        var result = await login_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientLoginResponse>(cancellationToken: Cancel);
         
         //Прописываем токен для будущих запросов к api, пока реализовано так.
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",result.SessionToken);
@@ -83,19 +73,16 @@ public class IdentityClient : IIdentityClient
     /// </summary>
     /// <param name="Cancel">Токен отмены</param>
     /// <returns>IdentityClientResponse</returns>
-    public async Task<ClientLogoutResponse> LogoutUserAsync(CancellationToken CancellationToken = default)
+    public async Task<ClientLogoutResponse> LogoutUserAsync(CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "LogoutUser");
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Post,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.Logout}"),
-        };
         
-        var logout_result = await _client.SendAsync(request, CancellationToken);
-        var result = await logout_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientLogoutResponse>(cancellationToken: CancellationToken);
+        var logout_result = 
+            await _client.PostAsync(
+                $"{_client.BaseAddress}" + 
+                $"{AuthApiRoute.AuthControllerName}/" + 
+                $"{AuthApiRoute.Logout}",  null, Cancel);
+        var result = await logout_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientLogoutResponse>(cancellationToken: Cancel);
         _client.DefaultRequestHeaders.Authorization = null;
         return result;
     }
@@ -106,22 +93,18 @@ public class IdentityClient : IIdentityClient
     /// <param name="ChangePasswordRequest">Запрос на смену пароля</param>
     /// <param name="Cancel">Токен отмены</param>
     /// <returns>IdentityClientResponse</returns>
-    public async Task<ClientChangePasswordResponse> ChangePasswordAsync(ChangePasswordRequest ChangePasswordRequest, CancellationToken CancellationToken = default)
+    public async Task<ClientChangePasswordResponse> ChangePasswordAsync(ChangePasswordRequest ChangePasswordRequest, CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "ChangePassword");
         var content = JsonSerializer.Serialize(ChangePasswordRequest, _options);
         var body_content = new StringContent(content, Encoding.UTF8, "application/json");
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Post,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.ChangePassword}"),
-            Content = body_content
-        };
         
-        var change_password_result = await _client.SendAsync(request, CancellationToken);
-        var result = await change_password_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientChangePasswordResponse>(cancellationToken: CancellationToken);
+        var change_password_result = 
+            await _client.PostAsync(
+                $"{_client.BaseAddress}" + 
+                $"{AuthApiRoute.AuthControllerName}/" + 
+                $"{AuthApiRoute.ChangePassword}", body_content, Cancel);
+        var result = await change_password_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientChangePasswordResponse>(cancellationToken: Cancel);
         return result;
     }
 
@@ -131,22 +114,18 @@ public class IdentityClient : IIdentityClient
     /// <param name="CreateRoleRequest">Запрос на создание роли</param>
     /// <param name="Cancel">Токен отмены</param>
     /// <returns>IdentityClientResponse</returns>
-    public async Task<ClientCreateRoleResponse> CreateRoleAsync(CreateRoleRequest CreateRoleRequest, CancellationToken CancellationToken = default)
+    public async Task<ClientCreateRoleResponse> CreateRoleAsync(CreateRoleRequest CreateRoleRequest, CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "CreateRole {RoleName}", CreateRoleRequest.RoleName);
         var content = JsonSerializer.Serialize(CreateRoleRequest, _options);
         var body_content = new StringContent(content, Encoding.UTF8, "application/json");
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Post,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.CreateRole}"),
-            Content = body_content
-        };
         
-        var create_role_result = await _client.SendAsync(request, CancellationToken);
-        var result = await create_role_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientCreateRoleResponse>(cancellationToken: CancellationToken);
+        var create_role_result = 
+            await _client.PostAsync(
+                $"{_client.BaseAddress}" + 
+                $"{AuthApiRoute.AuthControllerName}/" + 
+                $"{AuthApiRoute.CreateRole}", body_content, Cancel);
+        var result = await create_role_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientCreateRoleResponse>(cancellationToken: Cancel);
         return result;
     }
     
@@ -155,19 +134,16 @@ public class IdentityClient : IIdentityClient
     /// </summary>
     /// <param name="Cancel">Токен отмены</param>
     /// <returns>IdentityClientResponse</returns>
-    public async Task<ClientGetAllRolesResponse> GetAllRolesAsync(CancellationToken CancellationToken = default)
+    public async Task<ClientGetAllRolesResponse> GetAllRolesAsync(CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "GetAllRoles");
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.GetAllRoles}"),
-        };
-        
-        var get_all_roles_result = await _client.SendAsync(request, CancellationToken);
-        var result = await get_all_roles_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientGetAllRolesResponse>(cancellationToken: CancellationToken);
+
+        var get_all_roles_result = 
+            await _client.GetAsync(
+                $"{_client.BaseAddress}" +
+                $"{AuthApiRoute.AuthControllerName}/" +
+                $"{AuthApiRoute.GetAllRoles}", Cancel);
+        var result = await get_all_roles_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientGetAllRolesResponse>(cancellationToken: Cancel);
         return result;
     }
 
@@ -180,16 +156,13 @@ public class IdentityClient : IIdentityClient
     public async Task<ClientGetRoleByIdResponse> GetRoleByIdAsync(string RoleId, CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "GetRoleById {RoleId}", RoleId);
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.GetRoleById}/"+ 
-                                 $"{RoleId}"),
-        };
 
-        var getRolesByIdResult = await _client.SendAsync(request, Cancel);
+        var getRolesByIdResult = 
+            await _client.GetAsync(
+                $"{_client.BaseAddress}" + 
+                $"{AuthApiRoute.AuthControllerName}/" + 
+                $"{AuthApiRoute.GetRoleById}/"+ 
+                $"{RoleId}", Cancel);
         var result = await getRolesByIdResult.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientGetRoleByIdResponse>(cancellationToken: Cancel);
         return result;
     }
@@ -205,16 +178,12 @@ public class IdentityClient : IIdentityClient
         _logger.Log(LogLevel.Information, "EditRoleById {RoleId}", roleRequest.RoleId);
         var content = JsonSerializer.Serialize(roleRequest, _options);
         var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Put,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.EditRoleNameById}"),
-            Content = bodyContent
-        };
         
-        var getRoleByIdResult = await _client.SendAsync(request, Cancel);
+        var getRoleByIdResult = 
+            await _client.PutAsync(
+                $"{_client.BaseAddress}" + 
+                $"{AuthApiRoute.AuthControllerName}/" + 
+                $"{AuthApiRoute.EditRoleNameById}", bodyContent, Cancel);
         var result = await getRoleByIdResult.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientEditRoleNameByIdResponse>(cancellationToken: Cancel);
         return result;
     }
@@ -228,16 +197,13 @@ public class IdentityClient : IIdentityClient
     public async Task<ClientDeleteRoleByIdResponse> DeleteRoleByIdAsync(string RoleId, CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "DeleteRoleById {RoleId}", RoleId);
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Delete,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.DeleteRoleById}/" + 
-                                 $"{RoleId}"),
-        };
         
-        var deleteRoleResult = await _client.SendAsync(request, Cancel);
+        var deleteRoleResult = 
+            await _client.DeleteAsync(
+                $"{_client.BaseAddress}" + 
+                $"{AuthApiRoute.AuthControllerName}/" + 
+                $"{AuthApiRoute.DeleteRoleById}/" + 
+                $"{RoleId}", Cancel);
         var result = await deleteRoleResult.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientDeleteRoleByIdResponse>(cancellationToken: Cancel);
         return result;
     }
@@ -253,16 +219,12 @@ public class IdentityClient : IIdentityClient
         _logger.Log(LogLevel.Information, "AddRole {Role} ToUser {Email}", roleRequest.RoleName, roleRequest.Email);
         var content = JsonSerializer.Serialize(roleRequest, _options);
         var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Post,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.AddRoleToUser}"),
-            Content = bodyContent
-        };
         
-        var addRoleToUserResult = await _client.SendAsync(request, Cancel);
+        var addRoleToUserResult = 
+            await _client.PostAsync(
+                $"{_client.BaseAddress}" + 
+                $"{AuthApiRoute.AuthControllerName}/" + 
+                $"{AuthApiRoute.AddRoleToUser}", bodyContent, Cancel);
         var result = await addRoleToUserResult.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientAddRoleToUserResponse>(cancellationToken: Cancel);
         return result;
     }
@@ -276,17 +238,14 @@ public class IdentityClient : IIdentityClient
     public async Task<ClientDeleteUserRoleByEmailResponse> DeleteUserRoleByEmailAsync(string Email, string RoleName, CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "DeleteUserRoleByEmail {Email}", Email);
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Delete,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.DeleteUserRoleByEmail}/" + 
-                                 $"{Email}/" + 
-                                 $"{RoleName}"),
-        };
-        
-        var deleteUserRoleResult = await _client.SendAsync(request, Cancel);
+
+        var deleteUserRoleResult = 
+            await _client.DeleteAsync(
+                $"{_client.BaseAddress}" + 
+                $"{AuthApiRoute.AuthControllerName}/" + 
+                $"{AuthApiRoute.DeleteUserRoleByEmail}/" + 
+                $"{Email}/" + 
+                $"{RoleName}", Cancel);
         var result = await deleteUserRoleResult.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientDeleteUserRoleByEmailResponse>(cancellationToken: Cancel);
         return result;
     }
@@ -300,16 +259,13 @@ public class IdentityClient : IIdentityClient
     public async Task<ClientGetAllUserRolesByEmailResponse> GetAllUserRolesByEmailAsync(string Email, CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "ListOfUser {Email} Roles", Email);
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.GetAllUserRolesByEmail}/" + 
-                                 $"{Email}"),
-        };
         
-        var listOfUserRolesResult = await _client.SendAsync(request, Cancel);
+        var listOfUserRolesResult = 
+            await _client.GetAsync(
+                $"{_client.BaseAddress}" + 
+                $"{AuthApiRoute.AuthControllerName}/" + 
+                $"{AuthApiRoute.GetAllUserRolesByEmail}/" + 
+                $"{Email}", Cancel);
         var result = await listOfUserRolesResult.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientGetAllUserRolesByEmailResponse>(cancellationToken: Cancel);
         return result;
     }
@@ -325,16 +281,12 @@ public class IdentityClient : IIdentityClient
         _logger.Log(LogLevel.Information, "CreateUser {Email} {NickName}", registerRequest.Email, registerRequest.NickName);
         var content = JsonSerializer.Serialize(registerRequest, _options);
         var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Post,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.CreateUser}"),
-            Content = bodyContent
-        };
         
-        var createUserResult = await _client.SendAsync(request, Cancel);
+        var createUserResult = 
+            await _client.PostAsync(
+                $"{_client.BaseAddress}" + 
+                $"{AuthApiRoute.AuthControllerName}/" + 
+                $"{AuthApiRoute.CreateUser}", bodyContent, Cancel);
         var result = await createUserResult.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientCreateUserResponse>(cancellationToken: Cancel);
         return result;
     }
@@ -348,16 +300,13 @@ public class IdentityClient : IIdentityClient
     public async Task<ClientGetUserByEmailResponse> GetUserByEmailAsync(string Email, CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "GetUserByEmail {Email}", Email);
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.GetUserByEmail}/" + 
-                                 $"{Email}"),
-        };
         
-        var getUserByEmailResult = await _client.SendAsync(request, Cancel);
+        var getUserByEmailResult = 
+            await _client.GetAsync(
+                $"{_client.BaseAddress}" + 
+                $"{AuthApiRoute.AuthControllerName}/" + 
+                $"{AuthApiRoute.GetUserByEmail}/" + 
+                $"{Email}", Cancel);
         var result = await getUserByEmailResult.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientGetUserByEmailResponse>(cancellationToken: Cancel);
         return result;
     }
@@ -370,15 +319,12 @@ public class IdentityClient : IIdentityClient
     public async Task<ClientGetAllUsersResponse> GetAllUsersAsync(CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "GetAllUsers");
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.GetAllUsers}"),
-        };
         
-        var getAllUsersResult = await _client.SendAsync(request, Cancel);
+        var getAllUsersResult = 
+            await _client.GetAsync(
+                $"{_client.BaseAddress}" + 
+                $"{AuthApiRoute.AuthControllerName}/" + 
+                $"{AuthApiRoute.GetAllUsers}", Cancel);
         var result = await getAllUsersResult.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientGetAllUsersResponse>(cancellationToken: Cancel);
         return result;
     }
@@ -395,16 +341,12 @@ public class IdentityClient : IIdentityClient
             editUserNameByEmailRequest.EditUserNickName, editUserNameByEmailRequest.UserEmail);
         var content = JsonSerializer.Serialize(editUserNameByEmailRequest, _options);
         var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Put,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.EditUserByEmail}"),
-            Content = bodyContent
-        };
         
-        var getUserByEmailResult = await _client.SendAsync(request, Cancel);
+        var getUserByEmailResult = 
+            await _client.PutAsync(
+                $"{_client.BaseAddress}" + 
+                $"{AuthApiRoute.AuthControllerName}/" + 
+                $"{AuthApiRoute.EditUserByEmail}", bodyContent, Cancel);
         var result = await getUserByEmailResult.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientEditUserNameByEmailResponse>(cancellationToken: Cancel);
         return result;
     }
@@ -418,16 +360,13 @@ public class IdentityClient : IIdentityClient
     public async Task<ClientDeleteUserByEmailResponse> DeleteUserByEmailAsync(string Email, CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "DeleteUserByEmail {Email}", Email);
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Delete,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.DeleteUserByEmail}/" + 
-                                 $"{Email}"),
-        };
         
-        var getUserByEmailResult = await _client.SendAsync(request, Cancel);
+        var getUserByEmailResult = 
+            await _client.DeleteAsync(
+                $"{_client.BaseAddress}" + 
+                $"{AuthApiRoute.AuthControllerName}/" + 
+                $"{AuthApiRoute.DeleteUserByEmail}/" + 
+                $"{Email}", Cancel);
         var result = await getUserByEmailResult.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientDeleteUserByEmailResponse>(cancellationToken: Cancel);
         return result;
     }
@@ -440,15 +379,12 @@ public class IdentityClient : IIdentityClient
     public async Task<ClientDeleteUsersWithOutConfirmResponse> DeleteUsersWithOutConfirmAsync(CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "DeleteUsersWithOutConfirm");
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Delete,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.DeleteUserWithoutConfirm}"),
-        };
         
-        var getUserByEmailResult = await _client.SendAsync(request, Cancel);
+        var getUserByEmailResult = 
+            await _client.DeleteAsync(
+                $"{_client.BaseAddress}" + 
+                $"{AuthApiRoute.AuthControllerName}/" + 
+                $"{AuthApiRoute.DeleteUserWithoutConfirm}", Cancel);
         var result = await getUserByEmailResult.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientDeleteUsersWithOutConfirmResponse>(cancellationToken: Cancel);
         return result;
     }
@@ -456,15 +392,12 @@ public class IdentityClient : IIdentityClient
     public async Task<ClientRefreshTokenResponse> GetRefreshTokenAsync(CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "RefreshTokenAsync");
-        var request = new HttpRequestMessage()
-        {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri($"{_client.BaseAddress}" + 
-                                 $"{AuthApiRoute.AuthControllerName}/" + 
-                                 $"{AuthApiRoute.RefreshToken}"),
-        };
         
-        var refresh_token_result = await _client.SendAsync(request, Cancel);
+        var refresh_token_result = 
+            await _client.GetAsync(
+                $"{_client.BaseAddress}" + 
+                $"{AuthApiRoute.AuthControllerName}/" + 
+                $"{AuthApiRoute.RefreshToken}", Cancel);
         var result = await refresh_token_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientRefreshTokenResponse>(cancellationToken: Cancel);
         return result;
     }

@@ -28,7 +28,7 @@ services.AddApiServices(config);
 services.AddAuthApiServices(config);
 services.AddAuthDbInitializer();
 services.AddAuthUtils();
-services.AddIdentityClients(new Uri("http://localhost:5185"));
+services.AddIdentityClients(new Uri(config["WebAPI"]));
 services.AddAuthJwtAndSwaggerApiServices(builder.Configuration);
 
 builder.Services.AddCors(o => o.AddPolicy("test", p => p.WithOrigins("http://localhost:5159").AllowAnyMethod().AllowAnyHeader()));
