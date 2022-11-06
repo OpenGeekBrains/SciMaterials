@@ -28,21 +28,33 @@ internal class FileHelper
             {
                 Id = Guid.NewGuid(),
             },
-            Comments =
+            Comments = new List<Comment>
             {
-                new Comment { Id = Guid.NewGuid(), }
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                },
             },
-            Tags =
+            Tags = new List<Tag>
             {
-                new Tag {Id = Guid.NewGuid(), }
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                },
             },
-            Categories =
+            Categories = new List<Category>
             {
-                new Category {Id = Guid.NewGuid(), }
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                },
             },
-            Ratings =
+            Ratings = new List<Rating>
             {
-                new Rating {Id = Guid.NewGuid(), }
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                },
             },
             FileGroup = new FileGroup
             {
