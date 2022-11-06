@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+  scimaterials.ui.mvc:
+    container_name: mvc
+    image: scimaterialsuimvc:latest
+    restart: on-failure
+    depends_on:
+      - postgres_db
+    build:
+      context: .
+      dockerfile: UI/SciMaterials.UI.MVC/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - WebAPI=http://scimaterials.ui.mvc
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "5185:80"
+    volumes:
+      - mvc:/var/lib/mvc/data/
+    networks:
+      - scimaterials_network
+  
+  postgres_db:
+    container_name: postgres_db
+    image: postgres:latest
+    restart: on-failure
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql_auth/data/
+    networks:
+      - scimaterials_network
+
+volumes:
+    db:
+    mvc:
+
+networks:
+  scimaterials_network:
+    driver: bridge

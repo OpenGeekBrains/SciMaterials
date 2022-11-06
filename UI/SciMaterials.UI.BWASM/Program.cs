@@ -18,6 +18,7 @@ using SciMaterials.UI.BWASM.Models;
 using SciMaterials.UI.BWASM.Models.Validations;
 using SciMaterials.UI.BWASM.Services;
 using SciMaterials.UI.BWASM.Services.Identity;
+using SciMaterials.UI.BWASM.States.FileUpload;
 using SciMaterials.WebApi.Clients.Authors;
 using SciMaterials.WebApi.Clients.Extensions;
 using SciMaterials.WebApi.Clients.Identity;
@@ -58,7 +59,8 @@ builder.Services
 // Validators // TODO: register with assembly scan
 builder.Services
     .AddScoped<IValidator<SignUpForm>, SignUpFormValidator>()
-    .AddScoped<IValidator<SignInForm>, SignInFormValidator>();
+    .AddScoped<IValidator<SignInForm>, SignInFormValidator>()
+    .AddScoped<IValidator<UploadFilesFormState>, UploadFilesFormStateValidator>();
 
 // Background
 builder.Services

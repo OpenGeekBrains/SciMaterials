@@ -1,0 +1,156 @@
+﻿@page "/upload_files"
+@using SciMaterials.UI.BWASM.States.FileUpload
+@using SciMaterials.UI.BWASM.States.Categories
+@using SciMaterials.UI.BWASM.States.Authors
+@using Severity = MudBlazor.Severity
+@using System.Text
+@inherits FluxorComponent
+
+@inject IDispatcher Dispatcher
+@inject IState<FilesContentTypesFilterState> ContentTypesState
+@inject IState<UploadFilesFormState> FormState
+@inject IDialogService DialogService
+@inject IValidator<UploadFilesFormState> Validator
+@inject ISnackbar Snackbar
+
+<MudForm Model="@FormState.Value" @ref="@_form" Validation="@(Validator.ValidateValue())" ValidationDelay="5">
+	<MudStack Spacing="4">
+		<MudGrid>
+			<MudItem>
+				<MudText Align="Align.End" Typo="Typo.h4">Upload Files</MudText>
+			</MudItem>
+			<MudSpacer />
+			<MudItem>
+				<MudStack Row="true">
+					<InputFile id="fileInput" hidden OnChange="OnFilesListChange" accept="@ContentTypesState.Value.Filter" multiple />
+					<MudButton HtmlTag="label" for="fileInput" Variant="Variant.Filled">Add Files</MudButton>
+					<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ScheduleUpload">Upload</MudButton>
+					<IconButton Href="files_storage" Icon="@Icons.Material.Filled.Close" />
+				</MudStack>
+			</MudItem>
+		</MudGrid>
+
+		<MudGrid>
+			<MudItem xs="12" sm="7"><MudText Typo="Typo.h6">Category*</MudText></MudItem>
+			<MudItem xs="12" sm="6"><MudText>Name: @FormState.Value.Category.Name</MudText></MudItem>
+			<MudItem xs="12" Class="mb-3">
+				<MudButton Variant="Variant.Filled" Size="Size.Small" OnClick="ChangeFormFileCategory">Change</MudButton>
+			</MudItem>
+
+			<MudItem xs="12" sm="7"><MudText Typo="Typo.h6">Author*</MudText></MudItem>
+			<MudItem xs="12" sm="7"><MudText>FirstName: @FormState.Value.Author.FirstName</MudText></MudItem>
+			<MudItem xs="12" sm="7"><MudText>Surname: @FormState.Value.Author.Surname</MudText></MudItem>
+			<MudItem xs="12">
+				<MudButton Variant="Variant.Filled" Size="Size.Small" OnClick="ChangeFormFileAuthor">Change</MudButton>
+			</MudItem>
+		</MudGrid>
+
+		<MudTextField T="string" Label="Short info*" 
+					  Value="FormState.Value.ShortInfo"
+					  Lines="6"
+					  DebounceInterval="400" OnDebounceIntervalElapsed="UpdateFormShortInfo" />
+
+		<MudTextField T="string" Label="Description"
+		              Value="FormState.Value.Description"
+					  DebounceInterval="400" OnDebounceIntervalElapsed="UpdateFormDescription"
+		              Lines="10" />
+
+		<MudText Typo="Typo.h6">Files*</MudText>
+
+		<TableView TItem="FileData" Data="FormState.Value.Files">
+			<TableHeader>
+				<MudTh>Name</MudTh>
+				<MudTh>Size</MudTh>
+				<MudTh></MudTh>
+			</TableHeader>
+
+			<RowTemplate>
+				<MudTd DataLabel="Name">@context.FileName</MudTd>
+				<MudTd DataLabel="Size">@context.Size</MudTd>
+
+				<MudTh>
+					<MudButton Variant="Variant.Filled" Size="Size.Small" OnClick="() => Delete(context)">Delete</MudButton>
+				</MudTh>
+			</RowTemplate>
+		</TableView>
+	</MudStack>
+</MudForm>
+
+
+@code {
+	private MudForm? _form;
+
+	private async Task ScheduleUpload()
+	{
+		await _form!.Validate();
+
+		if (!_form.IsValid)
+		{
+			Snackbar.Add("Not all values in form is valid!", Severity.Warning);
+			return;
+		}
+		RegisterUploadData action = FormState.Value;
+		Dispatcher.Dispatch(action);
+	}
+
+	private void OnFilesListChange(InputFileChangeEventArgs e)
+	{
+		if (e.FileCount <= 0) return;
+
+		var toUpload = e.GetMultipleFiles(e.FileCount);
+		var validContentTypes = ContentTypesState.Value.Selected.Select(x => x.Name).ToArray();
+		HashSet<string> notSupported = new();
+
+		foreach (var browserFile in toUpload)
+		{
+			if (validContentTypes.Contains(browserFile.ContentType)) continue;
+			notSupported.Add(browserFile.Name);
+		}
+
+		if (notSupported.Count > 0)
+		{
+			StringBuilder sb = new("You cannot upload this files:<br>");
+			sb.AppendJoin("<br>", notSupported);
+			Snackbar.Add(sb.ToString(), Severity.Warning);
+			toUpload = toUpload.Where(x => !notSupported.Contains(x.Name)).ToList();
+		}
+
+		Dispatcher.Dispatch(new AddFiles(toUpload));
+	}
+
+	private async Task ChangeFormFileCategory()
+	{
+		if (await Select<FilesCategoriesSelector, TreeFileCategory>() is not { } selected) return;
+
+		Dispatcher.Dispatch(new ChangeCategory(new(selected.Id, selected.Name)));
+	}
+
+	private async Task ChangeFormFileAuthor()
+	{
+		if (await Select<AuthorSelector, AuthorState>() is not { } selected) return;
+
+		Dispatcher.Dispatch(new ChangeAuthor(new(selected.Id, selected.Name, string.Empty)));
+	}
+
+	private void Delete(FileData context)
+	{
+		Dispatcher.Dispatch(new RemoveFile(context.Id));
+	}
+
+	private async Task<TItem?> Select<TSelectDialog, TItem>() where TSelectDialog : ComponentBase
+	{
+		var reference = DialogService.Show<TSelectDialog>();
+		var result = await reference.Result;
+		return result.Cancelled || result.Data is not TItem data ? default : data;
+	}
+
+	private void UpdateFormShortInfo(string shortInfo)
+	{
+		Dispatcher.Dispatch(new UpdateShortInfo(shortInfo));
+	}
+
+	private void UpdateFormDescription(string description)
+	{
+		Dispatcher.Dispatch(new UpdateDescription(description));
+	}
+}

@@ -6,5 +6,5 @@ namespace SciMaterials.DAL.AUTH.Context;
 
 public class AuthDbContext : IdentityDbContext<IdentityUser>
 {
-    public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options) { }
+    public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options) {}
 }

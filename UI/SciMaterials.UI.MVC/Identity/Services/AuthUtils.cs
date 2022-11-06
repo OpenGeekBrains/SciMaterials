@@ -60,6 +60,11 @@ public class AuthUtils : IAuthUtilits
         return jwt_security_token_handler.WriteToken(security_token);
     }
 
+    /// <summary>
+    /// Метод проверки ролей админа и пользователя, которые удалять нельзя
+    /// </summary>
+    /// <param name="Role">Роль</param>
+    /// <returns></returns>
     public bool CheckToDeleteAdminOrUserRoles(IdentityRole Role)
     {
         if (Role.Name.Equals(AuthApiRoles.Admin) || Role.Name.Equals(AuthApiRoles.User)) return false;
@@ -67,6 +72,12 @@ public class AuthUtils : IAuthUtilits
         return true;
     }
 
+    /// <summary>
+    /// Метод проверки супер админа в роли админа, которого удалять нельзя
+    /// </summary>
+    /// <param name="User">Пользователь</param>
+    /// <param name="RoleName">Название роли</param>
+    /// <returns></returns>
     public bool CheckToDeleteSAInRoleAdmin(IdentityUser User, string RoleName)
     {
         if (User.Email.Equals(_Configuration.GetSection("AuthApiSettings:AdminSettings:login").Value) &&
@@ -75,6 +86,11 @@ public class AuthUtils : IAuthUtilits
         return true;
     }
 
+    /// <summary>
+    /// Метод проверки супер админа, которого удалять нельзя
+    /// </summary>
+    /// <param name="User">Пользователь</param>
+    /// <returns></returns>
     public bool CheckToDeleteSA(IdentityUser User)
     {
         if (User.Email.Equals(_Configuration.GetSection("AuthApiSettings:AdminSettings:login").Value)) return false;

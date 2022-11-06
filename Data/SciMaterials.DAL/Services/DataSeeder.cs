@@ -22,11 +22,9 @@ public static class DataSeeder
     /// <param name="Cancel">Распространяет уведомление о том, что операции следует отменить. <see cref="CancellationToken"/> Значение по умолчанию: <value>default</value></param>
     /// <returns>Задача, которая представляет работу в очереди на выполнение в ThreadPool. См. <see cref="Task"/></returns>
     /// <exception cref="OperationCanceledException"></exception>
-    public static async Task SeedAsync(SciMaterialsContext db, CancellationToken Cancel = default)
+    public static async Task SeedAsync(SciMaterialsContext db, ILogger Logger, CancellationToken Cancel = default)
     {
-        var loggger = db.GetService<ILogger<IDbSetInitializer>>();
-
-        loggger.LogInformation("Инициализация БД тестовыми данными");
+        Logger.LogInformation("Инициализация БД тестовыми данными");
 
         await using var transaction = await db.Database.BeginTransactionAsync(Cancel).ConfigureAwait(false);
 
@@ -34,12 +32,13 @@ public static class DataSeeder
         {
             try
             {
-                await db.Users.AddRangeAsync(JsonConvert.DeserializeObject<List<User>>(Encoding.UTF8.GetString(Resources.Users))!, Cancel);
+                var users = JsonConvert.DeserializeObject<List<User>>(Encoding.UTF8.GetString(Resources.Users));
+                await db.Users.AddRangeAsync(users!, Cancel);
                 await db.SaveChangesAsync(Cancel);
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Error loading data Users", e.Message);
+                Logger.LogError(e, "Error loading data Users");
                 throw;
             }
         }
@@ -53,7 +52,7 @@ public static class DataSeeder
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Error loading data Authors", e.Message);
+                Logger.LogError(e, "Error loading data Authors");
                 throw;
             }
         }
@@ -67,7 +66,7 @@ public static class DataSeeder
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Error loading data ContentTypes", e.Message);
+                Logger.LogError(e, "Error loading data ContentTypes");
                 throw;
             }
         }
@@ -81,7 +80,7 @@ public static class DataSeeder
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Error loading data FileGroup", e.Message);
+                Logger.LogError(e, "Error loading data FileGroup");
                 throw;
             }
         }
@@ -95,7 +94,7 @@ public static class DataSeeder
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Error loading data Files", e.Message);
+                Logger.LogError(e, "Error loading data Files");
                 throw;
             }
         }
@@ -109,7 +108,7 @@ public static class DataSeeder
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Error loading data Links", e.Message);
+                Logger.LogError(e, "Error loading data Links");
                 throw;
             }
         }
@@ -123,7 +122,7 @@ public static class DataSeeder
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Error loading data Tags", e.Message);
+                Logger.LogError(e, "Error loading data Tags");
                 throw;
             }
         }
@@ -137,7 +136,7 @@ public static class DataSeeder
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Error loading data Categories", e.Message);
+                Logger.LogError(e, "Error loading data Categories");
                 throw;
             }
         }
@@ -151,7 +150,7 @@ public static class DataSeeder
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Error loading data Comments", e.Message);
+                Logger.LogError(e, "Error loading data Comments");
                 throw;
             }
         }
@@ -165,7 +164,7 @@ public static class DataSeeder
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Error loading data Ratings", e.Message);
+                Logger.LogError(e, "Error loading data Ratings");
                 throw;
             }
         }
@@ -179,7 +178,7 @@ public static class DataSeeder
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Error loading data Urls", e.Message);
+                Logger.LogError(e, "Error loading data Urls");
                 throw;
             }
         }

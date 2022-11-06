@@ -11,6 +11,7 @@ using SciMaterials.Contracts.Identity.API.DTO.Users;
 using SciMaterials.Contracts.Identity.Clients.Clients.Responses.DTO;
 using SciMaterials.Contracts.Identity.Clients.Clients.Responses.Roles;
 using SciMaterials.Contracts.Identity.Clients.Clients.Responses.User;
+using SciMaterials.DAL.Contexts;
 
 namespace SciMaterials.UI.MVC.Identity.Controllers;
 
@@ -56,12 +57,10 @@ public class AccountController : Controller
         try
         {
             var identity_user = new IdentityUser{Email = RegisterRequest.Email, UserName = RegisterRequest.NickName};
-            
             var identity_result = await _UserManager.CreateAsync(identity_user, RegisterRequest.Password);
             if (identity_result.Succeeded)
             {
                 await _UserManager.AddToRoleAsync(identity_user, AuthApiRoles.User);
-
                 var email_confirm_token = await _UserManager.GenerateEmailConfirmationTokenAsync(identity_user);
 
                 var callback_url = Url.Action(
@@ -79,13 +78,17 @@ public class AccountController : Controller
                 });
             }
 
-            _Logger.Log(LogLevel.Information, "Не удалось зарегистрировать пользователя {Email}",
-                RegisterRequest.Email);
+            var errors = identity_result.Errors.Select(e => e.Description).ToArray();
+            _Logger.Log(LogLevel.Information, "Не удалось зарегистрировать пользователя {Email}: {errors}",
+                RegisterRequest.Email,
+                string.Join(",", errors));
+
             return Ok(new ClientCreateUserResponse
             {
                 Succeeded = false, 
-                Code = (int)ResultCodes.NotFound, 
-                Message = $"Не удалось зарегистрировать пользователя {RegisterRequest.Email}"
+                Code      = (int)ResultCodes.NotFound, 
+                Message   = $"Не удалось зарегистрировать пользователя {RegisterRequest.Email}",
+                Messages = errors
             });
         }
         catch (Exception ex)
@@ -107,27 +110,26 @@ public class AccountController : Controller
         try
         {
             var identity_user = await _UserManager.FindByEmailAsync(LoginRequest.Email);
-            if (identity_user is not null)
+            if (identity_user is not null && await CheckIsEmailConfirmedAsync(identity_user))
             {
-                var identity_roles = await _UserManager.GetRolesAsync(identity_user);
-
                 var sign_in_result = await _SignInManager.PasswordSignInAsync(
-                    userName: LoginRequest.Email,
-                    password: LoginRequest.Password,
-                    isPersistent: true,
-                    lockoutOnFailure: false);
+                userName: identity_user.UserName,
+                password: LoginRequest.Password,
+                isPersistent: true,
+                lockoutOnFailure: false);
 
                 if (sign_in_result.Succeeded)
                 {
+                    var identity_roles = await _UserManager.GetRolesAsync(identity_user);
                     var session_token = _authUtilits.CreateSessionToken(identity_user, identity_roles);
                     return Ok(new ClientLoginResponse
                     {
                         Succeeded = true,
-                        Code = (int) ResultCodes.Ok,
+                        Code = (int)ResultCodes.Ok,
                         SessionToken = session_token
                     });
                 }
-
+                
                 _Logger.Log(LogLevel.Information, "Не удалось авторизовать пользователя {Email}", LoginRequest.Email);
                 return Ok(new ClientLoginResponse
                 {
@@ -407,8 +409,8 @@ public class AccountController : Controller
     /// <param name="RoleId">Идентификатор роли</param>
     /// <returns>Status 200 OK.</returns>
     [Authorize(Roles = AuthApiRoles.Admin)]
-    [HttpGet($"{AuthApiRoute.GetRoleById}"+"{RoleId}")]
-    public async Task<IActionResult> GetRoleByIdAsync(string RoleId)
+    [HttpGet($"{AuthApiRoute.GetRoleById}/"+"{RoleId}")]
+    public async Task<IActionResult> GetRoleByIdAsync([FromRoute] string RoleId)
     {
         try
         {
@@ -486,8 +488,8 @@ public class AccountController : Controller
     /// <param name="RoleId">Запрос на удаление роли</param>
     /// <returns>Status 200 OK.</returns>
     [Authorize(Roles = AuthApiRoles.Admin)]
-    [HttpDelete($"{AuthApiRoute.DeleteRoleById}"+"{RoleId}")]
-    public async Task<IActionResult> DeleteRoleByIdAsync(string RoleId)
+    [HttpDelete($"{AuthApiRoute.DeleteRoleById}/"+"{RoleId}")]
+    public async Task<IActionResult> DeleteRoleByIdAsync([FromRoute] string RoleId)
     {
         try
         {
@@ -595,8 +597,8 @@ public class AccountController : Controller
     /// <param name="RoleName">Название роли</param>
     /// <returns>Status 200 OK.</returns>
     [Authorize(Roles = AuthApiRoles.Admin)]
-    [HttpDelete($"{AuthApiRoute.DeleteUserRoleByEmail}"+"{Email}/{RoleName}")]
-    public async Task<IActionResult> DeleteUserRoleByEmailAsync(string Email, string RoleName)
+    [HttpDelete($"{AuthApiRoute.DeleteUserRoleByEmail}/"+"{Email}/{RoleName}")]
+    public async Task<IActionResult> DeleteUserRoleByEmailAsync([FromRoute] string Email, [FromRoute] string RoleName)
     {
         try
         {
@@ -654,8 +656,8 @@ public class AccountController : Controller
     /// <param name="Email">Почта</param>
     /// <returns>Status 200 OK.</returns>
     [Authorize(Roles = AuthApiRoles.Admin)]
-    [HttpGet($"{AuthApiRoute.GetAllUserRolesByEmail}"+"{Email}")]
-    public async Task<IActionResult?> GetAllUserRolesByEmailAsync(string Email)
+    [HttpGet($"{AuthApiRoute.GetAllUserRolesByEmail}/"+"{Email}")]
+    public async Task<IActionResult?> GetAllUserRolesByEmailAsync([FromRoute] string Email)
     {
         try
         {
@@ -748,8 +750,8 @@ public class AccountController : Controller
     /// <param name="Email">Почта</param>
     /// <returns>Status 200 OK.</returns>
     [Authorize(Roles = AuthApiRoles.Admin)]
-    [HttpGet($"{AuthApiRoute.GetUserByEmail}"+"{Email}")]
-    public async Task<IActionResult> GetUserByEmailAsync(string Email)
+    [HttpGet($"{AuthApiRoute.GetUserByEmail}/"+"{Email}")]
+    public async Task<IActionResult> GetUserByEmailAsync([FromRoute] string Email)
     {
         try
         {
@@ -887,8 +889,8 @@ public class AccountController : Controller
     /// <param name="Email">Почта пользователя</param>
     /// <returns>Status 200 OK.</returns>
     [Authorize(Roles = AuthApiRoles.Admin)]
-    [HttpDelete($"{AuthApiRoute.DeleteUserByEmail}"+"{Email}")]
-    public async Task<IActionResult> DeleteUserByEmailAsync(string Email)
+    [HttpDelete($"{AuthApiRoute.DeleteUserByEmail}/"+"{Email}")]
+    public async Task<IActionResult> DeleteUserByEmailAsync([FromRoute] string Email)
     {
         try
         {
@@ -1006,5 +1008,14 @@ public class AccountController : Controller
             _Logger.Log(LogLevel.Information, "Произошла ошибка при получении списка ролей пользователей {Ex}", ex);
             return null;
         }
+    }
+
+    private async Task<bool> CheckIsEmailConfirmedAsync(IdentityUser identityUser)
+    {
+        var isEmailConfirmed = await _UserManager.IsEmailConfirmedAsync(identityUser);
+
+        if (!isEmailConfirmed) return await Task.FromResult(false);
+        
+        return await Task.FromResult(true);
     }
 }

@@ -9,15 +9,7 @@
     <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.10" />
     </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="appsettings.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="appsettings.Development.json" />
-    </ItemGroup>
-
+    
     <ItemGroup>
       <ProjectReference Include="..\..\SciMaterials.DAL.AUTH\SciMaterials.DAL.AUTH.csproj" />
     </ItemGroup>

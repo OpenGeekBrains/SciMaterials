@@ -1,0 +1,14 @@
+﻿<MudTooltip Text="@Tooltip">
+	<MudIconButton Href="@Href" Icon="@Icon"/>
+</MudTooltip>
+
+@code {
+	[Parameter]
+	public string? Tooltip { get; set; }
+
+	[Parameter]
+	public string Icon { get; set; }
+
+	[Parameter]
+	public string? Href { get; set; }
+}

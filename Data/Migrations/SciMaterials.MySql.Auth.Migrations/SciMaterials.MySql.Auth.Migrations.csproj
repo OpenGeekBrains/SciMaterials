@@ -13,10 +13,5 @@
     <ItemGroup>
       <ProjectReference Include="..\..\SciMaterials.DAL.AUTH\SciMaterials.DAL.AUTH.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="appsettings.json" />
-      <None Remove="appsettings.Development.json" />
-    </ItemGroup>
-
+    
 </Project>

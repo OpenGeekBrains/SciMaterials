@@ -15,22 +15,21 @@ public static class ApplicationExtension
     {
         await using var scope = app.ApplicationServices.CreateAsyncScope();
 
-        var dbSetting = configuration.GetSection("DbSettings").Get<DbSettings>();
+        var db_setting = configuration.GetSection("DbSettings").Get<DbSettings>();
         
-        if (dbSetting.DbProvider.Equals("SQLite"))
-        {
-            var context = scope.ServiceProvider.GetRequiredService<SciMaterialsContext>();
-            await context.Database.MigrateAsync().ConfigureAwait(false);
-        }
+        //if (dbSetting.DbProvider.Equals("PostgreSQL")) // TODO:???!!!???
+        //{
+        //    var context = scope.ServiceProvider.GetRequiredService<SciMaterialsContext>();
+        //    await context.Database.MigrateAsync().ConfigureAwait(false);
+        //}
 
         var authDb = scope.ServiceProvider.GetRequiredService<IAuthDbInitializer>();
         await authDb.InitializeAsync();
 
         var initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
         await initializer.InitializeDbAsync(
-                RemoveAtStart: dbSetting.RemoveAtStart,
-                UseDataSeeder: dbSetting.UseDataSeeder)
-           .ConfigureAwait(false);
+                RemoveAtStart: db_setting.RemoveAtStart,
+                UseDataSeeder: db_setting.UseDataSeeder);
 
         return app;
     }

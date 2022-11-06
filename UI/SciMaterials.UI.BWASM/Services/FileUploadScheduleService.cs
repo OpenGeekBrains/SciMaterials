@@ -23,7 +23,7 @@ public class FileUploadScheduleService : IDisposable
         _serviceScopeFactory = serviceScopeFactory;
         _logger = logger;
 
-        _sender = new(TimeSpan.FromSeconds(30));
+        _sender = new(TimeSpan.FromSeconds(10));
         // not awaitable background task for uploading files in queue
         _ = Upload();
     }
@@ -60,7 +60,8 @@ public class FileUploadScheduleService : IDisposable
                     ContentTypeName = data.File.ContentType,
                     Categories = data.Category.ToString(),
                     AuthorId = data.AuthorId,
-                    ShortInfo = data.ShortInfo
+                    ShortInfo = data.ShortInfo,
+                    Description = data.Description
                 },
                 data.CancellationToken);
 

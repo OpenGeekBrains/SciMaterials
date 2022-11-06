@@ -5,16 +5,21 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SciMaterials.Contracts.Auth;
-using SciMaterials.Contracts.Identity.Clients.Clients;
 using SciMaterials.DAL.AUTH.Context;
 using SciMaterials.DAL.AUTH.InitializationDb;
 using SciMaterials.UI.MVC.Identity.Services;
-using SciMaterials.WebApi.Clients.Identity;
 
 namespace SciMaterials.UI.MVC.Identity.Extensions;
 
 public static class AuthServiceCollectionExtensions
 {
+    /// <summary>
+    /// Метод расширения по установке сервисов БД Identity
+    /// </summary>
+    /// <param name="Services">Сервисы</param>
+    /// <param name="Configuration">Конфигурации</param>
+    /// <returns>Коллекция сервисов</returns>
+    /// <exception cref="Exception"></exception>
     public static IServiceCollection AddAuthApiServices(this IServiceCollection Services, IConfiguration Configuration)
     {
         var provider = Configuration["AuthApiSettings:Provider"];
@@ -25,10 +30,14 @@ public static class AuthServiceCollectionExtensions
             {
                 OptionsBuilder.MigrationsAssembly("SciMaterials.SqlLite.Auth.Migrations");
             }),
-            "MySql" => opt.UseMySql(AuthConnectionStrings.MySql(Configuration), new MySqlServerVersion(new Version(8,0,30)), 
-            OptionBuilder =>
+            "MySql" => opt.UseMySql(AuthConnectionStrings.MySql(Configuration), 
+                new MySqlServerVersion(new Version(8,0,30)), OptionBuilder =>
             {
                 OptionBuilder.MigrationsAssembly("SciMaterials.MySql.Auth.Migrations");
+            }),
+            "PostgresSql" => opt.UseNpgsql(AuthConnectionStrings.PostgresSql(Configuration), OptionBuilder =>
+            {
+                OptionBuilder.MigrationsAssembly("SciMaterials.Postgres.Auth.Migrations");
             }),
             _ => throw new Exception($"Unsupported provider: {provider}")
         });
@@ -49,6 +58,12 @@ public static class AuthServiceCollectionExtensions
         return Services;
     }
 
+    /// <summary>
+    /// Метод расширения по установке сервисов для JWT и Swagger
+    /// </summary>
+    /// <param name="Services">Сервисы</param>
+    /// <param name="Configuration">Конфигурации</param>
+    /// <returns>Коллекция сервисов</returns>
     public static IServiceCollection AddAuthJwtAndSwaggerApiServices(this IServiceCollection Services, IConfiguration Configuration)
     {
         Services.AddSwaggerGen(opt =>
@@ -107,12 +122,22 @@ public static class AuthServiceCollectionExtensions
         
         return Services;
     }
-    
+
+    /// <summary>
+    /// Метод расширения по установке инициализатора БД Identity
+    /// </summary>
+    /// <param name="Services">Сервисы</param>
+    /// <returns>Коллекция сервисов</returns>
     public static IServiceCollection AddAuthDbInitializer(this IServiceCollection Services)
     {
         return Services.AddScoped<IAuthDbInitializer, AuthDbInitializer>();
     }
-    
+
+    /// <summary>
+    /// Метод расширения по установке утилит для работы с Identity
+    /// </summary>
+    /// <param name="Services">Сервисы</param>
+    /// <returns>Коллекция сервисов</returns>
     public static IServiceCollection AddAuthUtils(this IServiceCollection Services)
     {
         return Services.AddSingleton<IAuthUtilits, AuthUtils>();

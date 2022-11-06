@@ -5,9 +5,9 @@ namespace SciMaterials.Contracts.Identity.Clients.Clients;
 
 public interface IRolesClient
 {
-    Task<ClientCreateRoleResponse> CreateRoleAsync(CreateRoleRequest CreateRoleRequest, CancellationToken CancellationToken = default);
+    Task<ClientCreateRoleResponse> CreateRoleAsync(CreateRoleRequest CreateRoleRequest, CancellationToken Cancel = default);
     
-    Task<ClientGetAllRolesResponse> GetAllRolesAsync(CancellationToken CancellationToken = default);
+    Task<ClientGetAllRolesResponse> GetAllRolesAsync(CancellationToken Cancel = default);
     
     Task<ClientGetRoleByIdResponse> GetRoleByIdAsync(string RoleId, CancellationToken CancellationToken = default);
     

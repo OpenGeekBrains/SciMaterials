@@ -12,6 +12,8 @@ using SciMaterials.Contracts.API.Settings;
 using SciMaterials.Contracts.API.Models;
 using System.Text.Json;
 
+using SciMaterials.RepositoryLib.Repositories;
+
 namespace SciMaterials.Services.API.Services.Files;
 
 public class FileService : IFileService
@@ -57,7 +59,8 @@ public class FileService : IFileService
 
     public async Task<Result<GetFileResponse>> GetByIdAsync(Guid id, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<File>().GetByIdAsync(id, include: true) is File file)
+        var repository = _unitOfWork.GetRepository<File>();
+        if (await repository.GetByIdAsync(id, include: true) is File file)
         {
             return _mapper.Map<GetFileResponse>(file);
         }

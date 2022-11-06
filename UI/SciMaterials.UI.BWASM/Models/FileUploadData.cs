@@ -13,4 +13,5 @@ public class FileUploadData
 
     public CancellationToken CancellationToken { get; init; }
     public Guid AuthorId { get; init; }
+    public string? Description { get; init; }
 }

@@ -19,11 +19,12 @@
 
 <MudPaper Elevation="5" Class="mb-3">
 	<MudToolBar Dense="true">
-		<MudNavLink Class="rounded-lg" Style="width:15%" Href="files_upload" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.UploadFile">Upload</MudNavLink>
-		<MudNavLink Class="rounded-lg" Style="width:15%" Href="content_types" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Filter">Files upload filter</MudNavLink>
-		<MudNavLink Class="rounded-lg" Style="width:15%" Href="categories" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Category">Categories</MudNavLink>
-		<MudSpacer />
-		<FilesFilter ItemsPresentationMode="_itemsPresentationMode" OnItemsPresentationModeChanged="ChangeItemsPresentationMode" />
+		<IconButton Tooltip="Upload" Href="upload_files" Icon="@Icons.Material.Filled.UploadFile" />
+		<IconButton Tooltip="Upload History" Href="files_upload_history" Icon="@Icons.Material.Filled.History" />
+		<IconButton Tooltip="Files upload filter" Href="content_types" Icon="@Icons.Material.Filled.Filter" />
+		<IconButton Tooltip="Categories" Href="categories" Icon="@Icons.Material.Filled.Category" />
+		<MudSpacer/>
+		<FilesFilter ItemsPresentationMode="_itemsPresentationMode" OnItemsPresentationModeChanged="ChangeItemsPresentationMode"/>
 	</MudToolBar>
 </MudPaper>
 

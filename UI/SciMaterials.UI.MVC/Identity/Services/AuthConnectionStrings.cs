@@ -1,6 +1,6 @@
 using Microsoft.Data.Sqlite;
-
 using MySqlConnector;
+using Npgsql;
 
 namespace SciMaterials.UI.MVC.Identity.Services;
 
@@ -40,6 +40,26 @@ public static class AuthConnectionStrings
         var db_config = configuration.GetSection("AuthApiSettings:SqliteDbConfig");
         var builder = new SqliteConnectionStringBuilder(connection_string);
         builder.DataSource = db_config["datasource"];
+        connection_string = builder.ConnectionString;
+
+        return connection_string;
+    }
+    
+    /// <summary>
+    /// Метод формирует строку подключения для БД POSTGRESSQL
+    /// </summary>
+    /// <param name="configuration">Конфигурация</param>
+    /// <returns>Сформированную строку подключения</returns>
+    public static string PostgresSql(IConfiguration configuration)
+    {
+        var connection_string = configuration.GetConnectionString("AuthDbConnection");
+        var db_config = configuration.GetSection("AuthApiSettings:PostgresSqlDbConfig");
+        var builder = new NpgsqlConnectionStringBuilder(connection_string);
+        builder.Host = db_config["host"];
+        builder.Database = db_config["database"];
+        builder.Port = Convert.ToInt32(db_config["port"]);
+        builder.Username = db_config["userid"];
+        builder.Password = db_config["password"];
         connection_string = builder.ConnectionString;
 
         return connection_string;

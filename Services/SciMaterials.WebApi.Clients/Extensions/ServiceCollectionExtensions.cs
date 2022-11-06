@@ -1,6 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-
-using SciMaterials.Contracts.Identity.Clients.Clients;
 using SciMaterials.Contracts.WebApi.Clients.Categories;
 using SciMaterials.Contracts.WebApi.Clients.Comments;
 using SciMaterials.Contracts.WebApi.Clients.ContentTypes;
@@ -10,7 +8,6 @@ using SciMaterials.WebApi.Clients.Categories;
 using SciMaterials.WebApi.Clients.Comments;
 using SciMaterials.WebApi.Clients.ContentTypes;
 using SciMaterials.WebApi.Clients.Files;
-using SciMaterials.WebApi.Clients.Identity;
 using SciMaterials.WebApi.Clients.Tags;
 
 namespace SciMaterials.WebApi.Clients.Extensions;

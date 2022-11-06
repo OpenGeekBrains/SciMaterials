@@ -48,12 +48,41 @@ public class DbInitializer : IDbInitializer
 
         try
         {
-            if (RemoveAtStart) await DeleteDbAsync(Cancel).ConfigureAwait(false);
+            if (RemoveAtStart)
+            {
+                _Logger.LogInformation("Need to remove database at begging of initialization process");
+                if(await DeleteDbAsync(Cancel).ConfigureAwait(false))
+                    _Logger.LogInformation("Database was removed successfully");
+                else
+                    _Logger.LogInformation("Database not removed because it not exists");
+            }
 
-            var pending_migrations = await _db.Database.GetPendingMigrationsAsync(Cancel).ConfigureAwait(false);
+            if (_db.Database.IsRelational())
+            {
+                var pending_migrations = (await _db.Database.GetPendingMigrationsAsync(Cancel).ConfigureAwait(false)).ToArray();
+                var applied_migrations = (await _db.Database.GetAppliedMigrationsAsync(Cancel)).ToArray();
 
-            if (pending_migrations.Any()) 
-                await _db.Database.MigrateAsync(Cancel).ConfigureAwait(false);
+                _Logger.LogInformation("Pending migrations {0}:  {1}", pending_migrations.Length, string.Join(",", pending_migrations));
+                _Logger.LogInformation("Applied migrations {0}:  {1}", pending_migrations.Length, string.Join(",", applied_migrations));
+
+                if (pending_migrations.Length > 0) // если есть неприменённые миграции, то их надо применить
+                {
+                    await _db.Database.MigrateAsync(Cancel);
+                    _Logger.LogInformation("Migrate database successfully");
+                }
+                else if
+                    (applied_migrations.Length == 0) // если не было неприменённых миграций, и нет ни одной применённой миграции, то это значит, что системы миграций вообще нет для этого поставщика БД. Надо просто создать БД.
+                {
+                    await _db.Database.EnsureCreatedAsync(Cancel);
+                    _Logger.LogInformation("Migrations not supported by provider. Database created.");
+                }
+            }
+            else
+            {
+                await _db.Database.EnsureCreatedAsync(Cancel);
+                _Logger.LogInformation("Migrations not supported by provider. Database created.");
+            }
+
 
             if (UseDataSeeder)
                 await InitializeDbAsync(Cancel).ConfigureAwait(false);
@@ -72,6 +101,6 @@ public class DbInitializer : IDbInitializer
 
     private async Task InitializeDbAsync(CancellationToken Cancel = default)
     {
-        await DataSeeder.SeedAsync(_db, Cancel).ConfigureAwait(false);
+        await DataSeeder.SeedAsync(_db, _Logger, Cancel).ConfigureAwait(false);
     }
 }

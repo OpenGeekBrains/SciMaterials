@@ -17,6 +17,7 @@ public class IdentityClient : IIdentityClient
     private readonly HttpClient _client;
     private readonly JsonSerializerOptions _options;
     private readonly ILogger<IdentityClient> _logger;
+    private static AuthenticationHeaderValue _DefaultRequestHeader;
 
     public IdentityClient(HttpClient client, ILogger<IdentityClient> logger)
     {
@@ -62,9 +63,10 @@ public class IdentityClient : IIdentityClient
                                     $"{AuthApiRoute.AuthControllerName}/" +
                                     $"{AuthApiRoute.Login}", body_content, Cancel);
         var result = await login_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientLoginResponse>(cancellationToken: Cancel);
-        
+
         //Прописываем токен для будущих запросов к api, пока реализовано так.
-        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",result.SessionToken);
+        //_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.SessionToken);
+        _DefaultRequestHeader = new AuthenticationHeaderValue("Bearer", result.SessionToken);
         return result;
     }
 
@@ -83,7 +85,8 @@ public class IdentityClient : IIdentityClient
                 $"{AuthApiRoute.AuthControllerName}/" + 
                 $"{AuthApiRoute.Logout}",  null, Cancel);
         var result = await logout_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientLogoutResponse>(cancellationToken: Cancel);
-        _client.DefaultRequestHeaders.Authorization = null;
+        //_client.DefaultRequestHeaders.Authorization = null;
+        _DefaultRequestHeader = null;
         return result;
     }
 
@@ -98,7 +101,8 @@ public class IdentityClient : IIdentityClient
         _logger.Log(LogLevel.Information, "ChangePassword");
         var content = JsonSerializer.Serialize(ChangePasswordRequest, _options);
         var body_content = new StringContent(content, Encoding.UTF8, "application/json");
-        
+
+        _client.DefaultRequestHeaders.Authorization = _DefaultRequestHeader;
         var change_password_result = 
             await _client.PostAsync(
                 $"{_client.BaseAddress}" + 
@@ -119,7 +123,8 @@ public class IdentityClient : IIdentityClient
         _logger.Log(LogLevel.Information, "CreateRole {RoleName}", CreateRoleRequest.RoleName);
         var content = JsonSerializer.Serialize(CreateRoleRequest, _options);
         var body_content = new StringContent(content, Encoding.UTF8, "application/json");
-        
+
+        _client.DefaultRequestHeaders.Authorization = _DefaultRequestHeader;
         var create_role_result = 
             await _client.PostAsync(
                 $"{_client.BaseAddress}" + 
@@ -138,6 +143,7 @@ public class IdentityClient : IIdentityClient
     {
         _logger.Log(LogLevel.Information, "GetAllRoles");
 
+        _client.DefaultRequestHeaders.Authorization = _DefaultRequestHeader;
         var get_all_roles_result = 
             await _client.GetAsync(
                 $"{_client.BaseAddress}" +
@@ -157,6 +163,7 @@ public class IdentityClient : IIdentityClient
     {
         _logger.Log(LogLevel.Information, "GetRoleById {RoleId}", RoleId);
 
+        _client.DefaultRequestHeaders.Authorization = _DefaultRequestHeader;
         var getRolesByIdResult = 
             await _client.GetAsync(
                 $"{_client.BaseAddress}" + 
@@ -178,7 +185,8 @@ public class IdentityClient : IIdentityClient
         _logger.Log(LogLevel.Information, "EditRoleById {RoleId}", roleRequest.RoleId);
         var content = JsonSerializer.Serialize(roleRequest, _options);
         var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-        
+
+        _client.DefaultRequestHeaders.Authorization = _DefaultRequestHeader;
         var getRoleByIdResult = 
             await _client.PutAsync(
                 $"{_client.BaseAddress}" + 
@@ -197,7 +205,8 @@ public class IdentityClient : IIdentityClient
     public async Task<ClientDeleteRoleByIdResponse> DeleteRoleByIdAsync(string RoleId, CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "DeleteRoleById {RoleId}", RoleId);
-        
+
+        _client.DefaultRequestHeaders.Authorization = _DefaultRequestHeader;
         var deleteRoleResult = 
             await _client.DeleteAsync(
                 $"{_client.BaseAddress}" + 
@@ -219,7 +228,8 @@ public class IdentityClient : IIdentityClient
         _logger.Log(LogLevel.Information, "AddRole {Role} ToUser {Email}", roleRequest.RoleName, roleRequest.Email);
         var content = JsonSerializer.Serialize(roleRequest, _options);
         var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-        
+
+        _client.DefaultRequestHeaders.Authorization = _DefaultRequestHeader;
         var addRoleToUserResult = 
             await _client.PostAsync(
                 $"{_client.BaseAddress}" + 
@@ -239,6 +249,7 @@ public class IdentityClient : IIdentityClient
     {
         _logger.Log(LogLevel.Information, "DeleteUserRoleByEmail {Email}", Email);
 
+        _client.DefaultRequestHeaders.Authorization = _DefaultRequestHeader;
         var deleteUserRoleResult = 
             await _client.DeleteAsync(
                 $"{_client.BaseAddress}" + 
@@ -259,7 +270,8 @@ public class IdentityClient : IIdentityClient
     public async Task<ClientGetAllUserRolesByEmailResponse> GetAllUserRolesByEmailAsync(string Email, CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "ListOfUser {Email} Roles", Email);
-        
+
+        _client.DefaultRequestHeaders.Authorization = _DefaultRequestHeader;
         var listOfUserRolesResult = 
             await _client.GetAsync(
                 $"{_client.BaseAddress}" + 
@@ -281,7 +293,8 @@ public class IdentityClient : IIdentityClient
         _logger.Log(LogLevel.Information, "CreateUser {Email} {NickName}", registerRequest.Email, registerRequest.NickName);
         var content = JsonSerializer.Serialize(registerRequest, _options);
         var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-        
+
+        _client.DefaultRequestHeaders.Authorization = _DefaultRequestHeader;
         var createUserResult = 
             await _client.PostAsync(
                 $"{_client.BaseAddress}" + 
@@ -300,7 +313,8 @@ public class IdentityClient : IIdentityClient
     public async Task<ClientGetUserByEmailResponse> GetUserByEmailAsync(string Email, CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "GetUserByEmail {Email}", Email);
-        
+
+        _client.DefaultRequestHeaders.Authorization = _DefaultRequestHeader;
         var getUserByEmailResult = 
             await _client.GetAsync(
                 $"{_client.BaseAddress}" + 
@@ -319,7 +333,8 @@ public class IdentityClient : IIdentityClient
     public async Task<ClientGetAllUsersResponse> GetAllUsersAsync(CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "GetAllUsers");
-        
+
+        _client.DefaultRequestHeaders.Authorization = _DefaultRequestHeader;
         var getAllUsersResult = 
             await _client.GetAsync(
                 $"{_client.BaseAddress}" + 
@@ -341,7 +356,8 @@ public class IdentityClient : IIdentityClient
             editUserNameByEmailRequest.EditUserNickName, editUserNameByEmailRequest.UserEmail);
         var content = JsonSerializer.Serialize(editUserNameByEmailRequest, _options);
         var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
-        
+
+        _client.DefaultRequestHeaders.Authorization = _DefaultRequestHeader;
         var getUserByEmailResult = 
             await _client.PutAsync(
                 $"{_client.BaseAddress}" + 
@@ -360,7 +376,8 @@ public class IdentityClient : IIdentityClient
     public async Task<ClientDeleteUserByEmailResponse> DeleteUserByEmailAsync(string Email, CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "DeleteUserByEmail {Email}", Email);
-        
+
+        _client.DefaultRequestHeaders.Authorization = _DefaultRequestHeader;
         var getUserByEmailResult = 
             await _client.DeleteAsync(
                 $"{_client.BaseAddress}" + 
@@ -379,7 +396,8 @@ public class IdentityClient : IIdentityClient
     public async Task<ClientDeleteUsersWithOutConfirmResponse> DeleteUsersWithOutConfirmAsync(CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "DeleteUsersWithOutConfirm");
-        
+
+        _client.DefaultRequestHeaders.Authorization = _DefaultRequestHeader;
         var getUserByEmailResult = 
             await _client.DeleteAsync(
                 $"{_client.BaseAddress}" + 
@@ -392,7 +410,8 @@ public class IdentityClient : IIdentityClient
     public async Task<ClientRefreshTokenResponse> GetRefreshTokenAsync(CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "RefreshTokenAsync");
-        
+
+        _client.DefaultRequestHeaders.Authorization = _DefaultRequestHeader;
         var refresh_token_result = 
             await _client.GetAsync(
                 $"{_client.BaseAddress}" + 
