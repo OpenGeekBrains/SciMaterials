@@ -16,12 +16,13 @@ public static class ApplicationExtension
         await using var scope = app.ApplicationServices.CreateAsyncScope();
 
         var db_setting = configuration.GetSection("DbSettings").Get<DbSettings>();
-        
-        //if (dbSetting.DbProvider.Equals("PostgreSQL")) // TODO:???!!!???
-        //{
-        //    var context = scope.ServiceProvider.GetRequiredService<SciMaterialsContext>();
-        //    await context.Database.MigrateAsync().ConfigureAwait(false);
-        //}
+
+        // TODO:???!!!???
+        if (db_setting.DbProvider.Equals("PostgreSQL")) 
+        {
+            var context = scope.ServiceProvider.GetRequiredService<SciMaterialsContext>();
+            await context.Database.MigrateAsync().ConfigureAwait(false);
+        }
 
         var authDb = scope.ServiceProvider.GetRequiredService<IAuthDbInitializer>();
         await authDb.InitializeAsync();

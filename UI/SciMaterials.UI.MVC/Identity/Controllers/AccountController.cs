@@ -1,4 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
+
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -66,14 +68,16 @@ public class AccountController : Controller
                 var email_confirm_token = await _UserManager.GenerateEmailConfirmationTokenAsync(identity_user);
 
                 string callback_url = string.Empty;
-                
-                if (HttpContext.Request.Scheme.Equals("http://scimaterials.ui.mvc/"))
+                var host = _ContextAccessor.HttpContext.Request.Host.ToString();
+                if (host.Equals("scimaterials.ui.mvc"))
                 {
+                    HttpContext.Request.Host = new HostString("localhost", 5185);
+
                     callback_url = Url.Action(
                     "ConfirmEmail",
                     controller: "Account",
                     values: new {UserId = identity_user.Id, ConfirmToken = email_confirm_token},
-                    protocol: HttpContext.Request.Scheme = $"{_Configuration["WebApi"]}");
+                    protocol: HttpContext.Request.Scheme);
                 }
                 else
                 {
