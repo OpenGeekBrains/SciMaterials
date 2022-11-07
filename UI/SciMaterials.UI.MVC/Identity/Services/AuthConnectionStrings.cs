@@ -17,7 +17,7 @@ public static class AuthConnectionStrings
     public static string MySql(IConfiguration configuration)
     {
         var connection_string = configuration.GetConnectionString("AuthDbConnection");
-        var db_config = configuration.GetSection("AuthApiSettings:MySqlDbConfig");
+        var db_config = configuration.GetSection("AuthApiSettings:MySQLDbConfig");
         var builder = new MySqlConnectionStringBuilder(connection_string);
         builder.Server = db_config["server"];
         builder.Database = db_config["database"];
@@ -37,7 +37,7 @@ public static class AuthConnectionStrings
     public static string Sqlite(IConfiguration configuration)
     {
         var connection_string = configuration.GetConnectionString("AuthDbConnection");
-        var db_config = configuration.GetSection("AuthApiSettings:SqliteDbConfig");
+        var db_config = configuration.GetSection("AuthApiSettings:SQLiteDbConfig");
         var builder = new SqliteConnectionStringBuilder(connection_string);
         builder.DataSource = db_config["datasource"];
         connection_string = builder.ConnectionString;
@@ -53,7 +53,7 @@ public static class AuthConnectionStrings
     public static string PostgresSql(IConfiguration configuration)
     {
         var connection_string = configuration.GetConnectionString("AuthDbConnection");
-        var db_config = configuration.GetSection("AuthApiSettings:PostgresSqlDbConfig");
+        var db_config = configuration.GetSection("AuthApiSettings:PostgresSQLDbConfig");
         var builder = new NpgsqlConnectionStringBuilder(connection_string);
         builder.Host = db_config["host"];
         builder.Database = db_config["database"];

@@ -407,6 +407,11 @@ public class IdentityClient : IIdentityClient
         return result;
     }
 
+    /// <summary>
+    /// Метод клиента на получение обновленного токена сессии
+    /// </summary>
+    /// <param name="Cancel"></param>
+    /// <returns></returns>
     public async Task<ClientRefreshTokenResponse> GetRefreshTokenAsync(CancellationToken Cancel = default)
     {
         _logger.Log(LogLevel.Information, "RefreshTokenAsync");

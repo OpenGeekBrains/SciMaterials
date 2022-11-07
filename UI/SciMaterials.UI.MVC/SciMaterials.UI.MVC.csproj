@@ -32,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Data\Migrations\SciMaterials.MySql.Auth.Migrations\SciMaterials.MySql.Auth.Migrations.csproj" />
     <ProjectReference Include="..\..\Data\Migrations\SciMaterials.Postgres.Auth.Migrations\SciMaterials.Postgres.Auth.Migrations.csproj" />
     <ProjectReference Include="..\..\Data\Migrations\SciMaterials.SqlLite.Auth.Migrations\SciMaterials.SqlLite.Auth.Migrations.csproj" />
     <ProjectReference Include="..\..\Services\SciMaterials.Contracts.Identity.Clients\SciMaterials.Contracts.Identity.Clients.csproj" />

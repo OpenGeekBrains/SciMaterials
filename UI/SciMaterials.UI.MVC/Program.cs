@@ -25,11 +25,11 @@ services.AddRazorPages();
 services.ConfigureApplication(config);
 services.AddApiServices(config);
 
-services.AddAuthApiServices(config);
-services.AddAuthDbInitializer();
-services.AddAuthUtils();
+services.AddIdentityApiServices(config);
+services.AddIdentityDbInitializer();
+services.AddIdentityUtils();
 services.AddIdentityClients(new Uri(config["WebAPI"]));
-services.AddAuthJwtAndSwaggerApiServices(builder.Configuration);
+services.AddIdentityJwtAndSwaggerApiServices(builder.Configuration);
 
 builder.Services.AddCors(o => o.AddPolicy("test", p => p.WithOrigins("http://localhost:5159").AllowAnyMethod().AllowAnyHeader()));
 

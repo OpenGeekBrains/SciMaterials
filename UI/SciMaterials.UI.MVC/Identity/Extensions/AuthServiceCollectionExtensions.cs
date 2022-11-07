@@ -1,12 +1,14 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SciMaterials.Contracts.Auth;
 using SciMaterials.DAL.AUTH.Context;
 using SciMaterials.DAL.AUTH.InitializationDb;
+using SciMaterials.MySql.Auth.Migrations;
+using SciMaterials.Postgres.Auth.Migrations;
+using SciMaterials.SqlLite.Auth.Migrations;
 using SciMaterials.UI.MVC.Identity.Services;
 
 namespace SciMaterials.UI.MVC.Identity.Extensions;
@@ -20,27 +22,42 @@ public static class AuthServiceCollectionExtensions
     /// <param name="Configuration">Конфигурации</param>
     /// <returns>Коллекция сервисов</returns>
     /// <exception cref="Exception"></exception>
-    public static IServiceCollection AddAuthApiServices(this IServiceCollection Services, IConfiguration Configuration)
+    public static IServiceCollection AddIdentityApiServices(this IServiceCollection Services, IConfiguration Configuration)
     {
         var provider = Configuration["AuthApiSettings:Provider"];
-        
-        Services.AddDbContext<AuthDbContext>(opt => _ = provider switch
+
+        switch (provider)
         {
-            "Sqlite" => opt.UseSqlite(AuthConnectionStrings.Sqlite(Configuration), OptionsBuilder =>
-            {
-                OptionsBuilder.MigrationsAssembly("SciMaterials.SqlLite.Auth.Migrations");
-            }),
-            "MySql" => opt.UseMySql(AuthConnectionStrings.MySql(Configuration), 
-                new MySqlServerVersion(new Version(8,0,30)), OptionBuilder =>
-            {
-                OptionBuilder.MigrationsAssembly("SciMaterials.MySql.Auth.Migrations");
-            }),
-            "PostgresSql" => opt.UseNpgsql(AuthConnectionStrings.PostgresSql(Configuration), OptionBuilder =>
-            {
-                OptionBuilder.MigrationsAssembly("SciMaterials.Postgres.Auth.Migrations");
-            }),
-            _ => throw new Exception($"Unsupported provider: {provider}")
-        });
+            case "SQLite":
+                Services.AddAuthSqliteProvider(AuthConnectionStrings.Sqlite(Configuration));
+                break;
+            case "PostgresSQL":
+                Services.AddAuthPostgresSqlProvider(AuthConnectionStrings.PostgresSql(Configuration));
+                break;
+            case "MySQL":
+                Services.AddAuthMySqlProvider(AuthConnectionStrings.MySql(Configuration));
+                break;
+            default:
+                throw new Exception($"Unsupported provider: {provider}");
+        }
+        
+        // Services.AddDbContext<AuthDbContext>(opt => _ = provider switch
+        // {
+        //     "Sqlite" => opt.UseSqlite(AuthConnectionStrings.Sqlite(Configuration), OptionsBuilder =>
+        //     {
+        //         OptionsBuilder.MigrationsAssembly("SciMaterials.SqlLite.Auth.Migrations");
+        //     }),
+        //     "MySql" => opt.UseMySql(AuthConnectionStrings.MySql(Configuration), 
+        //         new MySqlServerVersion(new Version(8,0,30)), OptionBuilder =>
+        //     {
+        //         OptionBuilder.MigrationsAssembly("SciMaterials.MySql.Auth.Migrations");
+        //     }),
+        //     "PostgresSql" => opt.UseNpgsql(AuthConnectionStrings.PostgresSql(Configuration), OptionBuilder =>
+        //     {
+        //         OptionBuilder.MigrationsAssembly("SciMaterials.Postgres.Auth.Migrations");
+        //     }),
+        //     _ => throw new Exception($"Unsupported provider: {provider}")
+        // });
 
         Services.AddIdentity<IdentityUser, IdentityRole>(opt =>
         {
@@ -64,7 +81,7 @@ public static class AuthServiceCollectionExtensions
     /// <param name="Services">Сервисы</param>
     /// <param name="Configuration">Конфигурации</param>
     /// <returns>Коллекция сервисов</returns>
-    public static IServiceCollection AddAuthJwtAndSwaggerApiServices(this IServiceCollection Services, IConfiguration Configuration)
+    public static IServiceCollection AddIdentityJwtAndSwaggerApiServices(this IServiceCollection Services, IConfiguration Configuration)
     {
         Services.AddSwaggerGen(opt =>
         {
@@ -128,7 +145,7 @@ public static class AuthServiceCollectionExtensions
     /// </summary>
     /// <param name="Services">Сервисы</param>
     /// <returns>Коллекция сервисов</returns>
-    public static IServiceCollection AddAuthDbInitializer(this IServiceCollection Services)
+    public static IServiceCollection AddIdentityDbInitializer(this IServiceCollection Services)
     {
         return Services.AddScoped<IAuthDbInitializer, AuthDbInitializer>();
     }
@@ -138,7 +155,7 @@ public static class AuthServiceCollectionExtensions
     /// </summary>
     /// <param name="Services">Сервисы</param>
     /// <returns>Коллекция сервисов</returns>
-    public static IServiceCollection AddAuthUtils(this IServiceCollection Services)
+    public static IServiceCollection AddIdentityUtils(this IServiceCollection Services)
     {
         return Services.AddSingleton<IAuthUtilits, AuthUtils>();
     }
