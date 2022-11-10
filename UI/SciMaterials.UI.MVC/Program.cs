@@ -72,4 +72,6 @@ app.MapControllerRoute("default", "{controller}/{action=index}/{id?}");
 
 app.Run();
 
-public partial class Program { }
+public partial class Program
+{
+}

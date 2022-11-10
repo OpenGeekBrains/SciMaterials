@@ -1,23 +1,14 @@
 ﻿using System.Net.Http.Json;
-
-using FluentValidation.Results;
-
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
-
-using Moq;
-
 using SciMaterials.Contracts.API.Constants;
-using SciMaterials.Contracts.API.DTO.AuthUsers;
-using SciMaterials.Contracts.API.Models;
-using SciMaterials.Contracts.API.Services.Files;
-using SciMaterials.Contracts.Identity.Clients.Clients.Responses;
+using SciMaterials.Contracts.Identity.API.DTO.Users;
+using SciMaterials.Contracts.Identity.Clients.Clients.Responses.User;
 using SciMaterials.DAL.AUTH.Context;
 using SciMaterials.DAL.Contexts;
 

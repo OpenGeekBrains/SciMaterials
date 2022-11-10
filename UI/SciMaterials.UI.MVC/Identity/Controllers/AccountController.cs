@@ -1,6 +1,4 @@
 using System.IdentityModel.Tokens.Jwt;
-
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +26,6 @@ public class AccountController : Controller
     private readonly RoleManager<IdentityRole> _RoleManager;
     private readonly IHttpContextAccessor _ContextAccessor;
     private readonly IAuthUtilits _AuthUtilits;
-    private readonly IConfiguration _Configuration;
     private readonly ILogger<AccountController> _Logger;
 
     public AccountController(
@@ -37,7 +34,6 @@ public class AccountController : Controller
         RoleManager<IdentityRole> RoleManager,
         IHttpContextAccessor ContextAccessor,
         IAuthUtilits AuthUtilits,
-        IConfiguration Configuration,
         ILogger<AccountController> Logger)
     {
         _UserManager = UserManager;
@@ -45,7 +41,6 @@ public class AccountController : Controller
         _RoleManager = RoleManager;
         _ContextAccessor = ContextAccessor;
         _AuthUtilits = AuthUtilits;
-        _Configuration = Configuration;
         _Logger = Logger;
     }
 
@@ -60,13 +55,13 @@ public class AccountController : Controller
     {
         try
         {
-            var identity_user = new IdentityUser{Email = RegisterRequest.Email, UserName = RegisterRequest.NickName};
+            var identity_user = new IdentityUser{ Email = RegisterRequest.Email, UserName = RegisterRequest.NickName };
             var identity_result = await _UserManager.CreateAsync(identity_user, RegisterRequest.Password);
             if (identity_result.Succeeded)
             {
                 await _UserManager.AddToRoleAsync(identity_user, AuthApiRoles.User);
                 var email_confirm_token = await _UserManager.GenerateEmailConfirmationTokenAsync(identity_user);
-
+                
                 string callback_url = string.Empty;
                 var host = _ContextAccessor.HttpContext.Request.Host.ToString();
                 if (host.Equals("scimaterials.ui.mvc"))

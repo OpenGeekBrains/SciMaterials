@@ -41,24 +41,6 @@ public static class AuthServiceCollectionExtensions
                 throw new Exception($"Unsupported provider: {provider}");
         }
         
-        // Services.AddDbContext<AuthDbContext>(opt => _ = provider switch
-        // {
-        //     "Sqlite" => opt.UseSqlite(AuthConnectionStrings.Sqlite(Configuration), OptionsBuilder =>
-        //     {
-        //         OptionsBuilder.MigrationsAssembly("SciMaterials.SqlLite.Auth.Migrations");
-        //     }),
-        //     "MySql" => opt.UseMySql(AuthConnectionStrings.MySql(Configuration), 
-        //         new MySqlServerVersion(new Version(8,0,30)), OptionBuilder =>
-        //     {
-        //         OptionBuilder.MigrationsAssembly("SciMaterials.MySql.Auth.Migrations");
-        //     }),
-        //     "PostgresSql" => opt.UseNpgsql(AuthConnectionStrings.PostgresSql(Configuration), OptionBuilder =>
-        //     {
-        //         OptionBuilder.MigrationsAssembly("SciMaterials.Postgres.Auth.Migrations");
-        //     }),
-        //     _ => throw new Exception($"Unsupported provider: {provider}")
-        // });
-
         Services.AddIdentity<IdentityUser, IdentityRole>(opt =>
         {
             opt.Password.RequiredLength = 5;
