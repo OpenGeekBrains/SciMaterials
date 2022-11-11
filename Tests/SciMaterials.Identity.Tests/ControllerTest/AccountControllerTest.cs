@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Moq.Language.Flow;
-
 using SciMaterials.Contracts.API.Constants;
 using SciMaterials.Contracts.Auth;
 using SciMaterials.Contracts.Enums;
@@ -31,39 +29,20 @@ namespace SciMaterials.Identity.Tests.ControllerTest
 
         public AccountControllerTest()
         {
-            var users = new List<IdentityUser>()
-            {
-                new IdentityUser()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    UserName = "sa@mail.ru",
-                    NormalizedUserName = "SA@MAIL.RU",
-                    NormalizedEmail = "SA@MAIL.RU",
-                    Email = "sa@mail.ru",
-                    EmailConfirmed = true,
-                    ConcurrencyStamp = Guid.NewGuid().ToString(),
-                    SecurityStamp = Guid.NewGuid().ToString()
-                }
-            }.AsQueryable();
+            //var roles = new List<IdentityRole>()
+            //{
+            //    new IdentityRole()
+            //    {
+            //        Id = Guid.NewGuid().ToString(),
+            //        Name = "admin",
+            //        NormalizedName = "ADMIN",
+            //        ConcurrencyStamp = Guid.NewGuid().ToString().ToUpper()
+            //    }
+            //}.AsQueryable();
 
-            var roles = new List<IdentityRole>()
-            {
-                new IdentityRole()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "admin",
-                    NormalizedName = "ADMIN",
-                    ConcurrencyStamp = Guid.NewGuid().ToString().ToUpper()
-                }
-            }.AsQueryable();
-            
             _UserManagerMock = new Mock<FakeUserManager>();
-            _UserManagerMock.Setup(x => x.Users).Returns(users);
-
             _SignInManagerMock = new Mock<FakeSignInManager>();
-            
             _RoleManagerMock = new Mock<FakeRoleManager>();
-            _RoleManagerMock.Setup(x => x.Roles).Returns(roles);
             
             _HttpContextMock = new HttpContextMock();
             _ContextAccessorMock = new Mock<IHttpContextAccessor>();
@@ -93,13 +72,6 @@ namespace SciMaterials.Identity.Tests.ControllerTest
             _AccountController.Url = urlHelperMock.Object;
             _AccountController.ControllerContext.HttpContext = new DefaultHttpContext();
             _AccountController.ControllerContext.HttpContext.Request.Scheme = "http";
-
-            var request = new RegisterRequest()
-            {
-                NickName = "vasiliy@mail.ru",
-                Email = "vasiliy@mail.ru",
-                Password = "test12345"
-            };
             
             _UserManagerMock.Setup(x => x.CreateAsync(It.IsAny<IdentityUser>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success).Verifiable();
@@ -108,10 +80,17 @@ namespace SciMaterials.Identity.Tests.ControllerTest
             _UserManagerMock.Setup(x => x.GenerateEmailConfirmationTokenAsync(It.IsAny<IdentityUser>()))
                 .ReturnsAsync(Guid.NewGuid().ToString()).Verifiable();
 
+            var request = new RegisterRequest()
+            {
+                NickName = "vasiliy@mail.ru",
+                Email = "vasiliy@mail.ru",
+                Password = "test12345"
+            };
+
             //Act
             var result = await _AccountController.RegisterAsync(request);
             var actionResultObj = result as OkObjectResult;
-            var okResult = actionResultObj!.Value as ClientCreateUserResponse;
+            var okResult = actionResultObj.Value as ClientCreateUserResponse;
 
             //Assert
             Assert.NotNull(okResult);
@@ -122,16 +101,74 @@ namespace SciMaterials.Identity.Tests.ControllerTest
             Assert.NotEmpty(okResult.ConfirmEmail);
         }
 
-        // [Fact]
-        // public async Task LoginAsync_Return_StatusCode200WithResult()
-        // {
-        // }
-        //
-        // [Fact]
-        // public async Task LogoutAsync_Return_StatusCode200WithResult()
-        // {
-        // }
-        //
+        [Fact]
+        public async Task LoginAsync_Return_StatusCode200WithResult()
+        {
+            //Arrage
+            _UserManagerMock.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync(new IdentityUser()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserName = "sa@mail.ru",
+                    NormalizedUserName = "SA@MAIL.RU",
+                    NormalizedEmail = "SA@MAIL.RU",
+                    Email = "sa@mail.ru",
+                    EmailConfirmed = true,
+                    ConcurrencyStamp = Guid.NewGuid().ToString(),
+                    SecurityStamp = Guid.NewGuid().ToString()
+                });
+
+            _UserManagerMock.Setup(x => x.IsEmailConfirmedAsync(It.IsAny<IdentityUser>())).ReturnsAsync(true);
+
+            _SignInManagerMock.Setup(x => x.PasswordSignInAsync(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<bool>(),
+                It.IsAny<bool>())).ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
+
+            _UserManagerMock.Setup(x => x.GetRolesAsync(It.IsAny<IdentityUser>()))
+                .ReturnsAsync(new List<string>(){ "admin" });
+            _AuthUtilitsMock.Setup(x => x.CreateSessionToken(It.IsAny<IdentityUser>(), It.IsAny<List<string>>()))
+                .Returns("jwtTokenSession").Verifiable();
+            
+            var request = new LoginRequest()
+            {
+                Email = "sa@mail.ru",
+                Password = "test12345"
+            };
+
+            //Act
+            var result = await _AccountController.LoginAsync(request);
+            var actionResultObj = result as OkObjectResult;
+            var okResult = actionResultObj.Value as ClientLoginResponse;
+
+            //Assert
+            Assert.NotNull(okResult);
+            Assert.Equal(200, actionResultObj.StatusCode);
+            Assert.Equal((int)ResultCodes.Ok, okResult.Code);
+            Assert.True(okResult.Succeeded);
+            Assert.NotEmpty(okResult.SessionToken);
+        }
+
+        [Fact]
+        public async Task LogoutAsync_Return_StatusCode200WithResult()
+        {
+            //Arrage
+            _SignInManagerMock.Setup(x => x.SignOutAsync());
+
+            //Act
+            var result = await _AccountController.LogoutAsync();
+            var actionResultObj = result as OkObjectResult;
+            var okResult = actionResultObj.Value as ClientLogoutResponse;
+
+            //Assert
+            Assert.NotNull(okResult);
+            Assert.Equal(200, actionResultObj.StatusCode);
+            Assert.Equal((int)ResultCodes.Ok, okResult.Code);
+            Assert.True(okResult.Succeeded);
+            Assert.NotEmpty(okResult.Message);
+        }
+
         // [Fact]
         // public async Task ChangePasswordAsync_Return_StatusCode200WithResult()
         // {
