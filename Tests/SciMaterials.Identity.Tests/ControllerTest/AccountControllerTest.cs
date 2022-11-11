@@ -1,11 +1,16 @@
-﻿using HttpContextMoq;
+﻿using System.Runtime.InteropServices.ComTypes;
+
+using HttpContextMoq;
 using HttpContextMoq.Extensions;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
+
 using Moq;
+
 using SciMaterials.Contracts.API.Constants;
 using SciMaterials.Contracts.Auth;
 using SciMaterials.Contracts.Enums;
@@ -43,10 +48,10 @@ namespace SciMaterials.Identity.Tests.ControllerTest
             _UserManagerMock = new Mock<FakeUserManager>();
             _SignInManagerMock = new Mock<FakeSignInManager>();
             _RoleManagerMock = new Mock<FakeRoleManager>();
-            
+
             _HttpContextMock = new HttpContextMock();
             _ContextAccessorMock = new Mock<IHttpContextAccessor>();
-            
+
             _AuthUtilitsMock = new Mock<IAuthUtilits>();
             _LoggerMock = new Mock<ILogger<AccountController>>();
 
@@ -63,17 +68,22 @@ namespace SciMaterials.Identity.Tests.ControllerTest
         public async Task RegisterAsync_Returns_StatusCode200_And_CallbackUrl()
         {
             //Arrage
+            const string expected_callback_url = "callBackUrl";
+
             _HttpContextMock = new HttpContextMock().SetupUrl("http://localhost:5185/register");
             _ContextAccessorMock.Setup(x => x.HttpContext).Returns(_HttpContextMock);
 
             var urlHelperMock = new Mock<IUrlHelper>(MockBehavior.Strict);
-            urlHelperMock.Setup(x => x.Action(It.IsAny<UrlActionContext>())).Returns("callBackUrl").Verifiable();
-            
+            urlHelperMock.Setup(x => x.Action(It.IsAny<UrlActionContext>())).Returns(expected_callback_url).Verifiable();
+
             _AccountController.Url = urlHelperMock.Object;
             _AccountController.ControllerContext.HttpContext = new DefaultHttpContext();
             _AccountController.ControllerContext.HttpContext.Request.Scheme = "http";
-            
-            _UserManagerMock.Setup(x => x.CreateAsync(It.IsAny<IdentityUser>(), It.IsAny<string>()))
+
+            const string expected_email = "vasiliy@mail.ru";
+
+
+            _UserManagerMock.Setup(x => x.CreateAsync(It.Is<IdentityUser>(user => user.Email == expected_email), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success).Verifiable();
             _UserManagerMock.Setup(x => x.AddToRoleAsync(It.IsAny<IdentityUser>(), AuthApiRoles.User))
                 .ReturnsAsync(IdentityResult.Success);
@@ -82,15 +92,16 @@ namespace SciMaterials.Identity.Tests.ControllerTest
 
             var request = new RegisterRequest()
             {
-                NickName = "vasiliy@mail.ru",
-                Email = "vasiliy@mail.ru",
+                NickName = expected_email,
+                Email = expected_email,
                 Password = "test12345"
             };
 
             //Act
             var result = await _AccountController.RegisterAsync(request);
-            var actionResultObj = result as OkObjectResult;
-            var okResult = actionResultObj.Value as ClientCreateUserResponse;
+
+            var actionResultObj = Assert.IsType<OkObjectResult>(result);
+            var okResult = Assert.IsAssignableFrom<ClientCreateUserResponse>(actionResultObj.Value);
 
             //Assert
             Assert.NotNull(okResult);
@@ -98,7 +109,14 @@ namespace SciMaterials.Identity.Tests.ControllerTest
             Assert.Equal((int)ResultCodes.Ok, okResult.Code);
             Assert.True(okResult.Succeeded);
             Assert.NotEmpty(okResult.Message);
-            Assert.NotEmpty(okResult.ConfirmEmail);
+            Assert.Equal(expected_callback_url, okResult.ConfirmEmail);
+
+            /* --------------------------------------------------------- */
+
+            urlHelperMock.Verify(url => url.Action(It.Is<UrlActionContext>(ctx => ctx.Action == "ConfirmEmail")));
+            _UserManagerMock.Verify(x => x.CreateAsync(It.Is<IdentityUser>(user => user.Email == expected_email)));
+
+            _UserManagerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -127,10 +145,10 @@ namespace SciMaterials.Identity.Tests.ControllerTest
                 It.IsAny<bool>())).ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
 
             _UserManagerMock.Setup(x => x.GetRolesAsync(It.IsAny<IdentityUser>()))
-                .ReturnsAsync(new List<string>(){ "admin" });
+                .ReturnsAsync(new List<string>() { "admin" });
             _AuthUtilitsMock.Setup(x => x.CreateSessionToken(It.IsAny<IdentityUser>(), It.IsAny<List<string>>()))
                 .Returns("jwtTokenSession").Verifiable();
-            
+
             var request = new LoginRequest()
             {
                 Email = "sa@mail.ru",
