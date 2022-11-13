@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+
 using Moq;
 
-namespace SciMaterials.Identity.Tests.FakeServices
+namespace SciMaterials.Identity.Tests.MockServices
 {
-    public class FakeRoleManager : RoleManager<IdentityRole>
+    public class RoleManagerMock : RoleManager<IdentityRole>
     {
-        public FakeRoleManager() : base(
+        public RoleManagerMock() : base(
             new Mock<IRoleStore<IdentityRole>>().Object, 
             new IRoleValidator<IdentityRole>[0],
             new Mock<ILookupNormalizer>().Object, 

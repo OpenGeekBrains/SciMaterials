@@ -6,12 +6,12 @@ using Microsoft.Extensions.Options;
 
 using Moq;
 
-namespace SciMaterials.Identity.Tests.FakeServices
+namespace SciMaterials.Identity.Tests.MockServices
 {
-    public class FakeSignInManager : SignInManager<IdentityUser>
+    public class SignInManagerMock : SignInManager<IdentityUser>
     {
-        public FakeSignInManager() : base(
-            new Mock<FakeUserManager>().Object, 
+        public SignInManagerMock() : base(
+            new Mock<UserManagerMock>().Object, 
             new HttpContextAccessor(),
             new Mock<IUserClaimsPrincipalFactory<IdentityUser>>().Object, 
             new Mock<IOptions<IdentityOptions>>().Object, 

@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+
 using Moq;
 
-namespace SciMaterials.Identity.Tests.FakeServices
+namespace SciMaterials.Identity.Tests.MockServices
 {
-    public class FakeUserManager : UserManager<IdentityUser>
+    public class UserManagerMock : UserManager<IdentityUser>
     {
-        public FakeUserManager() : base(
+        public UserManagerMock() : base(
             new Mock<IUserStore<IdentityUser>>().Object,
             new Mock<IOptions<IdentityOptions>>().Object,
             new Mock<IPasswordHasher<IdentityUser>>().Object,
