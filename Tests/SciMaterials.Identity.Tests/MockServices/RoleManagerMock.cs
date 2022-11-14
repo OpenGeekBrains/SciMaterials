@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-
 using Moq;
 
 namespace SciMaterials.Identity.Tests.MockServices
