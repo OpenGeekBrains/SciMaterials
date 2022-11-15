@@ -1,0 +1,46 @@
+﻿@code
+{
+    [Parameter]
+    public int FilesCount { get; set; } = 5;
+
+    public int Counter { get; set; } = 5;
+
+    private void Count() => Counter += 7;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        UpdateCounter();
+    }
+
+    private async void UpdateCounter()
+    {
+        while (true)
+        {
+            await Task.Delay(1500);
+            Count();
+
+            StateHasChanged();
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+    }
+}
+
+
+<h4>Последние загруженные файлы</h4>
+
+<p>@Counter</p>
+
+<a class="btn btn-primary" @onclick="Count">Test</a>

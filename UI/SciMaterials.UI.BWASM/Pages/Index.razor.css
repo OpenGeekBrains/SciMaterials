@@ -1,0 +1,3 @@
+﻿.Test1 ::deep > .TestClass {
+    color: red;
+}

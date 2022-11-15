@@ -1,0 +1,96 @@
+﻿@using SciMaterials.Contracts.API.Constants
+@using SciMaterials.Contracts.API.DTO.Files
+@using SciMaterials.Contracts.Result
+@using SciMaterials.Contracts.WebApi.Clients.Files
+@using SciMaterials.WebApi.Clients.Files
+@inject IFilesClient FilesClient;
+@inject HttpClient Http;
+@code
+{
+    [Parameter]
+    public int PageNumber { get; set; } = 1;
+
+    [Parameter]
+    public int PageSize { get; set; } = 5;
+
+    private List<GetFileResponse>? _Files;
+
+    public List<GetFileResponse>? Files
+    {
+        get => _Files; 
+        set
+        {
+            if(Equals(_Files, value)) return;
+
+            _Files = value;
+
+            StateHasChanged();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        //try
+        //{
+        //    var data = await Http.GetFromJsonAsync<PageResult<GetFileResponse>>($"/{WebApiRoute.Files}/page/{PageNumber}/{PageSize}");
+
+        //    var files = data.Data;
+
+        //    Files = files;
+        //}
+        //catch (Exception e)
+        //{
+        //    Console.WriteLine(e);
+        //    throw;
+        //}
+
+        Files = await FilesClient.GetPageAsync(PageNumber, PageSize);
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        Files = await FilesClient.GetPageAsync(PageNumber, PageSize);
+    }
+
+    public async Task UpdateAsync()
+    {
+        Files = null;
+
+        await Task.Delay(2000);
+
+        Files = await FilesClient.GetPageAsync(PageNumber, PageSize);
+    }
+}
+
+@if (Files is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var file in Files)
+            {
+                <tr>
+                    <td>@file.Id</td>
+                    <td>@file.Name</td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+}

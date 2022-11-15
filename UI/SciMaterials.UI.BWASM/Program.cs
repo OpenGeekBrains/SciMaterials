@@ -35,13 +35,18 @@ builder.Services
 // Api
 string apiRoot = builder.HostEnvironment.BaseAddress;
 
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new(apiRoot)});
+
 builder.Services
     .AddScoped<JwtAuthenticationHandler>()
     .AddApiClients(new Uri(apiRoot))
     .AddApiClient<IAuthorsClient, AuthorsClient>(apiRoot)
     .AddApiClient<IIdentityClient, IdentityClient>(apiRoot, ClientConfiguration)
     .AddApiClient<IUserClient, IdentityClient>(apiRoot, ClientConfiguration)
-    .AddApiClient<IRolesClient, IdentityClient>(apiRoot, ClientConfiguration);
+    .AddApiClient<IRolesClient, IdentityClient>(apiRoot, ClientConfiguration)
+    .AddApiClient<IRolesClient, IdentityClient>(apiRoot, ClientConfiguration)
+    ;
+
 
 // Authentication
 builder.Services

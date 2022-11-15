@@ -29,4 +29,7 @@ public class PageResult<TData> : Result
 
     public static implicit operator PageResult<TData>((List<TData> Data, int TotalCount, int PageNumber, int PageSize) t) 
         => Success(t.Data, t.TotalCount, t.PageNumber, t.PageSize);
+
+    public static implicit operator List<TData>?(PageResult<TData> Result) => Result.Data;
+    public static implicit operator TData[]?(PageResult<TData> Result) => Result.Data?.ToArray();
 }
