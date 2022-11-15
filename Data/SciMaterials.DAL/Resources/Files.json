@@ -1,16 +1,19 @@
 [
 	{
 		"Id": "EAB719EF-BEEE-76C2-93CD-9163851E6C8A",
-		"ContentTypeId": "d5d09b53-f04c-4ccc-ad49-b65c2fd3035a",
-		"FileGroupId": "D3D462E1-D35B-E194-1A96-EFAE7A9D0AA9",
-		"AuthorId": "F33627A7-2FEB-992B-D602-DE33A250A689",
+		"ContentTypeId": "69ecd2a5-6db5-48db-8436-fb83114ebb4e",
+		"FileGroupId": null,
+		"AuthorId": "8D1ABDD8-89E5-EA2C-464B-1A6EE8671274",
 		"CreatedAt": "2023-08-17 12:03:26",
-		"Description": "sodales at, velit. Pellentesque ultricies dignissieleifend vitae, erat. Vivamus nisi. Mauris nulla. Integer urna. Vivamus molestie dapibus ligula. Aliquam erat volutpat.",
-		"Name": "erat eget",
+		"Description": "Welcome to the most comprehensive foundational guide available on the topic of <a href=\"http://localhost:5185/link/aGQBB\">C#</a> coding and <a href=\"http://localhost:5185/link/hj0Bj\">.NET</a>. This book goes beyond 'do this, to achieve this' to drill down into the core stuff that makes a good developer, great. This expanded 11th edition delivers loads of new content on Entity Framework, Razor Pages, Web APIs and more.",
+		"Name": "C#10_Troelsen.pdf",
 		"Size": 6155,
-		"ShortInfo": "Quisque ornare tortor at risus. Nunc ac sem ut dolor",
+		"ShortInfo": "Pro C# 10 with .NET 6: Foundational Principles and Practices in Programming 11st ed. Edition",
 		"Hash": "32de73bec5e2a522b0bb22dda723f31aabee6ed3cb3bab9646f7b598662732d5f9579441bf04607187b99eb054f33db78220176b0fc0cb7a7ee3ce70917f28ff",
-		"IsDeleted": "false"
+		"IsDeleted": "false",
+		"AntivirusScanStatus": 0,
+		"AntivirusScanDate": "2022-08-14 09:43:16",
+		"ShortLink": "https://host/link/flf39"
 	},
 	{
 		"Id": "5A6CDAAA-28F9-3C64-73FF-743EED2AC150",
@@ -23,7 +26,10 @@
 		"Size": 4450,
 		"ShortInfo": "Curabitur sed tortor. Integer aliquam adipiscing lacus. Ut nec urna",
 		"Hash": "e287124f915457220a229902ab9b3b661758f61025f66e53dc893d390691e56db41282426a45eded95d8fd3d79328a7bc626e6c23ca3240719e9defd52462957",
-		"IsDeleted": "false"
+		"IsDeleted": "false",
+		"AntivirusScanStatus": 0,
+		"AntivirusScanDate": "2023-03-26 04:49:57",
+		"ShortLink": "https://host/link/sar44"
 	},
 	{
 		"Id": "67B29206-9460-A3A4-1A41-DCBEC56EC06E",
@@ -36,7 +42,10 @@
 		"Size": 9631,
 		"ShortInfo": "Phasellus in felis. Nulla tempor augue ac ipsum. Phasellus vitae",
 		"Hash": "de9bf8f2924db9ccde15fd3b101d2335136196b8fa1431228374fbf5a1385336c79632b42b277aa344d702db9a116cc3335d1c078dc3d6da031b3f01e4621afa",
-		"IsDeleted": "false"
+		"IsDeleted": "false",
+		"AntivirusScanStatus": 0,
+		"AntivirusScanDate": "2022-05-11 19:59:16",
+		"ShortLink": "https://host/link/fkf34"
 	},
 	{
 		"Id": "E7D627EE-014C-4CF7-7377-69F6728C170C",
@@ -49,7 +58,10 @@
 		"Size": 4566,
 		"ShortInfo": "purus. Nullam scelerisque neque sed sem egestas blandit. Nam nulla",
 		"Hash": "19d6e70549bdbe6f908ebc8ee8c0b11c19a2ad2ab00b3c12c3e1bd245d5e2ec6a39ace1fbcfba02effa9153461f1b471d1208a370bb25a89154d14f691408e5b",
-		"IsDeleted": "false"
+		"IsDeleted": "false",
+		"AntivirusScanStatus": 0,
+		"AntivirusScanDate": "2022-09-02 22:35:03",
+		"ShortLink": "https://host/link/ljk43"
 	},
 	{
 		"Id": "A79D8495-3557-205E-25C6-16255343D976",
@@ -62,7 +74,10 @@
 		"Size": 5345,
 		"ShortInfo": "tincidunt aliquam arcu. Aliquam ultrices iaculis odio. Nam interdum enim",
 		"Hash": "7454d6d8d288a7f1ba895de17c7e5cd0491f4f4129284f4b4fe8639fad27abcc7cf76f0f8222ab60b0e5e4ab806b6bd0e8fe4d796b629d72858c167f47fed5ef",
-		"IsDeleted": "false"
+		"IsDeleted": "false",
+		"AntivirusScanStatus": 0,
+		"AntivirusScanDate": "2022-09-04 22:49:44",
+		"ShortLink": "http://host/link/bcg28"
 	},
 	{
 		"Id": "F4B62FAB-DDCE-B866-EB87-14CEC7B29937",
@@ -75,7 +90,10 @@
 		"Size": 5582,
 		"ShortInfo": "diam at pretium aliquet, metus urna convallis erat, eget tincidunt",
 		"Hash": "8e36a976b38bd1c72f192dcab49bcf6a8e8a93547e8689544a63f5fd6ad6ab9c9504656ad3d439862d785d42fc7c8742e1b30c122b9bd5d36f3cc19fc11b730f",
-		"IsDeleted": "false"
+		"IsDeleted": "false",
+		"AntivirusScanStatus": 0,
+		"AntivirusScanDate": "2023-04-26 23:26:00",
+		"ShortLink": "http://host/link/kfd90"
 	},
 	{
 		"Id": "D42D7131-738F-B371-D448-7D661368443C",
@@ -88,11 +106,14 @@
 		"Size": 1510,
 		"ShortInfo": "massa. Suspendisse eleifend. Cras sed leo. Cras vehicula aliquet libero.",
 		"Hash": "db651b067fbf9e380aef93e835ab8667105383a769a09b6ac64905657f0df97c7ea0adfa84e20b4f20b3292713658058ef43d48b97de9af93ebd2b95529f9874",
-		"IsDeleted": "false"
+		"IsDeleted": "false",
+		"AntivirusScanStatus": 0,
+		"AntivirusScanDate": "2022-05-08 04:33:28",
+		"ShortLink": "https://host/link/ewq78"
 	},
 	{
 		"Id": "41C28DF4-30BC-8BA2-2C37-BFDF5022D200",
-		"ContentTypeId": "9d84206a-dc15-4941-86a9-64fd648bcfe5",
+		"ContentTypeId": "bbb50639-9427-4c32-9101-1e836326e30b",
 		"FileGroupId": "7A580812-9566-294B-12FD-82E063937648",
 		"AuthorId": "7A1546E2-EA12-E6EA-9529-69BF98C8D386",
 		"CreatedAt": "2021-11-08 04:51:43",
@@ -101,7 +122,10 @@
 		"Size": 7156,
 		"ShortInfo": "ultricies ornare, elit elit fermentum risus, at fringilla purus mauris",
 		"Hash": "468a12fa21527fadbd17a59ac6a8148cd1d9b9235ca0bd05a08699bf921c556b46f496485e4c9c0d4fb7c65488a09527783d02ebca2a14d4decaa16e0b680b81",
-		"IsDeleted": "false"
+		"IsDeleted": "false",
+		"AntivirusScanStatus": 0,
+		"AntivirusScanDate": "2023-01-03 22:08:41",
+		"ShortLink": "http://host/link/ide80"
 	},
 	{
 		"Id": "48107C7D-76FE-6DCE-B55E-6D56B16B184A",
@@ -114,7 +138,10 @@
 		"Size": 1029,
 		"ShortInfo": "Sed auctor odio a purus. Duis elementum, dui quis accumsan",
 		"Hash": "1646db0219d0740d2ff5d3306bc7d685e99ff3407c25a10a15548798a56dfb56a1b4836241f5c6dfae387c63bb17f176175a510831a32e1e6c7b516d39c14c9a",
-		"IsDeleted": "false"
+		"IsDeleted": "false",
+		"AntivirusScanStatus": 0,
+		"AntivirusScanDate": "2021-11-08 04:17:47",
+		"ShortLink": "http://host/link/eiq08"
 	},
 	{
 		"Id": "51706ED3-48C3-E764-EAC2-5EA3F4782467",
@@ -127,7 +154,10 @@
 		"Size": 5187,
 		"ShortInfo": "est ac facilisis facilisis, magna tellus faucibus leo, in lobortis",
 		"Hash": "7277d6adfd5e8fbfaee85182492eefa65cceb9b8f8e724cf800cf4094cb83860b3f732efdf3ac9c75cd9430189e8be260772077a631994bed8e1fc64e7cfacdc",
-		"IsDeleted": "false"
+		"IsDeleted": "false",
+		"AntivirusScanStatus": 0,
+		"AntivirusScanDate": "2022-10-07 02:43:18",
+		"ShortLink": "https://host/link/ide56"
 	},
 	{
 		"Id": "91E3FB4C-D42B-4336-C25E-84D5C204EEA4",
@@ -140,7 +170,10 @@
 		"Size": 1227,
 		"ShortInfo": "at, libero. Morbi accumsan laoreet ipsum. Curabitur consequat, lectus sit",
 		"Hash": "b3bc4c5be1f2c5f9f6213a875856016e9d579e84bd3decd91a4fe61c452986441f104c3f22d081e23f1299b4f181cfba83266801207b0e32cfdd353e7430278b",
-		"IsDeleted": "false"
+		"IsDeleted": "false",
+		"AntivirusScanStatus": 0,
+		"AntivirusScanDate": "2022-06-11 13:14:31",
+		"ShortLink": "http://host/link/ghy89"
 	},
 	{
 		"Id": "E8AA9481-C6CD-1298-2B34-7077D85A98AA",
@@ -153,7 +186,10 @@
 		"Size": 7071,
 		"ShortInfo": "leo elementum sem, vitae aliquam eros turpis non enim. Mauris",
 		"Hash": "8edc1824a0647fc436bc0188e398a97b618d600890849247ba5b2afe65b66993ae8e81ed8b8fcbe576d70fdf881ffd0235968fb2de65d1112207f73428fd61b0",
-		"IsDeleted": "false"
+		"IsDeleted": "false",
+		"AntivirusScanStatus": 0,
+		"AntivirusScanDate": "2023-09-27 08:34:13",
+		"ShortLink": "https://host/link/bcg28"
 	},
 	{
 		"Id": "EE43DBD9-9974-8E7E-A2E1-CD567A7E5829",
@@ -166,7 +202,10 @@
 		"Size": 9210,
 		"ShortInfo": "Sed eu nibh vulputate mauris sagittis placerat. Cras dictum ultricies",
 		"Hash": "c9e99cd8a92064681cc0a7fa3f91d2870b68efec5282b55a7164cb71c27883c88d177b539eee7b24f06da530058c3d40824dfeae327e3adb42e4a318bab20879",
-		"IsDeleted": "false"
+		"IsDeleted": "false",
+		"AntivirusScanStatus": 0,
+		"AntivirusScanDate": "2022-02-16 17:18:33",
+		"ShortLink": "https://host/link/qcz01"
 	},
 	{
 		"Id": "2CAC3937-6483-E2A6-A605-8C20B2AD0BD2",
@@ -179,7 +218,10 @@
 		"Size": 6822,
 		"ShortInfo": "Phasellus dolor elit, pellentesque a, facilisis non, bibendum sed, est.",
 		"Hash": "9802ebddc77488671a6cc16507af7a28ed127720821535a717fd6de10e9948a5285c45470d803641448879c84a3b05bcc681bc722305db1c02b694ec4790444e",
-		"IsDeleted": "false"
+		"IsDeleted": "false",
+		"AntivirusScanStatus": 0,
+		"AntivirusScanDate": "2022-10-10 14:44:44",
+		"ShortLink": "http://host/link/wer32"
 	},
 	{
 		"Id": "4982ADD2-F5A8-C18F-637D-2CF73E1106C4",
@@ -192,6 +234,9 @@
 		"Size": 6274,
 		"ShortInfo": "dictum ultricies ligula. Nullam enim. Sed nulla ante, iaculis nec,",
 		"Hash": "feee938a1bef5f09fb0b76647923f29479545542efb7737147d52e703fed1fa72f9cd58458730caeaedfceef067c3f8d3bd8e953f358a2afa6405de33e2ff0a1",
-		"IsDeleted": "false"
+		"IsDeleted": "false",
+		"AntivirusScanStatus": 0,
+		"AntivirusScanDate": "2022-09-07 06:39:21",
+		"ShortLink": "https://host/link/kfd90"
 	}
 ]

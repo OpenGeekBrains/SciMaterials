@@ -119,8 +119,7 @@ public class CategoryRepository : ICategoryRepository
         var query = _context.Categories.Where(c => !c.IsDeleted);
 
         if (include)
-            query = query.Include(c => c.Files)
-                .Include(c => c.FileGroups);
+            query = query.Include(c => c.Resources);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -135,8 +134,7 @@ public class CategoryRepository : ICategoryRepository
         var query = _context.Categories.Where(c => !c.IsDeleted);
 
         if (include)
-            query = query.Include(c => c.Files)
-                .Include(c => c.FileGroups);
+            query = query.Include(c => c.Resources);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -153,8 +151,7 @@ public class CategoryRepository : ICategoryRepository
 
         if (include)
             query = query
-                .Include(c => c.Files)
-                .Include(c => c.FileGroups);
+                .Include(c => c.Resources);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -170,8 +167,7 @@ public class CategoryRepository : ICategoryRepository
                  .Where(c => c.Id == id && !c.IsDeleted);
 
         if (include)
-            query = query.Include(c => c.Files)
-                .Include(c => c.FileGroups);
+            query = query.Include(c => c.Resources);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -187,8 +183,7 @@ public class CategoryRepository : ICategoryRepository
                 .Where(c => c.Name == name && !c.IsDeleted);
 
         if (include)
-            query = query.Include(c => c.Files)
-                .Include(c => c.FileGroups);
+            query = query.Include(c => c.Resources);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -205,8 +200,7 @@ public class CategoryRepository : ICategoryRepository
                 .AsQueryable();
 
         if (include)
-            query = query.Include(c => c.Files)
-                .Include(c => c.FileGroups);
+            query = query.Include(c => c.Resources);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -234,7 +228,7 @@ public class CategoryRepository : ICategoryRepository
             throw new ArgumentNullException(nameof(entityDb));
         }
 
-        entityDb = UpdateCurrentEnity(entity, entityDb);
+        entityDb = UpdateCurrentEntity(entity, entityDb);
         _context.Categories.Update(entityDb);
     }
 
@@ -258,7 +252,7 @@ public class CategoryRepository : ICategoryRepository
             throw new ArgumentNullException(nameof(entityDb));
         }
 
-        entityDb = UpdateCurrentEnity(entity, entityDb);
+        entityDb = UpdateCurrentEntity(entity, entityDb);
         _context.Categories.Update(entityDb);
     }
 
@@ -289,8 +283,7 @@ public class CategoryRepository : ICategoryRepository
             .AsQueryable();
 
         if (include)
-            query = query.Include(c => c.Files)
-                .Include(c => c.FileGroups);
+            query = query.Include(c => c.Resources);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -311,8 +304,7 @@ public class CategoryRepository : ICategoryRepository
 
         if (include)
             query = query
-                .Include(c => c.Files)
-                .Include(c => c.FileGroups);
+                .Include(c => c.Resources);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -325,18 +317,17 @@ public class CategoryRepository : ICategoryRepository
 
 
     /// <summary> Обновить данные экземпляра каегории. </summary>
-    /// <param name="sourse"> Источник. </param>
+    /// <param name="source"> Источник. </param>
     /// <param name="recipient"> Получатель. </param>
     /// <returns> Обновленный экземпляр. </returns>
-    private Category UpdateCurrentEnity(Category sourse, Category recipient)
+    private Category UpdateCurrentEntity(Category source, Category recipient)
     {
-        recipient.Description = sourse.Description;
-        recipient.CreatedAt = sourse.CreatedAt;
-        recipient.Files = sourse.Files;
-        recipient.FileGroups = sourse.FileGroups;
-        recipient.ParentId = sourse.ParentId;
-        recipient.Name = sourse.Name;
-        recipient.IsDeleted = sourse.IsDeleted;
+        recipient.Description = source.Description;
+        recipient.CreatedAt = source.CreatedAt;
+        recipient.Resources = source.Resources;;
+        recipient.ParentId = source.ParentId;
+        recipient.Name = source.Name;
+        recipient.IsDeleted = source.IsDeleted;
 
         return recipient;
     }

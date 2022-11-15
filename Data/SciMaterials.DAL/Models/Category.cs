@@ -9,6 +9,6 @@ public class Category : NamedModel
     public ICollection<Category> Children { get; set; }
     public string? Description { get; set; }
     public DateTime CreatedAt { get; set; }
-    public ICollection<File> Files { get; set; } = new HashSet<File>();
-    public ICollection<FileGroup> FileGroups { get; set; } = new HashSet<FileGroup>();
+    public Guid ResourceId { get; set; }
+    public ICollection<Resource> Resources { get; set; } = new HashSet<Resource>();
 }

@@ -1,39 +1,47 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SciMaterials.Contracts.Database.Configuration;
-using SciMaterials.Contracts.Database.Enums;
 using SciMaterials.Contracts.Database.Initialization;
-using SciMaterials.DAL.Contexts;
+using SciMaterials.Data.MySqlMigrations;
+using SciMaterials.MsSqlServerMigrations;
+using SciMaterials.PostgresqlMigrations;
 using SciMaterials.Services.Database.Services.DbInitialization;
+using SciMaterials.SQLiteMigrations;
 
 namespace SciMaterials.Services.Database.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddContextMultipleProviders(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddDatabaseProviders(this IServiceCollection services,
+        IConfiguration configuration)
     {
-        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
-        var settings = configuration.GetSection("DbSettings")
+        var dbSettings = configuration.GetSection("DbSettings")
             .Get<DbSettings>();
 
-        services.AddDbContext<SciMaterialsContext>(options => _ = settings.DbProvider switch
+        var providerName = dbSettings.GetProviderName();
+        var connectionString = configuration.GetSection("DbSettings").GetConnectionString(dbSettings.DbProvider);
+
+        switch (providerName.ToLower())
         {
-            nameof(DbProviders.SqlServer) => options.UseSqlServer(configuration.GetConnectionString("SqlServerConnectionString"),
-                opt => opt.MigrationsAssembly("SciMaterials.MsSqlServerMigrations")),
-            nameof(DbProviders.PostgreSQL) => options.UseNpgsql(configuration.GetConnectionString("PostgreSQLConnectionString"),
-                opt => opt.MigrationsAssembly("SciMaterials.PostgresqlMigrations")),
-            nameof(DbProviders.MySQL) => options.UseMySql(configuration.GetConnectionString("MySQLConnectionString"), new MySqlServerVersion(new Version(8, 0, 30)),
-                opt => opt.MigrationsAssembly("SciMaterials.Data.MySqlMigrations")),
-            nameof(DbProviders.SQLite) => options.UseSqlite(configuration.GetConnectionString("SQLiteConnectionString"),
-                opt => opt.MigrationsAssembly("SciMaterials.SQLiteMigrations")),
-            _ => throw new Exception($"Unsupported provider: {settings.DbProvider}")
-        });
+            case "sqlserver":
+                services.AddSciMaterialsContextSqlServer(connectionString);
+                break;
+            case "postgresql":
+                services.AddSciMaterialsContextPostgreSQL(connectionString);
+                break;
+            case "mysql":
+                services.AddSciMaterialsContextMySql(connectionString);
+                break;
+            case "sqlite":
+                services.AddSciMaterialsContextSqlite(connectionString);
+                break;
+            default:
+                throw new Exception($"Unsupported provider: {providerName}");
+        }
 
         return services;
     }
 
     public static IServiceCollection AddDatabaseServices(this IServiceCollection services) =>
-        services.AddTransient<IDbInitializer, DbInitializer>();
+       services.AddTransient<IDbInitializer, DbInitializer>();
 }

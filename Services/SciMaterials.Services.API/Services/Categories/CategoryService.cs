@@ -1,28 +1,19 @@
 using SciMaterials.DAL.UnitOfWork;
 using SciMaterials.DAL.Contexts;
 using AutoMapper;
-using Category = SciMaterials.DAL.Models.Category;
 using Microsoft.Extensions.Logging;
 using SciMaterials.Contracts.API.Services.Categories;
 using SciMaterials.Contracts.API.DTO.Categories;
-using SciMaterials.Contracts.Enums;
 using SciMaterials.Contracts.Result;
-using SciMaterials.Contracts.API.DTO.Authors;
+using SciMaterials.Contracts;
+using SciMaterials.DAL.Models;
 
 namespace SciMaterials.Services.API.Services.Categories;
 
-public class CategoryService : ICategoryService
+public class CategoryService : ApiServiceBase, ICategoryService
 {
-    private readonly IUnitOfWork<SciMaterialsContext> _unitOfWork;
-    private readonly IMapper _mapper;
-    private readonly ILogger<CategoryService> _logger;
-
     public CategoryService(IUnitOfWork<SciMaterialsContext> unitOfWork, IMapper mapper, ILogger<CategoryService> logger)
-    {
-        _logger = logger;
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
+        : base(unitOfWork, mapper, logger) { }
 
     public async Task<Result<IEnumerable<GetCategoryResponse>>> GetAllAsync(CancellationToken Cancel = default)
     {
@@ -34,54 +25,85 @@ public class CategoryService : ICategoryService
     public async Task<PageResult<GetCategoryResponse>> GetPageAsync(int pageNumber, int pageSize, CancellationToken Cancel = default)
     {
         var categories = await _unitOfWork.GetRepository<Category>().GetPageAsync(pageNumber, pageSize);
+        var totalCount = await _unitOfWork.GetRepository<Category>().GetCountAsync();
         var result = _mapper.Map<List<GetCategoryResponse>>(categories);
-        return await PageResult<GetCategoryResponse>.SuccessAsync(result);
+        return (result, totalCount);
     }
 
     public async Task<Result<GetCategoryResponse>> GetByIdAsync(Guid id, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<Category>().GetByIdAsync(id) is { } category)
-            return _mapper.Map<GetCategoryResponse>(category);
+        if (await _unitOfWork.GetRepository<Category>().GetByIdAsync(id) is not { } Category)
+        {
+            return LoggedError<GetCategoryResponse>(
+                Errors.Api.Category.NotFound,
+                "Category with ID {id} not found",
+                id);
+        }
 
-        return await Result<GetCategoryResponse>.ErrorAsync((int)ResultCodes.NotFound, $"Category with ID {id} not found");
+        var result = _mapper.Map<GetCategoryResponse>(Category);
+        return result;
     }
 
     public async Task<Result<Guid>> AddAsync(AddCategoryRequest request, CancellationToken Cancel = default)
     {
-        var category = _mapper.Map<Category>(request);
-        category.CreatedAt = DateTime.Now;
-        await _unitOfWork.GetRepository<Category>().AddAsync(category);
+        var Category = _mapper.Map<Category>(request);
+        await _unitOfWork.GetRepository<Category>().AddAsync(Category);
 
-        if (await _unitOfWork.SaveContextAsync() > 0)
-            return await Result<Guid>.SuccessAsync(category.Id, "Category created");
+        if (await _unitOfWork.SaveContextAsync() == 0)
+        {
+            return LoggedError<Guid>(
+                Errors.Api.Category.Add,
+                "Category {name} add error",
+                request.Name);
+        }
 
-        return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
+        return Category.Id;
     }
 
     public async Task<Result<Guid>> EditAsync(EditCategoryRequest request, CancellationToken Cancel = default)
     {
         if (await _unitOfWork.GetRepository<Category>().GetByIdAsync(request.Id) is not { } existedCategory)
-            return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Category with ID {request.Id} not found");
+        {
+            return LoggedError<Guid>(
+                Errors.Api.Category.NotFound,
+                "Category {name} not found",
+                request.Name);
+        }
 
-        var category = _mapper.Map(request, existedCategory);
-        await _unitOfWork.GetRepository<Category>().UpdateAsync(category);
+        var Category = _mapper.Map(request, existedCategory);
+        await _unitOfWork.GetRepository<Category>().UpdateAsync(Category);
 
-        if (await _unitOfWork.SaveContextAsync() > 0)
-            return await Result<Guid>.SuccessAsync(category.Id, "Category updated");
+        if (await _unitOfWork.SaveContextAsync() == 0)
+        {
+            return LoggedError<Guid>(
+                Errors.Api.Category.Update,
+                "Category {name} update error",
+                request.Name);
+        }
 
-        return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
+        return Category.Id;
     }
 
     public async Task<Result<Guid>> DeleteAsync(Guid id, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<Category>().GetByIdAsync(id) is not { } category)
-            return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Category with ID {id} not found");
+        if (await _unitOfWork.GetRepository<Category>().GetByIdAsync(id) is not { } Category)
+        {
+            return LoggedError<Guid>(
+                Errors.Api.Category.NotFound,
+            "Category with {id} not found",
+                id);
+        }
 
-        await _unitOfWork.GetRepository<Category>().DeleteAsync(category);
+        await _unitOfWork.GetRepository<Category>().DeleteAsync(Category);
 
-        if (await _unitOfWork.SaveContextAsync() > 0)
-            return await Result<Guid>.SuccessAsync($"Category with ID {category.Id} deleted");
+        if (await _unitOfWork.SaveContextAsync() == 0)
+        {
+            return LoggedError<Guid>(
+                Errors.Api.Category.Delete,
+                "Category with {id} update error",
+                id);
+        }
 
-        return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
+        return id;
     }
 }

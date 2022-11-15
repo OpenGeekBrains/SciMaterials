@@ -11,6 +11,7 @@ using SciMaterials.Contracts.Identity.API.DTO.Users;
 using SciMaterials.Contracts.Identity.Clients.Clients.Responses.DTO;
 using SciMaterials.Contracts.Identity.Clients.Clients.Responses.Roles;
 using SciMaterials.Contracts.Identity.Clients.Clients.Responses.User;
+using SciMaterials.DAL.Contexts;
 
 namespace SciMaterials.UI.MVC.Identity.Controllers;
 
@@ -25,7 +26,7 @@ public class AccountController : Controller
     private readonly SignInManager<IdentityUser> _SignInManager;
     private readonly RoleManager<IdentityRole> _RoleManager;
     private readonly IHttpContextAccessor _ContextAccessor;
-    private readonly IAuthUtilits _AuthUtilits;
+    private readonly IAuthUtilits _authUtilits;
     private readonly ILogger<AccountController> _Logger;
 
     public AccountController(
@@ -33,15 +34,15 @@ public class AccountController : Controller
         SignInManager<IdentityUser> SignInManager,
         RoleManager<IdentityRole> RoleManager,
         IHttpContextAccessor ContextAccessor,
-        IAuthUtilits AuthUtilits,
+        IAuthUtilits authUtilits,
         ILogger<AccountController> Logger)
     {
         _UserManager = UserManager;
         _SignInManager = SignInManager;
         _RoleManager = RoleManager;
-        _ContextAccessor = ContextAccessor;
-        _AuthUtilits = AuthUtilits;
         _Logger = Logger;
+        _ContextAccessor = ContextAccessor;
+        _authUtilits = authUtilits;
     }
 
     /// <summary>
@@ -55,34 +56,19 @@ public class AccountController : Controller
     {
         try
         {
-            var identity_user = new IdentityUser{ Email = RegisterRequest.Email, UserName = RegisterRequest.NickName };
+            var identity_user = new IdentityUser{Email = RegisterRequest.Email, UserName = RegisterRequest.NickName};
             var identity_result = await _UserManager.CreateAsync(identity_user, RegisterRequest.Password);
             if (identity_result.Succeeded)
             {
                 await _UserManager.AddToRoleAsync(identity_user, AuthApiRoles.User);
                 var email_confirm_token = await _UserManager.GenerateEmailConfirmationTokenAsync(identity_user);
-                
-                string callback_url = string.Empty;
-                var host = _ContextAccessor.HttpContext.Request.Host.ToString();
-                if (host.Equals("scimaterials.ui.mvc"))
-                {
-                    HttpContext.Request.Host = new HostString("localhost", 5185);
 
-                    callback_url = Url.Action(
-                    "ConfirmEmail",
-                    controller: "Account",
-                    values: new {UserId = identity_user.Id, ConfirmToken = email_confirm_token},
-                    protocol: HttpContext.Request.Scheme);
-                }
-                else
-                {
-                    callback_url = Url.Action(
+                var callback_url = Url.Action(
                     "ConfirmEmail",
                     controller: "Account",
                     values: new { UserId = identity_user.Id, ConfirmToken = email_confirm_token }, 
                     protocol: HttpContext.Request.Scheme);
-                }
-                
+
                 return Ok(new ClientCreateUserResponse()
                 {
                     Succeeded = true,
@@ -91,7 +77,7 @@ public class AccountController : Controller
                     ConfirmEmail = callback_url,
                 });
             }
-            
+
             var errors = identity_result.Errors.Select(e => e.Description).ToArray();
             _Logger.Log(LogLevel.Information, "Не удалось зарегистрировать пользователя {Email}: {errors}",
                 RegisterRequest.Email,
@@ -102,7 +88,6 @@ public class AccountController : Controller
                 Succeeded = false, 
                 Code      = (int)ResultCodes.NotFound, 
                 Message   = $"Не удалось зарегистрировать пользователя {RegisterRequest.Email}",
-                Messages = errors
             });
         }
         catch (Exception ex)
@@ -135,7 +120,7 @@ public class AccountController : Controller
                 if (sign_in_result.Succeeded)
                 {
                     var identity_roles = await _UserManager.GetRolesAsync(identity_user);
-                    var session_token = _AuthUtilits.CreateSessionToken(identity_user, identity_roles);
+                    var session_token = _authUtilits.CreateSessionToken(identity_user, identity_roles);
                     return Ok(new ClientLoginResponse
                     {
                         Succeeded = true,
@@ -264,7 +249,7 @@ public class AccountController : Controller
 
             var identity_user = await _UserManager.FindByEmailAsync(userEmail);
             var identity_roles = await _UserManager.GetRolesAsync(identity_user);
-            var new_session_token = _AuthUtilits.CreateSessionToken(identity_user, identity_roles);
+            var new_session_token = _authUtilits.CreateSessionToken(identity_user, identity_roles);
             
             if (!string.IsNullOrEmpty(new_session_token))
             {
@@ -510,7 +495,7 @@ public class AccountController : Controller
             var identity_role = await _RoleManager.FindByIdAsync(RoleId);
             if (identity_role is not null)
             {
-                if (_AuthUtilits.CheckToDeleteAdminOrUserRoles(identity_role))
+                if (_authUtilits.CheckToDeleteAdminOrUserRoles(identity_role))
                 {
                     var identity_result = await _RoleManager.DeleteAsync(identity_role);
                     if (identity_result.Succeeded)
@@ -574,7 +559,7 @@ public class AccountController : Controller
                         var role_added_result = await _UserManager.AddToRoleAsync(identity_user, AddRoleToUserRequest.RoleName!.ToLower());
                         if (role_added_result.Succeeded)
                         {
-                            var new_token = _AuthUtilits.CreateSessionToken(identity_user,
+                            var new_token = _authUtilits.CreateSessionToken(identity_user,
                                 await _UserManager.GetRolesAsync(identity_user));
                             
                             return Ok(new ClientAddRoleToUserResponse()
@@ -627,12 +612,12 @@ public class AccountController : Controller
                 {
                     if (is_role)
                     {
-                        if (_AuthUtilits.CheckToDeleteSAInRoleAdmin(identity_user, RoleName.ToLower()))
+                        if (_authUtilits.CheckToDeleteSAInRoleAdmin(identity_user, RoleName.ToLower()))
                         {
                             var role_removed_result = await _UserManager.RemoveFromRoleAsync(identity_user, RoleName.ToLower());
                             if (role_removed_result.Succeeded)
                             {
-                                var new_token = _AuthUtilits.CreateSessionToken(identity_user,
+                                var new_token = _authUtilits.CreateSessionToken(identity_user,
                                     await _UserManager.GetRolesAsync(identity_user));
                             
                                 return Ok(new ClientDeleteUserRoleByEmailResponse()
@@ -860,7 +845,7 @@ public class AccountController : Controller
                 var identity_result = await _UserManager.UpdateAsync(identity_user);
                 if (identity_result.Succeeded)
                 {
-                    var new_token = _AuthUtilits.CreateSessionToken(identity_user,
+                    var new_token = _authUtilits.CreateSessionToken(identity_user,
                         await _UserManager.GetRolesAsync(identity_user));
                     
                     return Ok(new ClientEditUserNameByEmailResponse()
@@ -911,7 +896,7 @@ public class AccountController : Controller
             var identity_user = await _UserManager.FindByEmailAsync(Email.ToLower());
             if (identity_user is not null)
             {
-                if (_AuthUtilits.CheckToDeleteSA(identity_user))
+                if (_authUtilits.CheckToDeleteSA(identity_user))
                 {
                     var identity_result = await _UserManager.DeleteAsync(identity_user);
                     if (identity_result.Succeeded)

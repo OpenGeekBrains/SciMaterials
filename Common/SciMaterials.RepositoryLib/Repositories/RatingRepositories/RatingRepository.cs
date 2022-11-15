@@ -5,7 +5,6 @@ using SciMaterials.DAL.Models;
 
 namespace SciMaterials.RepositoryLib.Repositories.RatingRepositories;
 
-
 /// <summary> Интерфейс репозитория для <see cref="Rating"/>. </summary>
 public interface IRatingRepository : IRepository<Rating> { }
 
@@ -130,9 +129,8 @@ public class RatingRepository : IRatingRepository
         IQueryable<Rating> query = _context.Ratings.Where(r => !r.IsDeleted);
 
         if (include)
-            query = query.Include(r => r.File)
-                .Include(r => r.User)
-                .Include(r => r.FileGroup);
+            query = query.Include(r => r.Resource)
+                .Include(r => r.User);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -147,9 +145,8 @@ public class RatingRepository : IRatingRepository
         IQueryable<Rating> query = _context.Ratings.Where(r => !r.IsDeleted);
 
         if (include)
-            query = query.Include(r => r.File)
-                .Include(r => r.User)
-                .Include(r => r.FileGroup);
+            query = query.Include(r => r.Resource)
+                .Include(r => r.User);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -165,9 +162,8 @@ public class RatingRepository : IRatingRepository
                 .Where(c => c.Id == id && !c.IsDeleted);
 
         if (include)
-            query = query.Include(r => r.File)
-            .Include(r => r.User)
-            .Include(r => r.FileGroup);
+            query = query.Include(r => r.Resource)
+            .Include(r => r.User);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -183,9 +179,8 @@ public class RatingRepository : IRatingRepository
                 .Where(c => c.Id == id && !c.IsDeleted);
 
         if (include)
-            query = query.Include(r => r.File)
-            .Include(r => r.User)
-            .Include(r => r.FileGroup);
+            query = query.Include(r => r.Resource)
+            .Include(r => r.User);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -275,9 +270,8 @@ public class RatingRepository : IRatingRepository
 
         if (include)
             query = query
-                .Include(r => r.File)
-                .Include(r => r.User)
-                .Include(r => r.FileGroup);
+                .Include(r => r.Resource)
+                .Include(r => r.User);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -296,9 +290,8 @@ public class RatingRepository : IRatingRepository
 
         if (include)
             query = query
-                .Include(r => r.File)
-                .Include(r => r.User)
-                .Include(r => r.FileGroup);
+                .Include(r => r.Resource)
+                .Include(r => r.User);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -308,24 +301,19 @@ public class RatingRepository : IRatingRepository
             .Take(pageSize)
             .ToListAsync();
     }
-
-
-
-
+    
     /// <summary> Обновить данные экземпляра каегории. </summary>
-    /// <param name="sourse"> Источник. </param>
+    /// <param name="source"> Источник. </param>
     /// <param name="recipient"> Получатель. </param>
     /// <returns> Обновленный экземпляр. </returns>
-    private Rating UpdateCurrentEntity(Rating sourse, Rating recipient)
+    private Rating UpdateCurrentEntity(Rating source, Rating recipient)
     {
-        recipient.FileId = sourse.FileId;
-        recipient.FileGroupId = sourse.FileGroupId;
-        recipient.AuthorId = sourse.AuthorId;
-        recipient.RatingValue = sourse.RatingValue;
-        recipient.File = sourse.File;
-        recipient.FileGroup = sourse.FileGroup;
-        recipient.User = sourse.User;
-        recipient.IsDeleted = sourse.IsDeleted;
+        recipient.ResourceId = source.ResourceId;
+        recipient.AuthorId = source.AuthorId;
+        recipient.RatingValue = source.RatingValue;
+        recipient.Resource = source.Resource;
+        recipient.User = source.User;
+        recipient.IsDeleted = source.IsDeleted;
 
         return recipient;
     }

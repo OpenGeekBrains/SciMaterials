@@ -10,7 +10,7 @@ public class Author : NamedModel
     public string Surname { get; set; } = string.Empty;
 
     public User? User { get; set; }
-    public ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
+    public ICollection<Comment>? Comments { get; set; } = new HashSet<Comment>();
     public ICollection<Resource> Resources { get; set; } = new HashSet<Resource>();
     public ICollection<Rating> Ratings { get; set; } = new HashSet<Rating>();
 }

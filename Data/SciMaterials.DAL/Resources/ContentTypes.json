@@ -42,12 +42,6 @@
     "IsDeleted": false
   },
   {
-    "Id": "9d84206a-dc15-4941-86a9-64fd648bcfe5",
-    "Name": "audio/aac",
-    "FileExtension": ".AAC",
-    "IsDeleted": false
-  },
-  {
     "Id": "bbb50639-9427-4c32-9101-1e836326e30b",
     "Name": "application/octet",
     "FileExtension": ".aaf",
@@ -378,18 +372,6 @@
     "IsDeleted": false
   },
   {
-    "Id": "1838c074-9f74-425d-b27d-6e723569d384",
-    "Name": "application/octet",
-    "FileExtension": ".bin",
-    "IsDeleted": false
-  },
-  {
-    "Id": "2ac9704a-73e5-4fcf-b452-265080cf7cb8",
-    "Name": "image/bmp",
-    "FileExtension": ".bmp",
-    "IsDeleted": false
-  },
-  {
     "Id": "8e229d45-36bc-4569-a488-334e68e26864",
     "Name": "text/plain",
     "FileExtension": ".c",
@@ -657,12 +639,6 @@
     "Id": "722c3b04-1cb4-4165-993c-1fd9c5f3c392",
     "Name": "video/x",
     "FileExtension": ".dif",
-    "IsDeleted": false
-  },
-  {
-    "Id": "0eb910cb-57ab-469d-bcef-cdbbe8a1d6f5",
-    "Name": "application/x",
-    "FileExtension": ".dir",
     "IsDeleted": false
   },
   {
@@ -1650,12 +1626,6 @@
     "IsDeleted": false
   },
   {
-    "Id": "c4d540ef-27cd-47e0-8cee-ebe34f622d80",
-    "Name": "audio/mid",
-    "FileExtension": ".midi",
-    "IsDeleted": false
-  },
-  {
     "Id": "1ecb5767-7997-4a0c-99a7-486f7eea5943",
     "Name": "application/octet",
     "FileExtension": ".mix",
@@ -1986,12 +1956,6 @@
     "IsDeleted": false
   },
   {
-    "Id": "5ce36895-d85f-4bc0-b5b9-96d58ad2460d",
-    "Name": "application/onenote",
-    "FileExtension": ".one",
-    "IsDeleted": false
-  },
-  {
     "Id": "549e4a91-ac86-4668-b48b-a2433dd1b84d",
     "Name": "application/onenote",
     "FileExtension": ".onea",
@@ -2019,12 +1983,6 @@
     "Id": "00b5a026-91af-40c5-8261-209fde97388d",
     "Name": "application/onenote",
     "FileExtension": ".onetoc2",
-    "IsDeleted": false
-  },
-  {
-    "Id": "832e2ad5-8434-4f56-826d-5d05abd99523",
-    "Name": "audio/ogg",
-    "FileExtension": ".opus",
     "IsDeleted": false
   },
   {
@@ -2805,12 +2763,6 @@
     "Id": "2b3dffcc-e945-4851-9e19-f2b88389d9dd",
     "Name": "audio/x",
     "FileExtension": ".smz",
-    "IsDeleted": false
-  },
-  {
-    "Id": "3d4e5dce-da63-4cd6-b952-7ff078873041",
-    "Name": "audio/basic",
-    "FileExtension": ".snd",
     "IsDeleted": false
   },
   {
@@ -3606,12 +3558,6 @@
     "IsDeleted": false
   },
   {
-    "Id": "e96d5e1b-b0a5-4cd4-901a-55ec9632c280",
-    "Name": "application/xhtml",
-    "FileExtension": ".xhtml",
-    "IsDeleted": false
-  },
-  {
     "Id": "15ae41c1-dfdd-4e87-8ca7-d650377f1fba",
     "Name": "application/vnd",
     "FileExtension": ".xla",
@@ -3696,24 +3642,6 @@
     "IsDeleted": false
   },
   {
-    "Id": "e211cf3e-14f5-4521-8634-f265020074ca",
-    "Name": "application/fsharp",
-    "FileExtension": ".fsx",
-    "IsDeleted": false
-  },
-  {
-    "Id": "6c192325-f61a-4a76-babc-f4c937ee2dd2",
-    "Name": "application/msaccess",
-    "FileExtension": ".adp",
-    "IsDeleted": false
-  },
-  {
-    "Id": "e26feda5-6288-4b3e-b1c3-3ce163256b03",
-    "Name": "application/msword",
-    "FileExtension": ".doc",
-    "IsDeleted": false
-  },
-  {
     "Id": "14484837-ff0c-4d86-b32c-3071fdf5bab4",
     "Name": "application/octet",
     "FileExtension": ".bin",
@@ -3726,30 +3654,6 @@
     "IsDeleted": false
   },
   {
-    "Id": "0ef5f110-6c40-4007-a288-6d4e457170a0",
-    "Name": "application/postscript",
-    "FileExtension": ".eps",
-    "IsDeleted": false
-  },
-  {
-    "Id": "2212aa48-090a-4932-bd9d-ee61b44c4c80",
-    "Name": "application/step",
-    "FileExtension": ".step",
-    "IsDeleted": false
-  },
-  {
-    "Id": "5769c2b6-c17d-4fb4-98dc-4859c4e57a16",
-    "Name": "application/vnd",
-    "FileExtension": ".apple",
-    "IsDeleted": false
-  },
-  {
-    "Id": "5477319f-cd06-4401-8a03-7c31e262c1f0",
-    "Name": "application/vnd",
-    "FileExtension": ".apple",
-    "IsDeleted": false
-  },
-  {
     "Id": "c902e74e-bb58-4e56-ba71-b0126f0f90df",
     "Name": "application/vnd",
     "FileExtension": ".apple",
@@ -3757,18 +3661,6 @@
   },
   {
     "Id": "bd7ca532-40cf-443d-9403-924731d386af",
-    "Name": "application/vnd",
-    "FileExtension": ".ms",
-    "IsDeleted": false
-  },
-  {
-    "Id": "352c0180-6a11-42b7-9d14-d6192b354654",
-    "Name": "application/vnd",
-    "FileExtension": ".ms",
-    "IsDeleted": false
-  },
-  {
-    "Id": "d96b6b3a-477d-4c68-98e7-05c66c3ccbd4",
     "Name": "application/vnd",
     "FileExtension": ".ms",
     "IsDeleted": false
@@ -3795,12 +3687,6 @@
     "Id": "535eee72-d7d3-44da-b653-8b1cd902ee8e",
     "Name": "application/x",
     "FileExtension": ".swf",
-    "IsDeleted": false
-  },
-  {
-    "Id": "80ab42bf-a027-45c0-956f-8c6228e3b479",
-    "Name": "application/x",
-    "FileExtension": ".cer",
     "IsDeleted": false
   },
   {
@@ -3846,12 +3732,6 @@
     "IsDeleted": false
   },
   {
-    "Id": "cd20b3c6-3802-4941-8723-8ed57f021fd3",
-    "Name": "audio/aiff",
-    "FileExtension": ".aiff",
-    "IsDeleted": false
-  },
-  {
     "Id": "b59e2677-1763-4fde-a2b8-6ce56535ecac",
     "Name": "audio/basic",
     "FileExtension": ".snd",
@@ -3870,21 +3750,9 @@
     "IsDeleted": false
   },
   {
-    "Id": "5a1a768d-64ef-454b-a6ff-8e2afc92155b",
-    "Name": "audio/ogg",
-    "FileExtension": ".ogg",
-    "IsDeleted": false
-  },
-  {
     "Id": "91524de9-3b43-402b-9316-b8cfcd11bec8",
     "Name": "audio/ogg",
     "FileExtension": ".opus",
-    "IsDeleted": false
-  },
-  {
-    "Id": "c5f25ee7-be15-405b-8884-6503d620afa6",
-    "Name": "audio/wav",
-    "FileExtension": ".wav",
     "IsDeleted": false
   },
   {
@@ -3894,45 +3762,9 @@
     "IsDeleted": false
   },
   {
-    "Id": "eab7a8cf-1fea-4cd9-b213-2b9dd947e68e",
-    "Name": "audio/x",
-    "FileExtension": ".m3u",
-    "IsDeleted": false
-  },
-  {
-    "Id": "e6f0b445-a5e1-4ccf-ae43-ab74ce4b4e89",
-    "Name": "audio/x",
-    "FileExtension": ".ra",
-    "IsDeleted": false
-  },
-  {
-    "Id": "79ccc134-0e82-4cd9-9848-17e8b4e70008",
-    "Name": "audio/x",
-    "FileExtension": ".smd",
-    "IsDeleted": false
-  },
-  {
     "Id": "a9408d03-89c4-491d-940b-9999e130faac",
     "Name": "image/bmp",
     "FileExtension": ".bmp",
-    "IsDeleted": false
-  },
-  {
-    "Id": "65a5a300-d6c1-4081-9c04-6f6e0b6af217",
-    "Name": "image/heic",
-    "FileExtension": ".heic",
-    "IsDeleted": false
-  },
-  {
-    "Id": "9fbbac3c-aa96-40c8-853b-a06e84c9da91",
-    "Name": "image/heif",
-    "FileExtension": ".heif",
-    "IsDeleted": false
-  },
-  {
-    "Id": "a3ea82f4-a0d6-4c9a-acc5-369eb2f36a54",
-    "Name": "image/jpeg",
-    "FileExtension": ".jpg",
     "IsDeleted": false
   }
 ]

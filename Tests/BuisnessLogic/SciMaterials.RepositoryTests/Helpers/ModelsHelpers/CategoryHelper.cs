@@ -1,5 +1,5 @@
 ﻿using SciMaterials.DAL.Models;
-using File = SciMaterials.DAL.Models.File;
+using SciMaterials.DAL.Models.Base;
 
 namespace SciMaterials.RepositoryTests.Helpers.ModelsHelpers;
 
@@ -18,20 +18,13 @@ internal static class CategoryHelper
             CreatedAt = DateTime.UtcNow,
             Description = "Category description",
             Name = "CategoryName",
-            FileGroups = new List<FileGroup>
+            Resources = new HashSet<Resource>()
             {
                 new()
                 {
                     Id = Guid.NewGuid(),
                 },
-            },
-            Files = 
-            {
-                new File
-                {
-                    Id = Guid.NewGuid(),
-                },
-            },
+            }
         };
     }
 }

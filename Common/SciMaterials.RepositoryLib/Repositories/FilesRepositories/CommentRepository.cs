@@ -129,8 +129,7 @@ public class CommentRepository : ICommentRepository
         IQueryable<Comment> query = _context.Comments.Where(c => !c.IsDeleted);
         
         if (include)
-            query = query.Include(c => c.File)
-                .Include(c => c.FileGroup)
+            query = query.Include(c => c.Resource)
                 .Include(c => c.Author);
 
         if (disableTracking)
@@ -146,8 +145,7 @@ public class CommentRepository : ICommentRepository
         IQueryable<Comment> query = _context.Comments.Where(c => !c.IsDeleted);
 
         if (include)
-            query = query.Include(c => c.File)
-                .Include(c => c.FileGroup)
+            query = query.Include(c => c.Resource)
                 .Include(c => c.Author);
 
         if (disableTracking)
@@ -164,8 +162,7 @@ public class CommentRepository : ICommentRepository
                 .Where(c => c.Id == id && !c.IsDeleted);
 
         if (include)
-            query = query.Include(c => c.File)
-                .Include(c => c.FileGroup)
+            query = query.Include(c => c.Resource)
                 .Include(c => c.Author);
 
         if (disableTracking)
@@ -182,8 +179,7 @@ public class CommentRepository : ICommentRepository
                 .Where(c => c.Id == id && !c.IsDeleted);
 
         if (include)
-            query = query.Include(c => c.File)
-                .Include(c => c.FileGroup)
+            query = query.Include(c => c.Resource)
                 .Include(c => c.Author);
 
         if (disableTracking)
@@ -274,8 +270,7 @@ public class CommentRepository : ICommentRepository
 
         if (include)
             query = query
-                .Include(c => c.File)
-                .Include(c => c.FileGroup)
+                .Include(c => c.Resource)
                 .Include(c => c.Author);
 
         if (disableTracking)
@@ -295,8 +290,7 @@ public class CommentRepository : ICommentRepository
 
         if (include)
             query = query
-                .Include(c => c.File)
-                .Include(c => c.FileGroup)
+                .Include(c => c.Resource)
                 .Include(c => c.Author);
 
         if (disableTracking)
@@ -316,12 +310,10 @@ public class CommentRepository : ICommentRepository
     private Comment UpdateCurrentEntity(Comment sourse, Comment recipient)
     {
         recipient.CreatedAt = sourse.CreatedAt;
-        recipient.FileId = sourse.FileId;
-        recipient.File = sourse.File;
+        recipient.ResourceId = sourse.ResourceId;
+        recipient.Resource = sourse.Resource;
         recipient.ParentId = sourse.ParentId;
         recipient.Text = sourse.Text;
-        recipient.FileGroupId = sourse.FileGroupId;
-        recipient.FileGroup = sourse.FileGroup;
         recipient.Author = sourse.Author;
         recipient.AuthorId = sourse.AuthorId;
         recipient.IsDeleted = sourse.IsDeleted;

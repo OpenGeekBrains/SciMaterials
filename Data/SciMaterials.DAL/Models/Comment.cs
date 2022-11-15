@@ -8,11 +8,7 @@ public class Comment : BaseModel
     public Guid AuthorId { get; set; }
     public string Text { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
-    
-    public Guid? FileId { get; set; }
-    public Guid? FileGroupId { get; set; }
-
+    public Guid ResourceId { get; set; }
     public Author Author { get; set; } = null!;
-    public File? File { get; set; } = null!;
-    public FileGroup? FileGroup { get; set; } = null!;
+    public Resource Resource { get; set; } = null!;
 }

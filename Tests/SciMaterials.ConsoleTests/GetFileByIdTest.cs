@@ -23,6 +23,6 @@ public class GetFileByIdTest
         if (result.Succeeded)
             Console.WriteLine($"{result.Data.Id} >>> {result.Data.Name}");
         else
-            Console.WriteLine(string.Join(";", result.Messages));
+            Console.WriteLine(result.Message);
     }
 }

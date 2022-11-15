@@ -11,7 +11,7 @@ public class Resource : NamedModel
     public DateTime CreatedAt { get; set; }
     public Author Author { get; set; } = null!;
 
-    public ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
+    public ICollection<Comment>? Comments { get; set; } = new HashSet<Comment>();
     public ICollection<Tag>? Tags { get; set; } = new HashSet<Tag>();
     public ICollection<Category> Categories { get; set; } = new HashSet<Category>();
     public ICollection<Rating> Ratings { get; set; } = new HashSet<Rating>();

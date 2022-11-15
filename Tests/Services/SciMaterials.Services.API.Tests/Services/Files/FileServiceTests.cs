@@ -7,6 +7,7 @@ using Moq;
 using SciMaterials.Contracts.API.DTO.Files;
 using SciMaterials.Contracts.API.Services.Files;
 using SciMaterials.Contracts.API.Settings;
+using SciMaterials.Contracts.ShortLinks;
 using SciMaterials.DAL.Contexts;
 using SciMaterials.DAL.UnitOfWork;
 using SciMaterials.RepositoryLib.Repositories;
@@ -30,6 +31,8 @@ public class FileServiceTests
         var api_settings_mock = new Mock<IApiSettings>();
         var file_store_mock = new Mock<IFileStore>();
         var db_mock = new Mock<IUnitOfWork<SciMaterialsContext>>();
+        var linkReplace_mock = new Mock<ILinkReplaceService>();
+        var linkShortCut_mock = new Mock<ILinkShortCutService>();
         var mapper_mock = new Mock<IMapper>();
         var logger_mock = new Mock<ILogger<FileService>>();
 
@@ -56,6 +59,8 @@ public class FileServiceTests
         var service = new FileService(
             api_settings_mock.Object,
             file_store_mock.Object,
+            linkReplace_mock.Object,
+            linkShortCut_mock.Object,
             db_mock.Object,
             mapper_mock.Object,
             logger_mock.Object);
@@ -64,7 +69,7 @@ public class FileServiceTests
 
         #region Act
 
-        var result = await service.GetByIdAsync(expected_file_id);
+        var result = await service.GetByIdAsync(expected_file_id, false);
 
         #endregion
 

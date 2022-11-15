@@ -4,25 +4,16 @@ using AutoMapper;
 using SciMaterials.DAL.Models;
 using Microsoft.Extensions.Logging;
 using SciMaterials.Contracts.API.Services.Comments;
-using SciMaterials.Contracts.Enums;
 using SciMaterials.Contracts.Result;
 using SciMaterials.Contracts.API.DTO.Comments;
-using SciMaterials.Contracts.API.DTO.Categories;
+using SciMaterials.Contracts;
 
 namespace SciMaterials.Services.API.Services.Comments;
 
-public class CommentService : ICommentService
+public class CommentService : ApiServiceBase, ICommentService
 {
-    private readonly IUnitOfWork<SciMaterialsContext> _unitOfWork;
-    private readonly IMapper _mapper;
-    private readonly ILogger<CommentService> _logger;
-
     public CommentService(IUnitOfWork<SciMaterialsContext> unitOfWork, IMapper mapper, ILogger<CommentService> logger)
-    {
-        _logger = logger;
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
+        : base(unitOfWork, mapper, logger) { }
 
     public async Task<Result<IEnumerable<GetCommentResponse>>> GetAllAsync(CancellationToken Cancel = default)
     {
@@ -34,76 +25,85 @@ public class CommentService : ICommentService
     public async Task<PageResult<GetCommentResponse>> GetPageAsync(int pageNumber, int pageSize, CancellationToken Cancel = default)
     {
         var categories = await _unitOfWork.GetRepository<Comment>().GetPageAsync(pageNumber, pageSize);
+        var totalCount = await _unitOfWork.GetRepository<Comment>().GetCountAsync();
         var result = _mapper.Map<List<GetCommentResponse>>(categories);
-        return await PageResult<GetCommentResponse>.SuccessAsync(result);
+        return (result, totalCount);
     }
 
     public async Task<Result<GetCommentResponse>> GetByIdAsync(Guid id, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<Comment>().GetByIdAsync(id) is { } comment)
-            return _mapper.Map<GetCommentResponse>(comment);
+        if (await _unitOfWork.GetRepository<Comment>().GetByIdAsync(id) is not { } Comment)
+        {
+            return LoggedError<GetCommentResponse>(
+                Errors.Api.Comment.NotFound,
+                "Comment with ID {id} not found",
+                id);
+        }
 
-        return await Result<GetCommentResponse>.ErrorAsync((int)ResultCodes.NotFound, $"Comment with ID {id} not found");
+        var result = _mapper.Map<GetCommentResponse>(Comment);
+        return result;
     }
 
     public async Task<Result<Guid>> AddAsync(AddCommentRequest request, CancellationToken Cancel = default)
     {
-        var comment = _mapper.Map<Comment>(request);
-        comment.CreatedAt = DateTime.Now;
-        if (await VerifyRelatedData(comment) is { Succeeded: false } verifyResult)
-            return verifyResult;
+        var Comment = _mapper.Map<Comment>(request);
+        await _unitOfWork.GetRepository<Comment>().AddAsync(Comment);
 
-        await _unitOfWork.GetRepository<Comment>().AddAsync(comment);
+        if (await _unitOfWork.SaveContextAsync() == 0)
+        {
+            return LoggedError<Guid>(
+                Errors.Api.Comment.Add,
+                "Comment of user{authorId} for resource {resourceId} add error",
+                request.AuthorId, request.ResourceId);
+        }
 
-        if (await _unitOfWork.SaveContextAsync() > 0)
-            return await Result<Guid>.SuccessAsync(comment.Id, "Comment created");
-
-        return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
+        return Comment.Id;
     }
 
     public async Task<Result<Guid>> EditAsync(EditCommentRequest request, CancellationToken Cancel = default)
     {
         if (await _unitOfWork.GetRepository<Comment>().GetByIdAsync(request.Id) is not { } existedComment)
-            return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Comment with ID {request.Id} not found");
+        {
+            return LoggedError<Guid>(
+                Errors.Api.Comment.NotFound,
+                "Comment with {id} not found",
+                request.Id);
+        }
 
+        var Comment = _mapper.Map(request, existedComment);
+        await _unitOfWork.GetRepository<Comment>().UpdateAsync(Comment);
 
-        var comment = _mapper.Map(request, existedComment);
-        if (await VerifyRelatedData(comment) is { Succeeded: false } verifyResult)
-            return verifyResult;
+        if (await _unitOfWork.SaveContextAsync() == 0)
+        {
+            return LoggedError<Guid>(
+                Errors.Api.Comment.Update,
+                "Comment with {id} update error",
+                request.Id);
+        }
 
-        await _unitOfWork.GetRepository<Comment>().UpdateAsync(comment);
-
-        if (await _unitOfWork.SaveContextAsync() > 0)
-            return await Result<Guid>.SuccessAsync(comment.Id, "Comment updated");
-
-        return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
-    }
-
-    private async Task<Result<Guid>> VerifyRelatedData(Comment comment)
-    {
-        if (await _unitOfWork.GetRepository<Author>().GetByIdAsync(comment.AuthorId) is not { } author)
-            return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Comment aгthor with ID {comment.FileId} not found");
-        comment.Author = author;
-
-        if (comment.FileId.HasValue && await _unitOfWork.GetRepository<DAL.Models.File>().GetByIdAsync(comment.FileId.Value) is not { })
-            return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Comment file with ID {comment.FileId} not found");
-
-        if (comment.FileGroupId.HasValue && await _unitOfWork.GetRepository<FileGroup>().GetByIdAsync(comment.FileGroupId.Value) is not { })
-            return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Comment file group with ID {comment.FileGroupId} not found");
-
-        return await Result<Guid>.SuccessAsync();
+        return Comment.Id;
     }
 
     public async Task<Result<Guid>> DeleteAsync(Guid id, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<Comment>().GetByIdAsync(id) is not { } comment)
-            return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Comment with ID {id} not found");
+        if (await _unitOfWork.GetRepository<Comment>().GetByIdAsync(id) is not { } Comment)
+        {
+            return LoggedError<Guid>(
+                Errors.Api.Comment.NotFound,
+                "Comment with {id} not found",
+                id);
+        }
 
-        await _unitOfWork.GetRepository<Comment>().DeleteAsync(comment);
+        await _unitOfWork.GetRepository<Comment>().DeleteAsync(Comment);
 
-        if (await _unitOfWork.SaveContextAsync() > 0)
-            return await Result<Guid>.SuccessAsync($"Comment with ID {comment.Id} deleted");
+        if (await _unitOfWork.SaveContextAsync() == 0)
+        {
+            return LoggedError<Guid>(
+                Errors.Api.Comment.Delete,
+                "Comment with {id} update error",
+                id);
+        }
 
-        return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
+        return id;
     }
 }

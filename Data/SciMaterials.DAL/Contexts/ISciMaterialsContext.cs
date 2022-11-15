@@ -18,6 +18,7 @@ public interface ISciMaterialsContext
     DbSet<Author> Authors { get; set; }
     DbSet<User> Users { get; set; }
     DbSet<T> Set<T>() where T : class;
+    DbSet<Link> Links { get; set; }
     EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
 
 }

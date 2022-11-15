@@ -7,6 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Authors.json" />
+    <EmbeddedResource Include="Resources\Categories.json" />
+    <EmbeddedResource Include="Resources\Comments.json" />
+    <EmbeddedResource Include="Resources\ContentTypes.json" />
+    <EmbeddedResource Include="Resources\FileGroups.json" />
+    <EmbeddedResource Include="Resources\Files.json" />
+    <EmbeddedResource Include="Resources\Links.json" />
+    <EmbeddedResource Include="Resources\Ratings.json" />
+    <EmbeddedResource Include="Resources\Tags.json" />
+    <EmbeddedResource Include="Resources\Urls.json" />
+    <EmbeddedResource Include="Resources\Users.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />

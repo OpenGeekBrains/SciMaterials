@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,8 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Win32;
+
 using SciMaterials.Contracts.API.Constants;
 using SciMaterials.Contracts.Identity.API.DTO.Users;
 using SciMaterials.Contracts.Identity.Clients.Clients.Responses.User;
@@ -77,7 +80,7 @@ public class AccountControllerTests : IAsyncLifetime
 
         var http = _Host.CreateClient();
 
-        var auth_address = AuthApiRoute.AuthControllerName + AuthApiRoute.Register;
+        var auth_address = $"{AuthApiRoute.AuthControllerName}/{AuthApiRoute.Register}";
 
         var response = await http.PostAsJsonAsync(auth_address, new RegisterRequest
         {

@@ -127,8 +127,7 @@ public class TagRepository : ITagRepository
         IQueryable<Tag> query = _context.Tags.Where(t => !t.IsDeleted);
 
         if (include)
-            query = query.Include(t => t.Files)
-                .Include(t => t.FileGroups);
+            query = query.Include(t => t.Resources);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -143,8 +142,7 @@ public class TagRepository : ITagRepository
         IQueryable<Tag> query = _context.Tags.Where(t => !t.IsDeleted);
 
         if (include)
-            query = query.Include(t => t.Files)
-                .Include(t => t.FileGroups);
+            query = query.Include(t => t.Resources);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -160,8 +158,7 @@ public class TagRepository : ITagRepository
                 .Where(c => c.Id == id && !c.IsDeleted);
 
         if (include)
-            query = query.Include(t => t.Files)
-                .Include(t => t.FileGroups);
+            query = query.Include(t => t.Resources);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -177,8 +174,7 @@ public class TagRepository : ITagRepository
                 .Where(c => c.Id == id && !c.IsDeleted);
 
         if (include)
-            query = query.Include(t => t.Files)
-                .Include(t => t.FileGroups);
+            query = query.Include(t => t.Resources);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -243,8 +239,7 @@ public class TagRepository : ITagRepository
                 .Where(c => c.Name == name && !c.IsDeleted);
 
         if (include)
-            query = query.Include(t => t.Files)
-                .Include(t => t.FileGroups);
+            query = query.Include(t => t.Resources);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -260,8 +255,7 @@ public class TagRepository : ITagRepository
                 .Where(c => c.Name == name && !c.IsDeleted);
 
         if (include)
-            query = query.Include(t => t.Files)
-                .Include(t => t.FileGroups);
+            query = query.Include(t => t.Resources);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -295,8 +289,7 @@ public class TagRepository : ITagRepository
 
         if (include)
             query = query
-                .Include(t => t.Files)
-                .Include(t => t.FileGroups);
+                .Include(t => t.Resources);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -315,8 +308,7 @@ public class TagRepository : ITagRepository
 
         if (include)
             query = query
-                .Include(t => t.Files)
-                .Include(t => t.FileGroups);
+                .Include(t => t.Resources);
 
         if (disableTracking)
             query = query.AsNoTracking();
@@ -326,20 +318,16 @@ public class TagRepository : ITagRepository
             .Take(pageSize)
             .ToListAsync();
     }
-
-
-
-
+    
     /// <summary> Обновить данные экземпляра каегории. </summary>
-    /// <param name="sourse"> Источник. </param>
+    /// <param name="source"> Источник. </param>
     /// <param name="recipient"> Получатель. </param>
     /// <returns> Обновленный экземпляр. </returns>
-    private Tag UpdateCurrentEntity(Tag sourse, Tag recipient)
+    private Tag UpdateCurrentEntity(Tag source, Tag recipient)
     {
-        recipient.Files = sourse.Files;
-        recipient.Name = sourse.Name;
-        recipient.FileGroups = sourse.FileGroups;
-        recipient.IsDeleted = sourse.IsDeleted;
+        recipient.Resources = source.Resources;
+        recipient.Name = source.Name;
+        recipient.IsDeleted = source.IsDeleted;
 
         return recipient;
     }

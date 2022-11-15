@@ -2,10 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
 using SciMaterials.Contracts.API.Constants;
-using SciMaterials.Contracts.API.DTO.ContentTypes;
 using SciMaterials.Contracts.API.DTO.Files;
 using SciMaterials.Contracts.API.Services.Files;
-using SciMaterials.Contracts.Enums;
+using SciMaterials.Contracts;
 using SciMaterials.Contracts.Result;
 using SciMaterials.UI.MVC.API.Filters;
 
@@ -45,14 +44,26 @@ public class FilesApiController : ApiBaseController<FilesApiController>
 
     /// <summary> Get file metadata by Id. </summary>
     /// <param name="id"> File Id. </param>
-    [HttpGet("{id}")]
+    [HttpGet("{id}/{restoreLinks?}")]
     [ProducesDefaultResponseType(typeof(Result<GetFileResponse>))]
-    public async Task<IActionResult> GetById([FromRoute] Guid id)
+    public async Task<IActionResult> GetById([FromRoute] Guid id, [FromRoute] bool restoreLinks = false)
     {
         _logger.LogDebug("Get by id {id}", id);
-        var result = await _fileService.GetByIdAsync(id);
+        var result = await _fileService.GetByIdAsync(id, restoreLinks);
         return Ok(result);
     }
+
+    /// <summary> Get file metadata by Hash. </summary>
+    /// <param name="id"> File hash. </param>
+    [HttpGet("GetByHash/{hash}/{restoreLinks?}")]
+    [ProducesDefaultResponseType(typeof(Result<GetFileResponse>))]
+    public async Task<IActionResult> GetByHash([FromRoute] string hash, [FromRoute] bool restoreLinks = false)
+    {
+        _logger.LogDebug("Get by hash {hash}", hash);
+        var result = await _fileService.GetByHashAsync(hash, restoreLinks);
+        return Ok(result);
+    }
+
 
     [HttpPut("Edit")]
     [ProducesDefaultResponseType(typeof(Guid))]
@@ -125,7 +136,7 @@ public class FilesApiController : ApiBaseController<FilesApiController>
                 if (section.Headers is null
                     || !section.Headers.ContainsKey("Metadata")
                     || System.Text.Json.JsonSerializer.Deserialize<UploadFileRequest>(section.Headers["Metadata"]) is not { } uploadFileRequest)
-                    return Ok(await Result.ErrorAsync((int)ResultCodes.NotFound, "Metadata not found"));
+                    return Ok(Result.Failure(Errors.Api.File.MissingMetadata));
 
                 var result = await _fileService.UploadAsync(section.Body, uploadFileRequest).ConfigureAwait(false);
                 return Ok(result);
@@ -134,7 +145,7 @@ public class FilesApiController : ApiBaseController<FilesApiController>
             section = await reader.ReadNextSectionAsync();
         }
 
-        return Ok(Result.Error((int)ResultCodes.FormDataFileMissing, "Form-data sections does not contains files"));
+        return Ok(Result.Failure(Errors.Api.File.MissingSection));
     }
 
     /// <summary> Delete a file. </summary>

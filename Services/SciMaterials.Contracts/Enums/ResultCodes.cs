@@ -15,6 +15,6 @@ public static class FailureCodes
 {
     public static class Authentication
     {
-        public const int NoAccessRightsToResource = 401;
+        public const string NoAccessRightsToResource = "401";
     }
 }

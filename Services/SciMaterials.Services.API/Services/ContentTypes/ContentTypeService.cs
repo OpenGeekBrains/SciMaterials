@@ -4,25 +4,16 @@ using AutoMapper;
 using SciMaterials.DAL.Models;
 using Microsoft.Extensions.Logging;
 using SciMaterials.Contracts.API.Services.ContentTypes;
-using SciMaterials.Contracts.Enums;
 using SciMaterials.Contracts.Result;
 using SciMaterials.Contracts.API.DTO.ContentTypes;
-using SciMaterials.Contracts.API.DTO.Comments;
+using SciMaterials.Contracts;
 
 namespace SciMaterials.Services.API.Services.ContentTypes;
 
-public class ContentTypeService : IContentTypeService
+public class ContentTypeService : ApiServiceBase, IContentTypeService
 {
-    private readonly IUnitOfWork<SciMaterialsContext> _unitOfWork;
-    private readonly IMapper _mapper;
-    private readonly ILogger<ContentTypeService> _logger;
-
     public ContentTypeService(IUnitOfWork<SciMaterialsContext> unitOfWork, IMapper mapper, ILogger<ContentTypeService> logger)
-    {
-        _logger = logger;
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
+        : base(unitOfWork, mapper, logger) { }
 
     public async Task<Result<IEnumerable<GetContentTypeResponse>>> GetAllAsync(CancellationToken Cancel = default)
     {
@@ -34,53 +25,85 @@ public class ContentTypeService : IContentTypeService
     public async Task<PageResult<GetContentTypeResponse>> GetPageAsync(int pageNumber, int pageSize, CancellationToken Cancel = default)
     {
         var categories = await _unitOfWork.GetRepository<ContentType>().GetPageAsync(pageNumber, pageSize);
+        var totalCount = await _unitOfWork.GetRepository<ContentType>().GetCountAsync();
         var result = _mapper.Map<List<GetContentTypeResponse>>(categories);
-        return await PageResult<GetContentTypeResponse>.SuccessAsync(result);
+        return (result, totalCount);
     }
 
     public async Task<Result<GetContentTypeResponse>> GetByIdAsync(Guid id, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<ContentType>().GetByIdAsync(id) is { } contentType)
-            return _mapper.Map<GetContentTypeResponse>(contentType);
+        if (await _unitOfWork.GetRepository<ContentType>().GetByIdAsync(id) is not { } ContentType)
+        {
+            return LoggedError<GetContentTypeResponse>(
+                Errors.Api.ContentType.NotFound,
+                "ContentType with ID {id} not found",
+                id);
+        }
 
-        return await Result<GetContentTypeResponse>.ErrorAsync((int)ResultCodes.NotFound, $"ContentType with ID {id} not found");
+        var result = _mapper.Map<GetContentTypeResponse>(ContentType);
+        return result;
     }
 
     public async Task<Result<Guid>> AddAsync(AddContentTypeRequest request, CancellationToken Cancel = default)
     {
-        var contentType = _mapper.Map<ContentType>(request);
-        await _unitOfWork.GetRepository<ContentType>().AddAsync(contentType);
+        var ContentType = _mapper.Map<ContentType>(request);
+        await _unitOfWork.GetRepository<ContentType>().AddAsync(ContentType);
 
-        if (await _unitOfWork.SaveContextAsync() > 0)
-            return await Result<Guid>.SuccessAsync(contentType.Id, "ContentType created");
+        if (await _unitOfWork.SaveContextAsync() == 0)
+        {
+            return LoggedError<Guid>(
+                Errors.Api.ContentType.Add,
+                "ContentType {name} add error",
+                request.Name);
+        }
 
-        return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
+        return ContentType.Id;
     }
 
     public async Task<Result<Guid>> EditAsync(EditContentTypeRequest request, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<ContentType>().GetByIdAsync(request.Id) is not { } existedCommentType)
-            return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"ContentType with ID {request.Id} not found");
+        if (await _unitOfWork.GetRepository<ContentType>().GetByIdAsync(request.Id) is not { } existedContentType)
+        {
+            return LoggedError<Guid>(
+                Errors.Api.ContentType.NotFound,
+                "ContentType {name} not found",
+                request.Name);
+        }
 
-        var contentType = _mapper.Map(request, existedCommentType);
-        await _unitOfWork.GetRepository<ContentType>().UpdateAsync(contentType);
+        var ContentType = _mapper.Map(request, existedContentType);
+        await _unitOfWork.GetRepository<ContentType>().UpdateAsync(ContentType);
 
-        if (await _unitOfWork.SaveContextAsync() > 0)
-            return await Result<Guid>.SuccessAsync(contentType.Id, "ContentType updated");
+        if (await _unitOfWork.SaveContextAsync() == 0)
+        {
+            return LoggedError<Guid>(
+                Errors.Api.ContentType.Update,
+                "ContentType {name} update error",
+                request.Name);
+        }
 
-        return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
+        return ContentType.Id;
     }
 
     public async Task<Result<Guid>> DeleteAsync(Guid id, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<ContentType>().GetByIdAsync(id) is not { } contentType)
-            return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"ContentType with ID {id} not found");
+        if (await _unitOfWork.GetRepository<ContentType>().GetByIdAsync(id) is not { } ContentType)
+        {
+            return LoggedError<Guid>(
+                Errors.Api.ContentType.NotFound,
+                "ContentType with {id} not found",
+                id);
+        }
 
-        await _unitOfWork.GetRepository<ContentType>().DeleteAsync(contentType);
+        await _unitOfWork.GetRepository<ContentType>().DeleteAsync(ContentType);
 
-        if (await _unitOfWork.SaveContextAsync() > 0)
-            return await Result<Guid>.SuccessAsync($"ContentType with ID {contentType.Id} deleted");
+        if (await _unitOfWork.SaveContextAsync() == 0)
+        {
+            return LoggedError<Guid>(
+                Errors.Api.ContentType.Delete,
+                "ContentType with {id} update error",
+                id);
+        }
 
-        return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
+        return id;
     }
 }

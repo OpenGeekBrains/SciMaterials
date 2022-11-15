@@ -220,16 +220,7 @@ public class UrlRepository : IUrlRepository
             throw new ArgumentNullException(nameof(entity));
         }
 
-        var entityDb = _context.Set<Url>().Find(entity.Id);
-
-        if (entityDb is null)
-        {
-            _logger.LogError($"{nameof(Update)} >>> argumentNullException {nameof(entityDb)}");
-            throw new ArgumentNullException(nameof(entityDb));
-        }
-
-        entityDb = UpdateCurrentEntity(entity, entityDb);
-        _context.Urls.Update(entityDb);
+        _context.Urls.Update(entity);
     }
 
     ///
@@ -244,16 +235,7 @@ public class UrlRepository : IUrlRepository
             throw new ArgumentNullException(nameof(entity));
         }
 
-        var entityDb = await _context.Set<Url>().FindAsync(entity.Id);
-
-        if (entityDb is null)
-        {
-            _logger.LogError($"{nameof(UpdateAsync)} >>> argumentNullException {nameof(entityDb)}");
-            throw new ArgumentNullException(nameof(entityDb));
-        }
-
-        entityDb = UpdateCurrentEntity(entity, entityDb);
-        _context.Urls.Update(entityDb);
+        _context.Urls.Update(entity);
     }
 
     ///
@@ -364,25 +346,4 @@ public class UrlRepository : IUrlRepository
     ///
     /// <inheritdoc cref="IRepository{T}.GetByHash(string, bool, bool)"/>
     public Url? GetByHash(string hash, bool disableTracking = true, bool include = false) => null!;
-
-    /// <summary> Обновить данные экземпляра каегории. </summary>
-    /// <param name="sourse"> Источник. </param>
-    /// <param name="recipient"> Получатель. </param>
-    /// <returns> Обновленный экземпляр. </returns>
-    private Url UpdateCurrentEntity(Url sourse, Url recipient)
-    {
-        recipient.Name = sourse.Name;
-        recipient.IsDeleted = sourse.IsDeleted;
-        recipient.ShortInfo = sourse.ShortInfo;
-        recipient.Description = sourse.Description;
-        recipient.AuthorId = sourse.AuthorId;
-        recipient.CreatedAt = sourse.CreatedAt;
-        recipient.Author = sourse.Author;
-        recipient.Comments = sourse.Comments;
-        recipient.Tags = sourse.Tags;
-        recipient.Categories = sourse.Categories;
-        recipient.Ratings = sourse.Ratings;
-
-        return recipient;
-    }
 }

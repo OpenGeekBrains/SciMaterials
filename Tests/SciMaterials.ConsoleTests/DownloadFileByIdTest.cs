@@ -31,6 +31,6 @@ public class DownloadFileByIdTest
             }
         }
         else
-            Console.WriteLine(string.Join(";", result.Messages));
+            Console.WriteLine(result.Message);
     }
 }

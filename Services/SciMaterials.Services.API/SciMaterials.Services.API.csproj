@@ -6,19 +6,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <PropertyGroup>
+  <!--<PropertyGroup>
     <NoWarn>
       1701;1702;
       0414;0649;0168;
       1998;4014;
       8602;8604
     </NoWarn>
-  </PropertyGroup>
+  </PropertyGroup>-->
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
   </ItemGroup>
 
@@ -27,6 +26,9 @@
     <ProjectReference Include="..\..\Data\SciMaterials.DAL.AUTH\SciMaterials.DAL.AUTH.csproj" />
     <ProjectReference Include="..\..\Data\SciMaterials.DAL\SciMaterials.DAL.csproj" />
     <ProjectReference Include="..\SciMaterials.Contracts.API\SciMaterials.Contracts.API.csproj" />
+    <ProjectReference Include="..\SciMaterials.Contracts.ShortLinks\SciMaterials.Contracts.ShortLinks.csproj" />
+    <ProjectReference Include="..\SciMaterials.Services.ShortLinks\SciMaterials.Services.ShortLinks.csproj" />
+    <ProjectReference Include="..\SciMaterials.Services\SciMaterials.Services.csproj" />
     <ProjectReference Include="..\SciMaterials.WebApi.Clients\SciMaterials.WebApi.Clients.csproj" />
     <ProjectReference Include="..\SciMaterials.Contracts\SciMaterials.Contracts.csproj" />
     <ProjectReference Include="..\SciMaterials.Services.Database\SciMaterials.Services.Database.csproj" />

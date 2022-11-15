@@ -21,6 +21,6 @@ public class EditFilesTest
         if (result.Succeeded)
             Console.WriteLine($"Updated success >>> {result.Data}");
         else
-            Console.WriteLine(string.Join(";", result.Messages));
+            Console.WriteLine(result.Message);
     }
 }

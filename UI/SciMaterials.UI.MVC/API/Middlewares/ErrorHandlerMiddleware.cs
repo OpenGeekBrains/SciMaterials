@@ -1,12 +1,11 @@
-﻿using SciMaterials.Contracts.Enums;
-using SciMaterials.Contracts.Exceptions;
-using SciMaterials.Contracts.Result;
+﻿using SciMaterials.Contracts.Result;
+using SciMaterials.Contracts;
+using Microsoft.Extensions.Logging;
 
 namespace SciMaterials.UI.MVC.API.Middlewares;
 
 public class ErrorHandlerMiddleware
 {
-    private const string _defaultErrorMessage = "Application error";
     private readonly RequestDelegate _next;
     private readonly ILogger<ErrorHandlerMiddleware> _logger;
 
@@ -30,17 +29,9 @@ public class ErrorHandlerMiddleware
 
     private async Task HandleErrorAsync(HttpContext Context, Exception exception)
     {
-        _logger.LogError(exception, _defaultErrorMessage);
-
         Context.Response.Clear();
-
-        var resultCode = exception switch
-        {
-            ApiException apiException => apiException.Code,
-            _ => (int)ResultCodes.ServerError
-        };
-
-        var result = await Result<string>.ErrorAsync(resultCode, exception.Message);
+        _logger.LogError(exception, exception.Message);
+        var result = Result.Failure(Errors.App.Unhandled);
         await Context.Response.WriteAsJsonAsync(result);
     }
 }

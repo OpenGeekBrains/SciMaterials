@@ -49,7 +49,7 @@ public class JwtAuthenticationHandler : DelegatingHandler
         {
             var failure = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(JsonSerializer.Serialize(Result.Error(
+                Content = new StringContent(JsonSerializer.Serialize(Result.Failure(
                     FailureCodes.Authentication.NoAccessRightsToResource,
                     "User has no rights to access resource")))
             };

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
 using SciMaterials.Contracts.API.Constants;
@@ -526,7 +525,7 @@ namespace SciMaterials.Identity.Tests.ControllerTest
             //TODO: Есть проблема с ToListAsync... Буду думать...
             _RoleManagerMock.Setup(x => x.Roles)
                 .Returns(identity_roles_list);
-            
+
             var auth_roles_list = new List<AuthRoles>();
              foreach (var role in identity_roles_list)
                 auth_roles_list.Add(new AuthRoles() { RoleName = role.Name, Id = role.Id });

@@ -27,5 +27,17 @@ public class SciMaterialsContext : DbContext, ISciMaterialsContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Link>(link =>
+        {
+            link.Property(e => e.AccessCount).IsConcurrencyToken();
+            link.Property(e => e.LastAccess).IsConcurrencyToken();
+            link.Property(e => e.RowVersion).IsRowVersion();
+        });
+
+        modelBuilder.Entity<Comment>(entity =>
+            entity.HasOne(comment => comment.Author)
+            .WithMany(author => author.Comments)
+            .OnDelete(DeleteBehavior.NoAction)
+        );
     }
 }

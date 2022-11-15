@@ -4,6 +4,8 @@ using SciMaterials.Contracts.API.DTO.Authors;
 using SciMaterials.Contracts.API.DTO.Categories;
 using SciMaterials.Contracts.API.Services.Authors;
 using SciMaterials.Contracts.Result;
+using SciMaterials.Contracts.ShortLinks;
+using SciMaterials.Services.ShortLinks;
 
 namespace SciMaterials.UI.MVC.API.Controllers;
 
@@ -14,7 +16,7 @@ public class AuthorsController : ApiBaseController<AuthorsController>
 {
     private readonly IAuthorService _authorService;
 
-    public AuthorsController(IAuthorService authorService)
+    public AuthorsController(IAuthorService authorService, ILinkReplaceService link)
     {
         _authorService = authorService;
     }
@@ -25,6 +27,7 @@ public class AuthorsController : ApiBaseController<AuthorsController>
     [ProducesDefaultResponseType(typeof(Result<IEnumerable<GetAuthorResponse>>))]
     public async Task<IActionResult> GetAllAsync()
     {
+        _logger.LogInformation("Get all");
         var сategories = await _authorService.GetAllAsync();
         return Ok(сategories);
     }

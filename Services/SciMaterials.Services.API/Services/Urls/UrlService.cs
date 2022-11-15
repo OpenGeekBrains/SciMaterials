@@ -4,82 +4,106 @@ using AutoMapper;
 using SciMaterials.DAL.Models;
 using Microsoft.Extensions.Logging;
 using SciMaterials.Contracts.API.Services.Urls;
-using SciMaterials.Contracts.Enums;
 using SciMaterials.Contracts.Result;
 using SciMaterials.Contracts.API.DTO.Urls;
+using SciMaterials.Contracts;
 
 namespace SciMaterials.Services.API.Services.Urls;
 
-public class UrlService : IUrlService
+public class UrlService : ApiServiceBase, IUrlService
 {
-    private readonly IUnitOfWork<SciMaterialsContext> _unitOfWork;
-    private readonly IMapper _mapper;
-    private readonly ILogger<UrlService> _logger;
-
     public UrlService(IUnitOfWork<SciMaterialsContext> unitOfWork, IMapper mapper, ILogger<UrlService> logger)
-    {
-        _logger = logger;
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
+        : base(unitOfWork, mapper, logger) { }
 
-    public async Task<Result<IEnumerable<GetUrlResponse>>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<IEnumerable<GetUrlResponse>>> GetAllAsync(CancellationToken Cancel = default)
     {
         var categories = await _unitOfWork.GetRepository<Url>().GetAllAsync();
         var result = _mapper.Map<List<GetUrlResponse>>(categories);
         return result;
     }
 
-    public async Task<PageResult<GetUrlResponse>> GetPageAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
+    public async Task<PageResult<GetUrlResponse>> GetPageAsync(int pageNumber, int pageSize, CancellationToken Cancel = default)
     {
         var categories = await _unitOfWork.GetRepository<Url>().GetPageAsync(pageNumber, pageSize);
+        var totalCount = await _unitOfWork.GetRepository<Url>().GetCountAsync();
         var result = _mapper.Map<List<GetUrlResponse>>(categories);
-        return await PageResult<GetUrlResponse>.SuccessAsync(result);
+        return (result, totalCount);
     }
 
-    public async Task<Result<GetUrlResponse>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result<GetUrlResponse>> GetByIdAsync(Guid id, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<Url>().GetByIdAsync(id) is { } author)
-            return _mapper.Map<GetUrlResponse>(author);
+        if (await _unitOfWork.GetRepository<Url>().GetByIdAsync(id) is not { } Url)
+        {
+            return LoggedError<GetUrlResponse>(
+                Errors.Api.Url.NotFound,
+                "Url with ID {id} not found",
+                id);
+        }
 
-        return await Result<GetUrlResponse>.ErrorAsync((int)ResultCodes.NotFound, $"Url with ID {id} not found");
+        var result = _mapper.Map<GetUrlResponse>(Url);
+        return result;
     }
 
-    public async Task<Result<Guid>> AddAsync(AddUrlRequest request, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> AddAsync(AddUrlRequest request, CancellationToken Cancel = default)
     {
-        var author = _mapper.Map<Url>(request);
-        await _unitOfWork.GetRepository<Url>().AddAsync(author);
+        var Url = _mapper.Map<Url>(request);
+        await _unitOfWork.GetRepository<Url>().AddAsync(Url);
 
-        if (await _unitOfWork.SaveContextAsync() > 0)
-            return await Result<Guid>.SuccessAsync(author.Id, "Url created");
+        if (await _unitOfWork.SaveContextAsync() == 0)
+        {
+            return LoggedError<Guid>(
+                Errors.Api.Url.Add,
+                "Url {name} add error",
+                request.Name);
+        }
 
-        return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
+        return Url.Id;
     }
 
-    public async Task<Result<Guid>> EditAsync(EditUrlRequest request, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> EditAsync(EditUrlRequest request, CancellationToken Cancel = default)
     {
         if (await _unitOfWork.GetRepository<Url>().GetByIdAsync(request.Id) is not { } existedUrl)
-            return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Url with ID {request.Id} not found");
+        {
+            return LoggedError<Guid>(
+                Errors.Api.Url.NotFound,
+                "Url {name} not found",
+                request.Name);
+        }
 
-        var author = _mapper.Map(request, existedUrl);
-        await _unitOfWork.GetRepository<Url>().UpdateAsync(author);
+        var Url = _mapper.Map(request, existedUrl);
+        await _unitOfWork.GetRepository<Url>().UpdateAsync(Url);
 
-        if (await _unitOfWork.SaveContextAsync() > 0)
-            return await Result<Guid>.SuccessAsync(author.Id, "Url updated");
+        if (await _unitOfWork.SaveContextAsync() == 0)
+        {
+            return LoggedError<Guid>(
+                Errors.Api.Url.Update,
+                "Url {name} update error",
+                request.Name);
+        }
 
-        return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
+        return Url.Id;
     }
 
-    public async Task<Result<Guid>> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Result<Guid>> DeleteAsync(Guid id, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<Url>().GetByIdAsync(id) is not { } author)
-            return await Result<Guid>.ErrorAsync((int)ResultCodes.NotFound, $"Url with ID {id} not found");
+        if (await _unitOfWork.GetRepository<Url>().GetByIdAsync(id) is not { } Url)
+        {
+            return LoggedError<Guid>(
+                Errors.Api.Url.NotFound,
+                "Url with {id} not found",
+                id);
+        }
 
-        await _unitOfWork.GetRepository<Url>().DeleteAsync(author);
+        await _unitOfWork.GetRepository<Url>().DeleteAsync(Url);
 
-        if (await _unitOfWork.SaveContextAsync() > 0)
-            return await Result<Guid>.SuccessAsync($"Url with ID {author.Id} deleted");
+        if (await _unitOfWork.SaveContextAsync() == 0)
+        {
+            return LoggedError<Guid>(
+                Errors.Api.Url.Delete,
+                "Url with {id} update error",
+                id);
+        }
 
-        return await Result<Guid>.ErrorAsync((int)ResultCodes.ServerError, "Save context error");
+        return id;
     }
 }

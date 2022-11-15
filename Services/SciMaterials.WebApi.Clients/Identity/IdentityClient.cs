@@ -85,7 +85,7 @@ public class IdentityClient : IIdentityClient
                 $"{AuthApiRoute.AuthControllerName}/" + 
                 $"{AuthApiRoute.Logout}",  null, Cancel);
         var result = await logout_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<ClientLogoutResponse>(cancellationToken: Cancel);
-        //_client.DefaultRequestHeaders.Authorization = null;
+        _client.DefaultRequestHeaders.Authorization = null;
         _DefaultRequestHeader = null;
         return result;
     }

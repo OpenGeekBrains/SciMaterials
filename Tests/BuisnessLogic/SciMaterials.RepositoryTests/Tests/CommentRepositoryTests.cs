@@ -135,11 +135,9 @@ public class CommentRepositoryTests
         Assert.Equal(comment.ParentId, commentDb!.ParentId);
         Assert.Equal(comment.AuthorId, commentDb!.AuthorId);
         Assert.Equal(comment.CreatedAt, commentDb.CreatedAt);
-        Assert.Equal(comment.FileId, commentDb.FileId);
-        Assert.Equal(comment.FileGroupId, commentDb.FileGroupId);
+        Assert.Equal(comment.ResourceId, commentDb.ResourceId);
         Assert.Equal(comment.Author.Id, commentDb.Author.Id);
-        Assert.Equal(comment.File!.Id, commentDb.File!.Id);
-        Assert.Equal(comment.FileGroup!.Id, commentDb.FileGroup!.Id);
+        Assert.Equal(comment.Resource!.Id, commentDb.Resource!.Id);
     }
 
     [Fact]
@@ -168,11 +166,9 @@ public class CommentRepositoryTests
         Assert.Equal(comment.ParentId, commentDb!.ParentId);
         Assert.Equal(comment.AuthorId, commentDb!.AuthorId);
         Assert.Equal(comment.CreatedAt, commentDb.CreatedAt);
-        Assert.Equal(comment.FileId, commentDb.FileId);
-        Assert.Equal(comment.FileGroupId, commentDb.FileGroupId);
+        Assert.Equal(comment.ResourceId, commentDb.ResourceId);
         Assert.Equal(comment.Author.Id, commentDb.Author.Id);
-        Assert.Equal(comment.File!.Id, commentDb.File!.Id);
-        Assert.Equal(comment.FileGroup!.Id, commentDb.FileGroup!.Id);
+        Assert.Equal(comment.Resource!.Id, commentDb.Resource!.Id);
     }
 
     #endregion

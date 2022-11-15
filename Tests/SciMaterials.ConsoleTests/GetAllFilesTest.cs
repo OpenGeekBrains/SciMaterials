@@ -22,6 +22,6 @@ public class GetAllFilesTest
             foreach (var item in result.Data)
                 Console.WriteLine($"{item.Id} >>> {item.Name}");
         else
-            Console.WriteLine(string.Join(";", result.Messages));
+            Console.WriteLine(result.Message);
     }
 }

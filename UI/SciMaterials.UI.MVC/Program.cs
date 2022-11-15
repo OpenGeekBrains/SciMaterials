@@ -3,8 +3,9 @@ using SciMaterials.Services.API.Extensions;
 using SciMaterials.UI.MVC.API.Middlewares;
 using SciMaterials.UI.MVC.API.Extensions;
 using SciMaterials.Services.Database.Extensions;
-using SciMaterials.UI.MVC.Identity.Extensions;
 using SciMaterials.WebApi.Clients.Identity.Extensions;
+using SciMaterials.Contracts.ShortLinks;
+using SciMaterials.UI.MVC.Identity.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,12 +24,16 @@ services.AddControllersWithViews();
 services.AddRazorPages();
 
 services.ConfigureApplication(config);
+services.AddDatabaseProviders(config);
 services.AddApiServices(config);
-
+services.AddSwagger();
 services.AddIdentityApiServices(config);
 services.AddIdentityDbInitializer();
 services.AddIdentityUtils();
 services.AddIdentityClients(new Uri(config["WebAPI"]));
+
+services.AddHttpContextAccessor();
+
 services.AddIdentityJwtAndSwaggerApiServices(builder.Configuration);
 
 builder.Services.AddCors(o => o.AddPolicy("test", p => p.WithOrigins("http://localhost:5159").AllowAnyMethod().AllowAnyHeader()));
@@ -70,8 +75,13 @@ app.MapFallbackToFile("index.html");
 
 app.MapControllerRoute("default", "{controller}/{action=index}/{id?}");
 
+app.MapPut("replace-link",
+    async (string text, ILinkReplaceService linkReplaceService, LinkGenerator linkGenerator, IHttpContextAccessor context) =>
+    {
+        var result = await linkReplaceService.ShortenLinksAsync(text);
+        return result;
+    });
+
 app.Run();
 
-public partial class Program
-{
-}
+public partial class Program { }

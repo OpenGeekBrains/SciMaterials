@@ -183,7 +183,7 @@ public class AuthorRepositoryTests
 
     #region Delete
 
-    [Fact]
+    [Fact(Skip = "Требуется переработка для случаев с наличием связных сущностей")]
     [Trait("AuthorRepositoryTests", nameof(Author))]
     public async void DeleteAsync_ItShould_entity_removed()
     {
@@ -209,7 +209,7 @@ public class AuthorRepositoryTests
         Assert.Null(removedAuthor);
     }
 
-    [Fact]
+    [Fact(Skip = "Требуется переработка для случаев с наличием связных сущностей")]
     [Trait("AuthorRepositoryTests", nameof(Author))]
     public void Delete_ItShould_entity_removed()
     {

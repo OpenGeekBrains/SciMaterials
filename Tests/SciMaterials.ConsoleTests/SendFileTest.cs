@@ -42,6 +42,6 @@ public class SendFileTest
         };
 
         var result = await _FilesClient.UploadAsync(file_stream, upload_file_request);
-        Console.WriteLine(string.Join(";", result.Messages));
+        Console.WriteLine(result.Message);
     }
 }

@@ -24,12 +24,8 @@ internal static class CommentHelper
                 Id = Guid.NewGuid(),
             },
 
-            File =
+            Resource =
             new File
-            {
-                Id = Guid.NewGuid(),
-            },
-            FileGroup = new FileGroup
             {
                 Id = Guid.NewGuid(),
             },
