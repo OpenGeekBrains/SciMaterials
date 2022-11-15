@@ -40,7 +40,9 @@
     <ProjectReference Include="..\..\Services\SciMaterials.Contracts.API\SciMaterials.Contracts.API.csproj" />
     <ProjectReference Include="..\..\Services\SciMaterials.Services.API\SciMaterials.Services.API.csproj" />
     <ProjectReference Include="..\..\Services\SciMaterials.Services.Database\SciMaterials.Services.Database.csproj" />
+    <ProjectReference Include="..\..\Services\SciMaterials.Services.ShortLinks\SciMaterials.Services.ShortLinks.csproj" />
     <ProjectReference Include="..\SciMaterials.UI.BWASM\SciMaterials.UI.BWASM.csproj" />
+    <ProjectReference Include="..\..\Services\SciMaterials.Contracts.ShortLinks\SciMaterials.Contracts.ShortLinks.csproj" />
   </ItemGroup>
 
 </Project>
