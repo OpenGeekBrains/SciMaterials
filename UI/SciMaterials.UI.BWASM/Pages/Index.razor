@@ -1,5 +1,42 @@
 ﻿@page "/"
+@inject IJSRuntime JS;
+@code
+{
+    [Parameter]
+    public int FilesPageNumber { get; set; } = 1;
+
+    [Parameter]
+    public int FilesPageSize { get; set; } = 5;
+
+    private ElementReference _Hr;
+
+    private LastFilesList? _FilesList;
+
+    private async Task UpdateFilesList()
+    {
+        await _FilesList.UpdateAsync();
+    }
+}
 
 <PageTitle>Index</PageTitle>
 
-<Dashboard/>
+<Dashboard></Dashboard>
+
+<hr/>
+
+<TestCounter FilesCount="10"></TestCounter>
+
+<hr @ref="_Hr" />
+
+<LastFilesList @ref="_FilesList" PageNumber="@FilesPageNumber" PageSize="@FilesPageSize"></LastFilesList>
+
+<label>Номер страницы</label>
+<input @bind="FilesPageNumber" />
+
+<label>Число файлов на страницу</label>
+<input @bind="FilesPageSize" />
+
+<a class="btn btn-primary" @onclick="() => FilesPageNumber++">Туда</a>
+<a class="btn btn-primary" @onclick="() => FilesPageNumber--">Сюда</a>
+
+<a class="btn btn-primary" @onclick="UpdateFilesList">Update</a>
