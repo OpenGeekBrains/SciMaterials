@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Data.Common;
+
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SciMaterials.Contracts.Database.Configuration;
 using SciMaterials.Contracts.Database.Initialization;
@@ -15,11 +17,22 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddDatabaseProviders(this IServiceCollection services,
         IConfiguration configuration)
     {
-        var dbSettings = configuration.GetSection("DbSettings")
+        var db_settings = configuration.GetSection("DbSettings");
+        var dbSettings = db_settings
             .Get<DbSettings>();
 
         var providerName = dbSettings.GetProviderName();
-        var connectionString = configuration.GetSection("DbSettings").GetConnectionString(dbSettings.DbProvider);
+        var connectionString = db_settings.GetConnectionString(dbSettings.DbProvider);
+
+        var connection_settings = db_settings.GetSection("ConnectionSettings");
+
+        var connection_string_builder = new DbConnectionStringBuilder { ConnectionString = connectionString };
+        foreach (var parameter in connection_settings.GetChildren())
+            if(parameter.Value is { Length: > 0 } value)
+            {
+                connection_string_builder[parameter.Key] = value;
+            }
+
 
         switch (providerName.ToLower())
         {
