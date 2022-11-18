@@ -33,6 +33,7 @@ public static class ServiceCollectionExtensions
                 connection_string_builder[parameter.Key] = value;
             }
 
+        connectionString = connection_string_builder.ConnectionString;
 
         switch (providerName.ToLower())
         {
