@@ -219,9 +219,9 @@ namespace SciMaterials.SQLiteMigrations.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("LastAccess")
+                    b.Property<DateTime?>("LastAccess")
                         .IsConcurrencyToken()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("datetime");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()

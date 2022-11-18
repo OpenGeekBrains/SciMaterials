@@ -7,6 +7,7 @@ using SciMaterials.Contracts.API.DTO.Categories;
 using SciMaterials.Contracts.Result;
 using SciMaterials.Contracts;
 using SciMaterials.DAL.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SciMaterials.Services.API.Services.Categories;
 

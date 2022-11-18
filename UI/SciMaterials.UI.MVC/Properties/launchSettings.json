@@ -13,7 +13,7 @@
     "MVC": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "mvc",
+      "launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

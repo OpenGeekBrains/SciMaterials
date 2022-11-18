@@ -55,7 +55,7 @@ public class FileService : ApiServiceBase, IFileService
         var files = await _unitOfWork.GetRepository<File>().GetPageAsync(pageNumber, pageSize, include: true);
         var totalCount = await _unitOfWork.GetRepository<File>().GetCountAsync();
         var result = _mapper.Map<List<GetFileResponse>>(files);
-        return (result, totalCount);
+        return PageResult<GetFileResponse>.Success(result, totalCount, pageNumber, pageSize);
     }
 
     public async Task<Result<GetFileResponse>> GetByIdAsync(Guid id, CancellationToken Cancel = default)

@@ -224,9 +224,9 @@ namespace SciMaterials.PostgresqlMigrations.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("LastAccess")
+                    b.Property<DateTime?>("LastAccess")
                         .IsConcurrencyToken()
-                        .HasColumnType("integer");
+                        .HasColumnType("datetime");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()

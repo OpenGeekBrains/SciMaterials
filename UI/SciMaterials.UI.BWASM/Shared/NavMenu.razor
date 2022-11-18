@@ -1,19 +1,20 @@
 ﻿<MudNavMenu Color="Color.Info" Class="mx-4 mt-10">
-    <MudSpacer />
-    <MudNavLink Class="rounded-lg" Href="dashboard" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
+	<MudSpacer />
+	<MudNavLink Class="rounded-lg" Href="dashboard" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
 
 	<AuthorizeView Roles="admin">
-	    <Authorized>
-		    <MudNavGroup Title="Identity" Icon="@Icons.Material.Filled.PermIdentity">
-			    <MudNavLink Class="rounded-lg" Href="users" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Group">Users</MudNavLink>
-			    <MudNavLink Class="rounded-lg" Href="roles" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.LocalPolice">Roles</MudNavLink>
-			    @*<MudNavLink Class="rounded-lg" Href="authority" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Policy">Authority</MudNavLink>*@
-		    </MudNavGroup>
-	    </Authorized>
-    </AuthorizeView>
+		<Authorized>
+			<MudNavGroup Title="Identity" Icon="@Icons.Material.Filled.PermIdentity">
+				<MudNavLink Class="rounded-lg" Href="users" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Group">Users</MudNavLink>
+				<MudNavLink Class="rounded-lg" Href="roles" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.LocalPolice">Roles</MudNavLink>
+				@*<MudNavLink Class="rounded-lg" Href="authority" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Policy">Authority</MudNavLink>*@
+			</MudNavGroup>
+		</Authorized>
+	</AuthorizeView>
 
-    <MudNavLink Class="rounded-lg" Href="files_storage" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.FolderOpen">Files</MudNavLink>
+	<MudNavLink Class="rounded-lg" Href="files_storage" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.FolderOpen">Files</MudNavLink>
+	<MudNavLink Class="rounded-lg" Href="urls" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.FolderOpen">Urls</MudNavLink>
 </MudNavMenu>
 @code {
-    private MudTheme Theme = new();
+	private MudTheme Theme = new();
 }

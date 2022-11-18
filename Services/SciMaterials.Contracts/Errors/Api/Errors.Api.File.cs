@@ -23,6 +23,7 @@ public static partial class Errors
             public static readonly Error StoreWrite = new("API010", "File write to store error");
             public static readonly Error MissingMetadata = new("API011", "Metadata is missing");
             public static readonly Error MissingSection = new("API012", "Form-data sections does not contains files");
+            public static readonly Error PageParametersValidationError = new("API013", "Page parameters are not valid");
         }
     }
 }

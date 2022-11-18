@@ -7,6 +7,7 @@ using SciMaterials.Contracts.API.Services.Files;
 using SciMaterials.Contracts;
 using SciMaterials.Contracts.Result;
 using SciMaterials.UI.MVC.API.Filters;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace SciMaterials.UI.MVC.API.Controllers;
 
@@ -32,11 +33,17 @@ public class FilesApiController : ApiBaseController<FilesApiController>
 
     /// <summary> Get paged file metadata . </summary>
     /// <param name="pageNumber"> Page number. </param>
-    /// <param name="pageNumber"> Page size. </param>
+    /// <param name="pageSize"> Page size. </param>
     [HttpGet("page/{pageNumber}/{pageSize}")]
     [ProducesDefaultResponseType(typeof(PageResult<GetFileResponse>))]
     public async Task<IActionResult> GetPageAsync([FromRoute] int pageNumber, [FromRoute] int pageSize)
     {
+        if (pageNumber < 1 || pageSize < 1)
+        {
+            _logger.LogError("The pageNumber must be greater than 0 and pageSize must be greater than 1");
+            return Ok(Result.Failure(Errors.Api.File.PageParametersValidationError));
+        }
+
         _logger.LogDebug("Get paged files");
         var result = await _fileService.GetPageAsync(pageNumber, pageSize);
         return Ok(result);

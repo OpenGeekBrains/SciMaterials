@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SciMaterials.DAL.Contexts;
 
@@ -10,9 +11,10 @@ using SciMaterials.DAL.Contexts;
 namespace SciMaterials.Data.MySqlMigrations.Migrations
 {
     [DbContext(typeof(SciMaterialsContext))]
-    partial class SciMaterialsContextModelSnapshot : ModelSnapshot
+    [Migration("20221116162548_UpdateLinksTable")]
+    partial class UpdateLinksTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
