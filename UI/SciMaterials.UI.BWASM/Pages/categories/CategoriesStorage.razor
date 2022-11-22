@@ -1,0 +1,50 @@
+@page "/categories_storage"
+@using SciMaterials.Contracts.API.DTO.Categories
+
+<MyTitle Title="Categories" Description="Manage Categories." />
+
+<MudTable Elevation="25" ServerData="@ServerLoadData" Bordered="true" Striped="true" Dense="false" Hover="true" @ref="_table">
+    <ToolBarContent>
+        <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Primary" @onclick="GetAll" StartIcon="@Icons.Material.Filled.Info" IconColor="Color.Surface">GetAll</MudButton>
+        <MudSpacer />
+        @* <MudTextField @bind-Value="_searchingId" Label="Outlined" Variant="Variant.Outlined"></MudTextField> *@
+        @* <MudSpacer /> *@
+        @* <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Secondary" @onclick="GetById" StartIcon="@Icons.Material.Filled.Info" IconColor="Color.Surface">GetById</MudButton> *@
+        @* <MudSpacer /> *@
+        <MudTextField T="string"  ValueChanged="@OnSearch" Placeholder="Search" Adornment="Adornment.Start"
+                AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel SortLabel="id_field" T="GetCategoryResponse">Id</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="name_field" T="GetCategoryResponse">Name</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="description_field" T="GetCategoryResponse">Description</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="created_at_field" T="GetCategoryResponse">Created At</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="parent_id_field" T="GetCategoryResponse">Parent Id</MudTableSortLabel>
+        </MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Description">@context.Description</MudTd>
+        <MudTd DataLabel="CreatedAt">@context.CreatedAt</MudTd>
+        <MudTd DataLabel="ParentId">@context.ParentId</MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No matching records found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>

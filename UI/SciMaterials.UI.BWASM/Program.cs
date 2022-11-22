@@ -1,17 +1,13 @@
 using Blazored.LocalStorage;
-
 using Fluxor;
-
 using FluentValidation;
-
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-
 using MudBlazor.Services;
-
 using SciMaterials.Contracts.Identity.Clients.Clients;
 using SciMaterials.Contracts.WebApi.Clients.Authors;
+using SciMaterials.Contracts.WebApi.Clients.Categories;
 using SciMaterials.UI.BWASM;
 using SciMaterials.UI.BWASM.Extensions;
 using SciMaterials.UI.BWASM.Models;
@@ -20,6 +16,7 @@ using SciMaterials.UI.BWASM.Services;
 using SciMaterials.UI.BWASM.Services.Identity;
 using SciMaterials.UI.BWASM.States.FileUpload;
 using SciMaterials.WebApi.Clients.Authors;
+using SciMaterials.WebApi.Clients.Categories;
 using SciMaterials.WebApi.Clients.Extensions;
 using SciMaterials.WebApi.Clients.Identity;
 
@@ -41,7 +38,8 @@ builder.Services
     .AddApiClient<IAuthorsClient, AuthorsClient>(apiRoot)
     .AddApiClient<IIdentityClient, IdentityClient>(apiRoot, ClientConfiguration)
     .AddApiClient<IUserClient, IdentityClient>(apiRoot, ClientConfiguration)
-    .AddApiClient<IRolesClient, IdentityClient>(apiRoot, ClientConfiguration);
+    .AddApiClient<IRolesClient, IdentityClient>(apiRoot, ClientConfiguration)
+    .AddApiClient<ICategoriesClient, CategoriesClient>(apiRoot, ClientConfiguration);
 
 // Authentication
 builder.Services

@@ -1,9 +1,5 @@
-﻿using System;
-
-using Microsoft.AspNetCore.Components;
-
+﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
-
 using SciMaterials.Contracts.API.DTO.Urls;
 using SciMaterials.Contracts.WebApi.Clients.Urls;
 
