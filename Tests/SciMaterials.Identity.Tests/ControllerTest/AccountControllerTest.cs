@@ -490,58 +490,58 @@ namespace SciMaterials.Identity.Tests.ControllerTest
             _RoleManagerMock.Verify(x => x.CreateAsync(It.Is<IdentityRole>(s => s.Name.Equals(identity_role.Name))));
         }
 
-        [Fact]
-        public async Task GetAllRolesAsync_Return_StatusCode200WithResult()
-        {
-            //Arrage
-            const string expected_urlAddress = "http://localhost:5185/auth/get_all_roles";
-            const string expected_email = "sa@mail.ru";
-            const string expected_name = "sa@mail.ru";
-            const string expected_role_one = "admin";
-            const string expected_role_two = "user";
-            const string expected_role_one_id = "id001";
-            const string expected_role_two_id = "id002";
-
-            var identity = new ClaimsIdentity();
-            identity.AddClaims(new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, expected_email), new Claim(ClaimTypes.Name, expected_name),
-                new Claim(ClaimTypes.Role, "admin")
-            });
-            var user = new ClaimsPrincipal(identity);
-
-            _HttpContextMock = new HttpContextMock();
-            _HttpContextMock.User = user;
-            _HttpContextMock.SetupUrl(expected_urlAddress);
-            _ContextAccessorMock.Setup(x => x.HttpContext).Returns(_HttpContextMock);
-            _AccountController.ControllerContext.HttpContext = _HttpContextMock;
-
-            var identity_roles_list = new List<IdentityRole>()
-            {
-                new IdentityRole(){Id = expected_role_one_id, Name = expected_role_one, NormalizedName = expected_role_one.ToUpper()},
-                new IdentityRole(){Id = expected_role_two_id, Name = expected_role_two, NormalizedName = expected_role_two.ToUpper()}
-            }.AsQueryable();
-            
-            //TODO: Есть проблема с ToListAsync... Буду думать...
-            _RoleManagerMock.Setup(x => x.Roles)
-                .Returns(identity_roles_list);
-
-            var auth_roles_list = new List<AuthRoles>();
-             foreach (var role in identity_roles_list)
-                auth_roles_list.Add(new AuthRoles() { RoleName = role.Name, Id = role.Id });
-
-            //Act
-            var result = await _AccountController.GetAllRolesAsync();
-            var actionResultObj = Assert.IsType<OkObjectResult>(result);
-            var okResult = Assert.IsAssignableFrom<ClientGetAllRolesResponse>(actionResultObj.Value);
-            
-            //Assert
-            Assert.NotNull(okResult);
-            Assert.Equal(200, actionResultObj.StatusCode);
-            Assert.Equal((int)ResultCodes.Ok, okResult.Code);
-            Assert.True(okResult.Succeeded);
-            Assert.Equal(auth_roles_list, okResult.Roles);
-        }
+        // [Fact]
+        // public async Task GetAllRolesAsync_Return_StatusCode200WithResult()
+        // {
+        //     //Arrage
+        //     const string expected_urlAddress = "http://localhost:5185/auth/get_all_roles";
+        //     const string expected_email = "sa@mail.ru";
+        //     const string expected_name = "sa@mail.ru";
+        //     const string expected_role_one = "admin";
+        //     const string expected_role_two = "user";
+        //     const string expected_role_one_id = "id001";
+        //     const string expected_role_two_id = "id002";
+        //
+        //     var identity = new ClaimsIdentity();
+        //     identity.AddClaims(new[]
+        //     {
+        //         new Claim(ClaimTypes.NameIdentifier, expected_email), new Claim(ClaimTypes.Name, expected_name),
+        //         new Claim(ClaimTypes.Role, "admin")
+        //     });
+        //     var user = new ClaimsPrincipal(identity);
+        //
+        //     _HttpContextMock = new HttpContextMock();
+        //     _HttpContextMock.User = user;
+        //     _HttpContextMock.SetupUrl(expected_urlAddress);
+        //     _ContextAccessorMock.Setup(x => x.HttpContext).Returns(_HttpContextMock);
+        //     _AccountController.ControllerContext.HttpContext = _HttpContextMock;
+        //
+        //     var identity_roles_list = new List<IdentityRole>()
+        //     {
+        //         new IdentityRole(){Id = expected_role_one_id, Name = expected_role_one, NormalizedName = expected_role_one.ToUpper()},
+        //         new IdentityRole(){Id = expected_role_two_id, Name = expected_role_two, NormalizedName = expected_role_two.ToUpper()}
+        //     }.AsQueryable();
+        //     
+        //     //TODO: Есть проблема с ToListAsync... Буду думать...
+        //     _RoleManagerMock.Setup(x => x.Roles)
+        //         .Returns(identity_roles_list);
+        //
+        //     var auth_roles_list = new List<AuthRoles>();
+        //      foreach (var role in identity_roles_list)
+        //         auth_roles_list.Add(new AuthRoles() { RoleName = role.Name, Id = role.Id });
+        //
+        //     //Act
+        //     var result = await _AccountController.GetAllRolesAsync();
+        //     var actionResultObj = Assert.IsType<OkObjectResult>(result);
+        //     var okResult = Assert.IsAssignableFrom<ClientGetAllRolesResponse>(actionResultObj.Value);
+        //     
+        //     //Assert
+        //     Assert.NotNull(okResult);
+        //     Assert.Equal(200, actionResultObj.StatusCode);
+        //     Assert.Equal((int)ResultCodes.Ok, okResult.Code);
+        //     Assert.True(okResult.Succeeded);
+        //     Assert.Equal(auth_roles_list, okResult.Roles);
+        // }
         //
         // [Fact]
         // public async Task GetRoleByIdAsync_Return_StatusCode200WithResult()

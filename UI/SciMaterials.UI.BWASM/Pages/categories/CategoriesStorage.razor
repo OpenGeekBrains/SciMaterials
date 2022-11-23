@@ -1,23 +1,28 @@
 @page "/categories_storage"
 @using SciMaterials.Contracts.API.DTO.Categories
 
+<style>
+    .selected {
+        background-color: #1E88E5 !important;
+    }
+
+    .selected > td {
+        color: white !important;
+    }
+
+    .selected > td .mud-input {
+        color: white !important;
+    }
+</style>
+
 <MyTitle Title="Categories" Description="Manage Categories." />
 
-<MudTable Elevation="25" ServerData="@ServerLoadData" Bordered="true" Striped="true" Dense="false" Hover="true" @ref="_table">
+<MudTable Elevation="25" ServerData="@ServerLoadData" Breakpoint="Breakpoint.Sm" Bordered="true" Striped="true" Dense="false" Hover="true" @ref="_mudTable" RowClassFunc="@SelectedRowClassFunc" OnRowClick="RowClickEvent" T="GetCategoryResponse">
     <ToolBarContent>
-        <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Primary" @onclick="GetAll" StartIcon="@Icons.Material.Filled.Info" IconColor="Color.Surface">GetAll</MudButton>
-        <MudSpacer />
-        @* <MudTextField @bind-Value="_searchingId" Label="Outlined" Variant="Variant.Outlined"></MudTextField> *@
-        @* <MudSpacer /> *@
-        @* <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Secondary" @onclick="GetById" StartIcon="@Icons.Material.Filled.Info" IconColor="Color.Surface">GetById</MudButton> *@
-        @* <MudSpacer /> *@
         <MudTextField T="string"  ValueChanged="@OnSearch" Placeholder="Search" Adornment="Adornment.Start"
-                AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small" Class="mt-0"></MudTextField>
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small" Class="mt-0"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
-        <MudTh>
-            <MudTableSortLabel SortLabel="id_field" T="GetCategoryResponse">Id</MudTableSortLabel>
-        </MudTh>
         <MudTh>
             <MudTableSortLabel SortLabel="name_field" T="GetCategoryResponse">Name</MudTableSortLabel>
         </MudTh>
@@ -27,16 +32,11 @@
         <MudTh>
             <MudTableSortLabel SortLabel="created_at_field" T="GetCategoryResponse">Created At</MudTableSortLabel>
         </MudTh>
-        <MudTh>
-            <MudTableSortLabel SortLabel="parent_id_field" T="GetCategoryResponse">Parent Id</MudTableSortLabel>
-        </MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Id">@context.Id</MudTd>
         <MudTd DataLabel="Name">@context.Name</MudTd>
         <MudTd DataLabel="Description">@context.Description</MudTd>
         <MudTd DataLabel="CreatedAt">@context.CreatedAt</MudTd>
-        <MudTd DataLabel="ParentId">@context.ParentId</MudTd>
     </RowTemplate>
     <NoRecordsContent>
         <MudText>No matching records found</MudText>
@@ -48,3 +48,5 @@
         <MudTablePager />
     </PagerContent>
 </MudTable>
+
+

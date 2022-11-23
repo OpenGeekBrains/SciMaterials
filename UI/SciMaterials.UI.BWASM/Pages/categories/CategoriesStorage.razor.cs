@@ -9,11 +9,13 @@ namespace SciMaterials.UI.BWASM.Pages.categories
     {
         [Inject] private ICategoriesClient CategoriesClient { get; set; }
         [Inject] private IDialogService DialogService { get; set; }
-        private IEnumerable<GetCategoryResponse> _data;
-        private MudTable<GetCategoryResponse> _table;
+        [Inject] private NavigationManager NavigationManager { get; set; }
+        private MudTable<GetCategoryResponse> _mudTable;
+        private List<string> clickedEvents = new();
+        private IEnumerable<GetCategoryResponse> Elements = new List<GetCategoryResponse>();
+        private int _selectedRowNumber = -1;
         private string? _searchString;
-        private Guid _searchingId;
-    
+
         private async Task<TableData<GetCategoryResponse>> ServerLoadData(TableState state)
         {
             var result = await CategoriesClient.GetAllAsync();
@@ -34,9 +36,6 @@ namespace SciMaterials.UI.BWASM.Pages.categories
                 
                 switch (state.SortLabel)
                 {
-                    case "id_field" :
-                        data = data.OrderByDirection(state.SortDirection, o => o.Id);
-                        break;
                     case "name_field" :
                         data = data.OrderByDirection(state.SortDirection, o => o.Name);
                         break;
@@ -46,56 +45,45 @@ namespace SciMaterials.UI.BWASM.Pages.categories
                     case "create_at_field" :
                         data = data.OrderByDirection(state.SortDirection, o => o.CreatedAt);
                         break;
-                    case "parent_id_field" :
-                        data = data.OrderByDirection(state.SortDirection, o => o.ParentId);
-                        break;
                 }
                 
-                _data = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
-                return new TableData<GetCategoryResponse>() { TotalItems = result.Data.Count(), Items = _data };
-            }
-            
-            return new TableData<GetCategoryResponse>() { TotalItems = 0, Items = null };
-        }
-    
-        private async Task<TableData<GetCategoryResponse>> GetAll()
-        {
-            var result = await CategoriesClient.GetAllAsync();
-            if (result.Succeeded)
-            {
-                var data = result.Data;
-                _data = data.ToArray();
-                
-                _table.ReloadServerData();
-                return new TableData<GetCategoryResponse>() { TotalItems = result.Data.Count(), Items = _data };
+                Elements = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
+                return new TableData<GetCategoryResponse>() { TotalItems = result.Data.Count(), Items = Elements };
             }
             
             return new TableData<GetCategoryResponse>() { TotalItems = 0, Items = null };
         }
         
-        // private async Task<TableData<GetCategoryResponse>> GetById()
-        // {
-        //     var result = await CategoriesClient.GetByIdAsync(_searchingId);
-        //     if (result.Succeeded)
-        //     {
-        //         var data = result.Data;
-        //         
-        //         var list = new List<GetCategoryResponse>();
-        //         list.Add(data);
-        //
-        //         _data = (IEnumerable<GetCategoryResponse>)list;
-        //         
-        //         _table.ReloadServerData();
-        //         return new TableData<GetCategoryResponse>() { TotalItems = list.Count(), Items = _data };
-        //     }
-        //     
-        //     return new TableData<GetCategoryResponse>() { TotalItems = 0, Items = null };
-        // }
+        private void RowClickEvent(TableRowClickEventArgs<GetCategoryResponse> tableRowClickEventArgs)
+        {
+            var categoryId = tableRowClickEventArgs.Item.Id;
+            NavigationManager.NavigateTo($"/categories_storage/{categoryId}");
+        }
+        
+        private string SelectedRowClassFunc(GetCategoryResponse element, int rowNumber)
+        {
+            if (_selectedRowNumber == rowNumber)
+            {
+                _selectedRowNumber = -1;
+                clickedEvents.Add("Selected Row: None");
+                return string.Empty;
+            }
+            else if (_mudTable.SelectedItem != null && _mudTable.SelectedItem.Equals(element))
+            {
+                _selectedRowNumber = rowNumber;
+                clickedEvents.Add($"Selected Row: {rowNumber}");
+                return "selected";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
         
         private void OnSearch(string text)
         {
             _searchString = text;
-            _table.ReloadServerData();
+            _mudTable.ReloadServerData();
         }
     }
 }
