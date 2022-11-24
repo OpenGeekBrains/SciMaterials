@@ -5,9 +5,10 @@
 <MyTitle Title="Current category" />
 
 <MudDataGrid Items="Elements">
+
     <Columns>
-        <HierarchyColumn T="GetCategoryResponse" />
-        <Column T="GetCategoryResponse" Field="Name" />
+        <HierarchyColumn T="GetCategoryResponse"/>
+        <Column T="GetCategoryResponse" Field="Name"/>
     </Columns>
     <ChildRowContent>
         <MudCard>
@@ -23,7 +24,5 @@
             </MudCardContent>
         </MudCard>
     </ChildRowContent>
-    <PagerContent>
-        <MudDataGridPager T="GetCategoryResponse" />
-    </PagerContent>
+
 </MudDataGrid>

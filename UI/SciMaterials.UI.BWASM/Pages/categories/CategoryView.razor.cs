@@ -14,10 +14,7 @@ namespace SciMaterials.UI.BWASM.Pages.categories
         {
             var result = await CategoriesClient.GetByIdAsync(Id);
             
-            Elements = new List<GetCategoryResponse>()
-            {
-                result.Data
-            };
+            Elements = new List<GetCategoryResponse>() { result.Data };
         }
     }
 }
