@@ -1,21 +1,27 @@
-@page "/TagsStorage"
+@page "/tags_storage"
 
-<MudCardContent>
-<MudChip>Hello world</MudChip>
-<MudChip Color="Color.Primary" Href="#">C#</MudChip>
-<MudChip Color="Color.Secondary" Href="#">Python</MudChip>
-<MudChip Color="Color.Info" Href="#">.Net</MudChip>
-<MudChip Color="Color.Success" Href="#">Object-C</MudChip>
-<MudChip Color="Color.Warning" Href="#">Java-Script</MudChip>
-<MudChip Color="Color.Error" Href="#">Algorithms</MudChip>
-<MudChip Color="Color.Dark" Href="#">C++</MudChip>
-<MudDivider />
-<MudChip Color="Color.Dark" Href="#">Object-C</MudChip>
-<MudChip Color="Color.Primary" Href="#">Maui</MudChip>
-<MudChip Color="Color.Secondary" Href="#">Algorithms</MudChip>
-<MudChip Color="Color.Info" Href="#">Ai</MudChip>
-<MudChip Color="Color.Success" Href="#">.Net</MudChip>
-<MudChip Color="Color.Warning" Href="#">Mud-Blazor</MudChip>
-<MudChip Color="Color.Error" Href="#">NuGet</MudChip>
-<MudChip Color="Color.Dark" Href="#">WPF</MudChip>
-</MudCardContent>
+
+@code{
+    private RenderFragment _bigAsyncContent = __builder =>
+    {
+        <MudCardContent>
+        <MudChip>Hello world</MudChip>
+        <MudChip Color="Color.Primary" Href="#">C#</MudChip>
+        <MudChip Color="Color.Secondary" Href="#">Python</MudChip>
+        <MudChip Color="Color.Info" Href="#">.Net</MudChip>
+        <MudChip Color="Color.Success" Href="#">Object-C</MudChip>
+        <MudChip Color="Color.Warning" Href="#">Java-Script</MudChip>
+        <MudChip Color="Color.Error" Href="#">Algorithms</MudChip>
+        <MudChip Color="Color.Dark" Href="#">C++</MudChip>
+        <MudDivider />
+        <MudChip Color="Color.Dark" Href="#">Object-C</MudChip>
+        <MudChip Color="Color.Primary" Href="#">Maui</MudChip>
+        <MudChip Color="Color.Secondary" Href="#">Algorithms</MudChip>
+        <MudChip Color="Color.Info" Href="#">Ai</MudChip>
+        <MudChip Color="Color.Success" Href="#">.Net</MudChip>
+        <MudChip Color="Color.Warning" Href="#">Mud-Blazor</MudChip>
+        <MudChip Color="Color.Error" Href="#">NuGet</MudChip>
+        <MudChip Color="Color.Dark" Href="#">WPF</MudChip>
+        </MudCardContent>
+    };
+}

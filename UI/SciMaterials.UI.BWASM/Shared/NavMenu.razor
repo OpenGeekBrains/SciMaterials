@@ -1,4 +1,17 @@
-﻿<MudNavMenu Color="Color.Info" Class="mx-4 mt-10">
+﻿<style>
+	.tags-custom-panel .mud-expand-panel-header {
+		padding: 8px 16px 8px 16px;
+		min-height: 40px;
+		border-radius: 8px;
+		background-color: rgb(217 217 217);
+	}
+	
+	.mud-collapse-container {
+		background-color: rgb(217 217 217);
+	}
+</style>
+
+<MudNavMenu Color="Color.Info" Class="mx-4 mt-10">
 	<MudSpacer />
 	<MudNavLink Class="rounded-lg" Href="dashboard" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
 
@@ -15,33 +28,46 @@
 	<MudNavLink Class="rounded-lg" Href="files_storage" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.FolderOpen">Files</MudNavLink>
 	<MudNavLink Class="rounded-lg" Href="urls" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.FolderOpen">Urls</MudNavLink>
 	<MudNavLink Class="rounded-lg" Href="categories_storage" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.FolderOpen">Categories</MudNavLink>
-	<MudDivider FlexItem="true"/>
-	<MudExpansionPanels DisableBorders="true" Elevation="0">
-		<MudExpansionPanel Text="Tags">
-			<MudDataGrid>
-				<MudCardContent>
-					<MudChip>Hello world</MudChip>
-					<MudChip Color="Color.Primary" Size="Size.Small" Href="#">C#</MudChip>
-					<MudChip Color="Color.Secondary" Size="Size.Small" Href="#">Python</MudChip>
-					<MudChip Color="Color.Info" Size="Size.Small" Href="#">.Net</MudChip>
-					<MudChip Color="Color.Success" Size="Size.Small" Href="#">Object-C</MudChip>
-					<MudChip Color="Color.Warning" Size="Size.Small" Href="#">Java-Script</MudChip>
-					<MudChip Color="Color.Error" Size="Size.Small" Href="#">Algorithms</MudChip>
-					<MudChip Color="Color.Dark" Size="Size.Small" Href="#">C++</MudChip>
-					<MudDivider/>
-					<MudChip Color="Color.Dark" Size="Size.Small" Href="#">Object-C</MudChip>
-					<MudChip Color="Color.Primary" Size="Size.Small" Href="#">Maui</MudChip>
-					<MudChip Color="Color.Secondary" Size="Size.Small" Href="#">Algorithms</MudChip>
-					<MudChip Color="Color.Info" Size="Size.Small" Href="#">Ai</MudChip>
-					<MudChip Color="Color.Success" Size="Size.Small" Href="#">.Net</MudChip>
-					<MudChip Color="Color.Warning" Size="Size.Small" Href="#">Mud-Blazor</MudChip>
-					<MudChip Color="Color.Error" Size="Size.Small" Href="#">NuGet</MudChip>
-					<MudChip Color="Color.Dark" Size="Size.Small" Href="#">WPF</MudChip>
-				</MudCardContent>
-			</MudDataGrid>
+	<MudExpansionPanels Class="tags-custom-panel">
+		<MudExpansionPanel Text="Tags" IsExpandedChanged="ExpandedChanged">
+			@_panelContent
 		</MudExpansionPanel>
 	</MudExpansionPanels>
 </MudNavMenu>
+
 @code {
 	private MudTheme Theme = new();
+	
+	private RenderFragment _panelContent;
+
+	private async Task ExpandedChanged(bool newVal)
+	{
+		if (newVal)
+		{
+			_panelContent = _bigAsyncContent;
+		}
+		else
+		{
+			Task.Delay(350).ContinueWith(t => _panelContent = null).AndForget();
+		}
+	}
+	
+	private RenderFragment _bigAsyncContent = __builder =>
+	{
+		<MudChip Color="Color.Success" Size="Size.Small" Href="#">Hello world</MudChip>
+		<MudChip Color="Color.Primary" Size="Size.Small"  Href="#">C#</MudChip>
+		<MudChip Color="Color.Secondary" Size="Size.Small"  Href="#">Python</MudChip>
+		<MudChip Color="Color.Info" Size="Size.Small"  Href="#">.Net</MudChip>
+		<MudChip Color="Color.Success" Size="Size.Small"  Href="#">Object-C</MudChip>
+		<MudChip Color="Color.Warning" Size="Size.Small" Href="#">Java-Script</MudChip>
+		<MudChip Color="Color.Error" Size="Size.Small"  Href="#">Algorithms</MudChip>
+		<MudChip Color="Color.Dark" Size="Size.Small"  Href="#">C++</MudChip>
+		<MudChip Color="Color.Dark" Size="Size.Small"  Href="#">Object-C</MudChip>
+		<MudChip Color="Color.Primary" Size="Size.Small"  Href="#">Maui</MudChip>
+		<MudChip Color="Color.Info" Size="Size.Small"  Href="#">Ai</MudChip>
+		<MudChip Color="Color.Success" Size="Size.Small"  Href="#">.Net</MudChip>
+		<MudChip Color="Color.Warning" Size="Size.Small"  Href="#">Mud-Blazor</MudChip>
+		<MudChip Color="Color.Error" Size="Size.Small"  Href="#">NuGet</MudChip>
+		<MudChip Color="Color.Dark" Size="Size.Small"  Href="#">WPF</MudChip>
+	};
 }
