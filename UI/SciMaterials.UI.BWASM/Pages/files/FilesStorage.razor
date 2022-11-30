@@ -101,12 +101,12 @@
 
 	private void Delete(FileStorageState context)
 	{
-		Dispatcher.Dispatch(new DeleteFile(context.Id));
+		Dispatcher.Dispatch(FilesStorageActions.DeleteFile(context.Id));
 	}
 
 	private void Refresh()
 	{
-		Dispatcher.Dispatch(new LoadFiles());
+		Dispatcher.Dispatch(FilesStorageActions.LoadFiles());
 	}
 
 	private async Task ChangeCategory(FileStorageState context)
@@ -115,16 +115,6 @@
 		var result = await reference.Result;
 		if (result.Cancelled || result.Data is not TreeFileCategory category) return;
 		Snackbar.Add($"Category {category}");
-	}
-
-	private async Task DownloadFileFromStream()
-	{
-		//var fileStream = GetFileStream();
-		//var fileName = "log.bin";
-
-		//using var streamRef = new DotNetStreamReference(stream: fileStream);
-
-		//await JsRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
 	}
 
 	private async Task DownloadFileFromUrl(FileStorageState context)

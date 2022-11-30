@@ -1,6 +1,8 @@
+using Fluxor;
 using Microsoft.AspNetCore.Components;
 using SciMaterials.Contracts.API.DTO.Categories;
 using SciMaterials.Contracts.WebApi.Clients.Categories;
+using SciMaterials.UI.BWASM.States.Categories;
 
 namespace SciMaterials.UI.BWASM.Pages.categories
 {
@@ -8,13 +10,32 @@ namespace SciMaterials.UI.BWASM.Pages.categories
     {
         [Parameter] public Guid Id { get; set; }
         [Inject] private ICategoriesClient CategoriesClient { get; set; }
+        [Inject] private IDispatcher Dispatcher { get; set; }
+        [Inject] private IState<FilesCategoriesState> State { get; set; }
+        [Inject] private NavigationManager NavigationManager { get; set; }
         private IEnumerable<GetCategoryResponse> Elements = new List<GetCategoryResponse>();
         
         protected override async Task OnInitializedAsync()
         {
-            var result = await CategoriesClient.GetByIdAsync(Id);
+            base.OnInitializedAsync();
+            Dispatcher.Dispatch(new FilesCategoriesActions.LoadCategoriesAction());
+            var result = await CategoriesClient.GetByIdAsync(Id).ConfigureAwait(false);
             
             Elements = new List<GetCategoryResponse>() { result.Data };
+        }
+
+        protected override async Task OnParametersSetAsync()
+        {
+            base.OnParametersSetAsync();
+            Dispatcher.Dispatch(new FilesCategoriesActions.LoadCategoriesAction());
+            var result = await CategoriesClient.GetByIdAsync(Id).ConfigureAwait(false);
+            
+            Elements = new List<GetCategoryResponse>() { result.Data };
+        }
+        
+        private async Task OnCategoryClick(Guid? categoryId)
+        {
+            NavigationManager.NavigateTo($"/categories_storage/{categoryId}");
         }
     }
 }

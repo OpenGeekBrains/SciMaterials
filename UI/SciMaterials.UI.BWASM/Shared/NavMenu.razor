@@ -1,73 +1,38 @@
 ﻿<style>
-	.tags-custom-panel .mud-expand-panel-header {
-		padding: 8px 16px 8px 16px;
-		min-height: 40px;
-		border-radius: 8px;
-		background-color: rgb(217 217 217);
-	}
-	
-	.mud-collapse-container {
-		background-color: rgb(217 217 217);
-	}
+	.tags-custom-panel .mud-expand-panel .mud-expand-panel-header {
+        padding: 8px 16px 8px 16px;
+    }
+    .mud-card-content {
+        padding: 4px;
+    }
 </style>
 
 <MudNavMenu Color="Color.Info" Class="mx-4 mt-10">
-	<MudSpacer />
-	<MudNavLink Class="rounded-lg" Href="dashboard" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
+    <MudSpacer />
+    <MudNavLink Class="rounded-lg" Href="dashboard" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Dashboard">Dashboard</MudNavLink>
 
-	<AuthorizeView Roles="admin">
-		<Authorized>
-			<MudNavGroup Title="Identity" Icon="@Icons.Material.Filled.PermIdentity">
-				<MudNavLink Class="rounded-lg" Href="users" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Group">Users</MudNavLink>
-				<MudNavLink Class="rounded-lg" Href="roles" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.LocalPolice">Roles</MudNavLink>
-				@*<MudNavLink Class="rounded-lg" Href="authority" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Policy">Authority</MudNavLink>*@
-			</MudNavGroup>
-		</Authorized>
-	</AuthorizeView>
+    <AuthorizeView Roles="admin">
+        <Authorized>
+            <MudNavGroup Title="Identity" Icon="@Icons.Material.Filled.PermIdentity">
+                <MudNavLink Class="rounded-lg" Href="users" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Group">Users</MudNavLink>
+                <MudNavLink Class="rounded-lg" Href="roles" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.LocalPolice">Roles</MudNavLink>
+                @*<MudNavLink Class="rounded-lg" Href="authority" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Policy">Authority</MudNavLink>*@
+            </MudNavGroup>
+        </Authorized>
+    </AuthorizeView>
 
-	<MudNavLink Class="rounded-lg" Href="files_storage" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.FolderOpen">Files</MudNavLink>
-	<MudNavLink Class="rounded-lg" Href="urls" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.FolderOpen">Urls</MudNavLink>
-	<MudNavLink Class="rounded-lg" Href="categories_storage" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.FolderOpen">Categories</MudNavLink>
-	<MudExpansionPanels Class="tags-custom-panel">
-		<MudExpansionPanel Text="Tags" IsExpandedChanged="ExpandedChanged">
-			@_panelContent
-		</MudExpansionPanel>
-	</MudExpansionPanels>
+    <MudNavLink Class="rounded-lg" Href="files_storage" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.FolderOpen">Files</MudNavLink>
+    <MudNavLink Class="rounded-lg" Href="urls" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.FolderOpen">Urls</MudNavLink>
+    <MudNavLink Class="rounded-lg" Href="categories_storage" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.FolderOpen">Categories</MudNavLink>
+    <MudExpansionPanels class="tags-custom-panel">
+        <MudExpansionPanel Text="Tags">
+            <MudCardContent>
+                <TagsStorage/>
+            </MudCardContent>
+        </MudExpansionPanel>
+    </MudExpansionPanels>
 </MudNavMenu>
 
 @code {
-	private MudTheme Theme = new();
-	
-	private RenderFragment _panelContent;
-
-	private async Task ExpandedChanged(bool newVal)
-	{
-		if (newVal)
-		{
-			_panelContent = _bigAsyncContent;
-		}
-		else
-		{
-			Task.Delay(350).ContinueWith(t => _panelContent = null).AndForget();
-		}
-	}
-	
-	private RenderFragment _bigAsyncContent = __builder =>
-	{
-		<MudChip Color="Color.Success" Size="Size.Small" Href="#">Hello world</MudChip>
-		<MudChip Color="Color.Primary" Size="Size.Small"  Href="#">C#</MudChip>
-		<MudChip Color="Color.Secondary" Size="Size.Small"  Href="#">Python</MudChip>
-		<MudChip Color="Color.Info" Size="Size.Small"  Href="#">.Net</MudChip>
-		<MudChip Color="Color.Success" Size="Size.Small"  Href="#">Object-C</MudChip>
-		<MudChip Color="Color.Warning" Size="Size.Small" Href="#">Java-Script</MudChip>
-		<MudChip Color="Color.Error" Size="Size.Small"  Href="#">Algorithms</MudChip>
-		<MudChip Color="Color.Dark" Size="Size.Small"  Href="#">C++</MudChip>
-		<MudChip Color="Color.Dark" Size="Size.Small"  Href="#">Object-C</MudChip>
-		<MudChip Color="Color.Primary" Size="Size.Small"  Href="#">Maui</MudChip>
-		<MudChip Color="Color.Info" Size="Size.Small"  Href="#">Ai</MudChip>
-		<MudChip Color="Color.Success" Size="Size.Small"  Href="#">.Net</MudChip>
-		<MudChip Color="Color.Warning" Size="Size.Small"  Href="#">Mud-Blazor</MudChip>
-		<MudChip Color="Color.Error" Size="Size.Small"  Href="#">NuGet</MudChip>
-		<MudChip Color="Color.Dark" Size="Size.Small"  Href="#">WPF</MudChip>
-	};
+    private MudTheme Theme = new();
 }

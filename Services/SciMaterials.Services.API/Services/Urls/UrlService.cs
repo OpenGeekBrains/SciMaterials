@@ -1,38 +1,38 @@
-using SciMaterials.DAL.UnitOfWork;
-using SciMaterials.DAL.Contexts;
 using AutoMapper;
-using SciMaterials.DAL.Models;
 using Microsoft.Extensions.Logging;
 using SciMaterials.Contracts.API.Services.Urls;
 using SciMaterials.Contracts.Result;
 using SciMaterials.Contracts.API.DTO.Urls;
 using SciMaterials.Contracts;
+using SciMaterials.DAL.Resources.Contexts;
+using SciMaterials.DAL.Resources.Contracts.Entities;
+using SciMaterials.DAL.Resources.UnitOfWork;
 
 namespace SciMaterials.Services.API.Services.Urls;
 
 public class UrlService : ApiServiceBase, IUrlService
 {
-    public UrlService(IUnitOfWork<SciMaterialsContext> unitOfWork, IMapper mapper, ILogger<UrlService> logger)
-        : base(unitOfWork, mapper, logger) { }
+    public UrlService(IUnitOfWork<SciMaterialsContext> Database, IMapper mapper, ILogger<UrlService> logger)
+        : base(Database, mapper, logger) { }
 
     public async Task<Result<IEnumerable<GetUrlResponse>>> GetAllAsync(CancellationToken Cancel = default)
     {
-        var categories = await _unitOfWork.GetRepository<Url>().GetAllAsync();
-        var result = _mapper.Map<List<GetUrlResponse>>(categories);
+        var categories = await Database.GetRepository<Url>().GetAllAsync();
+        var result = _Mapper.Map<List<GetUrlResponse>>(categories);
         return result;
     }
 
-    public async Task<PageResult<GetUrlResponse>> GetPageAsync(int pageNumber, int pageSize, CancellationToken Cancel = default)
+    public async Task<PageResult<GetUrlResponse>> GetPageAsync(int PageNumber, int PageSize, CancellationToken Cancel = default)
     {
-        var categories = await _unitOfWork.GetRepository<Url>().GetPageAsync(pageNumber, pageSize);
-        var totalCount = await _unitOfWork.GetRepository<Url>().GetCountAsync();
-        var result = _mapper.Map<List<GetUrlResponse>>(categories);
+        var categories = await Database.GetRepository<Url>().GetPageAsync(PageNumber, PageSize);
+        var totalCount = await Database.GetRepository<Url>().GetCountAsync();
+        var result = _Mapper.Map<List<GetUrlResponse>>(categories);
         return (result, totalCount);
     }
 
     public async Task<Result<GetUrlResponse>> GetByIdAsync(Guid id, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<Url>().GetByIdAsync(id) is not { } Url)
+        if (await Database.GetRepository<Url>().GetByIdAsync(id) is not { } Url)
         {
             return LoggedError<GetUrlResponse>(
                 Errors.Api.Url.NotFound,
@@ -40,16 +40,16 @@ public class UrlService : ApiServiceBase, IUrlService
                 id);
         }
 
-        var result = _mapper.Map<GetUrlResponse>(Url);
+        var result = _Mapper.Map<GetUrlResponse>(Url);
         return result;
     }
 
     public async Task<Result<Guid>> AddAsync(AddUrlRequest request, CancellationToken Cancel = default)
     {
-        var Url = _mapper.Map<Url>(request);
-        await _unitOfWork.GetRepository<Url>().AddAsync(Url);
+        var Url = _Mapper.Map<Url>(request);
+        await Database.GetRepository<Url>().AddAsync(Url);
 
-        if (await _unitOfWork.SaveContextAsync() == 0)
+        if (await Database.SaveContextAsync() == 0)
         {
             return LoggedError<Guid>(
                 Errors.Api.Url.Add,
@@ -62,7 +62,7 @@ public class UrlService : ApiServiceBase, IUrlService
 
     public async Task<Result<Guid>> EditAsync(EditUrlRequest request, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<Url>().GetByIdAsync(request.Id) is not { } existedUrl)
+        if (await Database.GetRepository<Url>().GetByIdAsync(request.Id) is not { } existedUrl)
         {
             return LoggedError<Guid>(
                 Errors.Api.Url.NotFound,
@@ -70,10 +70,10 @@ public class UrlService : ApiServiceBase, IUrlService
                 request.Name);
         }
 
-        var Url = _mapper.Map(request, existedUrl);
-        await _unitOfWork.GetRepository<Url>().UpdateAsync(Url);
+        var Url = _Mapper.Map(request, existedUrl);
+        await Database.GetRepository<Url>().UpdateAsync(Url);
 
-        if (await _unitOfWork.SaveContextAsync() == 0)
+        if (await Database.SaveContextAsync() == 0)
         {
             return LoggedError<Guid>(
                 Errors.Api.Url.Update,
@@ -86,7 +86,7 @@ public class UrlService : ApiServiceBase, IUrlService
 
     public async Task<Result<Guid>> DeleteAsync(Guid id, CancellationToken Cancel = default)
     {
-        if (await _unitOfWork.GetRepository<Url>().GetByIdAsync(id) is not { } Url)
+        if (await Database.GetRepository<Url>().GetByIdAsync(id) is not { } Url)
         {
             return LoggedError<Guid>(
                 Errors.Api.Url.NotFound,
@@ -94,9 +94,9 @@ public class UrlService : ApiServiceBase, IUrlService
                 id);
         }
 
-        await _unitOfWork.GetRepository<Url>().DeleteAsync(Url);
+        await Database.GetRepository<Url>().DeleteAsync(Url);
 
-        if (await _unitOfWork.SaveContextAsync() == 0)
+        if (await Database.SaveContextAsync() == 0)
         {
             return LoggedError<Guid>(
                 Errors.Api.Url.Delete,

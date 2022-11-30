@@ -7,13 +7,12 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
-using Microsoft.Win32;
-
-using SciMaterials.Contracts.API.Constants;
-using SciMaterials.Contracts.Identity.API.DTO.Users;
-using SciMaterials.Contracts.Identity.Clients.Clients.Responses.User;
+using SciMaterials.Contracts.Identity.API;
+using SciMaterials.Contracts.Identity.API.Requests.Users;
+using SciMaterials.Contracts.Identity.API.Responses.User;
+using SciMaterials.Contracts.Result;
 using SciMaterials.DAL.AUTH.Context;
-using SciMaterials.DAL.Contexts;
+using SciMaterials.DAL.Resources.Contexts;
 
 namespace SciMaterials.UI.MVC.Tests.Controllers.API.Identity;
 
@@ -89,12 +88,12 @@ public class AccountControllerTests : IAsyncLifetime
             Password = "123321_qweEWQ"
         });
 
-        var result = response.EnsureSuccessStatusCode()
+        var result = await response.EnsureSuccessStatusCode()
            .Content
-           .ReadFromJsonAsync<ClientCreateUserResponse>();
+           .ReadFromJsonAsync<Result<RegisterUserResponse>>();
 
-        Assert.NotNull(result.Result);
-        Assert.Equal(0, result.Result.Code);
-        Assert.True(result.Result.Succeeded);
+        Assert.NotNull(result);
+        Assert.Equal(string.Empty, result.Code);
+        Assert.True(result.Succeeded);
     }
 }

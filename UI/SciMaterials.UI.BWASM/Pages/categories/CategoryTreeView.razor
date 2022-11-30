@@ -1,0 +1,11 @@
+@page "/category_tree"
+
+@* @if (State.Value.Categories.IsEmpty) *@
+@* { *@
+@*     <MudTabPanel Text="loading..." /> *@
+@* } *@
+@* else *@
+@* { *@
+@*     <MudTabPanel Text="@State.Value.Categories.FirstOrDefault(x=> x.Id == currentCategory.ParentId).Name"  *@
+@*                      OnClick="() => OnCategoryClick(currentCategory.Id)"/> *@
+@* } *@

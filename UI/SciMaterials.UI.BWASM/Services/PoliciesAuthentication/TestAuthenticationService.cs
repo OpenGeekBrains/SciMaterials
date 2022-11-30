@@ -50,14 +50,14 @@ public class TestAuthenticationService : IAuthenticationService
     public async Task<bool> IsCurrentUser(string userEmail)
     {
         var currentAuthenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var identifier = currentAuthenticationState.User.FindFirstValue(ClaimTypes.Email);
+        var identifier = currentAuthenticationState.User.FindFirst(ClaimTypes.Email)?.Value;
         return userEmail == identifier;
     }
 
     public async Task RefreshCurrentUser()
     {
         var currentAuthenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var identifier = currentAuthenticationState.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var identifier = currentAuthenticationState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (Guid.TryParse(identifier, out var userId) && _authenticationCache.TryGetIdentity(userId, out var identity))
         {
             _authenticationStateProvider.NotifyUserSignIn(identity);

@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SciMaterials.DAL\SciMaterials.DAL.csproj" />
+    <ProjectReference Include="..\..\SciMaterials.DAL.Resources\SciMaterials.DAL.Resources.csproj" />
   </ItemGroup>
 
 </Project>

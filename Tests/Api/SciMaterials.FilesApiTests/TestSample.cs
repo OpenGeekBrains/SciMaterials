@@ -1,13 +1,15 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
-using SciMaterials.DAL.Contexts;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+
 using SciMaterials.DAL.AUTH.Context;
+using SciMaterials.DAL.Resources.Contexts;
 
 namespace SciMaterials.FilesApiTests;
 
@@ -26,6 +28,7 @@ public class TestSample : IAsyncLifetime
                        .AddDbContext<SciMaterialsContext>(opt => opt
                            .UseInMemoryDatabase("SciMaterialDB")
                            .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning))
+                           .EnableSensitiveDataLogging()
                         )
                        .RemoveAll<AuthDbContext>()
                        .RemoveAll<DbContextOptions<AuthDbContext>>()

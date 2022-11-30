@@ -7,7 +7,6 @@ using SciMaterials.Contracts.API.Services.Files;
 using SciMaterials.Contracts;
 using SciMaterials.Contracts.Result;
 using SciMaterials.UI.MVC.API.Filters;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace SciMaterials.UI.MVC.API.Controllers;
 

@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using SciMaterials.DAL.Contexts;
-using SciMaterials.DAL.Models;
-using SciMaterials.Data.UnitOfWork;
-using SciMaterials.RepositoryLib.Repositories.FilesRepositories;
+using Moq;
+using SciMaterials.DAL.Resources.Contexts;
+using SciMaterials.DAL.Resources.Contracts.Entities;
+using SciMaterials.DAL.Resources.Contracts.Repositories.Files;
+using SciMaterials.DAL.Resources.Repositories.Files;
+using SciMaterials.DAL.Resources.UnitOfWork;
 using SciMaterials.RepositoryTests.Fixtures;
 using SciMaterials.RepositoryTests.Helpers;
 using SciMaterials.RepositoryTests.Helpers.ModelsHelpers;
@@ -12,16 +14,15 @@ namespace SciMaterials.RepositoryTests.Tests;
 
 public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
 {
-    private ICategoryRepository _categoryRepository;
-    private SciMaterialsContext _context;
+    private readonly CategoryRepository _CategoryRepository;
+    private readonly SciMaterialsContext _Context;
 
     public CategoryRepositoryTests()
     {
-        _context = new SciMateralsContextHelper().Context;
-        ILoggerFactory loggerFactory = new LoggerFactory();
-        var logger = new Logger<UnitOfWork<SciMaterialsContext>>(loggerFactory);
+        _Context = SciMateralsContextHelper.Create();
 
-        _categoryRepository = new CategoryRepository(_context, logger);
+        var logger = new Mock<ILogger<CategoryRepository>>();
+        _CategoryRepository = new CategoryRepository(_Context, logger.Object);
     }
 
     #region GetAll
@@ -32,36 +33,34 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
     {
         //arrange
         const int expected = 1;
-        const EntityState expecedState = EntityState.Detached;
+        const EntityState expected_state = EntityState.Detached;
 
         //act
-        var categories = _categoryRepository.GetAll();
-        var count = 0;
-        if(categories is not null)
-            count = categories.Count;
+        var categories = _CategoryRepository.GetAll();
+        var count = categories.Count;
 
         //assert
         Assert.Equal(expected, count);
-        Assert.Equal(expecedState, _context.Entry(categories![0]).State);
+        Assert.Equal(expected_state, _Context.Entry(categories[0]).State);
     }
 
     [Fact]
     [Trait("CategoryRepositoryTests", nameof(Category))]
     public void GetAll_Tracking_ItShould_contains_category_1()
     {
+        _CategoryRepository.NoTracking = false;
+
         //arrange
         const int expected = 1;
-        const EntityState expecedSstate = EntityState.Unchanged;
+        const EntityState expeced_sstate = EntityState.Unchanged;
 
         //act
-        var categories = _categoryRepository.GetAll(false);
-        var count = 0;
-        if (categories is not null)
-            count = categories.Count;
+        var categories = _CategoryRepository.GetAll();
+        var count = categories.Count;
 
         //assert
         Assert.Equal(expected, count);
-        Assert.Equal(expecedSstate, _context.Entry(categories![0]).State);
+        Assert.Equal(expeced_sstate, _Context.Entry(categories[0]).State);
     }
 
     #endregion
@@ -74,36 +73,34 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
     {
         //arrange
         const int expected = 1;
-        const EntityState expecedSstate = EntityState.Detached;
+        const EntityState expeced_sstate = EntityState.Detached;
 
         //act
-        var categories = await _categoryRepository.GetAllAsync();
-        var count = 0;
-        if (categories is not null)
-            count = categories.Count;
+        var categories = await _CategoryRepository.GetAllAsync();
+        var count = categories.Count;
 
         //assert
         Assert.Equal(expected, count);
-        Assert.Equal(expecedSstate, _context.Entry(categories![0]).State);
+        Assert.Equal(expeced_sstate, _Context.Entry(categories[0]).State);
     }
 
     [Fact]
     [Trait("CategoryRepositoryTests", nameof(Category))]
     public async void GetAllAsync_Tracking_ItShould_contains_category_1()
     {
+        _CategoryRepository.NoTracking = false;
+
         //arrange
         const int expected = 1;
-        const EntityState expecedSstate = EntityState.Unchanged;
+        const EntityState expeced_sstate = EntityState.Unchanged;
 
         //act
-        var categories = await _categoryRepository.GetAllAsync(false);
-        var count = 0;
-        if (categories is not null)
-            count = categories.Count;
+        var categories = await _CategoryRepository.GetAllAsync();
+        var count = categories.Count;
 
         //assert
         Assert.Equal(expected, count);
-        Assert.Equal(expecedSstate, _context.Entry(categories![0]).State);
+        Assert.Equal(expeced_sstate, _Context.Entry(categories[0]).State);
     }
 
     #endregion
@@ -115,27 +112,25 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
     public async void AddAsync_ItShould_contains_category_increase_by_1()
     {
         //arrange
-        var expected = (await _categoryRepository.GetAllAsync())!.Count + 1;
+        var expected = (await _CategoryRepository.GetAllAsync()).Count + 1;
         var category = CategoryHelper.GetOne();
 
         //act
-        await _categoryRepository.AddAsync(category);
-        await _context.SaveChangesAsync();
+        await _CategoryRepository.AddAsync(category);
+        await _Context.SaveChangesAsync();
 
-        var categories = await _categoryRepository.GetAllAsync();
-        var count = 0;
-        if (categories is not null)
-            count = categories.Count;
+        var categories = await _CategoryRepository.GetAllAsync();
+        var count = categories.Count;
 
-        var categoryDb = await _categoryRepository.GetByIdAsync(category.Id);
+        var category_db = await _CategoryRepository.GetByIdAsync(category.Id);
 
         //assert
         Assert.Equal(expected, count);
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Id, categoryDb!.Id);
-        Assert.Equal(category.CreatedAt, categoryDb.CreatedAt);
-        Assert.Equal(category.Description, categoryDb.Description);
-        Assert.Equal(category.Name, categoryDb.Name);
+        Assert.NotNull(category_db);
+        Assert.Equal(category.Id, category_db.Id);
+        Assert.Equal(category.CreatedAt, category_db.CreatedAt);
+        Assert.Equal(category.Description, category_db.Description);
+        Assert.Equal(category.Name, category_db.Name);
     }
 
     [Fact]
@@ -143,27 +138,25 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
     public void Add_ItShould_contains_category_3()
     {
         //arrange
-        var expected = _categoryRepository.GetAll()!.Count + 1;
+        var expected = _CategoryRepository.GetAll().Count + 1;
         var category = CategoryHelper.GetOne();
 
         //act
-        _categoryRepository.Add(category);
-        _context.SaveChanges();
+        _CategoryRepository.Add(category);
+        _Context.SaveChanges();
 
-        var categories = _categoryRepository.GetAll();
-        var count = 0;
-        if (categories is not null)
-            count = categories.Count;
+        var categories = _CategoryRepository.GetAll();
+        var count = categories.Count;
 
-        var categoryDb = _categoryRepository.GetById(category.Id);
+        var category_db = _CategoryRepository.GetById(category.Id);
 
         //assert
         Assert.Equal(expected, count);
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Id, categoryDb!.Id);
-        Assert.Equal(category.CreatedAt, categoryDb.CreatedAt);
-        Assert.Equal(category.Description, categoryDb.Description);
-        Assert.Equal(category.Name, categoryDb.Name);
+        Assert.NotNull(category_db);
+        Assert.Equal(category.Id, category_db.Id);
+        Assert.Equal(category.CreatedAt, category_db.CreatedAt);
+        Assert.Equal(category.Description, category_db.Description);
+        Assert.Equal(category.Name, category_db.Name);
     }
 
     #endregion
@@ -176,24 +169,22 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
     {
         //arrange
         var category = CategoryHelper.GetOne();
-        await _categoryRepository.AddAsync(category);
-        await _context.SaveChangesAsync();
-        var expected = (await _categoryRepository.GetAllAsync())!.Count - 1;
+        await _CategoryRepository.AddAsync(category);
+        await _Context.SaveChangesAsync();
+        var expected = (await _CategoryRepository.GetAllAsync()).Count - 1;
 
         //act
-        await _categoryRepository.DeleteAsync(category.Id);
-        await _context.SaveChangesAsync();
+        await _CategoryRepository.DeleteAsync(category.Id);
+        await _Context.SaveChangesAsync();
 
-        var categories = await _categoryRepository.GetAllAsync();
-        var count      = 0;
-        if (categories is not null)
-            count = categories.Count;
+        var categories = await _CategoryRepository.GetAllAsync();
+        var count      = categories.Count;
 
-        var removedCategory = await _categoryRepository.GetByIdAsync(category.Id);
+        var removed_category = await _CategoryRepository.GetByIdAsync(category.Id);
 
         //assert
         Assert.Equal(expected, count);
-        Assert.Null(removedCategory);
+        Assert.Null(removed_category);
     }
 
     [Fact]
@@ -202,24 +193,22 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
     {
         //arrange
         var category = CategoryHelper.GetOne();
-        _categoryRepository.Add(category);
-        _context.SaveChanges();
-        var expected = _categoryRepository.GetAll()!.Count - 1;
+        _CategoryRepository.Add(category);
+        _Context.SaveChanges();
+        var expected = _CategoryRepository.GetAll().Count - 1;
 
         //act
-        _categoryRepository.Delete(category.Id);
-        _context.SaveChanges();
+        _CategoryRepository.Delete(category.Id);
+        _Context.SaveChanges();
 
-        var categories = _categoryRepository.GetAll();
-        var count = 0;
-        if (categories is not null)
-            count = categories.Count;
+        var categories = _CategoryRepository.GetAll();
+        var count = categories.Count;
 
-        var removedCategory = _categoryRepository.GetById(category.Id);
+        var removed_category = _CategoryRepository.GetById(category.Id);
 
         //assert
         Assert.Equal(expected, count);
-        Assert.Null(removedCategory);
+        Assert.Null(removed_category);
     }
 
     #endregion
@@ -230,19 +219,21 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
     [Trait("CategoryRepositoryTests", nameof(Category))]
     public async void GetByIdAsync_Tracking_ItShould_tracking()
     {
+        _CategoryRepository.NoTracking = false;
+
         //arrange
-        const EntityState expecedState = EntityState.Unchanged;
+        const EntityState expected_state = EntityState.Unchanged;
         var category = CategoryHelper.GetOne();
-        await _categoryRepository.AddAsync(category);
-        await _context.SaveChangesAsync();
+        await _CategoryRepository.AddAsync(category);
+        await _Context.SaveChangesAsync();
 
         //act
-        var categoryDb = await _categoryRepository.GetByIdAsync(category.Id, false);
+        var category_db = await _CategoryRepository.GetByIdAsync(category.Id);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Id, categoryDb!.Id);
-        Assert.Equal(expecedState, _context.Entry(categoryDb).State);
+        Assert.NotNull(category_db);
+        Assert.Equal(category.Id, category_db.Id);
+        Assert.Equal(expected_state, _Context.Entry(category_db).State);
     }
 
     [Fact]
@@ -250,37 +241,39 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
     public async void GetByIdAsync_AsNoTracking_ItShould_no_tracking()
     {
         //arrange
-        const EntityState expecedState = EntityState.Detached;
+        const EntityState expected_state = EntityState.Detached;
         var category = CategoryHelper.GetOne();
-        await _categoryRepository.AddAsync(category);
-        await _context.SaveChangesAsync();
+        await _CategoryRepository.AddAsync(category);
+        await _Context.SaveChangesAsync();
 
         //act
-        var categoryDb = await _categoryRepository.GetByIdAsync(category.Id, true);
+        var category_db = await _CategoryRepository.GetByIdAsync(category.Id);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Id, categoryDb!.Id);
-        Assert.Equal(expecedState, _context.Entry(categoryDb).State);
+        Assert.NotNull(category_db);
+        Assert.Equal(category.Id, category_db.Id);
+        Assert.Equal(expected_state, _Context.Entry(category_db).State);
     }
 
     [Fact]
     [Trait("CategoryRepositoryTests", nameof(Category))]
     public void GetById_Tracking_ItShould_unchanged()
     {
+        _CategoryRepository.NoTracking = false;
+
         //arrange
-        const EntityState expecedState = EntityState.Unchanged;
+        const EntityState expected_state = EntityState.Unchanged;
         var category = CategoryHelper.GetOne();
-        _categoryRepository.Add(category);
-        _context.SaveChanges();
+        _CategoryRepository.Add(category);
+        _Context.SaveChanges();
 
         //act
-        var categoryDb = _categoryRepository.GetById(category.Id, false);
+        var category_db = _CategoryRepository.GetById(category.Id);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Id, categoryDb!.Id);
-        Assert.Equal(expecedState, _context.Entry(categoryDb).State);
+        Assert.NotNull(category_db);
+        Assert.Equal(category.Id, category_db.Id);
+        Assert.Equal(expected_state, _Context.Entry(category_db).State);
     }
 
     [Fact]
@@ -288,18 +281,18 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
     public void GetByIdAsync_AsNoTracking_ItShould_Detached()
     {
         //arrange
-        const EntityState expecedState = EntityState.Detached;
+        const EntityState expected_state = EntityState.Detached;
         var category = CategoryHelper.GetOne();
-        _categoryRepository.Add(category);
-        _context.SaveChanges();
+        _CategoryRepository.Add(category);
+        _Context.SaveChanges();
 
         //act
-        var categoryDb = _categoryRepository.GetById(category.Id, true);
+        var category_db = _CategoryRepository.GetById(category.Id);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Id, categoryDb!.Id);
-        Assert.Equal(expecedState, _context.Entry(categoryDb).State);
+        Assert.NotNull(category_db);
+        Assert.Equal(category.Id, category_db.Id);
+        Assert.Equal(expected_state, _Context.Entry(category_db).State);
     }
 
     [Fact]
@@ -308,15 +301,15 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
     {
         //arrange
         var category = CategoryHelper.GetOne();
-        await _categoryRepository.AddAsync(category);
-        await _context.SaveChangesAsync();
+        await _CategoryRepository.AddAsync(category);
+        await _Context.SaveChangesAsync();
 
         //act
-        var categoryDb = await _categoryRepository.GetByIdAsync(category.Id);
+        var category_db = await _CategoryRepository.GetByIdAsync(category.Id);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Id, categoryDb!.Id);
+        Assert.NotNull(category_db);
+        Assert.Equal(category.Id, category_db.Id);
     }
 
     [Fact]
@@ -325,15 +318,15 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
     {
         //arrange
         var category = CategoryHelper.GetOne();
-        _categoryRepository.Add(category);
-        _context.SaveChanges();
+        _CategoryRepository.Add(category);
+        _Context.SaveChanges();
 
         //act
-        var categoryDb = _categoryRepository.GetById(category.Id);
+        var category_db = _CategoryRepository.GetById(category.Id);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Id, categoryDb!.Id);
+        Assert.NotNull(category_db);
+        Assert.Equal(category.Id, category_db.Id);
     }
 
     #endregion
@@ -345,56 +338,60 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
     public async void GetByNameAsync_AsNoTracking_ItShould_detached()
     {
         //arrange
-        const EntityState expecedState = EntityState.Detached;
+        const EntityState expected_state = EntityState.Detached;
         var category = CategoryHelper.GetOne();
-        await _categoryRepository.AddAsync(category);
-        await _context.SaveChangesAsync();
+        await _CategoryRepository.AddAsync(category);
+        await _Context.SaveChangesAsync();
 
         //act
-        var categoryDb = await _categoryRepository.GetByNameAsync(category.Name, true);
+        var category_db = await _CategoryRepository.GetByNameAsync(category.Name);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Name, categoryDb!.Name);
-        Assert.Equal(expecedState, _context.Entry(categoryDb).State);
+        Assert.NotNull(category_db);
+        Assert.Equal(category.Name, category_db.Name);
+        Assert.Equal(expected_state, _Context.Entry(category_db).State);
     }
 
     [Fact]
     [Trait("CategoryRepositoryTests", nameof(Category))]
     public void GetByName_Tracking_ItShould_unchanged()
     {
+        _CategoryRepository.NoTracking = false;
+
         //arrange
-        const EntityState expecedState = EntityState.Unchanged;
+        const EntityState expected_state = EntityState.Unchanged;
         var category = CategoryHelper.GetOne();
-        _categoryRepository.Add(category);
-        _context.SaveChanges();
+        _CategoryRepository.Add(category);
+        _Context.SaveChanges();
 
         //act
-        var categoryDb = _categoryRepository.GetByName(category.Name, false);
+        var category_db = _CategoryRepository.GetByName(category.Name);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Name, categoryDb!.Name);
-        Assert.Equal(expecedState, _context.Entry(categoryDb).State);
+        Assert.NotNull(category_db);
+        Assert.Equal(category.Name, category_db.Name);
+        Assert.Equal(expected_state, _Context.Entry(category_db).State);
     }
 
     [Fact]
     [Trait("CategoryRepositoryTests", nameof(Category))]
     public async void GetByNameAsync_Tracking_ItShould_unchanged()
     {
+        _CategoryRepository.NoTracking = false;
+
         //arrange
-        const EntityState expecedState = EntityState.Unchanged;
+        const EntityState expected_state = EntityState.Unchanged;
         var category = CategoryHelper.GetOne();
-        await _categoryRepository.AddAsync(category);
-        await _context.SaveChangesAsync();
+        await _CategoryRepository.AddAsync(category);
+        await _Context.SaveChangesAsync();
 
         //act
-        var categoryDb = await _categoryRepository.GetByNameAsync(category.Name, false);
+        var category_db = await _CategoryRepository.GetByNameAsync(category.Name);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Name, categoryDb!.Name);
-        Assert.Equal(expecedState, _context.Entry(categoryDb).State);
+        Assert.NotNull(category_db);
+        Assert.Equal(category.Name, category_db.Name);
+        Assert.Equal(expected_state, _Context.Entry(category_db).State);
     }
 
     [Fact]
@@ -402,18 +399,18 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
     public void GetByName_AsNoTracking_ItShould_detached()
     {
         //arrange
-        const EntityState expecedState = EntityState.Detached;
+        const EntityState expected_state = EntityState.Detached;
         var category = CategoryHelper.GetOne();
-        _categoryRepository.Add(category);
-        _context.SaveChanges();
+        _CategoryRepository.Add(category);
+        _Context.SaveChanges();
 
         //act
-        var categoryDb = _categoryRepository.GetByName(category.Name, true);
+        var category_db = _CategoryRepository.GetByName(category.Name);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Name, categoryDb!.Name);
-        Assert.Equal(expecedState, _context.Entry(categoryDb).State);
+        Assert.NotNull(category_db);
+        Assert.Equal(category.Name, category_db.Name);
+        Assert.Equal(expected_state, _Context.Entry(category_db).State);
     }
 
     [Fact]
@@ -422,15 +419,15 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
     {
         //arrange
         var category = CategoryHelper.GetOne();
-        await _categoryRepository.AddAsync(category);
-        await _context.SaveChangesAsync();
+        await _CategoryRepository.AddAsync(category);
+        await _Context.SaveChangesAsync();
 
         //act
-        var categoryDb = await _categoryRepository.GetByNameAsync(category.Name);
+        var category_db = await _CategoryRepository.GetByNameAsync(category.Name);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Name, categoryDb!.Name);
+        Assert.NotNull(category_db);
+        Assert.Equal(category.Name, category_db.Name);
     }
 
     [Fact]
@@ -439,15 +436,15 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
     {
         //arrange
         var category = CategoryHelper.GetOne();
-        _categoryRepository.Add(category);
-        _context.SaveChanges();
+        _CategoryRepository.Add(category);
+        _Context.SaveChanges();
 
         //act
-        var categoryDb = _categoryRepository.GetByName(category.Name);
+        var category_db = _CategoryRepository.GetByName(category.Name);
 
         //assert
-        Assert.NotNull(categoryDb);
-        Assert.Equal(category.Name, categoryDb!.Name);
+        Assert.NotNull(category_db);
+        Assert.Equal(category.Name, category_db.Name);
     }
 
     #endregion
@@ -458,88 +455,92 @@ public class CategoryRepositoryTests : IClassFixture<UnitOfWorkFixture>
     [Trait("CategoryRepositoryTests", nameof(Category))]
     public async void UpdateAsync_ItShould_properties_updated()
     {
+        _CategoryRepository.NoTracking = false;
+
         //arrange
-        var expectedCreatedAt = DateTime.Now.AddDays(1);
-        var expectedDescription = "new category description";
-        var expectedName = "new category name";
+        var          expected_created_at  = DateTime.Now.AddDays(1);
+        const string expected_description = "new category description";
+        const string expected_name        = "new category name";
 
         var category = CategoryHelper.GetOne();
-        await _categoryRepository.AddAsync(category);
-        await _context.SaveChangesAsync();
+        await _CategoryRepository.AddAsync(category);
+        await _Context.SaveChangesAsync();
 
         //act
-        category.CreatedAt = expectedCreatedAt;
-        category.Description = expectedDescription;
-        category.Name = expectedName;
-        await _categoryRepository.UpdateAsync(category);
-        await _context.SaveChangesAsync();
+        category.CreatedAt = expected_created_at;
+        category.Description = expected_description;
+        category.Name = expected_name;
+        await _CategoryRepository.UpdateAsync(category);
+        await _Context.SaveChangesAsync();
 
-        var categoryDb = await _categoryRepository.GetByIdAsync(category.Id);
+        var category_db = await _CategoryRepository.GetByIdAsync(category.Id);
 
         //assert
-        Assert.Equal(category.Id, categoryDb!.Id);
-        Assert.Equal(category.Name, expectedName);
-        Assert.Equal(category.Description, expectedDescription);
-        Assert.Equal(category.CreatedAt, expectedCreatedAt);
+        Assert.Equal(category.Id, category_db!.Id);
+        Assert.Equal(category.Name, expected_name);
+        Assert.Equal(category.Description, expected_description);
+        Assert.Equal(category.CreatedAt, expected_created_at);
     }
 
     [Fact]
     [Trait("CategoryRepositoryTests", nameof(Category))]
     public void Update_ItShould_properties_updated()
     {
+        _CategoryRepository.NoTracking = false;
+
         //arrange
-        var expectedCreatedAt = DateTime.Now.AddDays(1);
-        var expectedDescription = "new category description";
-        var expectedName = "new category name";
+        var          expected_created_at  = DateTime.Now.AddDays(1);
+        const string expected_description = "new category description";
+        const string expected_name        = "new category name";
 
         var category = CategoryHelper.GetOne();
-        _categoryRepository.Add(category);
-        _context.SaveChanges();
+        _CategoryRepository.Add(category);
+        _Context.SaveChanges();
 
         //act
-        category.CreatedAt = expectedCreatedAt;
-        category.Description = expectedDescription;
-        category.Name = expectedName;
-        _categoryRepository.Update(category);
-        _context.SaveChanges();
+        category.CreatedAt = expected_created_at;
+        category.Description = expected_description;
+        category.Name = expected_name;
+        _CategoryRepository.Update(category);
+        _Context.SaveChanges();
 
-        var categoryDb = _categoryRepository.GetById(category.Id);
+        var category_db = _CategoryRepository.GetById(category.Id);
 
         //assert
-        Assert.Equal(category.Id, categoryDb!.Id);
-        Assert.Equal(category.Name, expectedName);
-        Assert.Equal(category.Description, expectedDescription);
-        Assert.Equal(category.CreatedAt, expectedCreatedAt);
+        Assert.Equal(category.Id, category_db!.Id);
+        Assert.Equal(category.Name, expected_name);
+        Assert.Equal(category.Description, expected_description);
+        Assert.Equal(category.CreatedAt, expected_created_at);
     }
 
     #endregion
 
     #region GetByHash
 
-    [Fact]
+    [Fact(Skip = "Не реализован метод")]
     [Trait("CategoryRepositoryTests", nameof(Category))]
     public void GetByHashAsync_ItShould_null()
     {
         //arrange
 
         //act
-        var categoryDb = _categoryRepository.GetByHashAsync(String.Empty);
+        var category_db = _CategoryRepository.GetByHashAsync(string.Empty);
 
         //assert
-        Assert.Null(categoryDb);
+        Assert.Null(category_db);
     }
 
-    [Fact]
+    [Fact(Skip = "Не реализован метод")]
     [Trait("CategoryRepositoryTests", nameof(Category))]
     public void GetByHash_ItShould_null()
     {
         //arrange
 
         //act
-        var categoryDb = _categoryRepository.GetByHash(String.Empty);
+        var category_db = _CategoryRepository.GetByHash(string.Empty);
 
         //assert
-        Assert.Null(categoryDb);
+        Assert.Null(category_db);
     }
 
     #endregion

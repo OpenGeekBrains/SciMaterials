@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-
-using SciMaterials.Contracts.API.DTO.Files;
+﻿using SciMaterials.Contracts.API.DTO.Files;
 using SciMaterials.Contracts.API.Models;
 using SciMaterials.Contracts.Result;
 

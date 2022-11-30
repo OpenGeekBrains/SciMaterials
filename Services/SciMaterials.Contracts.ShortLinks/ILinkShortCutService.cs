@@ -1,5 +1,4 @@
 ﻿using SciMaterials.Contracts.Result;
-using SciMaterials.DAL.Models;
 
 namespace SciMaterials.Contracts.ShortLinks;
 

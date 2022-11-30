@@ -5,22 +5,19 @@ namespace SciMaterials.Services;
 
 public abstract class ServiceBase
 {
-    protected readonly ILogger _logger;
+    protected readonly ILogger<ServiceBase> _Logger;
 
-    protected ServiceBase(ILogger logger)
+    protected ServiceBase(ILogger<ServiceBase> Logger) => _Logger = Logger;
+
+    protected Result<TData> LoggedError<TData>(Error Error, Exception exception, string MessagePattern, params object?[] Parameters)
     {
-        _logger = logger;
+        _Logger.LogError(exception, MessagePattern, Parameters);
+        return Result<TData>.Failure(Error);
     }
 
-    protected Result<TData> LoggedError<TData>(Error error, Exception ex, string messagePattern, params object?[] args)
+    protected Result<TData> LoggedError<TData>(Error Error, string MessagePattern, params object?[] Parameters)
     {
-        _logger.LogError(ex, messagePattern, args);
-        return Result<TData>.Failure(error);
-    }
-
-    protected Result<TData> LoggedError<TData>(Error error, string messagePattern, params object?[] args)
-    {
-        _logger.LogError(messagePattern, args);
-        return Result<TData>.Failure(error);
+        _Logger.LogError(MessagePattern, Parameters);
+        return Result<TData>.Failure(Error);
     }
 }

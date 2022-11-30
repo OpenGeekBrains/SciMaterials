@@ -1,20 +1,21 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using SciMaterials.DAL.Contexts;
-using SciMaterials.DAL.UnitOfWork;
+
+using SciMaterials.DAL.Resources.Contexts;
+using SciMaterials.DAL.Resources.UnitOfWork;
 
 
 namespace SciMaterials.Services.API;
 
 public abstract class ApiServiceBase: ServiceBase
 {
-    protected readonly IUnitOfWork<SciMaterialsContext> _unitOfWork;
-    protected readonly IMapper _mapper;
+    protected readonly IUnitOfWork<SciMaterialsContext> Database;
+    protected readonly IMapper _Mapper;
 
-    protected ApiServiceBase(IUnitOfWork<SciMaterialsContext> unitOfWork, IMapper mapper, ILogger logger) 
-        : base(logger)
+    protected ApiServiceBase(IUnitOfWork<SciMaterialsContext> Database, IMapper Mapper, ILogger<ApiServiceBase> Logger) 
+        : base(Logger)
     {
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
+        this.Database = Database;
+        _Mapper = Mapper;
     }
 }

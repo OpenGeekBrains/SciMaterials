@@ -1,43 +1,42 @@
-﻿using SciMaterials.Contracts.Identity.Clients.Clients;
+﻿using SciMaterials.Contracts.Identity.API;
 using SciMaterials.UI.BWASM.Models;
 
 namespace SciMaterials.UI.BWASM.Services.Identity;
 
 public class IdentityRolesService : IRolesService
 {
-    private readonly IRolesClient _rolesClient;
-    private readonly IAuthenticationService _authenticationService;
+    private readonly IRolesApi _RolesApi;
+    private readonly IAuthenticationService _AuthenticationService;
 
     public IdentityRolesService(
-        IRolesClient rolesClient,
-        IAuthenticationService authenticationService)
+        IRolesApi RolesApi,
+        IAuthenticationService AuthenticationService)
     {
-        _rolesClient = rolesClient;
-        _authenticationService = authenticationService;
+        _RolesApi = RolesApi;
+        _AuthenticationService = AuthenticationService;
     }
 
     public async Task<IReadOnlyList<UserRole>> RolesList()
     {
-        var response = await _rolesClient.GetAllRolesAsync(CancellationToken.None);
-        if (!response.Succeeded) return new List<UserRole>();
-        
-        return response.Roles.Select(x=>new UserRole{Id = x.Id, Name = x.RoleName}).ToList();
+        var response = await _RolesApi.GetAllRolesAsync(CancellationToken.None);
+        if (response.IsFaulted) return new List<UserRole>();
+
+        return response.Data.Select(x => new UserRole { Id = x.Id, Name = x.RoleName }).ToList();
     }
 
     public async Task<bool> AddRole(string roleName)
     {
-        var response = await _rolesClient.CreateRoleAsync(new() { RoleName = roleName });
+        var response = await _RolesApi.CreateRoleAsync(new() { RoleName = roleName });
         if (response.Succeeded) return true;
 
         // TODO: handle failure
         return false;
-
     }
 
     public async Task<bool> DeleteRole(string roleId)
     {
-        var response = await _rolesClient.DeleteRoleByIdAsync(roleId);
-        if (!response.Succeeded)
+        var response = await _RolesApi.DeleteRoleByIdAsync(roleId);
+        if (response.IsFaulted)
         {
             // TODO: handle failure
             return false;
@@ -45,7 +44,7 @@ public class IdentityRolesService : IRolesService
 
         // Validate that current user in role
         // Refresh if it is
-        await _authenticationService.RefreshCurrentUser();
+        await _AuthenticationService.RefreshCurrentUser();
 
         return true;
     }

@@ -18,7 +18,7 @@ namespace SciMaterials.UI.BWASM.Pages.categories
 
         private async Task<TableData<GetCategoryResponse>> ServerLoadData(TableState state)
         {
-            var result = await CategoriesClient.GetAllAsync();
+            var result = await CategoriesClient.GetAllAsync().ConfigureAwait(false);
             if (result.Succeeded)
             {
                 var data = result.Data;

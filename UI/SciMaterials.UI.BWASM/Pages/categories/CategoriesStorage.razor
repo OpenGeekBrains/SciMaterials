@@ -15,11 +15,13 @@
     }
 </style>
 
-<MyTitle Title="Categories" Description="Manage Categories." />
+<MyTitle Title="Categories" Description="Manage Categories" />
 
-<MudTable Elevation="25" ServerData="@ServerLoadData" Breakpoint="Breakpoint.Sm" Bordered="true" Striped="true" Dense="false" Hover="true" @ref="_mudTable" RowClassFunc="@SelectedRowClassFunc" OnRowClick="RowClickEvent" T="GetCategoryResponse">
+<MudTable Elevation="25" ServerData="@ServerLoadData" Breakpoint="Breakpoint.Sm"
+          Bordered="true" Striped="true" Dense="false" Hover="true" @ref="_mudTable"
+          RowClassFunc="@SelectedRowClassFunc" OnRowClick="RowClickEvent" T="GetCategoryResponse">
     <ToolBarContent>
-        <MudTextField T="string"  ValueChanged="@OnSearch" Placeholder="Search" Adornment="Adornment.Start"
+        <MudTextField T="string" ValueChanged="@OnSearch" Placeholder="Search" Adornment="Adornment.Start"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small" Class="mt-0"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
@@ -45,7 +47,7 @@
         <MudText>Loading...</MudText>
     </LoadingContent>
     <PagerContent>
-        <MudTablePager />
+        <MudTablePager/>
     </PagerContent>
 </MudTable>
 

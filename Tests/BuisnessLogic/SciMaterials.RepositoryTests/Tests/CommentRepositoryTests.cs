@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using SciMaterials.DAL.Contexts;
-using SciMaterials.DAL.Models;
-using SciMaterials.Data.UnitOfWork;
-using SciMaterials.RepositoryLib.Repositories.FilesRepositories;
+using Moq;
+using SciMaterials.DAL.Resources.Contexts;
+using SciMaterials.DAL.Resources.Contracts.Entities;
+using SciMaterials.DAL.Resources.Contracts.Repositories.Files;
+using SciMaterials.DAL.Resources.Repositories.Files;
+using SciMaterials.DAL.Resources.UnitOfWork;
 using SciMaterials.RepositoryTests.Helpers;
 using SciMaterials.RepositoryTests.Helpers.ModelsHelpers;
 
@@ -11,16 +13,15 @@ namespace SciMaterials.RepositoryTests.Tests;
 
 public class CommentRepositoryTests
 {
-    private ICommentRepository _comentRepository;
-    private SciMaterialsContext _context;
+    private readonly CommentRepository _ComentRepository;
+    private readonly SciMaterialsContext _Context;
 
     public CommentRepositoryTests()
     {
-        _context = new SciMateralsContextHelper().Context;
-        ILoggerFactory loggerFactory = new LoggerFactory();
-        var logger = new Logger<UnitOfWork<SciMaterialsContext>>(loggerFactory);
+        _Context = SciMateralsContextHelper.Create();
 
-        _comentRepository = new CommentRepository(_context, logger);
+        var logger = new Mock<ILogger<CommentRepository>>();
+        _ComentRepository = new CommentRepository(_Context, logger.Object);
     }
 
     #region GetAll
@@ -31,36 +32,34 @@ public class CommentRepositoryTests
     {
         //arrange
         const int expected = 1;
-        const EntityState expecedState = EntityState.Detached;
+        const EntityState expected_state = EntityState.Detached;
 
         //act
-        var comments = _comentRepository.GetAll();
-        var count = 0;
-        if (comments is not null)
-            count = comments.Count;
+        var comments = _ComentRepository.GetAll();
+        var count = comments.Count;
 
         //assert
         Assert.Equal(expected, count);
-        Assert.Equal(expecedState, _context.Entry(comments![0]).State);
+        Assert.Equal(expected_state, _Context.Entry(comments[0]).State);
     }
 
     [Fact]
     [Trait("CommentRepositoryTests", nameof(Comment))]
     public void GetAll_Tracking_ItShould_contains_comment_1()
     {
+        _ComentRepository.NoTracking = false;
+
         //arrange
         const int expected = 1;
-        const EntityState expecedSstate = EntityState.Unchanged;
+        const EntityState expeced_sstate = EntityState.Unchanged;
 
         //act
-        var comments = _comentRepository.GetAll(false);
-        var count = 0;
-        if (comments is not null)
-            count = comments.Count;
+        var comments = _ComentRepository.GetAll();
+        var count = comments.Count;
 
         //assert
         Assert.Equal(expected, count);
-        Assert.Equal(expecedSstate, _context.Entry(comments![0]).State);
+        Assert.Equal(expeced_sstate, _Context.Entry(comments[0]).State);
     }
 
     #endregion
@@ -73,36 +72,34 @@ public class CommentRepositoryTests
     {
         //arrange
         const int expected = 1;
-        const EntityState expecedSstate = EntityState.Detached;
+        const EntityState expeced_sstate = EntityState.Detached;
 
         //act
-        var comments = await _comentRepository.GetAllAsync();
-        var count = 0;
-        if (comments is not null)
-            count = comments.Count;
+        var comments = await _ComentRepository.GetAllAsync();
+        var count = comments.Count;
 
         //assert
         Assert.Equal(expected, count);
-        Assert.Equal(expecedSstate, _context.Entry(comments![0]).State);
+        Assert.Equal(expeced_sstate, _Context.Entry(comments[0]).State);
     }
 
     [Fact]
     [Trait("CommentRepositoryTests", nameof(Comment))]
     public async void GetAllAsync_Tracking_ItShould_contains_comment_1()
     {
+        _ComentRepository.NoTracking = false;
+
         //arrange
         const int expected = 1;
-        const EntityState expecedSstate = EntityState.Unchanged;
+        const EntityState expeced_sstate = EntityState.Unchanged;
 
         //act
-        var comments = await _comentRepository.GetAllAsync(false);
-        var count = 0;
-        if (comments is not null)
-            count = comments.Count;
+        var comments = await _ComentRepository.GetAllAsync();
+        var count = comments.Count;
 
         //assert
         Assert.Equal(expected, count);
-        Assert.Equal(expecedSstate, _context.Entry(comments![0]).State);
+        Assert.Equal(expeced_sstate, _Context.Entry(comments[0]).State);
     }
 
     #endregion
@@ -113,62 +110,63 @@ public class CommentRepositoryTests
     [Trait("CommentRepositoryTests", nameof(Comment))]
     public async void AddAsync_ItShould_contains_comment_increase_by_1()
     {
+        _ComentRepository.Include = true;
+
         //arrange
-        var expected = (await _comentRepository.GetAllAsync())!.Count + 1;
-        var comment = CommentHelper.GetOne();
+        var all = await _ComentRepository.GetAllAsync();
+        var expected  = all.Count + 1;
+        var comment   = CommentHelper.GetOne();
 
         //act
-        await _comentRepository.AddAsync(comment);
-        await _context.SaveChangesAsync();
+        await _ComentRepository.AddAsync(comment);
+        await _Context.SaveChangesAsync();
 
-        var comments = await _comentRepository.GetAllAsync();
-        var count = 0;
-        if (comments is not null)
-            count = comments.Count;
+        var comments = await _ComentRepository.GetAllAsync();
+        var count = comments.Count;
 
-        var commentDb = await _comentRepository.GetByIdAsync(comment.Id, include: true);
+        var comment_db = await _ComentRepository.GetByIdAsync(comment.Id);
 
         //assert
         Assert.Equal(expected, count);
-        Assert.NotNull(commentDb);
-        Assert.Equal(comment.Id, commentDb!.Id);
-        Assert.Equal(comment.ParentId, commentDb!.ParentId);
-        Assert.Equal(comment.AuthorId, commentDb!.AuthorId);
-        Assert.Equal(comment.CreatedAt, commentDb.CreatedAt);
-        Assert.Equal(comment.ResourceId, commentDb.ResourceId);
-        Assert.Equal(comment.Author.Id, commentDb.Author.Id);
-        Assert.Equal(comment.Resource!.Id, commentDb.Resource!.Id);
+        Assert.NotNull(comment_db);
+        Assert.Equal(comment.Id, comment_db.Id);
+        Assert.Equal(comment.ParentId, comment_db.ParentId);
+        Assert.Equal(comment.AuthorId, comment_db.AuthorId);
+        Assert.Equal(comment.CreatedAt, comment_db.CreatedAt);
+        Assert.Equal(comment.ResourceId, comment_db.ResourceId);
+        Assert.Equal(comment.Author.Id, comment_db.Author.Id);
+        Assert.Equal(comment.Resource.Id, comment_db.Resource.Id);
     }
 
     [Fact]
     [Trait("CommentRepositoryTests", nameof(Comment))]
     public void Add_ItShould_contains_comment_3()
     {
+        _ComentRepository.Include = true;
+
         //arrange
-        var expected = _comentRepository.GetAll()!.Count + 1;
-        var comment = CommentHelper.GetOne();
+        var expected = _ComentRepository.GetAll().Count + 1;
+        var comment  = CommentHelper.GetOne();
 
         //act
-        _comentRepository.Add(comment);
-        _context.SaveChanges();
+        _ComentRepository.Add(comment);
+        _Context.SaveChanges();
 
-        var comments = _comentRepository.GetAll();
-        var count = 0;
-        if (comments is not null)
-            count = comments.Count;
+        var comments = _ComentRepository.GetAll();
+        var count = comments.Count;
 
-        var commentDb = _comentRepository.GetById(comment.Id, include: true);
+        var comment_db = _ComentRepository.GetById(comment.Id);
 
         //assert
         Assert.Equal(expected, count);
-        Assert.NotNull(commentDb);
-        Assert.Equal(comment.Id, commentDb!.Id);
-        Assert.Equal(comment.ParentId, commentDb!.ParentId);
-        Assert.Equal(comment.AuthorId, commentDb!.AuthorId);
-        Assert.Equal(comment.CreatedAt, commentDb.CreatedAt);
-        Assert.Equal(comment.ResourceId, commentDb.ResourceId);
-        Assert.Equal(comment.Author.Id, commentDb.Author.Id);
-        Assert.Equal(comment.Resource!.Id, commentDb.Resource!.Id);
+        Assert.NotNull(comment_db);
+        Assert.Equal(comment.Id, comment_db.Id);
+        Assert.Equal(comment.ParentId, comment_db.ParentId);
+        Assert.Equal(comment.AuthorId, comment_db.AuthorId);
+        Assert.Equal(comment.CreatedAt, comment_db.CreatedAt);
+        Assert.Equal(comment.ResourceId, comment_db.ResourceId);
+        Assert.Equal(comment.Author.Id, comment_db.Author.Id);
+        Assert.Equal(comment.Resource.Id, comment_db.Resource.Id);
     }
 
     #endregion
@@ -181,24 +179,22 @@ public class CommentRepositoryTests
     {
         //arrange
         var comment = CommentHelper.GetOne();
-        await _comentRepository.AddAsync(comment);
-        await _context.SaveChangesAsync();
-        var expected = (await _comentRepository.GetAllAsync())!.Count - 1;
+        await _ComentRepository.AddAsync(comment);
+        await _Context.SaveChangesAsync();
+        var expected = (await _ComentRepository.GetAllAsync()).Count - 1;
 
         //act
-        await _comentRepository.DeleteAsync(comment.Id);
-        await _context.SaveChangesAsync();
+        await _ComentRepository.DeleteAsync(comment.Id);
+        await _Context.SaveChangesAsync();
 
-        var comments = await _comentRepository.GetAllAsync();
-        var count = 0;
-        if (comments is not null)
-            count = comments.Count;
+        var comments = await _ComentRepository.GetAllAsync();
+        var count = comments.Count;
 
-        var removedCategory = await _comentRepository.GetByIdAsync(comment.Id);
+        var removed_category = await _ComentRepository.GetByIdAsync(comment.Id);
 
         //assert
         Assert.Equal(expected, count);
-        Assert.Null(removedCategory);
+        Assert.Null(removed_category);
     }
 
     [Fact]
@@ -207,24 +203,22 @@ public class CommentRepositoryTests
     {
         //arrange
         var comment = CommentHelper.GetOne();
-        _comentRepository.Add(comment);
-        _context.SaveChanges();
-        var expected = _comentRepository.GetAll()!.Count - 1;
+        _ComentRepository.Add(comment);
+        _Context.SaveChanges();
+        var expected = _ComentRepository.GetAll().Count - 1;
 
         //act
-        _comentRepository.Delete(comment.Id);
-        _context.SaveChanges();
+        _ComentRepository.Delete(comment.Id);
+        _Context.SaveChanges();
 
-        var comments = _comentRepository.GetAll();
-        var count = 0;
-        if (comments is not null)
-            count = comments.Count;
+        var comments = _ComentRepository.GetAll();
+        var count = comments.Count;
 
-        var removedCategory = _comentRepository.GetById(comment.Id);
+        var removed_category = _ComentRepository.GetById(comment.Id);
 
         //assert
         Assert.Equal(expected, count);
-        Assert.Null(removedCategory);
+        Assert.Null(removed_category);
     }
 
     #endregion
@@ -235,19 +229,21 @@ public class CommentRepositoryTests
     [Trait("CommentRepositoryTests", nameof(Comment))]
     public async void GetByIdAsync_Tracking_ItShould_tracking()
     {
+        _ComentRepository.NoTracking = false;
+
         //arrange
-        const EntityState expecedState = EntityState.Unchanged;
+        const EntityState expected_state = EntityState.Unchanged;
         var comment = CommentHelper.GetOne();
-        await _comentRepository.AddAsync(comment);
-        await _context.SaveChangesAsync();
+        await _ComentRepository.AddAsync(comment);
+        await _Context.SaveChangesAsync();
 
         //act
-        var commentDb = await _comentRepository.GetByIdAsync(comment.Id, false);
+        var comment_db = await _ComentRepository.GetByIdAsync(comment.Id);
 
         //assert
-        Assert.NotNull(commentDb);
-        Assert.Equal(comment.Id, commentDb!.Id);
-        Assert.Equal(expecedState, _context.Entry(commentDb).State);
+        Assert.NotNull(comment_db);
+        Assert.Equal(comment.Id, comment_db.Id);
+        Assert.Equal(expected_state, _Context.Entry(comment_db).State);
     }
 
     [Fact]
@@ -255,18 +251,18 @@ public class CommentRepositoryTests
     public async void GetByIdAsync_AsNoTracking_ItShould_no_tracking()
     {
         //arrange
-        const EntityState expecedState = EntityState.Detached;
+        const EntityState expected_state = EntityState.Detached;
         var comment = CommentHelper.GetOne();
-        await _comentRepository.AddAsync(comment);
-        await _context.SaveChangesAsync();
+        await _ComentRepository.AddAsync(comment);
+        await _Context.SaveChangesAsync();
 
         //act
-        var commentDb = await _comentRepository.GetByIdAsync(comment.Id, true);
+        var comment_db = await _ComentRepository.GetByIdAsync(comment.Id);
 
         //assert
-        Assert.NotNull(commentDb);
-        Assert.Equal(comment.Id, commentDb!.Id);
-        Assert.Equal(expecedState, _context.Entry(commentDb).State);
+        Assert.NotNull(comment_db);
+        Assert.Equal(comment.Id, comment_db.Id);
+        Assert.Equal(expected_state, _Context.Entry(comment_db).State);
     }
 
     [Fact]
@@ -274,18 +270,21 @@ public class CommentRepositoryTests
     public void GetById_Tracking_ItShould_unchanged()
     {
         //arrange
-        const EntityState expecedState = EntityState.Unchanged;
+
+        _ComentRepository.NoTracking = false;
+
+        const EntityState expected_state = EntityState.Unchanged;
         var comment = CommentHelper.GetOne();
-        _comentRepository.Add(comment);
-        _context.SaveChanges();
+        _ComentRepository.Add(comment);
+        _Context.SaveChanges();
 
         //act
-        var commentDb = _comentRepository.GetById(comment.Id, false);
+        var comment_db = _ComentRepository.GetById(comment.Id);
 
         //assert
-        Assert.NotNull(commentDb);
-        Assert.Equal(comment.Id, commentDb!.Id);
-        Assert.Equal(expecedState, _context.Entry(commentDb).State);
+        Assert.NotNull(comment_db);
+        Assert.Equal(comment.Id, comment_db.Id);
+        Assert.Equal(expected_state, _Context.Entry(comment_db).State);
     }
 
     [Fact]
@@ -293,18 +292,18 @@ public class CommentRepositoryTests
     public void GetByIdAsync_AsNoTracking_ItShould_Detached()
     {
         //arrange
-        const EntityState expecedState = EntityState.Detached;
+        const EntityState expected_state = EntityState.Detached;
         var comment = CommentHelper.GetOne();
-        _comentRepository.Add(comment);
-        _context.SaveChanges();
+        _ComentRepository.Add(comment);
+        _Context.SaveChanges();
 
         //act
-        var commentDb = _comentRepository.GetById(comment.Id, true);
+        var comment_db = _ComentRepository.GetById(comment.Id);
 
         //assert
-        Assert.NotNull(commentDb);
-        Assert.Equal(comment.Id, commentDb!.Id);
-        Assert.Equal(expecedState, _context.Entry(commentDb).State);
+        Assert.NotNull(comment_db);
+        Assert.Equal(comment.Id, comment_db.Id);
+        Assert.Equal(expected_state, _Context.Entry(comment_db).State);
     }
 
     [Fact]
@@ -313,15 +312,15 @@ public class CommentRepositoryTests
     {
         //arrange
         var comment = CommentHelper.GetOne();
-        await _comentRepository.AddAsync(comment);
-        await _context.SaveChangesAsync();
+        await _ComentRepository.AddAsync(comment);
+        await _Context.SaveChangesAsync();
 
         //act
-        var commentDb = await _comentRepository.GetByIdAsync(comment.Id);
+        var comment_db = await _ComentRepository.GetByIdAsync(comment.Id);
 
         //assert
-        Assert.NotNull(commentDb);
-        Assert.Equal(comment.Id, commentDb!.Id);
+        Assert.NotNull(comment_db);
+        Assert.Equal(comment.Id, comment_db.Id);
     }
 
     [Fact]
@@ -330,15 +329,15 @@ public class CommentRepositoryTests
     {
         //arrange
         var comment = CommentHelper.GetOne();
-        _comentRepository.Add(comment);
-        _context.SaveChanges();
+        _ComentRepository.Add(comment);
+        _Context.SaveChanges();
 
         //act
-        var commentDb = _comentRepository.GetById(comment.Id);
+        var comment_db = _ComentRepository.GetById(comment.Id);
 
         //assert
-        Assert.NotNull(commentDb);
-        Assert.Equal(comment.Id, commentDb!.Id);
+        Assert.NotNull(comment_db);
+        Assert.Equal(comment.Id, comment_db.Id);
     }
 
     #endregion
@@ -395,52 +394,56 @@ public class CommentRepositoryTests
     [Trait("CommentRepositoryTests", nameof(Comment))]
     public async void UpdateAsync_ItShould_properties_updated()
     {
+        _ComentRepository.NoTracking = false;
+
         //arrange
-        var expectedCreatedAt = DateTime.Now.AddDays(1);
-        var expectedText = "new some text";
+        var expected_created_at = DateTime.Now.AddDays(1);
+        var expected_text = "new some text";
 
         var comment = CommentHelper.GetOne();
-        await _comentRepository.AddAsync(comment);
-        await _context.SaveChangesAsync();
+        await _ComentRepository.AddAsync(comment);
+        await _Context.SaveChangesAsync();
 
         //act
-        comment.CreatedAt = expectedCreatedAt;
-        comment.Text = expectedText;
-        await _comentRepository.UpdateAsync(comment);
-        await _context.SaveChangesAsync();
+        comment.CreatedAt = expected_created_at;
+        comment.Text = expected_text;
+        await _ComentRepository.UpdateAsync(comment);
+        await _Context.SaveChangesAsync();
 
-        var commentDb = await _comentRepository.GetByIdAsync(comment.Id);
+        var comment_db = await _ComentRepository.GetByIdAsync(comment.Id);
 
         //assert
-        Assert.Equal(comment.Id, commentDb!.Id);
-        Assert.Equal(comment.Text, expectedText);
-        Assert.Equal(comment.CreatedAt, expectedCreatedAt);
+        Assert.Equal(comment.Id, comment_db!.Id);
+        Assert.Equal(comment.Text, expected_text);
+        Assert.Equal(comment.CreatedAt, expected_created_at);
     }
 
     [Fact]
     [Trait("CommentRepositoryTests", nameof(Comment))]
     public void Update_ItShould_properties_updated()
     {
+        _ComentRepository.NoTracking = false;
+
         //arrange
-        var expectedCreatedAt = DateTime.Now.AddDays(1);
-        var expectedText = "new some text";
+        var expected_created_at = DateTime.Now.AddDays(1);
+        var expected_text = "new some text";
 
         var comment = CommentHelper.GetOne();
-        _comentRepository.Add(comment);
-        _context.SaveChanges();
+        _ComentRepository.Add(comment);
+        _Context.SaveChanges();
 
         //act
-        comment.CreatedAt = expectedCreatedAt;
-        comment.Text = expectedText;
-        _comentRepository.Update(comment);
-        _context.SaveChanges();
+        comment.CreatedAt = expected_created_at;
+        comment.Text = expected_text;
+        _ComentRepository.Update(comment);
+        _Context.SaveChanges();
 
-        var commentDb = _comentRepository.GetById(comment.Id);
+        var comment_db = _ComentRepository.GetById(comment.Id);
 
         //assert
-        Assert.Equal(comment.Id, commentDb!.Id);
-        Assert.Equal(comment.Text, expectedText);
-        Assert.Equal(comment.CreatedAt, expectedCreatedAt);
+        Assert.Equal(comment.Id, comment_db!.Id);
+        Assert.Equal(comment.Text, expected_text);
+        Assert.Equal(comment.CreatedAt, expected_created_at);
     }
 
     #endregion

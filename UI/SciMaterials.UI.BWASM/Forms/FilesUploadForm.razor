@@ -1,14 +1,16 @@
 ﻿@page "/upload_files"
-@using SciMaterials.UI.BWASM.States.FileUpload
 @using SciMaterials.UI.BWASM.States.Categories
 @using SciMaterials.UI.BWASM.States.Authors
 @using Severity = MudBlazor.Severity
 @using System.Text
+@using SciMaterials.UI.BWASM.States.ContentTypes
+@using SciMaterials.UI.BWASM.States.UploadFilesForm
 @inherits FluxorComponent
 
 @inject IDispatcher Dispatcher
 @inject IState<FilesContentTypesFilterState> ContentTypesState
 @inject IState<UploadFilesFormState> FormState
+@inject IState<AuthorsState> AuthorsState
 @inject IDialogService DialogService
 @inject IValidator<UploadFilesFormState> Validator
 @inject ISnackbar Snackbar
@@ -80,6 +82,13 @@
 @code {
 	private MudForm? _form;
 
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+
+		Dispatcher.Dispatch(AuthorsActions.LoadAuthors());
+	}
+
 	private async Task ScheduleUpload()
 	{
 		await _form!.Validate();
@@ -89,8 +98,8 @@
 			Snackbar.Add("Not all values in form is valid!", Severity.Warning);
 			return;
 		}
-		RegisterUploadData action = FormState.Value;
-		Dispatcher.Dispatch(action);
+
+		Dispatcher.Dispatch(UploadFilesFormActions.RegisterUploadData(FormState.Value));
 	}
 
 	private void OnFilesListChange(InputFileChangeEventArgs e)
@@ -115,42 +124,47 @@
 			toUpload = toUpload.Where(x => !notSupported.Contains(x.Name)).ToList();
 		}
 
-		Dispatcher.Dispatch(new AddFiles(toUpload));
+		Dispatcher.Dispatch(UploadFilesFormActions.AddFiles(toUpload));
 	}
 
 	private async Task ChangeFormFileCategory()
 	{
-		if (await Select<FilesCategoriesSelector, TreeFileCategory>() is not { } selected) return;
+		var reference = DialogService.Show<FilesCategoriesSelector>();
+		var result = await reference.Result;
+		if (result.Cancelled || result.Data is not TreeFileCategory selected) return;
 
-		Dispatcher.Dispatch(new ChangeCategory(new(selected.Id, selected.Name)));
+		Dispatcher.Dispatch(UploadFilesFormActions.ChangeCategory(selected));
 	}
 
 	private async Task ChangeFormFileAuthor()
 	{
-		if (await Select<AuthorSelector, AuthorState>() is not { } selected) return;
+		string LabelSelection(AuthorState author) => author.Name;
 
-		Dispatcher.Dispatch(new ChangeAuthor(new(selected.Id, selected.Name, string.Empty)));
+		var parameters = new DialogParameters
+		{
+			["Items"] = AuthorsState.Value.Authors.ToList(),
+			["OptionLabel"] = (Func<AuthorState, string>)LabelSelection
+		};
+		var reference = DialogService.Show<ListSelectionDialog<AuthorState>>("Select author", parameters);
+		var result = await reference.Result;
+
+		if (result.Cancelled || result.Data is not AuthorState selected) return;
+
+		Dispatcher.Dispatch(UploadFilesFormActions.ChangeAuthor(selected));
 	}
 
 	private void Delete(FileData context)
 	{
-		Dispatcher.Dispatch(new RemoveFile(context.Id));
-	}
-
-	private async Task<TItem?> Select<TSelectDialog, TItem>() where TSelectDialog : ComponentBase
-	{
-		var reference = DialogService.Show<TSelectDialog>();
-		var result = await reference.Result;
-		return result.Cancelled || result.Data is not TItem data ? default : data;
+		Dispatcher.Dispatch(UploadFilesFormActions.RemoveFile(context.Id));
 	}
 
 	private void UpdateFormShortInfo(string shortInfo)
 	{
-		Dispatcher.Dispatch(new UpdateShortInfo(shortInfo));
+		Dispatcher.Dispatch(UploadFilesFormActions.UpdateShortInfo(shortInfo));
 	}
 
 	private void UpdateFormDescription(string description)
 	{
-		Dispatcher.Dispatch(new UpdateDescription(description));
+		Dispatcher.Dispatch(UploadFilesFormActions.UpdateDescription(description));
 	}
 }

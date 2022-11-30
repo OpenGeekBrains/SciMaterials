@@ -8,7 +8,6 @@ namespace SciMaterials.WebApi.Clients;
 
 public abstract class ApiClientWithAddBase<TId, TResult, TAddRequest, TEditRequest> :
     ApiClientBase<TId, TResult, TEditRequest>,
-    IApiReadonlyClient<TId, TResult>,
     IApiModifyClient<TId, TAddRequest, TEditRequest>
 {
     public ApiClientWithAddBase(HttpClient httpClient, ILogger<ApiClientWithAddBase<TId, TResult, TAddRequest, TEditRequest>> logger) 

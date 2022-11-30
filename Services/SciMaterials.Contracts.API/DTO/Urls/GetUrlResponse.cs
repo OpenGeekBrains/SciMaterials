@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace SciMaterials.Contracts.API.DTO.Urls;
 
 public class GetUrlResponse

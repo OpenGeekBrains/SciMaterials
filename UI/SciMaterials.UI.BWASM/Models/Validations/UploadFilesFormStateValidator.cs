@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-using SciMaterials.UI.BWASM.States.FileUpload;
+using SciMaterials.UI.BWASM.States.UploadFilesForm;
 
 namespace SciMaterials.UI.BWASM.Models.Validations
 {

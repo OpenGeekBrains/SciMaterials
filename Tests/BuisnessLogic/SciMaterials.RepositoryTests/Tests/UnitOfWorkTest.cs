@@ -1,24 +1,20 @@
-﻿using SciMaterials.DAL.Models;
+﻿using SciMaterials.DAL.Resources.Contracts.Entities;
 using SciMaterials.RepositoryTests.Fixtures;
 
 namespace SciMaterials.RepositoryTests.Tests;
 
 public class UnitOfWorkTest : IClassFixture<UnitOfWorkFixture>
 {
-    private readonly UnitOfWorkFixture _fixture;
+    private readonly UnitOfWorkFixture _Fixture;
 
-    public UnitOfWorkTest(UnitOfWorkFixture fixture)
-    {
-        _fixture = fixture;
-    }
-
+    public UnitOfWorkTest(UnitOfWorkFixture fixture) => _Fixture = fixture;
 
     [Fact]
     [Trait("UnitOfWorkTest", "UnderResting")]
     public void ItShould_UnitOfWork_instance_created()
     {
         //arrange
-        var sut = _fixture.Create();
+        var sut = _Fixture.Create();
 
         //act
 
@@ -32,7 +28,7 @@ public class UnitOfWorkTest : IClassFixture<UnitOfWorkFixture>
     {
         //arrange
         const int expected = 1;
-        var sut = _fixture.Create();
+        var sut = _Fixture.Create();
 
         //act
         var actual = sut.GetRepository<Category>().GetAll().Count;

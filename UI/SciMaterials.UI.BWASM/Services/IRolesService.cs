@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-using SciMaterials.UI.BWASM.Models;
+﻿using SciMaterials.UI.BWASM.Models;
 
 namespace SciMaterials.UI.BWASM.Services;
 

@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\Authors.json" />
+    <EmbeddedResource Include="TestData\Categories.json" />
+    <EmbeddedResource Include="TestData\Comments.json" />
+    <EmbeddedResource Include="TestData\ContentTypes.json" />
+    <EmbeddedResource Include="TestData\FileGroups.json" />
+    <EmbeddedResource Include="TestData\Files.json" />
+    <EmbeddedResource Include="TestData\Links.json" />
+    <EmbeddedResource Include="TestData\Ratings.json" />
+    <EmbeddedResource Include="TestData\Tags.json" />
+    <EmbeddedResource Include="TestData\Urls.json" />
+    <EmbeddedResource Include="TestData\Users.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SciMaterials.DAL.Contracts\SciMaterials.DAL.Contracts.csproj" />
+    <ProjectReference Include="..\SciMaterials.DAL.Resources.Contracts\SciMaterials.DAL.Resources.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

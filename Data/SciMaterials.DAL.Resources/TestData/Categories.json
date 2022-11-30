@@ -1,0 +1,137 @@
+[
+  {
+    "Id": "12A1DA97-D125-2461-C7E1-44A1426F01C4",
+    "ParentId": "",
+    "Description": "Загруженный ресурс будет содержаться во всех категориях",
+    "CreatedAt": "2022-07-18 23:18:58",
+    "Name": "Все категории",
+    "IsDeleted": false,
+    "ResourceId": "553191C4-3EF8-3313-24A3-BA3ECAA2F966"
+  },
+  {
+    "Id": "95B24213-7458-A856-12CC-523D2EB4C539",
+    "ParentId": "12A1DA97-D125-2461-C7E1-44A1426F01C4",
+    "Description": "Категория с книгами",
+    "CreatedAt": "2023-06-28 08:19:47",
+    "Name": "Книги",
+    "IsDeleted": false,
+    "ResourceId": "A6C20CF1-32D2-E8BA-771B-BD974BBA92DE"
+  },
+  {
+    "Id": "5CD053FA-A9B6-B6B6-26A5-50F421195459",
+    "ParentId": "12A1DA97-D125-2461-C7E1-44A1426F01C4",
+    "Description": "Категория с ссылками",
+    "CreatedAt": "2023-06-02 00:47:53",
+    "Name": "Ссылки",
+    "IsDeleted": false,
+    "ResourceId": "AE81B92B-535E-7DB4-B4B7-D7A3A4EEC0B6"
+  },
+  {
+    "Id": "8556B663-3758-E42E-872A-2AA503745384",
+    "ParentId": "12A1DA97-D125-2461-C7E1-44A1426F01C4",
+    "Description": "Категория со статьями",
+    "CreatedAt": "2022-01-05 22:42:08",
+    "Name": "Статьи",
+    "IsDeleted": false,
+    "ResourceId": "AADB6519-4354-CC31-CA22-985FDD5CBC21"
+  },
+  {
+    "Id": "BDE2B78E-2282-6B3E-198F-BB3482B3679F",
+    "ParentId": "12A1DA97-D125-2461-C7E1-44A1426F01C4",
+    "Description": "Категория с архивами",
+    "CreatedAt": "2021-10-10 22:28:29",
+    "Name": "Архивы",
+    "IsDeleted": false,
+    "ResourceId": "617A2479-3590-2B2D-3725-88A03A0BCC63"
+  },
+  {
+    "Id": "8F23AECC-B676-5BAF-74EA-214143FB62A6",
+    "ParentId": "12A1DA97-D125-2461-C7E1-44A1426F01C4",
+    "Description": "Категория с подборками",
+    "CreatedAt": "2023-03-07 19:46:24",
+    "Name": "Подборки",
+    "IsDeleted": false,
+    "ResourceId": "A7C5FD87-5144-EAED-0205-1E40FCBDBCCD"
+  },
+  {
+    "Id": "BD2BAA61-299E-C0C5-D3A8-C71AD31B533F",
+    "ParentId": "12A1DA97-D125-2461-C7E1-44A1426F01C4",
+    "Description": "Категория со сборниками",
+    "CreatedAt": "2022-10-08 21:20:47",
+    "Name": "Сборники",
+    "IsDeleted": false,
+    "ResourceId": "B8478D22-12C9-B284-581C-DAAFE936C11B"
+  },
+  {
+    "Id": "D4917DDF-0510-7E1A-7618-E0AD88C539B1",
+    "ParentId": "12A1DA97-D125-2461-C7E1-44A1426F01C4",
+    "Description": "Категория с полезной литературой",
+    "CreatedAt": "2023-09-17 01:32:02",
+    "Name": "Полезная литература",
+    "IsDeleted": false,
+    "ResourceId": "488DC2AC-18EE-EAD6-A7DE-2EB1661CCA9D"
+  },
+  {
+    "Id": "9E113853-D83E-360D-C841-AFA021E63E93",
+    "ParentId": "12A1DA97-D125-2461-C7E1-44A1426F01C4",
+    "Description": "Категория с полезными ссылками",
+    "CreatedAt": "2022-02-12 22:16:11",
+    "Name": "Полезные ссылки",
+    "IsDeleted": false,
+    "ResourceId": "32C61729-AB4E-6FCB-1D39-241C1EFF32AD"
+  },
+  {
+    "Id": "80064D63-761D-6558-7C3E-E12234662192",
+    "ParentId": "12A1DA97-D125-2461-C7E1-44A1426F01C4",
+    "Description": "Категория со скриптами",
+    "CreatedAt": "2022-06-02 06:29:52",
+    "Name": "Скрипты",
+    "IsDeleted": false,
+    "ResourceId": "9918B17E-DD75-47E9-CA15-93A1BAED1176"
+  },
+  {
+    "Id": "6A90A2A3-8812-841F-584C-A79CEA7B3DCC",
+    "ParentId": "",
+    "Description": "Категория программирования",
+    "CreatedAt": "2023-03-27 07:07:17",
+    "Name": "Программирование",
+    "IsDeleted": false,
+    "ResourceId": "9A6A3CE2-6574-DD4B-4DFD-C90AD104B4A8"
+  },
+  {
+    "Id": "C6949798-4E4A-E68C-7893-54E1386741DD",
+    "ParentId": "6A90A2A3-8812-841F-584C-A79CEA7B3DCC",
+    "Description": "Все о замечательном C#",
+    "CreatedAt": "2022-02-18 01:01:00",
+    "Name": "Язык программирования C#",
+    "IsDeleted": false,
+    "ResourceId": "4D1BEA95-23A9-13E1-6F8F-43D981E382C1"
+  },
+  {
+    "Id": "55A1C572-CE36-EC94-A35F-D1526023E444",
+    "ParentId": "6A90A2A3-8812-841F-584C-A79CEA7B3DCC",
+    "Description": "Все о Java",
+    "CreatedAt": "2022-01-05 21:41:33",
+    "Name": "Язык программирования Java",
+    "IsDeleted": false,
+    "ResourceId": "1E499DCA-C8BE-93F2-8EC9-4413AD4AA3EB"
+  },
+  {
+    "Id": "A8EDBADE-EFE7-2A15-30A7-16C737C71190",
+    "ParentId": "6A90A2A3-8812-841F-584C-A79CEA7B3DCC",
+    "Description": "Все о JavaScript",
+    "CreatedAt": "2023-01-04 14:24:37",
+    "Name": "Язык программирования JavaScript",
+    "IsDeleted": false,
+    "ResourceId": "54F7EEC1-CE29-4713-9DE6-772A7B856868"
+  },
+  {
+    "Id": "3F8346A3-65CC-693E-C7A1-771FD8BC6BB5",
+    "ParentId": "6A90A2A3-8812-841F-584C-A79CEA7B3DCC",
+    "Description": "Все о Python",
+    "CreatedAt": "2023-07-14 01:35:20",
+    "Name": "Язык программирования Python",
+    "IsDeleted": false,
+    "ResourceId": "7CBB6048-D55F-3452-F4D9-3F4AB5A99C6C"
+  }
+]

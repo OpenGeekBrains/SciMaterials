@@ -3,7 +3,7 @@
 using SciMaterials.Contracts.API.DTO.Files;
 using SciMaterials.Contracts.WebApi.Clients.Files;
 using SciMaterials.UI.BWASM.Models;
-using SciMaterials.UI.BWASM.States.FileUpload;
+using SciMaterials.UI.BWASM.States.FilesUploadHistory;
 
 namespace SciMaterials.UI.BWASM.Services;
 
@@ -49,7 +49,7 @@ public class FileUploadScheduleService : IDisposable
             var filesClient = scope.ServiceProvider.GetRequiredService<IFilesClient>();
 
             _logger.LogInformation("Building upload data for file {name}", data.FileName);
-            dispatcher.Dispatch(new FileUploading(data.Id));
+            dispatcher.Dispatch(FilesUploadHistoryActions.FileUploading(data.Id));
             
             var result = await filesClient.UploadAsync(
                 data.File.OpenReadStream(),
@@ -67,17 +67,17 @@ public class FileUploadScheduleService : IDisposable
 
             if (data.CancellationToken.IsCancellationRequested)
             {
-                dispatcher.Dispatch(new FileUploadCanceled(data.Id));
+                dispatcher.Dispatch(FilesUploadHistoryActions.FileUploadCanceled(data.Id));
                 continue;
             }
 
             if (result.Succeeded)
             {
-                dispatcher.Dispatch(new FileUploaded(data.Id));
+                dispatcher.Dispatch(FilesUploadHistoryActions.FileUploaded(data.Id));
                 continue;
             }
 
-            dispatcher.Dispatch(new FileUploadFailed(data.Id, result.Code));
+            dispatcher.Dispatch(FilesUploadHistoryActions.FileUploadFailed(data.Id, result.Code));
         }
     }
 

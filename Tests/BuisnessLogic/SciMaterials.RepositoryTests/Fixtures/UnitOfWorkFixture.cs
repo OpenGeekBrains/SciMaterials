@@ -1,5 +1,5 @@
-﻿using SciMaterials.DAL.Contexts;
-using SciMaterials.DAL.UnitOfWork;
+﻿using SciMaterials.DAL.Resources.Contexts;
+using SciMaterials.DAL.Resources.UnitOfWork;
 using SciMaterials.RepositoryTests.Helpers;
 
 namespace SciMaterials.RepositoryTests.Fixtures;

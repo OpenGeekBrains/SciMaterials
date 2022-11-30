@@ -1,7 +1,6 @@
 ﻿@page "/content_types"
-
-@using SciMaterials.UI.BWASM.States.FileUpload
 @using System.Collections.Immutable
+@using SciMaterials.UI.BWASM.States.ContentTypes
 @inherits FluxorComponent
 
 @inject IDispatcher Dispatcher
@@ -58,13 +57,13 @@
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
-		Dispatcher.Dispatch(new LoadContentTypes());
+		Dispatcher.Dispatch(FilesContentTypesFilterActions.LoadContentTypes());
 	}
 
 	private void Save()
 	{
 		var data = _selected.Cast<ContentTypeState>().ToImmutableArray();
-		Dispatcher.Dispatch(new UpdateContentTypesFilter(data));
+		Dispatcher.Dispatch(FilesContentTypesFilterActions.UpdateFilter(data));
 	}
 
 	private void AddSelected(ICollection<object> selected)

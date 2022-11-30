@@ -1,30 +1,31 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using SciMaterials.DAL.Contexts;
+
+using SciMaterials.DAL.Resources.Contexts;
 using SciMaterials.RepositoryTests.Helpers.ModelsHelpers;
 
 namespace SciMaterials.RepositoryTests.Helpers;
 
 public class SciMateralsContextHelper
 {
-    public SciMaterialsContext Context { get; set; }
-
-    public SciMateralsContextHelper()
+    public static SciMaterialsContext Create()
     {
-        var builder = new DbContextOptionsBuilder<SciMaterialsContext>();
-        builder.UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+        var options = new DbContextOptionsBuilder<SciMaterialsContext>()
+           .UseInMemoryDatabase(Guid.NewGuid().ToString())
+           .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning))
+           .Options;
 
-        var options = builder.Options;
-        Context = new SciMaterialsContext(options);
+        var context = new SciMaterialsContext(options);
 
-        Context.Database.EnsureDeleted();
-        Context.Database.EnsureCreated();
+        //context.Database.EnsureDeleted();
+        //context.Database.EnsureCreated();
 
-        Context.AddRange(CategoryHelper.GetMany());
-        Context.AddRange(AuthorHelper.GetMany());
-        Context.AddRange(ContentTypeHelper.GetMany());
+        context.AddRange(CategoryHelper.GetMany());
+        context.AddRange(AuthorHelper.GetMany());
+        context.AddRange(ContentTypeHelper.GetMany());
 
-        Context.SaveChanges();
+        context.SaveChanges();
+
+        return context;
     }
 }

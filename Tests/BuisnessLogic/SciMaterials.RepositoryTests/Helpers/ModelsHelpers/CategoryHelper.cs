@@ -1,5 +1,4 @@
-﻿using SciMaterials.DAL.Models;
-using SciMaterials.DAL.Models.Base;
+﻿using SciMaterials.DAL.Resources.Contracts.Entities;
 
 namespace SciMaterials.RepositoryTests.Helpers.ModelsHelpers;
 

@@ -4,31 +4,31 @@ using Blazored.LocalStorage;
 
 using Microsoft.AspNetCore.Components.Authorization;
 
-using SciMaterials.Contracts.Identity.API.DTO.Users;
-using SciMaterials.Contracts.Identity.Clients.Clients;
+using SciMaterials.Contracts.Identity.API;
+using SciMaterials.Contracts.Identity.API.Requests.Users;
 using SciMaterials.UI.BWASM.Models;
 
 namespace SciMaterials.UI.BWASM.Services.Identity;
 
 public class IdentityAuthenticationService : IAuthenticationService
 {
-    private readonly IIdentityClient _client;
-    private readonly ILocalStorageService _localStorageService;
-    private readonly IdentityAuthenticationStateProvider _authenticationStateProvider;
+    private readonly IUsersApi _Api;
+    private readonly ILocalStorageService _LocalStorageService;
+    private readonly IdentityAuthenticationStateProvider _AuthenticationStateProvider;
 
     public IdentityAuthenticationService(
-        IIdentityClient client,
-        ILocalStorageService localStorageService,
-        AuthenticationStateProvider authenticationStateProvider)
+        IUsersApi Api,
+        ILocalStorageService LocalStorageService,
+        AuthenticationStateProvider AuthenticationStateProvider)
     {
-        _client = client;
-        _localStorageService = localStorageService;
-        _authenticationStateProvider = (IdentityAuthenticationStateProvider)authenticationStateProvider;
+        _Api = Api;
+        _LocalStorageService = LocalStorageService;
+        _AuthenticationStateProvider = (IdentityAuthenticationStateProvider)AuthenticationStateProvider;
     }
 
     public async Task Logout()
     {
-        var response = await _client.LogoutUserAsync(CancellationToken.None);
+        var response = await _Api.LogoutUserAsync(CancellationToken.None);
 
         if (!response.Succeeded)
         {
@@ -36,14 +36,14 @@ public class IdentityAuthenticationService : IAuthenticationService
             return;
         }
 
-        await _localStorageService.RemoveItemAsync("authToken");
-        _authenticationStateProvider.NotifyUserLogout();
+        await _LocalStorageService.RemoveItemAsync("authToken");
+        _AuthenticationStateProvider.NotifyUserLogout();
     }
 
     public async Task<bool> SignIn(SignInForm formData)
     {
         // get token
-        var response = await _client.LoginUserAsync(
+        var response = await _Api.LoginUserAsync(
             new LoginRequest
             {
                 Email = formData.Email,
@@ -51,28 +51,28 @@ public class IdentityAuthenticationService : IAuthenticationService
             },
             CancellationToken.None);
 
-        if (!response.Succeeded)
+        if (response.IsFaulted)
         {
             // TODO: handle failure
             return false;
         }
 
-        var token = response.SessionToken;
+        var token = response.Data.SessionToken;
 
         // parse token
         if (token.ParseJwt() is not { Count: > 0 } claims) return false;
 
         // set user signed with token claims
-        await _localStorageService.SetItemAsStringAsync("authToken", token);
+        await _LocalStorageService.SetItemAsStringAsync("authToken", token);
         ClaimsIdentity identity = new(claims, "Jwt");
-        _authenticationStateProvider.NotifyUserSignIn(identity);
+        _AuthenticationStateProvider.NotifyUserSignIn(identity);
 
         return true;
     }
 
     public async Task<bool> SignUp(SignUpForm formData)
     {
-        var response = await _client.RegisterUserAsync(
+        var response = await _Api.RegisterUserAsync(
             new RegisterRequest
             {
                 Email = formData.Email, 
@@ -80,7 +80,7 @@ public class IdentityAuthenticationService : IAuthenticationService
                 Password = formData.Password
             },
             CancellationToken.None);
-        if (!response.Succeeded)
+        if (response.IsFaulted)
         {
             // TODO: handle failure
             return false;
@@ -91,24 +91,24 @@ public class IdentityAuthenticationService : IAuthenticationService
 
     public async Task<bool> IsCurrentUser(string userEmail)
     {
-        var currentAuthenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var identifier = currentAuthenticationState.User.FindFirstValue(ClaimTypes.Email);
+        var currentAuthenticationState = await _AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var identifier = currentAuthenticationState.User.FindFirst(ClaimTypes.Email)?.Value;
         return userEmail == identifier;
     }
 
     public async Task RefreshCurrentUser()
     {
-        var currentAuthenticationState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var currentAuthenticationState = await _AuthenticationStateProvider.GetAuthenticationStateAsync();
         if(!currentAuthenticationState.User.Identity.IsAuthenticated) return;
         
-        var response = await _client.GetRefreshTokenAsync();
-        if (!response.Succeeded || response.RefreshToken.ParseJwt() is not {Count:>0} claims)
+        var response = await _Api.GetRefreshTokenAsync();
+        if (response.IsFaulted || response.Data.RefreshToken.ParseJwt() is not {Count:>0} claims)
         {
-            _authenticationStateProvider.NotifyUserLogout();
+            _AuthenticationStateProvider.NotifyUserLogout();
             return;
         }
 
-        await _localStorageService.SetItemAsStringAsync("authToken", response.RefreshToken);
-        _authenticationStateProvider.NotifyUserSignIn(new ClaimsIdentity(claims, "Jwt"));
+        await _LocalStorageService.SetItemAsStringAsync("authToken", response.Data.RefreshToken);
+        _AuthenticationStateProvider.NotifyUserSignIn(new ClaimsIdentity(claims, "Jwt"));
     }
 }

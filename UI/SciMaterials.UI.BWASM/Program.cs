@@ -5,20 +5,29 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
-using SciMaterials.Contracts.Identity.Clients.Clients;
+using SciMaterials.Contracts.Identity.API;
 using SciMaterials.Contracts.WebApi.Clients.Authors;
-using SciMaterials.Contracts.WebApi.Clients.Categories;
 using SciMaterials.UI.BWASM;
 using SciMaterials.UI.BWASM.Extensions;
 using SciMaterials.UI.BWASM.Models;
 using SciMaterials.UI.BWASM.Models.Validations;
 using SciMaterials.UI.BWASM.Services;
 using SciMaterials.UI.BWASM.Services.Identity;
-using SciMaterials.UI.BWASM.States.FileUpload;
+using SciMaterials.UI.BWASM.States.UploadFilesForm;
 using SciMaterials.WebApi.Clients.Authors;
+using SciMaterials.Contracts.WebApi.Clients.Files;
+using SciMaterials.WebApi.Clients.Files;
+using SciMaterials.Contracts.WebApi.Clients.Categories;
 using SciMaterials.WebApi.Clients.Categories;
-using SciMaterials.WebApi.Clients.Extensions;
-using SciMaterials.WebApi.Clients.Identity;
+using SciMaterials.Contracts.WebApi.Clients.Comments;
+using SciMaterials.WebApi.Clients.Comments;
+using SciMaterials.Contracts.WebApi.Clients.ContentTypes;
+using SciMaterials.WebApi.Clients.ContentTypes;
+using SciMaterials.Contracts.WebApi.Clients.Tags;
+using SciMaterials.Contracts.WebApi.Clients.Urls;
+using SciMaterials.Services.Identity.API;
+using SciMaterials.WebApi.Clients.Tags;
+using SciMaterials.WebApi.Clients.Urls;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -34,12 +43,19 @@ string apiRoot = builder.HostEnvironment.BaseAddress;
 
 builder.Services
     .AddScoped<JwtAuthenticationHandler>()
-    .AddApiClients(new Uri(apiRoot))
+
+    .AddApiClient<IFilesClient, FilesClient>(apiRoot)
+    .AddApiClient<ICategoriesClient, CategoriesClient>(apiRoot)
+    .AddApiClient<ICommentsClient, CommentsClient>(apiRoot)
+    .AddApiClient<IContentTypesClient, ContentTypesClient>(apiRoot)
+    .AddApiClient<ITagsClient, TagsClient>(apiRoot)
     .AddApiClient<IAuthorsClient, AuthorsClient>(apiRoot)
-    .AddApiClient<IIdentityClient, IdentityClient>(apiRoot, ClientConfiguration)
-    .AddApiClient<IUserClient, IdentityClient>(apiRoot, ClientConfiguration)
-    .AddApiClient<IRolesClient, IdentityClient>(apiRoot, ClientConfiguration)
-    .AddApiClient<ICategoriesClient, CategoriesClient>(apiRoot, ClientConfiguration);
+    .AddApiClient<IUrlsClient, UrlsClient>(apiRoot)
+
+    .AddApiClient<IdentityClient>(apiRoot, ClientConfiguration)
+    .AddScoped<IIdentityApi, IdentityClientOperationDecorator>()
+    .AddScoped<IUsersApi, IdentityClientOperationDecorator>()
+    .AddScoped<IRolesApi, IdentityClientOperationDecorator>();
 
 // Authentication
 builder.Services

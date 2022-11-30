@@ -1,0 +1,137 @@
+[
+  {
+    "Id": "F33627A7-2FEB-992B-D602-DE33A250A689",
+    "Name": "Reese",
+    "Surname": "Flores",
+    "Email": "blandit.mattis@google.ru",
+    "Phone": "+7(922)886-30-55",
+    "UserId": "E7FAAE24-AAEF-9472-D756-491B1B95D9F3",
+    "IsDeleted": false
+  },
+  {
+    "Id": "D3390381-BBC2-3C6C-2961-83A57ED7AB1A",
+    "Name": "Minerva",
+    "Surname": "Sweet",
+    "Email": "pellentesque@yahoo.ru",
+    "Phone": "+7(911)417-35-73",
+    "UserId": "548A71EA-D539-78EE-A536-9B89C2AE95E3",
+    "IsDeleted": false
+  },
+  {
+    "Id": "3C27CA28-30DA-348C-F711-E55A3DDDDF41",
+    "Name": "Scott",
+    "Surname": "Crosby",
+    "Email": "mauris.sapien.cursus@google.com",
+    "Phone": "+7(949)582-74-47",
+    "UserId": "BBA78D1A-A645-DC15-7937-6BD3046983B9",
+    "IsDeleted": false
+  },
+  {
+    "Id": "709ABBA0-4D17-C421-F3E7-590A41670EB4",
+    "Name": "Rae",
+    "Surname": "Frank",
+    "Email": "suspendisse.aliquet@icloud.com",
+    "Phone": "+7(983)278-32-21",
+    "UserId": "F2EEBD1E-4F59-56C4-D827-752B391A915A",
+    "IsDeleted": false
+  },
+  {
+    "Id": "ABED24B1-A8A2-CDED-3EB9-33C2866DE489",
+    "Name": "Ina",
+    "Surname": "Goff",
+    "Email": "cursus.integer@icloud.ru",
+    "Phone": "+7(981)187-21-46",
+    "UserId": "A6C1283A-ACC0-3A91-2766-E23C36A2E95E",
+    "IsDeleted": false
+  },
+  {
+    "Id": "9413A1DD-F16F-8C66-D2AB-87082BFB24D9",
+    "Name": "Adam",
+    "Surname": "Farmer",
+    "Email": "tempus.mauris@outlook.ru",
+    "Phone": "+7(934)582-57-77",
+    "UserId": "AD2FE3B2-0A52-5582-4D3E-5E46ADE9B1B3",
+    "IsDeleted": false
+  },
+  {
+    "Id": "D813D32D-E152-DBCE-9D24-5065D45E8042",
+    "Name": "Pearl",
+    "Surname": "Whitley",
+    "Email": "eget.ipsum@outlook.com",
+    "Phone": "+7(983)481-45-75",
+    "UserId": "C15AD5C7-8443-E9A5-8646-2FEB4D19DA97",
+    "IsDeleted": false
+  },
+  {
+    "Id": "7A1546E2-EA12-E6EA-9529-69BF98C8D386",
+    "Name": "Duncan",
+    "Surname": "Ramsey",
+    "Email": "a.scelerisque@outlook.ru",
+    "Phone": "+7(995)034-01-15",
+    "UserId": "4A3A4E8A-1675-9484-23ED-B8B53E41B0D2",
+    "IsDeleted": false
+  },
+  {
+    "Id": "359DDC8D-CDDD-5C83-907F-36DAC6305894",
+    "Name": "Herrod",
+    "Surname": "Elliott",
+    "Email": "at.iaculis.quis@outlook.com",
+    "Phone": "+7(988)335-64-13",
+    "UserId": "3BE81662-5512-AAC1-38E1-EDA419DAF3F5",
+    "IsDeleted": false
+  },
+  {
+    "Id": "F35B9FA9-14F4-510E-3024-A02BC41A6284",
+    "Name": "Nina",
+    "Surname": "Castro",
+    "Email": "commodo.auctor.velit@icloud.com",
+    "Phone": "+7(951)561-48-55",
+    "UserId": "DA1F578E-384C-582B-705E-C8CC2717C547",
+    "IsDeleted": false
+  },
+  {
+    "Id": "5D6B6834-3635-98E8-CBAE-F0E33FDD6E7B",
+    "Name": "Joseph",
+    "Surname": "Adkins",
+    "Email": "ipsum.nunc@yandex.ru",
+    "Phone": "+7(936)027-44-92",
+    "UserId": "52189185-6646-7277-EA13-3FA1E3F5615B",
+    "IsDeleted": false
+  },
+  {
+    "Id": "3DB7D261-7357-E088-ECCB-B7E706A37D0C",
+    "Name": "Lillian",
+    "Surname": "Charles",
+    "Email": "tempus.non@yandex.ru",
+    "Phone": "+7(981)131-97-03",
+    "UserId": "01438D35-4293-6334-583D-53667D7DE354",
+    "IsDeleted": false
+  },
+  {
+    "Id": "8D1ABDD8-89E5-EA2C-464B-1A6EE8671274",
+    "Name": "Ferdinand",
+    "Surname": "Petty",
+    "Email": "rhoncus.nullam.velit@google.com",
+    "Phone": "+7(996)638-43-24",
+    "UserId": "143ED832-CFBC-C9EC-AB22-F035DC8DB4A3",
+    "IsDeleted": false
+  },
+  {
+    "Id": "04CBD97B-AF02-1244-B891-E311D5D88F06",
+    "Name": "Freya",
+    "Surname": "Barrera",
+    "Email": "vehicula.et.rutrum@mail.ru",
+    "Phone": "+7(942)503-35-32",
+    "UserId": "3AD262B7-5441-1B6E-2593-D3BC9379F412",
+    "IsDeleted": false
+  },
+  {
+    "Id": "C7C92D14-6111-F19B-B9BD-8042FDB7B55A",
+    "Name": "Ocean",
+    "Surname": "Cole",
+    "Email": "interdum.curabitur@mail.com",
+    "Phone": "+7(976)227-45-61",
+    "UserId": "1EF3669D-3A22-DF0D-B425-2F4A35E47ECC",
+    "IsDeleted": false
+  }
+]

@@ -1,7 +1,7 @@
 ﻿@page "/files_upload_history"
 
-@using SciMaterials.UI.BWASM.States.FileUpload
-
+@using SciMaterials.UI.BWASM.States.FilesUploadHistory.Behavior
+@using SciMaterials.UI.BWASM.States.FilesUploadHistory
 @inherits FluxorComponent
 
 @inject IDispatcher Dispatcher
@@ -37,7 +37,7 @@
 
 	private void Delete(FileUploadState context)
 	{
-		Dispatcher.Dispatch(new DeleteFileUpload(context.Id));
+		Dispatcher.Dispatch(FilesUploadHistoryActions.DeleteFileUpload(context.Id));
 	}
 
 	private void Details(FileUploadState context)

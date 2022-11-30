@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using SciMaterials.Contracts.API.DTO.Tags;
 using SciMaterials.Contracts.WebApi.Clients.Tags;
 
 namespace SciMaterials.UI.BWASM.Pages.tags
@@ -7,19 +8,31 @@ namespace SciMaterials.UI.BWASM.Pages.tags
     public partial class TagsStorage
     {
         [Inject] private ITagsClient TagsClient { get; set; }
-        
-        private RenderFragment _panelContent;
+        [Inject] private NavigationManager NavigationManager { get; set; }
+        [Inject] private ISnackbar Snackbar { get; set; }
 
-        private async Task ExpandedChanged(bool newVal)
+        private IEnumerable<GetTagResponse>? _Tags;
+        
+        protected override async Task OnInitializedAsync()
         {
-            if (newVal)
+            base.OnInitializedAsync();
+            
+            var result = await TagsClient.GetAllAsync();
+            if (result.Succeeded)
             {
-                _panelContent = _bigAsyncContent;
+                var data = result.Data;
+                _Tags = data.Take(12);
             }
             else
             {
-                Task.Delay(350).ContinueWith(t => _panelContent = null).AndForget(); 
+                _Tags = new GetTagResponse[] { };
             }
+        }
+        
+        private void OnTagClick(GetTagResponse tag)
+        {
+            //Snackbar.Add($"Tag: {tag.Name}");
+            NavigationManager.NavigateTo($"/tags_storage/{tag.Id}");
         }
     }
 }

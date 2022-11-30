@@ -1,13 +1,10 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
 
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.Extensions.Logging;
 
 using SciMaterials.Contracts.Result;
 using SciMaterials.Contracts.ShortLinks;
-
-using SciMaterials.DAL.Models;
 
 namespace SciMaterials.Services.ShortLinks;
 

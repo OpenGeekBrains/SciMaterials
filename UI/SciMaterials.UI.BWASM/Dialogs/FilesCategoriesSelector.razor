@@ -28,7 +28,7 @@
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
-		Dispatcher.Dispatch(new LoadCategories());
+		Dispatcher.Dispatch(FilesCategoriesActions.LoadCategories());
 	}
 
 	private void Cancel() => MudDialog.Cancel();

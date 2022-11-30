@@ -7,9 +7,9 @@ public class FilesController : Controller
 {
     private readonly ILogger<FilesController> _Logger;
     private static string? _Message;
-    private readonly IApiSettings _ApiSettings;
+    private readonly ApiSettings _ApiSettings;
 
-    public FilesController(IApiSettings ApiSettings, ILogger<FilesController> Logger)
+    public FilesController(ApiSettings ApiSettings, ILogger<FilesController> Logger)
     {
         _Logger = Logger;
 

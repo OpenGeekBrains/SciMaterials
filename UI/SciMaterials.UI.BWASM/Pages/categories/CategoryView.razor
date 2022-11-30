@@ -5,7 +5,7 @@
 <MyTitle Title="Current category" />
 
 <MudDataGrid Items="Elements">
-
+    
     <Columns>
         <HierarchyColumn T="GetCategoryResponse"/>
         <Column T="GetCategoryResponse" Field="Name"/>
@@ -14,13 +14,16 @@
         <MudCard>
             <MudCardHeader>
                 <CardHeaderContent>
+                    <MudTabs Color="Color.Success" Rounded="true" AlwaysShowScrollButtons="true" Class="mt-4">
+                        <MudTabPanel Text="@State.Value.Categories.FirstOrDefault(x => x.Id.Equals(@context.Item.ParentId))?.Name"
+                                     OnClick="() => OnCategoryClick(Id)"/>
+                    </MudTabs>
+                    <MudDivider Absolute="true" />
                     <MudText Typo="Typo.h6">@context.Item.Name</MudText>
                 </CardHeaderContent>
             </MudCardHeader>
             <MudCardContent>
                 <MudText>Description: @context.Item.Description</MudText>
-                <MudText>Create At: @context.Item.CreatedAt</MudText>
-                <MudText>Parent Id: @context.Item.ParentId</MudText>
             </MudCardContent>
         </MudCard>
     </ChildRowContent>
