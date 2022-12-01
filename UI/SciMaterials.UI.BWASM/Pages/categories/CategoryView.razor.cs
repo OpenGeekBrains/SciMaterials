@@ -13,7 +13,8 @@ namespace SciMaterials.UI.BWASM.Pages.categories
         [Inject] private IDispatcher Dispatcher { get; set; }
         [Inject] private IState<FilesCategoriesState> State { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; }
-        private IEnumerable<GetCategoryResponse> Elements = new List<GetCategoryResponse>();
+        private IEnumerable<GetCategoryResponse>? _Elements = new List<GetCategoryResponse>();
+        private string _Icon_CSharp = "icons/c_sharp.png";
         
         protected override async Task OnInitializedAsync()
         {
@@ -21,7 +22,7 @@ namespace SciMaterials.UI.BWASM.Pages.categories
             Dispatcher.Dispatch(new FilesCategoriesActions.LoadCategoriesAction());
             var result = await CategoriesClient.GetByIdAsync(Id).ConfigureAwait(false);
             
-            Elements = new List<GetCategoryResponse>() { result.Data };
+            _Elements = new List<GetCategoryResponse>() { result.Data };
         }
 
         protected override async Task OnParametersSetAsync()
@@ -30,12 +31,17 @@ namespace SciMaterials.UI.BWASM.Pages.categories
             Dispatcher.Dispatch(new FilesCategoriesActions.LoadCategoriesAction());
             var result = await CategoriesClient.GetByIdAsync(Id).ConfigureAwait(false);
             
-            Elements = new List<GetCategoryResponse>() { result.Data };
+            _Elements = new List<GetCategoryResponse>() { result.Data };
         }
         
         private async Task OnCategoryClick(Guid? categoryId)
         {
             NavigationManager.NavigateTo($"/categories_storage/{categoryId}");
+        }
+
+        private void OnBackClick()
+        {
+            NavigationManager.NavigateTo("/categories_storage");
         }
     }
 }

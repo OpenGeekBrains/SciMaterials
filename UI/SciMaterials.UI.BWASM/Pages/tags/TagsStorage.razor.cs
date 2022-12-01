@@ -9,8 +9,6 @@ namespace SciMaterials.UI.BWASM.Pages.tags
     {
         [Inject] private ITagsClient TagsClient { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; }
-        [Inject] private ISnackbar Snackbar { get; set; }
-
         private IEnumerable<GetTagResponse>? _Tags;
         
         protected override async Task OnInitializedAsync()
@@ -21,18 +19,17 @@ namespace SciMaterials.UI.BWASM.Pages.tags
             if (result.Succeeded)
             {
                 var data = result.Data;
-                _Tags = data.Take(12);
+                _Tags = data.Take(15);
             }
             else
             {
-                _Tags = new GetTagResponse[] { };
+                _Tags = new GetTagResponse[]{};
             }
         }
         
-        private void OnTagClick(GetTagResponse tag)
+        private void OnTagClick(Guid Id)
         {
-            //Snackbar.Add($"Tag: {tag.Name}");
-            NavigationManager.NavigateTo($"/tags_storage/{tag.Id}");
+            NavigationManager.NavigateTo($"/tags_storage/{Id}");
         }
     }
 }

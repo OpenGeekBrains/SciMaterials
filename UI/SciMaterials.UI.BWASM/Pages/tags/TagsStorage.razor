@@ -2,12 +2,12 @@
 
 @if (_Tags is null)
 {
-    <MudChip Color="Color.Warning">loading...</MudChip>
+    <MudSkeleton SkeletonType="SkeletonType.Rectangle" />
 }
 else
 {
     @foreach (var tag in _Tags)
     {
-        <MudChip Color="Color.Secondary" OnClick="() => OnTagClick(tag)">@tag.Name</MudChip>
+        <MudChip Color="Color.Secondary" OnClick="() => OnTagClick(tag.Id)">@tag.Name</MudChip>
     }
 }

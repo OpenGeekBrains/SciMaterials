@@ -1,54 +1,93 @@
 @page "/categories_storage"
-@using SciMaterials.Contracts.API.DTO.Categories
 
 <style>
-    .selected {
-        background-color: #1E88E5 !important;
+    .header-search-divider {
+        margin-bottom: 35px;
     }
-
-    .selected > td {
-        color: white !important;
+    
+    .header-button-divider.card-buttons-divider {
     }
-
-    .selected > td .mud-input {
-        color: white !important;
+    
+    .card-buttons-divider {
+        padding: 1px 20px;
+        margin-top: 25px;
+        margin-bottom: 5px;
     }
 </style>
 
-<MyTitle Title="Categories" Description="Manage Categories" />
+<MyTitle Title="Categories" Description="Manage Categories"/>
 
-<MudTable Elevation="25" ServerData="@ServerLoadData" Breakpoint="Breakpoint.Sm"
-          Bordered="true" Striped="true" Dense="false" Hover="true" @ref="_mudTable"
-          RowClassFunc="@SelectedRowClassFunc" OnRowClick="RowClickEvent" T="GetCategoryResponse">
-    <ToolBarContent>
-        <MudTextField T="string" ValueChanged="@OnSearch" Placeholder="Search" Adornment="Adornment.Start"
-                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small" Class="mt-0"></MudTextField>
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh>
-            <MudTableSortLabel SortLabel="name_field" T="GetCategoryResponse">Name</MudTableSortLabel>
-        </MudTh>
-        <MudTh>
-            <MudTableSortLabel SortLabel="description_field" T="GetCategoryResponse">Description</MudTableSortLabel>
-        </MudTh>
-        <MudTh>
-            <MudTableSortLabel SortLabel="created_at_field" T="GetCategoryResponse">Created At</MudTableSortLabel>
-        </MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Name">@context.Name</MudTd>
-        <MudTd DataLabel="Description">@context.Description</MudTd>
-        <MudTd DataLabel="CreatedAt">@context.CreatedAt</MudTd>
-    </RowTemplate>
-    <NoRecordsContent>
-        <MudText>No matching records found</MudText>
-    </NoRecordsContent>
-    <LoadingContent>
-        <MudText>Loading...</MudText>
-    </LoadingContent>
-    <PagerContent>
-        <MudTablePager/>
-    </PagerContent>
-</MudTable>
+<div class="header-button-divider">
+    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="OnClickRefresh">Refresh</MudButton>
+</div>
+
+<div class="header-search-divider">
+    <MudTextField T="string" ValueChanged="@OnSearchAsync" Placeholder="Search category" Adornment="Adornment.Start"
+                  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small" Class="mt-0"></MudTextField>
+</div>
+
+<MudGrid Spacing="3" Justify="Justify.FlexStart" Class="pb-5">
+    @foreach (var element in _Elements)
+    {
+        if (_Elements is null)
+        {
+            <MudItem xs="12" sm="6" md="4" lg="3" xl="2" Style="min-width: 250px;">
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px" />
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudDivider/>
+                <MudStack Row="true" Justify="Justify.SpaceAround" >
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px" />
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px" />
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px" />
+                </MudStack>
+                    <MudCardActions>
+                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px" />
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+        else
+        {
+            <MudItem xs="12" sm="6" md="4" lg="3" xl="2" Style="min-width: 200px;">
+                <MudCard>
+                    <MudCardMedia Image="@_Icon_CSharp" Height="200" />
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Info">@element.Name</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudDivider/>
+                    <div class="card-buttons-divider">
+                        <MudStack Row="true" Justify="Justify.SpaceEvenly">
+                            <MudTooltip Text="Add">
+                                <MudFab Color="Color.Primary" DisableElevation="true" Size="Size.Small" StartIcon="@Icons.Material.Filled.Add"/>
+                            </MudTooltip>
+                            <MudTooltip Text="Edit">
+                                <MudFab Color="Color.Tertiary" DisableElevation="true" Size="Size.Small" StartIcon="@Icons.Material.Filled.Edit"/>
+                            </MudTooltip>
+                            <MudTooltip Text="Delete">
+                                <MudFab Color="Color.Secondary" DisableElevation="true" Size="Size.Small" StartIcon="@Icons.Material.Filled.Delete"/>
+                            </MudTooltip>
+                        </MudStack>
+                    </div>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text"
+                                   EndIcon="@Icons.Material.Filled.ArrowDownward"
+                                   Color="Color.Tertiary"
+                                   Style="text-transform:none"
+                                   OnClick="() => OnClickCategory(element.Id)"
+                                   FullWidth="true">
+                            Learn More
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+    }
+</MudGrid>
 
 
