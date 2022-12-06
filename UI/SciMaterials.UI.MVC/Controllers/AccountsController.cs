@@ -9,10 +9,11 @@ public class AccountsController : Controller
     private readonly UserManager<IdentityUser> _UserManager;
     public AccountsController(ILogger<AccountsController> Logger, UserManager<IdentityUser> UserManager)
     {
-        _Logger = Logger;
+        _Logger           = Logger;
         _UserManager = UserManager;
     }
-    
+
+
     /// <summary>Метод подтверждения почты пользователя, когда пользователь проходит по сформированной ссылке</summary>
     /// <param name="UserId">Идентификатор пользователя в системе</param>
     /// <param name="ConfirmToken">Токен подтверждения</param>
