@@ -1,21 +1,44 @@
 @page "/categories_storage/{id:guid}"
+@using SciMaterials.Contracts.API.DTO.Files
+
 <style>
-    .header-button-divider {
-        margin-top: 15px;
-        margin-bottom: 15px;
+
+    .control-buttons-divider {
+        margin: 15px 70px 15px;
     }
+    
     .header-tabpanel-divider {
         margin-bottom: 15px;
     }
+    
     .card-content-divider {
         margin-top: 15px;
+        margin-bottom: 15px;
     }
+    
 </style>
 
-<MyTitle Title="Current category" />
+<MudText Align="Align.Center" Typo="Typo.h4">@_CategoryName</MudText>
+<MudText Align="Align.Center" Typo="Typo.body2" Color="Color.Dark">Created At: @_CategoryCreateAt</MudText>
 
-<div class="header-button-divider">
-    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="OnBackClick">Back</MudButton>
+<div class="control-buttons-divider">
+    <MudStack Row="true" Justify="Justify.SpaceEvenly">
+        
+        <MudTooltip Text="Back">
+            <MudFab Color="Color.Tertiary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.ArrowBack" OnClick="OnBackClick"/>
+        </MudTooltip>
+            
+        <MudTooltip Text="Add">
+            <MudFab Color="Color.Primary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Add"/>
+        </MudTooltip>
+        <MudTooltip Text="Edit">
+            <MudFab Color="Color.Primary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Edit"/>
+        </MudTooltip>
+        <MudTooltip Text="Delete">
+            <MudFab Color="Color.Primary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Delete"/>
+        </MudTooltip>
+        
+    </MudStack>
 </div>
 
 @foreach (var element in _Elements)
@@ -30,45 +53,70 @@
     @if (_Elements is null)
     {
         <MudItem xs="12" sm="6" md="4" lg="3" xl="2" Style="width: 100%">
+            
             <MudCard>
                 <MudCardHeader>
                     <CardHeaderContent>
-                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px" />
+                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px"/>
                     </CardHeaderContent>
                 </MudCardHeader>
                 <MudDivider/>
-                <MudStack Row="true" Justify="Justify.SpaceAround" >
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px" />
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px" />
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px" />
+                <MudStack Row="true" Justify="Justify.SpaceAround">
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px"/>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px"/>
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px"/>
                 </MudStack>
                 <MudCardActions>
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px" />
+                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px"/>
                 </MudCardActions>
             </MudCard>
+            
         </MudItem>
     }
     else
     {
-        <MudItem xs="12" sm="6" md="4" lg="3" xl="2" Style="width: 100%">
-            <MudCard>
-                <MudCardMedia Image="@_Icon_CSharp" Height="200" />
-                <MudCardHeader>
-                    <CardHeaderContent>
-                        <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Info">@element.Name</MudText>
-                    </CardHeaderContent>
-                </MudCardHeader>
-                <MudDivider/>
-                <div class="card-content-divider">
-                    <MudCardContent >
-                        <MudText Align="Align.Center" Typo="Typo.body1" Color="Color.Dark">@element.Description</MudText>
-                    </MudCardContent>
-                    <MudCardContent >
-                        <MudText Align="Align.Center" Typo="Typo.body2" Color="Color.Dark">Created At: @element.CreatedAt</MudText>
-                    </MudCardContent>
-                </div>
-            </MudCard>
-        </MudItem>
+        <MudTable Elevation="25" Items="@_Files" Bordered="true" Striped="true" Dense="false" Hover="true">
+            
+            <ToolBarContent>
+                <MudTextField T="string" ValueChanged="@OnFilesSearch" Placeholder="Search" Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+            
+            <HeaderContent>
+                <MudTh>
+                    <MudTableSortLabel>Name</MudTableSortLabel>
+                </MudTh>
+                <MudTh>
+                    <MudTableSortLabel>Description</MudTableSortLabel>
+                </MudTh>
+                <MudTh>
+                    <MudTableSortLabel>ShortLink</MudTableSortLabel>
+                </MudTh>
+                <MudTh>
+                    <MudTableSortLabel>Size</MudTableSortLabel>
+                </MudTh>
+            </HeaderContent>
+            
+            <RowTemplate>
+                <MudTd DataLabel="Name">@context.Name</MudTd>
+                <MudTd DataLabel="Description">@context.Description</MudTd>
+                <MudTd DataLabel="Categories">@context.Categories</MudTd>
+                <MudTd DataLabel="Size">@context.Size</MudTd>
+            </RowTemplate>
+            
+            <NoRecordsContent>
+                <MudText>No matching records found</MudText>
+            </NoRecordsContent>
+            
+            <LoadingContent>
+                <MudText>Loading...</MudText>
+            </LoadingContent>
+            
+            <PagerContent>
+                <MudTablePager/>
+            </PagerContent>
+            
+        </MudTable>
     }
 }
 

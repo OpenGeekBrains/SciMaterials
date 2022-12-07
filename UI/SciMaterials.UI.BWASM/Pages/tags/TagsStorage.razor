@@ -8,6 +8,6 @@ else
 {
     @foreach (var tag in _Tags)
     {
-        <MudChip Color="Color.Secondary" OnClick="() => OnTagClick(tag.Id)">@tag.Name</MudChip>
+        <MudChip Color="Color.Secondary" OnClick="() => OnTagClick(tag.Id)">#@tag.Name</MudChip>
     }
 }

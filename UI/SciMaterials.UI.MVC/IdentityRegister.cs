@@ -32,7 +32,7 @@ public static class IdentityRegister
 
         switch (providerName.ToLower())
         {
-            case "postgresql":
+            case "postgressql":
                 Services.AddIdentityPostgres();
                 break;
             case "mysql":

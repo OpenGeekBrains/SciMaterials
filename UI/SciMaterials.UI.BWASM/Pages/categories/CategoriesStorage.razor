@@ -1,24 +1,30 @@
 @page "/categories_storage"
 
 <style>
+
     .header-search-divider {
-        margin-bottom: 35px;
+        margin-top: 15px;
+        margin-bottom: 15px;
     }
     
-    .header-button-divider.card-buttons-divider {
+    .header-button-divider {
+        margin-top: 15px;
+        margin-bottom: 15px;
     }
     
-    .card-buttons-divider {
-        padding: 1px 20px;
-        margin-top: 25px;
-        margin-bottom: 5px;
+    .mud-card-media {
+        background-size: contain;
     }
+    
 </style>
 
-<MyTitle Title="Categories" Description="Manage Categories"/>
+<MudText Align="Align.Center" Typo="Typo.h3">Categories</MudText>
+<MudText Align="Align.Start" Typo="Typo.h6">Manage Categories</MudText>
 
 <div class="header-button-divider">
-    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="OnClickRefresh">Refresh</MudButton>
+    <MudTooltip Text="Back">
+        <MudFab Color="Color.Tertiary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Refresh" OnClick="OnClickRefresh"/>
+    </MudTooltip>
 </div>
 
 <div class="header-search-divider">
@@ -39,11 +45,11 @@
                         </CardHeaderContent>
                     </MudCardHeader>
                     <MudDivider/>
-                <MudStack Row="true" Justify="Justify.SpaceAround" >
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px" />
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px" />
-                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px" />
-                </MudStack>
+                    <MudStack Row="true" Justify="Justify.SpaceAround" >
+                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px" />
+                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px" />
+                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px" />
+                    </MudStack>
                     <MudCardActions>
                         <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="50px" Height="50px" />
                     </MudCardActions>
@@ -52,28 +58,17 @@
         }
         else
         {
-            <MudItem xs="12" sm="6" md="4" lg="3" xl="2" Style="min-width: 200px;">
-                <MudCard>
-                    <MudCardMedia Image="@_Icon_CSharp" Height="200" />
+            <MudItem xs="12" sm="6" md="4" lg="3" xl="2" Style="min-width: 200px;" Class="row">
+                <MudCard Class="col-lg-4; d-flex; align-items-stretch">
+                    <MudCardMedia Image="@_Icon_CSharp" Height="200"/>
+
                     <MudCardHeader>
                         <CardHeaderContent>
                             <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Info">@element.Name</MudText>
                         </CardHeaderContent>
                     </MudCardHeader>
+
                     <MudDivider/>
-                    <div class="card-buttons-divider">
-                        <MudStack Row="true" Justify="Justify.SpaceEvenly">
-                            <MudTooltip Text="Add">
-                                <MudFab Color="Color.Primary" DisableElevation="true" Size="Size.Small" StartIcon="@Icons.Material.Filled.Add"/>
-                            </MudTooltip>
-                            <MudTooltip Text="Edit">
-                                <MudFab Color="Color.Tertiary" DisableElevation="true" Size="Size.Small" StartIcon="@Icons.Material.Filled.Edit"/>
-                            </MudTooltip>
-                            <MudTooltip Text="Delete">
-                                <MudFab Color="Color.Secondary" DisableElevation="true" Size="Size.Small" StartIcon="@Icons.Material.Filled.Delete"/>
-                            </MudTooltip>
-                        </MudStack>
-                    </div>
                     <MudCardActions>
                         <MudButton Variant="Variant.Text"
                                    EndIcon="@Icons.Material.Filled.ArrowDownward"
