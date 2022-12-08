@@ -1,37 +1,38 @@
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
 using SciMaterials.Contracts.API.DTO.Categories;
 using SciMaterials.Contracts.WebApi.Clients.Categories;
+using SciMaterials.WebApi.Clients.Categories;
 
 namespace SciMaterials.UI.BWASM.Pages.categories
 {
     public partial class CategoriesStorage
     {
         [Inject] private ICategoriesClient CategoriesClient { get; set; }
-        [Inject] private IDialogService DialogService { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; }
-        private IEnumerable<GetCategoryResponse>? _Elements = new List<GetCategoryResponse>();
+        private IEnumerable<GetCategoryResponse>? _Categories = new List<GetCategoryResponse>();
         private string _Icon_CSharp = "icons/c_sharp.png";
+        private bool _IsLoading { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             base.OnInitializedAsync();
             
-            var result = await CategoriesClient.GetAllAsync();
+            var result = await CategoriesClient.GetAllAsync().ConfigureAwait(false);
             if (result.Succeeded)
             {
+                _IsLoading = false;
                 var data = result.Data;
-                _Elements = data;
+                _Categories = data;
             }
             else
             {
-                _Elements = new GetCategoryResponse[]{};
+                _IsLoading = true;
             }
         }
         
-        private void OnClickCategory(Guid? id)
+        private void OnCategoryClick(Guid? CategoryId)
         {
-            NavigationManager.NavigateTo($"/categories_storage/{id}");
+            NavigationManager.NavigateTo($"/categories_storage/{CategoryId}");
         }
         
         private async Task OnSearchAsync(string text)
@@ -52,11 +53,11 @@ namespace SciMaterials.UI.BWASM.Pages.categories
                     return false;
                 }).ToArray();
                 
-                _Elements = data;
+                _Categories = data;
             }
         }
 
-        private async Task OnClickRefresh()
+        private async Task OnClickRefreshAsync()
         {
             await OnInitializedAsync();
         }

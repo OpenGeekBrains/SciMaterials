@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
 using SciMaterials.Contracts.API.DTO.Tags;
 using SciMaterials.Contracts.WebApi.Clients.Tags;
 
@@ -9,27 +8,54 @@ namespace SciMaterials.UI.BWASM.Pages.tags
     {
         [Inject] private ITagsClient TagsClient { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; }
-        private IEnumerable<GetTagResponse>? _Tags;
+        private IEnumerable<GetTagResponse>? _Tags = new List<GetTagResponse>();
+        private string? _Icon_HashTag = "icons/hash_tag.png";
+        private bool _IsLoading;
         
         protected override async Task OnInitializedAsync()
         {
             base.OnInitializedAsync();
             
-            var result = await TagsClient.GetAllAsync();
+            var result = await TagsClient.GetAllAsync().ConfigureAwait(false);
             if (result.Succeeded)
             {
-                var data = result.Data;
-                _Tags = data.Take(15);
+                _IsLoading = false;
+                _Tags      = result.Data;
             }
             else
             {
-                _Tags = new GetTagResponse[]{};
+                _IsLoading = true;
+            }
+        }
+        
+        private async Task OnSearchAsync(string text)
+        {
+            var result = await TagsClient.GetAllAsync().ConfigureAwait(false);
+            if (result.Succeeded)
+            {
+                var data = result.Data;
+                data = data.Where(element =>
+                {
+                    if (string.IsNullOrWhiteSpace(text))
+                        return true;
+                    if (element.Name.Contains(text, StringComparison.OrdinalIgnoreCase))
+                        return true;
+
+                    return false;
+                }).ToArray();
+                
+                _Tags = data;
             }
         }
         
         private void OnTagClick(Guid Id)
         {
             NavigationManager.NavigateTo($"/tags_storage/{Id}");
+        }
+        
+        private async Task OnRefreshClickAsync()
+        {
+            await OnInitializedAsync();
         }
     }
 }

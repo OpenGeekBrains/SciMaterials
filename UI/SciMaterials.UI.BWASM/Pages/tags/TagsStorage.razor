@@ -1,13 +1,68 @@
 @page "/tags_storage"
+@using SciMaterials.Contracts.API.DTO.Tags
 
-@if (_Tags is null)
-{
-    <MudSkeleton SkeletonType="SkeletonType.Rectangle" />
-}
-else
-{
-    @foreach (var tag in _Tags)
-    {
-        <MudChip Color="Color.Secondary" OnClick="() => OnTagClick(tag.Id)">#@tag.Name</MudChip>
+<style>
+
+    .header-search-divider {
+        margin-top: 15px;
+        margin-bottom: 30px;
     }
-}
+    
+    .header-button-divider {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .mud-card-media {
+        background-size: contain;
+    }
+    
+</style>
+
+<ItemsViewer TItem="GetTagResponse" Items="_Tags" IsLoading="@_IsLoading" >
+    <EmptyTemplate>
+        <SkeletonViewer/>
+    </EmptyTemplate>
+    
+    <HeaderContent>
+        <MudText Align="Align.Center" Typo="Typo.h3">Tags</MudText>
+        <MudText Align="Align.Start" Typo="Typo.h6">Manage Tags</MudText>
+
+        <div class="header-button-divider">
+            <MudTooltip Text="Back">
+                <MudFab Color="Color.Tertiary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Refresh" OnClick="OnRefreshClickAsync"/>
+            </MudTooltip>
+        </div>
+
+        <div class="header-search-divider">
+            <MudTextField T="string" ValueChanged="@OnSearchAsync" Placeholder="Search category" Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small" Class="mt-0"></MudTextField>
+        </div>
+    </HeaderContent>
+    
+    <ChildContent>
+        <MudItem xs="12" sm="6" md="4" lg="3" xl="2" Style="min-width: 200px;" Class="row">
+            <MudCard Class="col-lg-4; d-flex; align-items-stretch">
+                <MudCardMedia Image="@_Icon_HashTag" Height="200"/>
+
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Info">@context.Name</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+
+                <MudDivider/>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text"
+                               EndIcon="@Icons.Material.Filled.ArrowDownward"
+                               Color="Color.Tertiary"
+                               Style="text-transform:none"
+                               OnClick="() => OnTagClick(context.Id)"
+                               FullWidth="true">
+                        Learn More
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </ChildContent>
+</ItemsViewer>
