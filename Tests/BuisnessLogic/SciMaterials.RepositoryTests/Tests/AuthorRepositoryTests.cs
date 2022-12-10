@@ -29,37 +29,33 @@ public class AuthorRepositoryTests
 
     [Fact]
     [Trait("AuthorRepositoryTests", nameof(Author))]
-    public void GetAll_AsNoTracking_ItShould_contains_category_1()
+    public void GetAll_AsNoTracking_ItShould_contains_authors()
     {
         //arrange
-        const int         expected       = 1;
         const EntityState expected_state = EntityState.Detached;
 
         //act
         var authors = _AuthorRepository.GetAll();
-        var count   = authors.Count;
 
         //assert
-        Assert.Equal(expected, count);
+        Assert.NotNull(authors);
         Assert.Equal(expected_state, _Context.Entry(authors[0]).State);
     }
 
     [Fact]
     [Trait("AuthorRepositoryTests", nameof(Author))]
-    public void GetAll_Tracking_ItShould_contains_category_1()
+    public void GetAll_Tracking_ItShould_contains_authors()
     {
         _AuthorRepository.NoTracking = false;
 
         //arrange
-        const int         expected       = 1;
         const EntityState expected_state = EntityState.Unchanged;
 
         //act
         var authors = _AuthorRepository.GetAll();
-        var count   = authors.Count;
 
         //assert
-        Assert.Equal(expected, count);
+        Assert.NotNull(authors);
         var entity_state = _Context.Entry(authors[0]).State;
         Assert.Equal(expected_state, entity_state);
     }
@@ -70,38 +66,33 @@ public class AuthorRepositoryTests
 
     [Fact]
     [Trait("AuthorRepositoryTests", nameof(Author))]
-    public async void GetAllAsync_AsNoTracking_ItShould_contains_category_1()
+    public async void GetAllAsync_AsNoTracking_ItShould_contains_authors()
     {
         //arrange
-        const int         expected       = 1;
         const EntityState expected_state = EntityState.Detached;
 
         //act
         var authors = await _AuthorRepository.GetAllAsync();
-        var count   = authors.Count;
 
         //assert
-        Assert.Equal(expected, count);
+        Assert.NotNull(authors);
         Assert.Equal(expected_state, _Context.Entry(authors[0]).State);
     }
 
     [Fact]
     [Trait("AuthorRepositoryTests", nameof(Author))]
-    public async void GetAllAsync_Tracking_ItShould_contains_category_1()
+    public async void GetAllAsync_Tracking_ItShould_contains_authors()
     {
         _AuthorRepository.NoTracking = false;
 
         //arrange
-        const int         expected       = 1;
         const EntityState expected_state = EntityState.Unchanged;
 
         //act
         var authors = await _AuthorRepository.GetAllAsync();
 
-        var count = authors.Count;
-
         //assert
-        Assert.Equal(expected, count);
+        Assert.NotNull(authors);
         Assert.Equal(expected_state, _Context.Entry(authors[0]).State);
     }
 

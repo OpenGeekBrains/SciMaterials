@@ -24,16 +24,15 @@ public class UnitOfWorkTest : IClassFixture<UnitOfWorkFixture>
 
     [Fact]
     [Trait("UnitOfWorkTest", nameof(Category))]
-    public void GetAll_AsNoTracking_ItShould_contains_category_1()
+    public void GetAll_AsNoTracking_ItShould_contains_categories()
     {
         //arrange
-        const int expected = 1;
         var sut = _Fixture.Create();
 
         //act
-        var actual = sut.GetRepository<Category>().GetAll().Count;
+        var actual = sut.GetRepository<Category>().GetAll();
 
         //assert
-        Assert.Equal(expected, actual);
+        Assert.NotNull(actual);
     }
 }
