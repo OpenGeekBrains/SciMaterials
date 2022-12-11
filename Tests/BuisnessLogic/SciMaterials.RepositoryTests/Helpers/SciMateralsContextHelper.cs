@@ -22,7 +22,12 @@ public class SciMateralsContextHelper
 
         context.AddRange(CategoryHelper.GetMany());
         context.AddRange(AuthorHelper.GetMany());
+        context.AddRange(CommentHelper.GetMany());
         context.AddRange(ContentTypeHelper.GetMany());
+        context.AddRange(FileGroupHelper.GetMany());
+        context.AddRange(TagHelper.GetMany());
+        context.AddRange(UrlHelper.GetMany());
+        context.AddRange(RatingHelper.GetMany());
 
         context.SaveChanges();
 

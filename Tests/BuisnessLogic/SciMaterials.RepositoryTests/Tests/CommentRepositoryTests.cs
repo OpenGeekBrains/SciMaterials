@@ -28,37 +28,33 @@ public class CommentRepositoryTests
 
     [Fact]
     [Trait("CommentRepositoryTests", nameof(Comment))]
-    public void GetAll_AsNoTracking_ItShould_contains_comment_1()
+    public void GetAll_AsNoTracking_ItShould_contains_comments()
     {
         //arrange
-        const int expected = 1;
         const EntityState expected_state = EntityState.Detached;
 
         //act
         var comments = _ComentRepository.GetAll();
-        var count = comments.Count;
 
         //assert
-        Assert.Equal(expected, count);
+        Assert.NotNull(comments);
         Assert.Equal(expected_state, _Context.Entry(comments[0]).State);
     }
 
     [Fact]
     [Trait("CommentRepositoryTests", nameof(Comment))]
-    public void GetAll_Tracking_ItShould_contains_comment_1()
+    public void GetAll_Tracking_ItShould_contains_comments()
     {
         _ComentRepository.NoTracking = false;
 
         //arrange
-        const int expected = 1;
         const EntityState expeced_sstate = EntityState.Unchanged;
 
         //act
         var comments = _ComentRepository.GetAll();
-        var count = comments.Count;
 
         //assert
-        Assert.Equal(expected, count);
+        Assert.NotNull(comments);
         Assert.Equal(expeced_sstate, _Context.Entry(comments[0]).State);
     }
 
@@ -68,37 +64,33 @@ public class CommentRepositoryTests
 
     [Fact]
     [Trait("CommentRepositoryTests", nameof(Comment))]
-    public async void GetAllAsync_AsNoTracking_ItShould_contains_comment_1()
+    public async void GetAllAsync_AsNoTracking_ItShould_contains_comments()
     {
         //arrange
-        const int expected = 1;
         const EntityState expeced_sstate = EntityState.Detached;
 
         //act
         var comments = await _ComentRepository.GetAllAsync();
-        var count = comments.Count;
 
         //assert
-        Assert.Equal(expected, count);
+        Assert.NotNull(comments);
         Assert.Equal(expeced_sstate, _Context.Entry(comments[0]).State);
     }
 
     [Fact]
     [Trait("CommentRepositoryTests", nameof(Comment))]
-    public async void GetAllAsync_Tracking_ItShould_contains_comment_1()
+    public async void GetAllAsync_Tracking_ItShould_contains_comments()
     {
         _ComentRepository.NoTracking = false;
 
         //arrange
-        const int expected = 1;
         const EntityState expeced_sstate = EntityState.Unchanged;
 
         //act
         var comments = await _ComentRepository.GetAllAsync();
-        var count = comments.Count;
 
         //assert
-        Assert.Equal(expected, count);
+        Assert.NotNull(comments);
         Assert.Equal(expeced_sstate, _Context.Entry(comments[0]).State);
     }
 
