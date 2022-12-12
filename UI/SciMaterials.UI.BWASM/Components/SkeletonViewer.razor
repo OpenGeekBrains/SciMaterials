@@ -1,31 +1,13 @@
-<style>
-
-    .header-search-divider {
-        margin-top: 15px;
-        margin-bottom: 30px;
-    }
-    
-    .header-button-divider {
-        margin-top: 15px;
-        margin-bottom: 15px;
-    }
-    
-    .mud-card-media {
-        background-size: contain;
-    }
-    
-</style>
-
 <MudText Align="Align.Center" Typo="Typo.h3">Loading...</MudText>
 
-<div class="header-button-divider">
+<div>
     <MudTooltip Text="Back">
-        <MudFab Color="Color.Tertiary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Refresh" />
+        <MudFab class="refresh_button-description" Color="Color.Tertiary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Refresh" />
     </MudTooltip>
 </div>
 
-<div class="header-search-divider">
-    <MudSkeleton Animation="Animation.Pulse" Height="50px" Width="300px" SkeletonType="SkeletonType.Rectangle"/>
+<div >
+    <MudSkeleton class="search_element-description" Animation="Animation.Pulse" Height="50px" Width="300px" SkeletonType="SkeletonType.Rectangle"/>
 </div>
 
 <MudGrid Spacing="3" Justify="Justify.FlexStart" Class="pb-5">

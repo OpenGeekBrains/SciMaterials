@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using SciMaterials.Contracts.API.DTO.Categories;
 using SciMaterials.Contracts.WebApi.Clients.Categories;
-using SciMaterials.WebApi.Clients.Categories;
 
 namespace SciMaterials.UI.BWASM.Pages.categories
 {
@@ -11,7 +10,7 @@ namespace SciMaterials.UI.BWASM.Pages.categories
         [Inject] private NavigationManager NavigationManager { get; set; }
         private IEnumerable<GetCategoryResponse>? _Categories = new List<GetCategoryResponse>();
         private string _Icon_CSharp = "icons/c_sharp.png";
-        private bool _IsLoading { get; set; }
+        private bool _IsLoading = true;
 
         protected override async Task OnInitializedAsync()
         {
@@ -20,13 +19,9 @@ namespace SciMaterials.UI.BWASM.Pages.categories
             var result = await CategoriesClient.GetAllAsync().ConfigureAwait(false);
             if (result.Succeeded)
             {
-                _IsLoading = false;
                 var data = result.Data;
                 _Categories = data;
-            }
-            else
-            {
-                _IsLoading = true;
+                _IsLoading  = false;
             }
         }
         
@@ -57,7 +52,7 @@ namespace SciMaterials.UI.BWASM.Pages.categories
             }
         }
 
-        private async Task OnClickRefreshAsync()
+        private async Task OnRefreshClickAsync()
         {
             await OnInitializedAsync();
         }

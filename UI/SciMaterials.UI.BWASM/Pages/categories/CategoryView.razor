@@ -1,76 +1,47 @@
 @page "/categories_storage/{id:guid}"
 @using SciMaterials.Contracts.API.DTO.Files
 
-<style>
-
-    .control-buttons-divider {
-        margin: 15px 70px 15px;
-    }
+<ItemsView IsLoading="@_IsLoading" OnBackClick="@OnBackClick">
+    <SkeletonTemplate>
+        <MudText Align="Align.Center" Typo="Typo.h4">Loading...</MudText>
+    </SkeletonTemplate>
     
-    .header-tabpanel-divider {
-        margin-bottom: 15px;
-    }
+    <HeaderContent>
+        <MudText Align="Align.Center" Typo="Typo.h4">@_CurrentCategory.Name</MudText>
+        <MudText Align="Align.Center" Typo="Typo.body2" Color="Color.Dark">Created At: @_CurrentCategory.CreatedAt</MudText>
+    </HeaderContent>
     
-</style>
-
-@if (_CurrentCategory is null)
-{
-    <MudText Align="Align.Center" Typo="Typo.h4">Loading...</MudText>
-}
-else
-{
-    <MudText Align="Align.Center" Typo="Typo.h4">@_CurrentCategory.Name</MudText>
-    <MudText Align="Align.Center" Typo="Typo.body2" Color="Color.Dark">Created At: @_CurrentCategory.CreatedAt</MudText>
-
-    <div class="control-buttons-divider">
-        <MudStack Row="true" Justify="Justify.SpaceEvenly">
-            
-            <MudTooltip Text="Back">
-                <MudFab Color="Color.Tertiary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.ArrowBack" OnClick="OnBackClick"/>
-            </MudTooltip>
-                
-            <MudTooltip Text="Add">
-                <MudFab Color="Color.Primary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Add"/>
-            </MudTooltip>
-            <MudTooltip Text="Edit">
-                <MudFab Color="Color.Primary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Edit"/>
-            </MudTooltip>
-            <MudTooltip Text="Delete">
-                <MudFab Color="Color.Primary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Delete"/>
-            </MudTooltip>
-            
-        </MudStack>
-    </div>
-
-    <div class="header-tabpanel-divider">
-        <MudTabs Color="Color.Transparent" Rounded="true" AlwaysShowScrollButtons="true" Class="mt-4">
-            <MudTabPanel Text="@State.Value.Categories.FirstOrDefault(x => x.Id.Equals(_CurrentCategory.ParentId))?.Name"
-                         OnClick="() => OnCategoryClick(_CurrentCategory.ParentId)"/>
-        </MudTabs>
-    </div>
-    
-    <MudDataGrid T="GetFileResponse" MultiSelection="true" Items="@_Files" Sortable="true" Filterable="true" QuickFilter="@_QuickSearch" Hideable="true" >
-        <ToolBarContent>
-            <MudText Typo="Typo.h6">Files in current category</MudText>
-            <MudSpacer />
-            <MudTextField @bind-Value="_SearchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-        </ToolBarContent>
-        <Columns>
-            <SelectColumn T="GetFileResponse" />
-            <Column T="GetFileResponse" FieldType="@typeof(string)" Field="Name" Title="Name" Sortable="true"/>
-            <Column T="GetFileResponse" FieldType="@typeof(string)" Field="Description" Title="Description" Sortable="true"/>
-            <Column T="GetFileResponse" FieldType="@typeof(string)" Field="Categories" Title="Categories" Sortable="false"/>
-            <Column T="GetFileResponse" FieldType="@typeof(int)" Field="Size" Title="Size" Sortable="false" />
-        </Columns>
-        <NoRecordsContent>
-            <MudText>No matching records found</MudText>
-        </NoRecordsContent>
-        <LoadingContent>
-            <MudText>Loading...</MudText>
-        </LoadingContent>
-        <PagerContent>
-            <MudDataGridPager T="GetFileResponse" />
-        </PagerContent>
-    </MudDataGrid>
-}
+    <ChildContent>
+        <div>
+            <MudTabs Color="Color.Transparent" Rounded="true" AlwaysShowScrollButtons="true" Class="header-tabpanel-description mt-4">
+                <MudTabPanel Text="@State.Value.Categories.FirstOrDefault(x => x.Id.Equals(_CurrentCategory.ParentId))?.Name"
+                             OnClick="() => OnCategoryClick(_CurrentCategory.ParentId)"/>
+            </MudTabs>
+        </div>
+        
+        <MudDataGrid T="GetFileResponse" MultiSelection="true" Items="@_Files" SortMode="SortMode.Multiple" Filterable="true" Hideable="true" QuickFilter="@_QuickSearch">
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">Files in current category</MudText>
+                <MudSpacer />
+                <MudTextField @bind-Value="_SearchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+            <Columns>
+                <SelectColumn T="GetFileResponse" />
+                <Column T="GetFileResponse" FieldType="@typeof(string)" Field="Name" Title="Name" Sortable="true"/>
+                <Column T="GetFileResponse" FieldType="@typeof(string)" Field="Description" Title="Description" Sortable="true"/>
+                <Column T="GetFileResponse" FieldType="@typeof(string)" Field="Categories" Title="Categories" Sortable="false"/>
+                <Column T="GetFileResponse" FieldType="@typeof(int)" Field="Size" Title="Size" Sortable="false" />
+            </Columns>
+            <NoRecordsContent>
+                <MudText>No matching records found</MudText>
+            </NoRecordsContent>
+            <LoadingContent>
+                <MudText>Loading...</MudText>
+            </LoadingContent>
+            <PagerContent>
+                <MudDataGridPager T="GetFileResponse" />
+            </PagerContent>
+        </MudDataGrid>
+    </ChildContent>
+</ItemsView>

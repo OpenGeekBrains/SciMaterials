@@ -10,8 +10,8 @@ namespace SciMaterials.UI.BWASM.Pages.tags
         [Inject] private NavigationManager NavigationManager { get; set; }
         private IEnumerable<GetTagResponse>? _Tags = new List<GetTagResponse>();
         private string? _Icon_HashTag = "icons/hash_tag.png";
-        private bool _IsLoading;
-        
+        private bool _IsLoading = true;
+
         protected override async Task OnInitializedAsync()
         {
             base.OnInitializedAsync();
@@ -19,12 +19,8 @@ namespace SciMaterials.UI.BWASM.Pages.tags
             var result = await TagsClient.GetAllAsync().ConfigureAwait(false);
             if (result.Succeeded)
             {
-                _IsLoading = false;
                 _Tags      = result.Data;
-            }
-            else
-            {
-                _IsLoading = true;
+                _IsLoading = false;
             }
         }
         

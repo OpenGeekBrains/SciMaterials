@@ -1,56 +1,40 @@
 @page "/categories_storage"
 @using SciMaterials.Contracts.API.DTO.Categories
 
-<style>
-
-    .header-search-divider {
-        margin-top: 15px;
-        margin-bottom: 30px;
-    }
-    
-    .header-button-divider {
-        margin-top: 15px;
-        margin-bottom: 15px;
-    }
-    
-    .mud-card-media {
-        background-size: contain;
-    }
-    
-</style>
-
-<ItemsViewer TItem="GetCategoryResponse" Items="_Categories" IsLoading="@_IsLoading" >
-    <EmptyTemplate>
+<ItemsStorageViewer TItem="GetCategoryResponse" Items="_Categories" IsLoading="@_IsLoading" >
+    <SkeletonTemplate>
         <SkeletonViewer/>
-    </EmptyTemplate>
+    </SkeletonTemplate>
     
     <HeaderContent>
-        <MudText Align="Align.Center" Typo="Typo.h3">Categories</MudText>
-        <MudText Align="Align.Start" Typo="Typo.h6">Manage Categories</MudText>
+        <div>
+            <MudText Align="Align.Center" Typo="Typo.h3">Categories</MudText>
+            <MudText Align="Align.Start" Typo="Typo.h6">Manage Categories</MudText>
 
-        <div class="header-button-divider">
+            <div>
             <MudTooltip Text="Back">
-                <MudFab Color="Color.Tertiary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Refresh" OnClick="OnClickRefreshAsync"/>
+                <MudFab class="refresh_button-description" Color="Color.Tertiary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Refresh" OnClick="OnRefreshClickAsync"/>
             </MudTooltip>
-        </div>
-
-        <div class="header-search-divider">
-            <MudTextField T="string" ValueChanged="@OnSearchAsync" Placeholder="Search category" Adornment="Adornment.Start"
-                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small" Class="mt-0"></MudTextField>
+            </div>
+            <div>
+                <MudTextField class="search_element-description" T="string" ValueChanged="@OnSearchAsync" Placeholder="Search category" Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small"></MudTextField>
+            </div>
         </div>
     </HeaderContent>
     
     <ChildContent>
         <MudItem xs="12" sm="6" md="4" lg="3" xl="2" Style="min-width: 200px;" Class="row">
             <MudCard Class="col-lg-4; d-flex; align-items-stretch">
-                <MudCardMedia Image="@_Icon_CSharp" Height="200"/>
+                <div>
+                    <MudCardMedia class="card_image-description" Image="@_Icon_CSharp" Height="200"/>
 
-                <MudCardHeader>
-                    <CardHeaderContent>
-                        <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Info">@context.Name</MudText>
-                    </CardHeaderContent>
-                </MudCardHeader>
-
+                    <MudCardHeader class="card_text-description">
+                        <CardHeaderContent>
+                            <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Info">@context.Name</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                </div>
                 <MudDivider/>
                 <MudCardActions>
                     <MudButton Variant="Variant.Text"
@@ -65,4 +49,5 @@
             </MudCard>
         </MudItem>
     </ChildContent>
-</ItemsViewer>
+    
+</ItemsStorageViewer>

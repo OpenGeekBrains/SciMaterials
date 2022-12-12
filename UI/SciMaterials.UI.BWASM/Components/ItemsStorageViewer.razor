@@ -2,9 +2,9 @@
 @using SciMaterials.Contracts.API.DTO.Files
 @typeparam TItem
 
-@if (Items is null || IsLoading)
+@if (IsLoading)
 {
-    @EmptyTemplate
+    @SkeletonTemplate
 }
 else
 {
@@ -13,18 +13,18 @@ else
     <MudGrid Spacing="3" Justify="Justify.FlexStart" Class="pb-5">
         @foreach (var element in Items)
         {
-            @ChildContent(element);
+            @ChildContent(element)
         }
     </MudGrid>
 }
 
 @code {
 
-    [Parameter, AllowNull]
+    [Parameter]
     public IEnumerable<TItem>? Items { get; set; }
 
     [Parameter]
-    public RenderFragment? EmptyTemplate { get; set; }
+    public RenderFragment? SkeletonTemplate { get; set; }
 
     [Parameter]
     public RenderFragment? HeaderContent { get; set; }

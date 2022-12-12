@@ -15,6 +15,7 @@ namespace SciMaterials.UI.BWASM.Pages.tags
         private IEnumerable<GetFileResponse>? _Files = new List<GetFileResponse>();
         private GetTagResponse? _Tag { get; set; }
         private string? _SearchString { get; set; }
+        private bool _IsLoading = true;
 
         protected override async Task OnParametersSetAsync()
         {
@@ -27,6 +28,8 @@ namespace SciMaterials.UI.BWASM.Pages.tags
                 
                 var filesResult = await FilesClient.GetAllAsync().ConfigureAwait(false);
                 _Files = filesResult.Data;
+
+                _IsLoading = false;
             }
         }
         
@@ -35,7 +38,7 @@ namespace SciMaterials.UI.BWASM.Pages.tags
             NavigationManager.NavigateTo("/tags_storage");
         }
         
-        private Func<GetFileResponse, bool> _QuickSearch => x =>
+        private Func<GetFileResponse, bool> _QuickSearch => (x) =>
         {
             if (string.IsNullOrWhiteSpace(_SearchString))
                 return true;

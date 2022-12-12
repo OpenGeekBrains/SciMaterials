@@ -21,6 +21,7 @@ namespace SciMaterials.UI.BWASM.Pages.categories
         private GetCategoryResponse? _CurrentCategory { get; set; }
         private string? _Icon_CSharp = "icons/c_sharp.png";
         private string? _SearchString { get; set; }
+        private bool _IsLoading = true;
 
         protected override async Task OnInitializedAsync()
         {
@@ -37,6 +38,8 @@ namespace SciMaterials.UI.BWASM.Pages.categories
                 if (filesResult.Succeeded)
                 {
                     _Files = filesResult.Data;
+
+                    _IsLoading = false;
                 }
             }
         }
@@ -64,7 +67,7 @@ namespace SciMaterials.UI.BWASM.Pages.categories
             NavigationManager.NavigateTo("/categories_storage");
         }
 
-        private Func<GetFileResponse, bool> _QuickSearch => x =>
+        private Func<GetFileResponse, bool> _QuickSearch => (x) => 
         {
             if (string.IsNullOrWhiteSpace(_SearchString))
                 return true;
