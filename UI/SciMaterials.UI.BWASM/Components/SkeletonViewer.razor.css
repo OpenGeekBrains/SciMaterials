@@ -1,0 +1,8 @@
+::deep .refresh_button-description {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+::deep .search_element-description  {
+    margin-bottom: 15px;
+}

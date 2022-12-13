@@ -1,0 +1,7 @@
+/*::deep .control-buttons-description {*/
+/*    margin: 15px 70px 15px;*/
+/*}*/
+
+::deep .header-tabpanel-description {
+    margin-bottom: 15px;
+}
