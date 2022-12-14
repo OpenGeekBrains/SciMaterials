@@ -3,6 +3,7 @@
 public abstract record CachedState
 {
     public DateTime LastUpdated { get; init; }
+    public bool IsLoading { get; init; }
 
     public virtual TimeSpan DefaultCacheDelay { get; init; } = TimeSpan.FromMinutes(3);
 

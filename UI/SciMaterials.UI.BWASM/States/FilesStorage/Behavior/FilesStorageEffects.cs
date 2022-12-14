@@ -22,6 +22,7 @@ public class FilesStorageEffects
     {
         if (_FilesStorageState.Value.IsNotTimeToUpdateData()) return;
 
+        dispatcher.Dispatch(FilesStorageActions.LoadFilesStart());
         var result = await _filesClient.GetAllAsync();
         if (!result.Succeeded)
         {
