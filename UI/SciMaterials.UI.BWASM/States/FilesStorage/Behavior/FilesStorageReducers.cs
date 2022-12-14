@@ -7,7 +7,8 @@ public static class FilesStorageReducers
     [ReducerMethod]
     public static FilesStorageState LoadFiles(FilesStorageState state, FilesStorageActions.LoadFilesResultAction action)
     {
-        return state with { Files = action.Files };
+        var updateTime = action.Files.IsDefaultOrEmpty ? state.LastUpdated : DateTime.UtcNow;
+        return state with { Files = action.Files, LastUpdated = updateTime };
     }
 
     [ReducerMethod]

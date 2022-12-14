@@ -9,15 +9,19 @@ namespace SciMaterials.UI.BWASM.States.FilesStorage.Behavior;
 public class FilesStorageEffects
 {
     private readonly IFilesClient _filesClient;
+    private readonly IState<FilesStorageState> _FilesStorageState;
 
-    public FilesStorageEffects(IFilesClient filesClient)
+    public FilesStorageEffects(IFilesClient filesClient, IState<FilesStorageState> FilesStorageState)
     {
-        _filesClient = filesClient;
+        _filesClient            = filesClient;
+        _FilesStorageState = FilesStorageState;
     }
 
     [EffectMethod(typeof(FilesStorageActions.LoadFilesAction))]
     public async Task LoadFiles(IDispatcher dispatcher)
     {
+        if (_FilesStorageState.Value.IsNotTimeToUpdateData()) return;
+
         var result = await _filesClient.GetAllAsync();
         if (!result.Succeeded)
         {
