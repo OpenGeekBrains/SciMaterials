@@ -6,11 +6,18 @@
 
 <MudDialog>
 	<DialogContent>
-		<MudTreeView @bind-SelectedValue="SelectedValue" Items="State.Value.Tree">
-			<ItemTemplate>
-				<MudTreeViewItem Value="@context" Items="@context.Categories" Text="@context.Name" />
-			</ItemTemplate>
-		</MudTreeView>
+		@if (State.Value.IsLoading)
+		{
+		    <p>Loading...</p>
+		}
+		else
+		{
+		    <MudTreeView @bind-SelectedValue="SelectedValue" Items="State.Value.Tree">
+                <ItemTemplate>
+                    <MudTreeViewItem Value="@context" Items="@context.Categories" Text="@context.Name" />
+                </ItemTemplate>
+            </MudTreeView>
+		}
 	</DialogContent>
 	
 	<DialogActions>
