@@ -8,12 +8,12 @@ namespace SciMaterials.UI.BWASM.States.FilesStorage.Behavior;
 
 public class FilesStorageEffects
 {
-    private readonly IFilesClient _filesClient;
+    private readonly IFilesClient _FilesClient;
     private readonly IState<FilesStorageState> _FilesStorageState;
 
-    public FilesStorageEffects(IFilesClient filesClient, IState<FilesStorageState> FilesStorageState)
+    public FilesStorageEffects(IFilesClient FilesClient, IState<FilesStorageState> FilesStorageState)
     {
-        _filesClient            = filesClient;
+        _FilesClient = FilesClient;
         _FilesStorageState = FilesStorageState;
     }
 
@@ -22,8 +22,14 @@ public class FilesStorageEffects
     {
         if (_FilesStorageState.Value.IsNotTimeToUpdateData()) return;
 
+        await ForceReloadFiles(dispatcher);
+    }
+
+    [EffectMethod(typeof(FilesStorageActions.ForceReloadFilesAction))]
+    public async Task ForceReloadFiles(IDispatcher dispatcher)
+    {
         dispatcher.Dispatch(FilesStorageActions.LoadFilesStart());
-        var result = await _filesClient.GetAllAsync();
+        var result = await _FilesClient.GetAllAsync();
         if (!result.Succeeded)
         {
             dispatcher.Dispatch(FilesStorageActions.LoadFilesResult(ImmutableArray<FileStorageState>.Empty));
@@ -37,7 +43,7 @@ public class FilesStorageEffects
     [EffectMethod]
     public async Task DeleteFile(FilesStorageActions.DeleteFileAction action, IDispatcher dispatcher)
     {
-        var result = await _filesClient.DeleteAsync(action.Id, CancellationToken.None);
+        var result = await _FilesClient.DeleteAsync(action.Id, CancellationToken.None);
         if (!result.Succeeded) return;
 
         dispatcher.Dispatch(FilesStorageActions.DeleteFileResult(action.Id));
