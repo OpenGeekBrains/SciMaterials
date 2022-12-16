@@ -1,0 +1,47 @@
+@page "/categories_storage/{id:guid}"
+@using SciMaterials.Contracts.API.DTO.Files
+
+<ItemsView IsLoading="@_IsLoading" OnBackClick="@OnBackClick">
+    <SkeletonTemplate>
+        <MudText Align="Align.Center" Typo="Typo.h4">Loading...</MudText>
+    </SkeletonTemplate>
+    
+    <HeaderContent>
+        <MudText Align="Align.Center" Typo="Typo.h4">@_CurrentCategory.Name</MudText>
+        <MudText Align="Align.Center" Typo="Typo.body2" Color="Color.Dark">Created At: @_CurrentCategory.CreatedAt</MudText>
+    </HeaderContent>
+    
+    <ChildContent>
+        <div>
+            <MudTabs Color="Color.Transparent" Rounded="true" AlwaysShowScrollButtons="true" Class="header-tabpanel-description mt-4">
+                <MudTabPanel Text="@State.Value.Categories.FirstOrDefault(x => x.Id.Equals(_CurrentCategory.ParentId))?.Name"
+                             OnClick="() => OnCategoryClick(_CurrentCategory.ParentId)"/>
+            </MudTabs>
+        </div>
+        
+        <MudDataGrid T="GetFileResponse" MultiSelection="true" Items="@_Files" SortMode="SortMode.Multiple" Filterable="true" Hideable="true" QuickFilter="@_QuickSearch">
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">Files in current category</MudText>
+                <MudSpacer />
+                <MudTextField @bind-Value="_SearchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+            <Columns>
+                <SelectColumn T="GetFileResponse" />
+                <Column T="GetFileResponse" FieldType="@typeof(string)" Field="Name" Title="Name" Sortable="true"/>
+                <Column T="GetFileResponse" FieldType="@typeof(string)" Field="Description" Title="Description" Sortable="true"/>
+                <Column T="GetFileResponse" FieldType="@typeof(string)" Field="Categories" Title="Categories" Sortable="false"/>
+                <Column T="GetFileResponse" FieldType="@typeof(int)" Field="Size" Title="Size" Sortable="false" />
+            </Columns>
+            <NoRecordsContent>
+                <MudText>No matching records found</MudText>
+            </NoRecordsContent>
+            <LoadingContent>
+                <MudText>Loading...</MudText>
+            </LoadingContent>
+            <PagerContent>
+                <MudDataGridPager T="GetFileResponse" />
+            </PagerContent>
+        </MudDataGrid>
+    </ChildContent>
+</ItemsView>

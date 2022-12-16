@@ -1,0 +1,33 @@
+<MudText Align="Align.Center" Typo="Typo.h3">Loading...</MudText>
+
+<div>
+    <MudTooltip Text="Back">
+        <MudFab class="refresh_button-description" Color="Color.Tertiary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Refresh" />
+    </MudTooltip>
+</div>
+
+<div >
+    <MudSkeleton class="search_element-description" Animation="Animation.Pulse" Height="50px" Width="300px" SkeletonType="SkeletonType.Rectangle"/>
+</div>
+
+<MudGrid Spacing="3" Justify="Justify.FlexStart" Class="pb-5">
+    @for(int i = 0; i < 10; i++)
+    {
+        <MudItem xs="12" sm="6" md="4" lg="3" xl="2" Style="min-width: 200px;" Class="row">
+            <MudCard Class="col-lg-4; d-flex; align-items-stretch">
+                <MudSkeleton Animation="Animation.Pulse" Height="200px" Width="200px" SkeletonType="SkeletonType.Rectangle"/>
+
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudSkeleton Animation="Animation.Pulse" Width="100px" SkeletonType="SkeletonType.Rectangle"/>
+                    </CardHeaderContent>
+                </MudCardHeader>
+
+                <MudDivider/>
+                <MudCardActions>
+                    <MudSkeleton Animation="Animation.Pulse" Height="50px" Width="100px" SkeletonType="SkeletonType.Rectangle"/>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    }
+</MudGrid>

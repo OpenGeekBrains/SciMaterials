@@ -33,4 +33,10 @@
     <ProjectReference Include="..\..\Services\SciMaterials.WebApi.Clients\SciMaterials.WebApi.Clients.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Pages\categories\CategoriesStorage.razor.css">
+      <DependentUpon>CategoriesStorage.razor</DependentUpon>
+    </Content>
+  </ItemGroup>
+
 </Project>

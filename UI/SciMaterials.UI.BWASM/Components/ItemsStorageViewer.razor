@@ -1,0 +1,37 @@
+@using System.Diagnostics.CodeAnalysis
+@using SciMaterials.Contracts.API.DTO.Files
+@typeparam TItem
+
+@if (IsLoading)
+{
+    @SkeletonTemplate
+}
+else
+{
+    @HeaderContent
+    
+    <MudGrid Spacing="3" Justify="Justify.FlexStart" Class="pb-5">
+        @foreach (var element in Items)
+        {
+            @ChildContent(element)
+        }
+    </MudGrid>
+}
+
+@code {
+
+    [Parameter]
+    public IEnumerable<TItem>? Items { get; set; }
+
+    [Parameter]
+    public RenderFragment? SkeletonTemplate { get; set; }
+
+    [Parameter]
+    public RenderFragment? HeaderContent { get; set; }
+
+    [Parameter]
+    public RenderFragment<TItem>? ChildContent { get; set; }
+
+    [Parameter]
+    public bool IsLoading { get; set; }
+}

@@ -1,35 +1,41 @@
-﻿@inherits LayoutComponentBase
+﻿@using SciMaterials.UI.BWASM.States.Theme
+@using Microsoft.IdentityModel.JsonWebTokens
+
+@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 
-<MudThemeProvider />
+@inject IState<AppThemeState> ThemeState
+@inject IDispatcher Dispatcher
+
+<MudThemeProvider Theme="ThemeState.Value.CurrentTheme" IsDarkMode="ThemeState.Value.IsDarkTheme"/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 <MudLayout>
-    <MudAppBar Elevation="0" Style="@($"background:#919eab;")">
+    <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Edge="Edge.Start" OnClick="DrawerToggle" />
         <MudSpacer />
         <AuthState/>
     </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="1" Style="@($"background:#d9d9d9;")">
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
 	    <MudDrawerHeader>
-		    <MudText Typo="Typo.h6" @onclick="NavigateToHomePage" Style="@("cursor: pointer;")">SUPER LOGO</MudText>
+		    <MudText Typo="Typo.h6" @onclick="NavigateToHomePage" Class="cursor-pointer">SCI MATERIALS</MudText>
 	    </MudDrawerHeader>
 
 	    <AuthorizeView>
 		    <Authorized>
-				<MudButton class="mud-theme-warning border-1 py-2 px-2 mx-4 mb-4 rounded-lg justify-start" Style="height: 60px;" OnClick="OpenProfile">
+				<MudButton Class="border-1 py-2 px-2 mx-4 mb-4 rounded-lg justify-start" Style="height: 60px;" OnClick="OpenProfile">
 					<MudStack Row="true" Class="align-center">
 						@{
-							var username = @context.User.Identity?.Name;
+							var username = @context.User.FindFirst(c => c.Type == JwtRegisteredClaimNames.UniqueName).Value;
 						}
-						<MudAvatar Color="Color.Primary">@username?[0]</MudAvatar>
+						<MudAvatar Color="Color.Dark">@username?[0]</MudAvatar>
 						<MudText GutterBottom="false">@username</MudText>
 					</MudStack>
 			    </MudButton>
 		    </Authorized>
 			@*Dummy*@
 		    <NotAuthorized>
-			    <MudButton class="mud-theme-warning border-1 py-2 px-2 mx-4 mb-4 rounded-lg" Style="height: 60px;" Disabled="true">
+			    <MudButton Class="border-1 py-2 px-2 mx-4 mb-4 rounded-lg" Style="height: 60px;" Disabled="true">
 				    <MudText Class="align-center">Not Authorized</MudText>
 			    </MudButton>
 		    </NotAuthorized>
@@ -37,7 +43,7 @@
 
         <NavMenu />
     </MudDrawer>
-    <MudMainContent Style="@($"border-style:dashed;")">
+    <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
             @Body
         </MudContainer>
@@ -48,6 +54,11 @@
 
 @code {
     bool _drawerOpen = true;
+
+    protected override void OnInitialized()
+    {
+		Dispatcher.Dispatch(AppThemeActions.ChangeColorScheme("default"));
+    }
 
     void DrawerToggle() => _drawerOpen = !_drawerOpen;
 

@@ -1,0 +1,53 @@
+@page "/categories_storage"
+@using SciMaterials.Contracts.API.DTO.Categories
+
+<ItemsStorageViewer TItem="GetCategoryResponse" Items="_Categories" IsLoading="@_IsLoading" >
+    <SkeletonTemplate>
+        <SkeletonViewer/>
+    </SkeletonTemplate>
+    
+    <HeaderContent>
+        <div>
+            <MudText Align="Align.Center" Typo="Typo.h3">Categories</MudText>
+            <MudText Align="Align.Start" Typo="Typo.h6">Manage Categories</MudText>
+
+            <div>
+            <MudTooltip Text="Back">
+                <MudFab class="refresh_button-description" Color="Color.Tertiary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Refresh" OnClick="OnRefreshClickAsync"/>
+            </MudTooltip>
+            </div>
+            <div>
+                <MudTextField class="search_element-description" T="string" ValueChanged="@OnSearchAsync" Placeholder="Search category" Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small"></MudTextField>
+            </div>
+        </div>
+    </HeaderContent>
+    
+    <ChildContent>
+        <MudItem xs="12" sm="6" md="4" lg="3" xl="2" Style="min-width: 200px;" Class="row">
+            <MudCard Class="col-lg-4; d-flex; align-items-stretch">
+                <div>
+                    <MudCardMedia class="card_image-description" Image="@_Icon_CSharp" Height="200"/>
+
+                    <MudCardHeader class="card_text-description">
+                        <CardHeaderContent>
+                            <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Info">@context.Name</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                </div>
+                <MudDivider/>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text"
+                               EndIcon="@Icons.Material.Filled.ArrowDownward"
+                               Color="Color.Tertiary"
+                               Style="text-transform:none"
+                               OnClick="() => OnCategoryClick(context.Id)"
+                               FullWidth="true">
+                        Learn More
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </ChildContent>
+    
+</ItemsStorageViewer>
