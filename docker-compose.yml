@@ -7,18 +7,19 @@ services:
     restart: on-failure
     depends_on:
       - postgres_db
+      - mssql_db
     build:
       context: .
       dockerfile: UI/SciMaterials.UI.MVC/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - IdentityDatabase__Provider:SQLite
-      - IdentityDatabase__RemoveAtStart:false
-      - IdentityDatabase__UseDataSeeder:false
-      - ResourcesDatabase__Provider:PostgreSQL.Docker
-      - ResourcesDatabase__RemoveAtStart:false
-      - ResourcesDatabase__UseDataSeeder:false
+      - IdentityDatabase__Provider=SQLite
+      - IdentityDatabase__RemoveAtStart=false
+      - IdentityDatabase__UseDataSeeder=false
+      - ResourcesDatabase__Provider=SqlServer.Docker
+      - ResourcesDatabase__RemoveAtStart=false
+      - ResourcesDatabase__UseDataSeeder=false
     ports:
       - "5003:80"
     volumes:
@@ -37,6 +38,16 @@ services:
     #  - "5432:5432"
     volumes:
       - db:/var/lib/postgresql_auth/data/
+    networks:
+      - scimaterials_network
+
+  mssql_db:
+    container_name: MSSQL
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=yourStrong1_2Password
+      - MSSQL_PID=Express
     networks:
       - scimaterials_network
 
