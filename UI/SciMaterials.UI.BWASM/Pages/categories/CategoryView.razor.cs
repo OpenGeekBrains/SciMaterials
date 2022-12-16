@@ -1,5 +1,6 @@
 using Fluxor;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using SciMaterials.Contracts.API.DTO.Categories;
 using SciMaterials.Contracts.API.DTO.Files;
 using SciMaterials.Contracts.WebApi.Clients.Categories;
@@ -14,6 +15,7 @@ namespace SciMaterials.UI.BWASM.Pages.categories
         [Inject] private ICategoriesClient CategoriesClient { get; set; }
         [Inject] private IFilesClient FilesClient { get; set; }
         [Inject] private IDispatcher Dispatcher { get; set; }
+        [Inject] private IDialogService _DialogService { get; set; }
         [Inject] private IState<FilesCategoriesState> State { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; }
         
@@ -60,6 +62,21 @@ namespace SciMaterials.UI.BWASM.Pages.categories
         private async Task OnCategoryClick(Guid? CategoryId)
         {
             NavigationManager.NavigateTo($"/categories_storage/{CategoryId}");
+        }
+        
+        private async Task OnAddClickAsync()
+        {
+            var options = new DialogOptions()
+            {
+                CloseOnEscapeKey     = true,
+                MaxWidth             = MaxWidth.Medium, 
+                FullWidth            = true, 
+                DisableBackdropClick = true
+            };
+
+            _DialogService.Show<CategoriesAddDialog>(
+                title: "Add new category",
+                options: options);
         }
 
         private void OnBackClick()

@@ -18,7 +18,8 @@ public abstract class ApiClientWithAddBase<TId, TResult, TAddRequest, TEditReque
     {
         _logger.LogInformation("Add entity {request}", request);
 
-        var response = await _httpClient.PutAsJsonAsync($"{_webApiRoute}/Add", request, Cancel);
+        var val      = request;
+        var response = await _httpClient.PostAsJsonAsync($"{_webApiRoute}/Add", request, Cancel);
         var result = await response
             .EnsureSuccessStatusCode()
             .Content

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using SciMaterials.Contracts.API.DTO.Files;
 using SciMaterials.Contracts.API.DTO.Tags;
 using SciMaterials.Contracts.WebApi.Clients.Files;
@@ -11,6 +12,7 @@ namespace SciMaterials.UI.BWASM.Pages.tags
         [Parameter] public Guid Id { get; set; }
         [Inject] private ITagsClient TagsClient { get; set; }
         [Inject] private IFilesClient FilesClient { get; set; }
+        [Inject] private IDialogService _DialogService { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; }
         private IEnumerable<GetFileResponse>? _Files = new List<GetFileResponse>();
         private GetTagResponse? _Tag { get; set; }
@@ -36,6 +38,21 @@ namespace SciMaterials.UI.BWASM.Pages.tags
         private void OnBackClick()
         {
             NavigationManager.NavigateTo("/tags_storage");
+        }
+
+        private async Task OnAddClickAsync()
+        {
+            var options = new DialogOptions()
+            {
+                CloseOnEscapeKey = true,
+                MaxWidth         = MaxWidth.Medium, 
+                FullWidth = true, 
+                DisableBackdropClick = true
+            };
+
+            _DialogService.Show<TagsAddDialog>(
+                title: "Add new tag",
+                options: options);
         }
         
         private Func<GetFileResponse, bool> _QuickSearch => (x) =>
