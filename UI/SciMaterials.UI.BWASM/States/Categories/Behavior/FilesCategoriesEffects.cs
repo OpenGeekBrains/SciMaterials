@@ -8,20 +8,33 @@ namespace SciMaterials.UI.BWASM.States.Categories.Behavior;
 
 public class FilesCategoriesEffects
 {
-    private readonly ICategoriesClient _categoriesClient;
+    private readonly ICategoriesClient _CategoriesClient;
+    private readonly IState<FilesCategoriesState> _FilesCategoriesState;
 
-    public FilesCategoriesEffects(ICategoriesClient categoriesClient)
+    public FilesCategoriesEffects(ICategoriesClient CategoriesClient, IState<FilesCategoriesState> FilesCategoriesState)
     {
-        _categoriesClient = categoriesClient;
+        _CategoriesClient          = CategoriesClient;
+        _FilesCategoriesState = FilesCategoriesState;
     }
 
     [EffectMethod(typeof(FilesCategoriesActions.LoadCategoriesAction))]
     public async Task LoadCategories(IDispatcher dispatcher)
     {
-        var result = await _categoriesClient.GetAllAsync();
+        if(_FilesCategoriesState.Value.IsNotTimeToUpdateData()) return;
+
+        await ForceReloadCategories(dispatcher);
+    }
+
+    [EffectMethod(typeof(FilesCategoriesActions.LoadCategoriesAction))]
+    public async Task ForceReloadCategories(IDispatcher dispatcher)
+    {
+        dispatcher.Dispatch(FilesCategoriesActions.LoadCategoriesStart());
+        var result = await _CategoriesClient.GetAllAsync();
         if (!result.Succeeded)
+        {
             // TODO: handle failure response
             return;
+        } 
 
         var categories = result.Data?.Select(x => new FileCategory(x.Id, x.Name, x.Description, x.ParentId)).ToImmutableArray() ?? ImmutableArray<FileCategory>.Empty;
         dispatcher.Dispatch(FilesCategoriesActions.LoadCategoriesResult(categories));

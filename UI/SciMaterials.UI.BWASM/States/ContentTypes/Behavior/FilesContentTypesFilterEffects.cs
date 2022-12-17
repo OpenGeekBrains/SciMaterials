@@ -9,15 +9,26 @@ namespace SciMaterials.UI.BWASM.States.ContentTypes.Behavior;
 public class FilesContentTypesFilterEffects
 {
     private readonly IContentTypesClient _contentTypesClient;
+    private readonly IState<FilesContentTypesFilterState> _ContentTypesState;
 
-    public FilesContentTypesFilterEffects(IContentTypesClient contentTypesClient)
+    public FilesContentTypesFilterEffects(IContentTypesClient ContentTypesClient, IState<FilesContentTypesFilterState> ContentTypesState)
     {
-        _contentTypesClient = contentTypesClient;
+        _contentTypesClient     = ContentTypesClient;
+        _ContentTypesState = ContentTypesState;
     }
 
     [EffectMethod(typeof(FilesContentTypesFilterActions.LoadContentTypesAction))]
     public async Task LoadContentTypes(IDispatcher dispatcher)
     {
+        if(_ContentTypesState.Value.IsNotTimeToUpdateData()) return;
+
+        await ForceReloadContentTypes(dispatcher);
+    }
+
+    [EffectMethod(typeof(FilesContentTypesFilterActions.ForceReloadContentTypesAction))]
+    public async Task ForceReloadContentTypes(IDispatcher dispatcher)
+    {
+        dispatcher.Dispatch(FilesContentTypesFilterActions.LoadContentTypesStart());
         var result = await _contentTypesClient.GetAllAsync();
         if (!result.Succeeded)
             // TODO: handle failure
