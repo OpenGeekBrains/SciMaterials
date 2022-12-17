@@ -5,10 +5,9 @@ using Fluxor;
 namespace SciMaterials.UI.BWASM.States.Categories;
 
 [FeatureState]
-public record FilesCategoriesState(ImmutableArray<FileCategory> Categories)
+public record FilesCategoriesState(ImmutableArray<FileCategory> Categories) : CachedState
 {
     public FilesCategoriesState() : this(ImmutableArray<FileCategory>.Empty) { }
-
-    public DateTime NextServerCall { get; set; }
+    
     public HashSet<TreeFileCategory> Tree { get; init; }
 }

@@ -7,7 +7,8 @@ public static class FilesStorageReducers
     [ReducerMethod]
     public static FilesStorageState LoadFiles(FilesStorageState state, FilesStorageActions.LoadFilesResultAction action)
     {
-        return state with { Files = action.Files };
+        var updateTime = action.Files.IsDefaultOrEmpty ? state.LastUpdated : DateTime.UtcNow;
+        return state with { Files = action.Files, LastUpdated = updateTime, IsLoading = false };
     }
 
     [ReducerMethod]
@@ -17,5 +18,11 @@ public static class FilesStorageReducers
 
         var afterDelete = state.Files.Remove(toDelete);
         return state with { Files = afterDelete };
+    }
+
+    [ReducerMethod]
+    public static FilesStorageState LoadFilesStart(FilesStorageState state, FilesStorageActions.LoadFilesStartAction action)
+    {
+        return state with { IsLoading = true };
     }
 }

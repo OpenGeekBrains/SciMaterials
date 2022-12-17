@@ -23,50 +23,57 @@
 		<IconButton Tooltip="Upload History" Href="files_upload_history" Icon="@Icons.Material.Filled.History" />
 		<IconButton Tooltip="Files upload filter" Href="content_types" Icon="@Icons.Material.Filled.Filter" />
 		<IconButton Tooltip="Categories" Href="categories" Icon="@Icons.Material.Filled.Category" />
-		<MudSpacer/>
-		<FilesFilter ItemsPresentationMode="_itemsPresentationMode" OnItemsPresentationModeChanged="ChangeItemsPresentationMode"/>
+		<MudSpacer />
+		<FilesFilter ItemsPresentationMode="_itemsPresentationMode" OnItemsPresentationModeChanged="ChangeItemsPresentationMode" />
 	</MudToolBar>
 </MudPaper>
 
-@switch (_itemsPresentationMode)
+@if (State.Value.IsLoading)
 {
-	case ItemsPresentationMode.Table:
-		<TableView Data="State.Value.Files">
-			<TableHeader>
-				<MudTh></MudTh>
-				<MudTh>Name</MudTh>
-				<MudTh>Category</MudTh>
-				<MudTh>Size</MudTh>
-				<MudTh></MudTh>
-			</TableHeader>
+	<p>Loading...</p>
+}
+else
+{
+	@switch (_itemsPresentationMode)
+	{
+		case ItemsPresentationMode.Table:
+			<TableView Data="State.Value.Files">
+				<TableHeader>
+					<MudTh></MudTh>
+					<MudTh>Name</MudTh>
+					<MudTh>Category</MudTh>
+					<MudTh>Size</MudTh>
+					<MudTh></MudTh>
+				</TableHeader>
 
-			<RowTemplate>
-				@*@if (true)
+				<RowTemplate>
+					@*@if (true)
 		{*@
-				<MudTd><MudIcon Icon="@Icons.Material.Filled.FilePresent" /></MudTd>
-				@*}
+					<MudTd><MudIcon Icon="@Icons.Material.Filled.FilePresent" /></MudTd>
+					@*}
 		else
 		{
 		<MudTd><MudIcon Icon="@Icons.Material.Filled.Folder"/></MudTd>
 		}*@
 
-				<MudTd DataLabel="Name">@context.FileName</MudTd>
-				<MudTd DataLabel="Category">
-					@context.Category
-					<MudButton Variant="Variant.Filled" Size="Size.Small" OnClick="() => ChangeCategory(context)">Change</MudButton>
-				</MudTd>
-				<MudTd DataLabel="Size">@context.Size</MudTd>
-				<MudTh>
-					<MudIconButton Icon="@Icons.Filled.Download" OnClick="()=>DownloadFileFromUrl(context)"></MudIconButton>
-					<MudButton Variant="Variant.Filled" Size="Size.Small" OnClick="() => NavigateToFileDetailsUrl(context)">Edit</MudButton>
-					<MudButton Variant="Variant.Filled" Size="Size.Small" OnClick="() => Delete(context)">Delete</MudButton>
-				</MudTh>
-			</RowTemplate>
-		</TableView>
-		break;
-		@*case ItemsPresentationMode.LargeGrid:
+					<MudTd DataLabel="Name">@context.FileName</MudTd>
+					<MudTd DataLabel="Category">
+						@context.Category
+						<MudButton Variant="Variant.Filled" Size="Size.Small" OnClick="() => ChangeCategory(context)">Change</MudButton>
+					</MudTd>
+					<MudTd DataLabel="Size">@context.Size</MudTd>
+					<MudTh>
+						<MudIconButton Icon="@Icons.Filled.Download" OnClick="()=>DownloadFileFromUrl(context)"></MudIconButton>
+						<MudButton Variant="Variant.Filled" Size="Size.Small" OnClick="() => NavigateToFileDetailsUrl(context)">Edit</MudButton>
+						<MudButton Variant="Variant.Filled" Size="Size.Small" OnClick="() => Delete(context)">Delete</MudButton>
+					</MudTh>
+				</RowTemplate>
+			</TableView>
+			break;
+			@*case ItemsPresentationMode.LargeGrid:
 		<FilesGridView Files="State.Value.Files" OnFileSelected="NavigateToFileDetailsUrl"/>
 		break;*@
+	}
 }
 
 @code {
