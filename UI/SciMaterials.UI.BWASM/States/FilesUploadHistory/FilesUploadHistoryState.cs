@@ -2,7 +2,7 @@
 
 using Fluxor;
 
-namespace SciMaterials.UI.BWASM.States.FilesUploadHistory.Behavior;
+namespace SciMaterials.UI.BWASM.States.FilesUploadHistory;
 
 [FeatureState]
 public record FilesUploadHistoryState(ImmutableArray<FileUploadState> Files)
