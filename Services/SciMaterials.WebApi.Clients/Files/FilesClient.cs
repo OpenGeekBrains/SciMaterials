@@ -11,7 +11,7 @@ using SciMaterials.Contracts.WebApi.Clients.Files;
 namespace SciMaterials.WebApi.Clients.Files;
 
 public class FilesClient :
-    ApiClientBase<Guid, GetFileResponse,  EditFileRequest>,
+    ApiModifiedClientBase<Guid, GetFileResponse, EditFileRequest>,
     IFilesClient
 {
     public FilesClient(HttpClient httpClient, ILogger<FilesClient> logger) : base(httpClient, logger)

@@ -3,7 +3,7 @@
     "Id": "524E925F-1904-0975-CD14-977BD7BB459B",
     "Link": "https://dzen.ru",
     "AuthorId": "F33627A7-2FEB-992B-D602-DE33A250A689",
-    "ShortInfo": "est mauris, rhoncus id,",
+    "ShortInfo": "est mauris, rhoncus id, est mauris, rhoncus id,est mauris, rhoncus id,est mauris, rhoncus id,",
     "Description": "magna nec quam. Curabitur vel lectus. Cum sociis natoque penatibus",
     "Name": "yandex",
     "CreatedAt": "2022-04-02 20:20:52"
@@ -12,7 +12,7 @@
     "Id": "A478D974-C2D2-E797-58CE-B42E9893663A",
     "Link": "https://github.com",
     "AuthorId": "D3390381-BBC2-3C6C-2961-83A57ED7AB1A",
-    "ShortInfo": "ullamcorper. Duis cursus, diam",
+    "ShortInfo": "ullamcorper. Duis cursus, diam ullamcorper. Duis cursus, diam ullamcorper. Duis cursus, diam ullamcorper. Duis cursus, diam",
     "Description": "nec urna suscipit nonummy. Fusce fermentum fermentum arcu. Vestibulum ante",
     "Name": "github",
     "CreatedAt": "2023-03-15 14:32:58"
@@ -21,7 +21,7 @@
     "Id": "91C61BE4-CB15-BA4C-5B66-5C599C7791E4",
     "Link": "https://www.microsoft.com",
     "AuthorId": "3C27CA28-30DA-348C-F711-E55A3DDDDF41",
-    "ShortInfo": "elementum, dui quis accumsan",
+    "ShortInfo": "elementum, dui quis accumsan elementum, dui quis accumsan elementum, dui quis accumsan elementum, dui quis accumsan elementum, dui quis accumsan",
     "Description": "nec, mollis vitae, posuere at, velit. Cras lorem lorem, luctus",
     "Name": "microsoft",
     "CreatedAt": "2022-11-24 14:31:54"
@@ -57,7 +57,7 @@
     "Id": "23D96E4B-56AC-8387-7119-7C76B5154CC2",
     "Link": "https://automapper.org",
     "AuthorId": "D813D32D-E152-DBCE-9D24-5065D45E8042",
-    "ShortInfo": "sed dictum eleifend, nunc",
+    "ShortInfo": "sed dictum eleifend, nunc sed dictum eleifend, nunc sed dictum eleifend, nunc sed dictum eleifend, nunc sed dictum eleifend, nunc",
     "Description": "sit amet, faucibus ut, nulla. Cras eu tellus eu augue",
     "Name": "automapper",
     "CreatedAt": "2022-03-29 18:20:39"
@@ -84,7 +84,7 @@
     "Id": "29DA2ADC-021A-6403-EC4C-2C03376DCAC9",
     "Link": "https://www.postgresql.org",
     "AuthorId": "F35B9FA9-14F4-510E-3024-A02BC41A6284",
-    "ShortInfo": "ipsum leo elementum sem,",
+    "ShortInfo": "ipsum leo elementum sem, ipsum leo elementum sem, ipsum leo elementum sem, ipsum leo elementum sem,ipsum leo elementum sem,",
     "Description": "euismod et, commodo at, libero. Morbi accumsan laoreet ipsum. Curabitur",
     "Name": "postgresql",
     "CreatedAt": "2022-12-11 08:21:54"

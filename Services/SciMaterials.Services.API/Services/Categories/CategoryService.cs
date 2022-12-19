@@ -7,6 +7,7 @@ using SciMaterials.Contracts;
 using SciMaterials.DAL.Resources.Contexts;
 using SciMaterials.DAL.Resources.Contracts.Entities;
 using SciMaterials.DAL.Resources.UnitOfWork;
+using SciMaterials.DAL.Resources.Contracts.Repositories.Files;
 
 namespace SciMaterials.Services.API.Services.Categories;
 
@@ -41,6 +42,33 @@ public class CategoryService : ApiServiceBase, ICategoryService
         }
 
         var result = _Mapper.Map<GetCategoryResponse>(Category);
+        return result;
+    }
+
+    public async Task<Result<CategoryTree>> GetTreeAsync(Guid? id, CancellationToken Cancel = default)
+    {
+        var repository = Database.GetRepository<Category>() as ICategoryRepository;
+
+        string name = "root";
+
+        if (id.HasValue)
+        {
+            Category? category = await repository.GetByIdAsync(id.Value);
+            if (category is not { })
+            {
+                return LoggedError<CategoryTree>(
+                    Errors.Api.Category.NotFound,
+                    "Category with ID {id} is not found",
+                    id);
+            }
+            name = category.Name;
+        }
+
+
+        var categories = await repository.GetByParentIdAsync(id);
+        var subCategoriesInfo = categories.Select(c => new CategoryTreeInfo(c.Id, c.Name));
+
+        var result = new CategoryTree(id, name, subCategoriesInfo);
         return result;
     }
 

@@ -12,10 +12,10 @@ namespace SciMaterials.SQLiteMigrations.Migrations
             migrationBuilder.AlterColumn<DateTime>(
                 name: "LastAccess",
                 table: "Links",
-                type: "datetime",
+                type: "TEXT",
                 nullable: true,
                 oldClrType: typeof(DateTime),
-                oldType: "TEXT",
+                oldType: "datetime",
                 oldNullable: true);
         }
 
@@ -24,10 +24,10 @@ namespace SciMaterials.SQLiteMigrations.Migrations
             migrationBuilder.AlterColumn<DateTime>(
                 name: "LastAccess",
                 table: "Links",
-                type: "TEXT",
+                type: "datetime",
                 nullable: true,
                 oldClrType: typeof(DateTime),
-                oldType: "datetime",
+                oldType: "TEXT",
                 oldNullable: true);
         }
     }

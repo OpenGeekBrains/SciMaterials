@@ -1,8 +1,9 @@
 @page "/tags_storage/{id:guid}"
 @using Microsoft.AspNetCore.Components
 @using SciMaterials.Contracts.API.DTO.Files
+@using SciMaterials.Contracts.API.DTO.Tags
 
-<ItemsView IsLoading="@_IsLoading" OnAddClick="@OnAddClickAsync" OnBackClick="@OnBackClick">
+<ItemsView IsLoading="@_IsLoading" OnBackClick="@OnBackClick">
     <SkeletonTemplate>
         <MudText Align="Align.Center" Typo="Typo.h4">Loading...</MudText>
     </SkeletonTemplate>

@@ -4,57 +4,57 @@ using SciMaterials.Contracts.Result;
 
 namespace SciMaterials.Contracts.Identity.API;
 
-/// <summary> РРЅС‚РµСЂС„РµР№СЃ РґР»СЏ СЂРѕР»РµР№ </summary>
+/// <summary> Контракт апи ролей пользователей </summary>
 public interface IRolesApi
 {
-    /// <summary> РњРµС‚РѕРґ СЃРѕР·РґР°РЅРёСЏ СЂРѕР»Рё РґР»СЏ Identity </summary>
-    /// <param name="CreateRoleRequest"> Р—Р°РїСЂРѕСЃ РЅР° СЃРѕР·РґР°РЅРёРµ СЂРѕР»Рё </param>
-    /// <param name="Cancel"> Г’Г®ГЄГҐГ­ Г®ГІГ¬ГҐГ­Г» </param>
-    /// <returns> ГђГҐГ§ГіГ«ГјГІГ ГІ ГўГ»ГЇГ®Г«Г­ГҐГ­ГЁГї Г®ГЇГҐГ°Г Г¶ГЁГЁ </returns>
+    /// <summary> Метод апи для создания роли пользователя в Identity </summary>
+    /// <param name="CreateRoleRequest"> Запрос на создание роли </param>
+    /// <param name="Cancel"> Токен отмены </param>
+    /// <returns> Результат выполнения операции </returns>
     Task<Result.Result> CreateRoleAsync(CreateRoleRequest CreateRoleRequest, CancellationToken Cancel = default);
 
-    /// <summary> ГЊГҐГІГ®Г¤ Г ГЇГЁ Г¤Г«Гї ГЇГ®Г«ГіГ·ГҐГ­ГЁГї ГЁГ­Гґ. Г® ГўГ±ГҐГµ Г°Г®Г«ГїГµ Гў Identity </summary>
-    /// <param name="Cancel"> Г’Г®ГЄГҐГ­ Г®ГІГ¬ГҐГ­Г» </param>
-    /// <returns> ГђГҐГ§ГіГ«ГјГІГ ГІ ГўГ»ГЇГ®Г«Г­ГҐГ­ГЁГї Г®ГЇГҐГ°Г Г¶ГЁГЁ ГЁ ГЇГ°ГЁ ГіГ¤Г Г·Г­Г®Г¬ Г±ГІГҐГ·ГҐГ­ГЁГЁ Г±ГЇГЁГ±Г®ГЄ Г°Г®Г«ГҐГ© </returns>
+    /// <summary> Метод апи для получения инф. о всех ролях в Identity </summary>
+    /// <param name="Cancel"> Токен отмены </param>
+    /// <returns> Результат выполнения операции и при удачном стечении список ролей </returns>
     Task<Result<IEnumerable<AuthRole>>> GetAllRolesAsync(CancellationToken Cancel = default);
 
-    /// <summary> ГЊГҐГІГ®Г¤ Г ГЇГЁ Г¤Г«Гї ГЇГ®Г«ГіГ·ГҐГ­ГЁГї ГЁГ­Гґ. Г® Г°Г®Г«ГЁ ГЇГ® ГЁГ¤ГҐГ­ГІГЁГґГЁГЄГ ГІГ®Г°Гі Гў Identity </summary>
-    /// <param name="RoleId"> Г€Г¤ГҐГ­ГІГЁГґГЁГЄГ ГІГ®Г° Г°Г®Г«ГЁ </param>
-    /// <param name="Cancel"> Г’Г®ГЄГҐГ­ Г®ГІГ¬ГҐГ­Г» </param>
-    /// <returns> ГђГҐГ§ГіГ«ГјГІГ ГІ ГўГ»ГЇГ®Г«Г­ГҐГ­ГЁГї Г®ГЇГҐГ°Г Г¶ГЁГЁ ГЁ ГЇГ°ГЁ ГіГ¤Г Г·Г­Г®Г¬ Г±ГІГҐГ·ГҐГ­ГЁГЁ Г°Г®Г«Гј ГЁГ¬ГҐГѕГ№ГіГѕ ГіГЄГ Г§Г Г­Г­Г»Г© <paramref name="RoleId"/> </returns>
+    /// <summary> Метод апи для получения инф. о роли по идентификатору в Identity </summary>
+    /// <param name="RoleId"> Идентификатор роли </param>
+    /// <param name="Cancel"> Токен отмены </param>
+    /// <returns> Результат выполнения операции и при удачном стечении роль имеющую указанный <paramref name="RoleId"/> </returns>
     Task<Result<AuthRole>> GetRoleByIdAsync(string RoleId, CancellationToken Cancel = default);
 
-    /// <summary> ГЊГҐГІГ®Г¤ Г ГЇГЁ Г¤Г«Гї Г°ГҐГ¤Г ГЄГІГЁГ°Г®ГўГ Г­ГЁГї Г°Г®Г«ГЁ ГЇГ® ГЁГ¤ГҐГ­ГІГЁГґГЁГЄГ ГІГ®Г°Гі Гў Identity </summary>
-    /// <param name="EditRoleRequest"> Г‡Г ГЇГ°Г®Г± Г­Г  Г°ГҐГ¤Г ГЄГІГЁГ°Г®ГўГ Г­ГЁГҐ Г°Г®Г«ГЁ ГЇГ® ГЁГ¤ГҐГ­ГІГЁГґГЁГЄГ ГІГ®Г°Гі </param>
-    /// <param name="Cancel"> Г’Г®ГЄГҐГ­ Г®ГІГ¬ГҐГ­Г» </param>
-    /// <returns> ГђГҐГ§ГіГ«ГјГІГ ГІ ГўГ»ГЇГ®Г«Г­ГҐГ­ГЁГї Г®ГЇГҐГ°Г Г¶ГЁГЁ </returns>
+    /// <summary> Метод апи для редактирования роли по идентификатору в Identity </summary>
+    /// <param name="EditRoleRequest"> Запрос на редактирование роли по идентификатору </param>
+    /// <param name="Cancel"> Токен отмены </param>
+    /// <returns> Результат выполнения операции </returns>
     Task<Result.Result> EditRoleNameByIdAsync(EditRoleNameByIdRequest EditRoleRequest, CancellationToken Cancel = default);
 
-    /// <summary> ГЊГҐГІГ®Г¤ Г ГЇГЁ Г­Г  ГіГ¤Г Г«ГҐГ­ГЁГҐ Г°Г®Г«ГЁ ГЇГ® ГЁГ¤ГҐГ­ГІГЁГґГЁГЄГ ГІГ®Г°Гі Гў Identity </summary>
-    /// <param name="RoleId"> Г€Г¤ГҐГ­ГІГЁГґГЁГЄГ ГІГ®Г° Г°Г®Г«ГЁ </param>
-    /// <param name="Cancel"> Г’Г®ГЄГҐГ­ Г®ГІГ¬ГҐГ­Г» </param>
-    /// <returns> ГђГҐГ§ГіГ«ГјГІГ ГІ ГўГ»ГЇГ®Г«Г­ГҐГ­ГЁГї Г®ГЇГҐГ°Г Г¶ГЁГЁ </returns>
+    /// <summary> Метод апи на удаление роли по идентификатору в Identity </summary>
+    /// <param name="RoleId"> Идентификатор роли </param>
+    /// <param name="Cancel"> Токен отмены </param>
+    /// <returns> Результат выполнения операции </returns>
     Task<Result.Result> DeleteRoleByIdAsync(string RoleId, CancellationToken Cancel = default);
 
-    /// <summary> ГЊГҐГІГ®Г¤ Г ГЇГЁ Г¤Г«Гї Г¤Г®ГЎГ ГўГ«ГҐГ­ГЁГї Г°Г®Г«ГЁ ГЄ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гѕ Гў Identity </summary>
-    /// <param name="AddRoleRequest"> Г‡Г ГЇГ°Г®Г± Г­Г  Г¤Г®ГЎГ ГўГ«ГҐГ­ГЁГҐ Г°Г®Г«ГЁ </param>
-    /// <param name="Cancel"> Г’Г®ГЄГҐГ­ Г®ГІГ¬ГҐГ­Г» </param>
-    /// <returns> ГђГҐГ§ГіГ«ГјГІГ ГІ ГўГ»ГЇГ®Г«Г­ГҐГ­ГЁГї Г®ГЇГҐГ°Г Г¶ГЁГЁ </returns>
+    /// <summary> Метод апи для добавления роли к пользователю в Identity </summary>
+    /// <param name="AddRoleRequest"> Запрос на добавление роли </param>
+    /// <param name="Cancel"> Токен отмены </param>
+    /// <returns> Результат выполнения операции </returns>
     Task<Result.Result> AddRoleToUserAsync(AddRoleToUserRequest AddRoleRequest, CancellationToken Cancel = default);
 
-    /// <summary> ГЊГҐГІГ®Г¤ Г ГЇГЁ Г¤Г«Гї ГіГ¤Г Г«ГҐГ­ГЁГї Г°Г®Г«ГЁ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї ГЇГ® email Гў Identity </summary>
-    /// <param name="Email"> Email ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї </param>
-    /// <param name="RoleName"> Г€Г¬Гї Г°Г®Г«ГЁ </param>
-    /// <param name="Cancel"> Г’Г®ГЄГҐГ­ Г®ГІГ¬ГҐГ­Г» </param>
-    /// <returns> ГђГҐГ§ГіГ«ГјГІГ ГІ ГўГ»ГЇГ®Г«Г­ГҐГ­ГЁГї Г®ГЇГҐГ°Г Г¶ГЁГЁ </returns>
+    /// <summary> Метод апи для удаления роли пользователя по email в Identity </summary>
+    /// <param name="Email"> Email пользователя </param>
+    /// <param name="RoleName"> Имя роли </param>
+    /// <param name="Cancel"> Токен отмены </param>
+    /// <returns> Результат выполнения операции </returns>
     Task<Result.Result> DeleteUserRoleByEmailAsync(string Email, string RoleName, CancellationToken Cancel = default);
 
-    /// <summary> ГЊГҐГІГ®Г¤ Г ГЇГЁ Г¤Г«Гї ГЇГ®Г«ГіГ·ГҐГ­ГЁГї ГЁГ­ГґГ®Г°Г¬Г Г¶ГЁГЁ Г® ГўГ±ГҐГµ Г°Г®Г«ГїГµ Гў Г±ГЁГ±ГІГҐГ¬ГҐ Гў Identity </summary>
-    /// <param name="Email"> Email ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї </param>
-    /// <param name="Cancel"> Г’Г®ГЄГҐГ­ Г®ГІГ¬ГҐГ­Г» </param>
+    /// <summary> Метод апи для получения информации о всех ролях в системе в Identity </summary>
+    /// <param name="Email"> Email пользователя </param>
+    /// <param name="Cancel"> Токен отмены </param>
     /// <returns>
-    /// ГђГҐГ§ГіГ«ГјГІГ ГІ ГўГ»ГЇГ®Г«Г­ГҐГ­ГЁГї Г®ГЇГҐГ°Г Г¶ГЁГЁ ГЁ ГЇГ°ГЁ ГіГ¤Г Г·Г­Г®Г¬ Г±ГІГҐГ·ГҐГ­ГЁГЁ Г±ГЇГЁГ±Г®ГЄ Г°Г®Г«ГҐГ©
-    /// Г®ГІГ­Г®Г±ГїГ№ГЁГµГ±Гї ГЄ ГіГЄГ Г§Г Г­Г­Г®Г¬Гі ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гѕ Г± <paramref name="Email"/>
+    /// Результат выполнения операции и при удачном стечении список ролей
+    /// относящихся к указанному пользователю с <paramref name="Email"/>
     /// </returns>
     Task<Result<IEnumerable<AuthRole>>> GetUserRolesAsync(string Email, CancellationToken Cancel = default);
 }

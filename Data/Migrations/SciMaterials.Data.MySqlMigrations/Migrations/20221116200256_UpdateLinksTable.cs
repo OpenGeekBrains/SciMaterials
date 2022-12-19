@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace SciMaterials.MsSqlServerMigrations.Migrations
+namespace SciMaterials.Data.MySqlMigrations.Migrations
 {
     public partial class UpdateLinksTable : Migration
     {
@@ -12,10 +12,10 @@ namespace SciMaterials.MsSqlServerMigrations.Migrations
             migrationBuilder.AlterColumn<DateTime>(
                 name: "LastAccess",
                 table: "Links",
-                type: "datetime",
+                type: "datetime(6)",
                 nullable: true,
                 oldClrType: typeof(DateTime),
-                oldType: "datetime2",
+                oldType: "datetime",
                 oldNullable: true);
         }
 
@@ -24,10 +24,10 @@ namespace SciMaterials.MsSqlServerMigrations.Migrations
             migrationBuilder.AlterColumn<DateTime>(
                 name: "LastAccess",
                 table: "Links",
-                type: "datetime2",
+                type: "datetime",
                 nullable: true,
                 oldClrType: typeof(DateTime),
-                oldType: "datetime",
+                oldType: "datetime(6)",
                 oldNullable: true);
         }
     }

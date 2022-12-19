@@ -1,8 +1,7 @@
 @page "/categories_storage/{id:guid}"
 @using SciMaterials.Contracts.API.DTO.Files
-@using Microsoft.AspNetCore.Components
 
-<ItemsView IsLoading="@_IsLoading" OnAddClick="@OnAddClickAsync" OnBackClick="@OnBackClick">
+<ItemsView IsLoading="@_IsLoading" OnBackClick="@OnBackClick">
     <SkeletonTemplate>
         <MudText Align="Align.Center" Typo="Typo.h4">Loading...</MudText>
     </SkeletonTemplate>

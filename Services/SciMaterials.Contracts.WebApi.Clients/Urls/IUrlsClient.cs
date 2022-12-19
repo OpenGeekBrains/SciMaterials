@@ -4,6 +4,7 @@ namespace SciMaterials.Contracts.WebApi.Clients.Urls;
 
 public interface IUrlsClient :
     IApiReadonlyClient<Guid, GetUrlResponse>,
-    IApiModifyClient<Guid, AddUrlRequest, EditUrlRequest>
+    IApiModifyClient<Guid, AddUrlRequest, EditUrlRequest>,
+    IApiDeleteClient<Guid>
 {
 }
