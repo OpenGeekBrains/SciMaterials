@@ -29,11 +29,22 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
         DbEntity.Description = DataEntity.Description;
         DbEntity.CreatedAt = DataEntity.CreatedAt;
-        DbEntity.Resources = DataEntity.Resources;;
+        DbEntity.Resources = DataEntity.Resources; ;
         DbEntity.ParentId = DataEntity.ParentId;
         DbEntity.Name = DataEntity.Name;
         DbEntity.IsDeleted = DataEntity.IsDeleted;
 
         return DbEntity;
+    }
+
+    public async Task<IEnumerable<Category>> GetByParentIdAsync(Guid? ParentId)
+    {
+        var query = _Set
+            .Where(C => C.ParentId == ParentId && !C.IsDeleted)
+            .Include(C => C.Children)
+            .AsNoTracking();
+
+        var items = await ItemsNotDeleted.ToListAsync();
+        return items;
     }
 }

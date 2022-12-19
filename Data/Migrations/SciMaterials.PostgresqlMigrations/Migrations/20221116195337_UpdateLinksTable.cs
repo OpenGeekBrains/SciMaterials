@@ -12,10 +12,10 @@ namespace SciMaterials.PostgresqlMigrations.Migrations
             migrationBuilder.AlterColumn<DateTime>(
                 name: "LastAccess",
                 table: "Links",
-                type: "datetime",
+                type: "timestamp without time zone",
                 nullable: true,
                 oldClrType: typeof(DateTime),
-                oldType: "timestamp without time zone",
+                oldType: "datetime",
                 oldNullable: true);
         }
 
@@ -24,10 +24,10 @@ namespace SciMaterials.PostgresqlMigrations.Migrations
             migrationBuilder.AlterColumn<DateTime>(
                 name: "LastAccess",
                 table: "Links",
-                type: "timestamp without time zone",
+                type: "datetime",
                 nullable: true,
                 oldClrType: typeof(DateTime),
-                oldType: "datetime",
+                oldType: "timestamp without time zone",
                 oldNullable: true);
         }
     }

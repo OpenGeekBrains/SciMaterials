@@ -7,7 +7,7 @@ using SciMaterials.Contracts.WebApi.Clients.Urls;
 namespace SciMaterials.WebApi.Clients.Urls;
 
 public class UrlsClient :
-    ApiClientWithAddBase<Guid, GetUrlResponse, AddUrlRequest, EditUrlRequest>,
+    ApiModifiedClientWithAddBase<Guid, GetUrlResponse, AddUrlRequest, EditUrlRequest>,
     IUrlsClient
 {
     public UrlsClient(HttpClient httpClient, ILogger<UrlsClient> logger) : base(httpClient, logger)

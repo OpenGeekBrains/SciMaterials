@@ -38,6 +38,14 @@ public class CategoriesController : ApiBaseController<CategoriesController>
         return Ok(products);
     }
 
+    [HttpGet("tree/{id?}")]
+    [ProducesDefaultResponseType(typeof(Result<CategoryTree>))]
+    public async Task<IActionResult> GetCategoryTree(Guid? id = null)
+    {
+        var result = await _сategoryService.GetTreeAsync(id);
+        return Ok(result);
+    }
+
     /// <summary> Add a Category. </summary>
     /// <param name="request"> Add Request DTO. </param>
     /// <returns> Status 200 OK. </returns>

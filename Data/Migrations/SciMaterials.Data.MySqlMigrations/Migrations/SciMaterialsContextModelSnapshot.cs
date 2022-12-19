@@ -224,7 +224,7 @@ namespace SciMaterials.Data.MySqlMigrations.Migrations
 
                     b.Property<DateTime?>("LastAccess")
                         .IsConcurrencyToken()
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("RowVersion")
                         .IsConcurrencyToken()

@@ -221,7 +221,7 @@ namespace SciMaterials.SQLiteMigrations.Migrations
 
                     b.Property<DateTime?>("LastAccess")
                         .IsConcurrencyToken()
-                        .HasColumnType("datetime");
+                        .HasColumnType("TEXT");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()

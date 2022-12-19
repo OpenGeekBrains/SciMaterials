@@ -33,6 +33,8 @@ using SciMaterials.Contracts.WebApi.Clients.Urls;
 using SciMaterials.Services.Identity.API;
 using SciMaterials.WebApi.Clients.Tags;
 using SciMaterials.WebApi.Clients.Urls;
+using SciMaterials.WebApi.Clients.Resources;
+using SciMaterials.Contracts.WebApi.Clients.Resources;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -56,6 +58,7 @@ builder.Services
     .AddApiClient<ITagsClient, TagsClient>(apiRoot)
     .AddApiClient<IAuthorsClient, AuthorsClient>(apiRoot)
     .AddApiClient<IUrlsClient, UrlsClient>(apiRoot)
+    .AddApiClient<IResourcesClient, ResourcesClient>(apiRoot)
 
     .AddApiClient<IdentityClient>(apiRoot, ClientConfiguration)
     .AddScoped<IIdentityApi, IdentityClientOperationDecorator>()
@@ -84,6 +87,10 @@ builder.Services
 // Background
 builder.Services
     .AddSingleton<FileUploadScheduleService>();
+
+// MessageBus
+builder.Services
+    .AddSingleton<ISimpleMessageBus, SimpleMessageBus>();
 
 // State management
 builder.Services.AddFluxor(options =>

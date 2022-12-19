@@ -1,0 +1,57 @@
+﻿@using SciMaterials.Contracts.Enums;
+@using SciMaterials.Contracts.API.DTO.Resources;
+<MudItem xs=12 sm=6 md=4 lg=3 xl=2 style="min-width:400px;">
+    <MudCard>
+        <MudCardHeader>
+            <CardHeaderContent>
+                <div class="d-flex gap-1">
+                    <MudText Class="flex-1 d-flex" Typo="Typo.h6">@Name</MudText>
+                    @switch (ResourceType)
+
+                    {
+
+                        case ResourceType.File:
+                            <MudIcon Class="flex-none d-flex" Icon="@Icons.Material.Filled.FilePresent" Title="File" />
+
+                            break;
+
+                        case ResourceType.Url:
+                            <MudIcon Class="flex-none d-flex" Icon="@Icons.Material.Filled.Link" Title="Url" />
+
+                            break;
+
+                        case ResourceType.FileGroup:
+                            <MudIcon Class="flex-none d-flex" Icon="@Icons.Material.Filled.Collections" Title="File group" />
+
+                            break;
+
+                    }
+                </div>
+            </CardHeaderContent>
+            @* <CardHeaderActions>
+                <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+                </CardHeaderActions>
+            *@
+        </MudCardHeader>
+        <MudCardContent>
+            <div><MudText Class="resource-card-description">@ShortInfo</MudText></div>
+            @*<MudText Class="w-30" Typo="Typo.body2"></MudText>*@
+        </MudCardContent>
+        <MudCardActions>
+            <MudRating SelectedValue="2" />
+            <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Default" />
+            <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Default" />
+            <MudSpacer />
+            <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
+        </MudCardActions>
+    </MudCard>
+</MudItem>
+
+@code {
+
+    [Parameter] public string Name { get; set; }
+
+    [Parameter] public ResourceType ResourceType { get; set; }
+
+    [Parameter] public string ShortInfo { get; set; }
+}

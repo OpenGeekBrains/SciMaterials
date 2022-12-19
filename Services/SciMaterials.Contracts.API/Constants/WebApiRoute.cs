@@ -24,4 +24,7 @@ public static class WebApiRoute
 
     /// <summary> Сервис управления интернет ссылками </summary>
     public const string Urls = "api/urls";
+
+    /// <summary> Сервис управления русурсами </summary>
+    public const string Resources = "api/resources";
 }

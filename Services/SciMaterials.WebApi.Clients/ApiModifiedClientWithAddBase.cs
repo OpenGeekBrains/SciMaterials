@@ -1,16 +1,16 @@
 using Microsoft.Extensions.Logging;
+using System.Net.Http.Json;
 using SciMaterials.Contracts.Result;
 using SciMaterials.Contracts.WebApi.Clients;
 
-using System.Net.Http.Json;
-
 namespace SciMaterials.WebApi.Clients;
 
-public abstract class ApiClientWithAddBase<TId, TResult, TAddRequest, TEditRequest> :
-    ApiClientBase<TId, TResult, TEditRequest>,
+public abstract class ApiModifiedClientWithAddBase<TId, TResult, TAddRequest, TEditRequest> :
+    ApiModifiedClientBase<TId, TResult, TEditRequest>,
+    IApiReadonlyClient<TId, TResult>,
     IApiModifyClient<TId, TAddRequest, TEditRequest>
 {
-    public ApiClientWithAddBase(HttpClient httpClient, ILogger<ApiClientWithAddBase<TId, TResult, TAddRequest, TEditRequest>> logger) 
+    public ApiModifiedClientWithAddBase(HttpClient httpClient, ILogger<ApiModifiedClientWithAddBase<TId, TResult, TAddRequest, TEditRequest>> logger)
         : base(httpClient, logger)
     { }
 

@@ -19,7 +19,6 @@ using SciMaterials.Contracts.WebApi.Clients.Files;
 using SciMaterials.Contracts.WebApi.Clients.Tags;
 using SciMaterials.Contracts.WebApi.Clients.Urls;
 using SciMaterials.DAL.Contracts.Configuration;
-using SciMaterials.DAL.Contracts.Services;
 using SciMaterials.Services.API.Services.Authors;
 using SciMaterials.Services.API.Services.Categories;
 using SciMaterials.Services.API.Services.Comments;
@@ -33,9 +32,6 @@ using SciMaterials.UI.MVC.API.Filters;
 using SciMaterials.DAL.Resources.Contexts;
 using SciMaterials.DAL.Resources.Contracts.Entities;
 using SciMaterials.DAL.Resources.Contracts.Repositories;
-using SciMaterials.DAL.Resources.Contracts.Repositories.Files;
-using SciMaterials.DAL.Resources.Contracts.Repositories.Ratings;
-using SciMaterials.DAL.Resources.Contracts.Repositories.Users;
 using SciMaterials.DAL.Resources.Repositories.Files;
 using SciMaterials.DAL.Resources.Services;
 using SciMaterials.DAL.Resources.UnitOfWork;
@@ -53,6 +49,8 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using SciMaterials.DAL.Resources.Repositories.Ratings;
 using SciMaterials.DAL.Resources.Repositories.Users;
 using File = SciMaterials.DAL.Resources.Contracts.Entities.File;
+using SciMaterials.Contracts.API.Services.Resources;
+using SciMaterials.Services.API.Services.Resources;
 
 namespace SciMaterials.UI.MVC;
 
@@ -61,12 +59,12 @@ public static class ResourcesRegister
     public static IServiceCollection AddApiClients(this IServiceCollection services, string serverUrl)
     {
         Uri apiAddress = new Uri(serverUrl);
-        services.AddHttpClient<IFilesClient, FilesClient>("FilesClient", c => c.BaseAddress                      = apiAddress);
-        services.AddHttpClient<ICategoriesClient, CategoriesClient>("CategoriesClient", c => c.BaseAddress       = apiAddress);
-        services.AddHttpClient<ICommentsClient, CommentsClient>("CommentClient", c => c.BaseAddress              = apiAddress);
+        services.AddHttpClient<IFilesClient, FilesClient>("FilesClient", c => c.BaseAddress = apiAddress);
+        services.AddHttpClient<ICategoriesClient, CategoriesClient>("CategoriesClient", c => c.BaseAddress = apiAddress);
+        services.AddHttpClient<ICommentsClient, CommentsClient>("CommentClient", c => c.BaseAddress = apiAddress);
         services.AddHttpClient<IContentTypesClient, ContentTypesClient>("ContentTypesClient", c => c.BaseAddress = apiAddress);
-        services.AddHttpClient<ITagsClient, TagsClient>("TagsClient", c => c.BaseAddress                         = apiAddress);
-        services.AddHttpClient<IUrlsClient, UrlsClient>("UrlsClient", c => c.BaseAddress                         = apiAddress);
+        services.AddHttpClient<ITagsClient, TagsClient>("TagsClient", c => c.BaseAddress = apiAddress);
+        services.AddHttpClient<IUrlsClient, UrlsClient>("UrlsClient", c => c.BaseAddress = apiAddress);
         return services;
     }
 
@@ -127,7 +125,8 @@ public static class ResourcesRegister
            .AddScoped<IRepository<Url>, UrlRepository>()
            .AddScoped<IRepository<Rating>, RatingRepository>()
            .AddScoped<IRepository<Author>, AuthorRepository>()
-           .AddScoped<IRepository<User>, UserRepository>();
+           .AddScoped<IRepository<User>, UserRepository>()
+           .AddScoped<IRepository<Resource>, ResourceRepository>();
 
         services
             .AddScoped<ResourcesDatabaseManager>()
@@ -154,8 +153,8 @@ public static class ResourcesRegister
         services.AddScoped<ICommentService, CommentService>();
         services.AddScoped<IContentTypeService, ContentTypeService>();
         services.AddScoped<ITagService, TagService>();
-
         services.AddScoped<IUrlService, UrlService>();
+        services.AddScoped<IResourceService, ResourceService>();
 
         return services;
     }
@@ -163,6 +162,11 @@ public static class ResourcesRegister
     public static void AddFileUploadFilter(this SwaggerGenOptions options)
     {
         options.OperationFilter<FileUploadFilter>();
+    }
+
+    public static void AddOptionalRouteParameterOperationFilter(this SwaggerGenOptions options)
+    {
+        options.OperationFilter<ReApplyOptionalRouteParameterOperationFilter>();
     }
 
     public static IServiceCollection ConfigureFilesUploadSupport(this IServiceCollection services, IConfiguration config)

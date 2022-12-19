@@ -45,6 +45,7 @@ builder.Services
         });
 
         o.AddFileUploadFilter();
+        o.AddOptionalRouteParameterOperationFilter();
         o.ConfigureIdentityInSwagger();
     });
 

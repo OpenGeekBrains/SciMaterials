@@ -1,3 +1,38 @@
 ﻿@page "/dashboard"
+@using SciMaterials.UI.BWASM.Components.Resources
+@implements IDisposable
 
-<H3>Dashboard</H3>
+<ResurcesGridView @ref="_resurcesGridView" PageNumber="@_resourcesPageNumber" TotalPagesCountChanged="OnTotalPagesCountChanged" />
+<MudPagination Color="Color.Primary" @bind-Count="_totalPagesCount" SelectedChanged="PageChanged" Class="d-flex justify-center pb-5" />
+<MudText Align="Align.Center">Total pages: @_totalPagesCount</MudText>
+@code {
+
+	private int _resourcesPageNumber { get; set; } = 1;
+	private int _totalPagesCount = 0;
+	private ResurcesGridView _resurcesGridView;
+	
+    [Inject] ISimpleMessageBus SimpleMessageBus { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        SimpleMessageBus.Publish(this, new ResourceCardsPageVisibilityMessage(true));
+    }
+
+	private async Task PageChanged(int pageNumber)
+	{
+		_resourcesPageNumber = pageNumber;
+		await _resurcesGridView.ServerLoadAsync();
+	}
+	
+	private void OnTotalPagesCountChanged(int count)
+	{
+		_totalPagesCount=count;
+		StateHasChanged();
+	}
+
+	public void Dispose()
+    {
+        SimpleMessageBus.Publish(this, new ResourceCardsPageVisibilityMessage(false));
+    }
+}

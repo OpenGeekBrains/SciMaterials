@@ -1,11 +1,12 @@
 ﻿@using SciMaterials.UI.BWASM.States.Theme
 @using Microsoft.IdentityModel.JsonWebTokens
-
+@using SciMaterials.UI.BWASM.Components.Categories
+@using SciMaterials.UI.BWASM.MessageBus
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
-
 @inject IState<AppThemeState> ThemeState
 @inject IDispatcher Dispatcher
+@implements IDisposable
 
 <MudThemeProvider Theme="ThemeState.Value.CurrentTheme" IsDarkMode="ThemeState.Value.IsDarkTheme"/>
 <MudDialogProvider />
@@ -48,22 +49,39 @@
             @Body
         </MudContainer>
     </MudMainContent>
+    <CategoryTreeSidePanel @bind-Hidden="_categoryTreeSidePanelHidden" />
 </MudLayout>
 
 
 
 @code {
     bool _drawerOpen = true;
+	bool _categoryTreeSidePanelHidden = true;
+
+    [Inject]
+    public ISimpleMessageBus SimpleMessageBus { get; set; } = default!;
 
     protected override void OnInitialized()
     {
 		Dispatcher.Dispatch(AppThemeActions.ChangeColorScheme("default"));
+        SimpleMessageBus.Subscribe<ResourceCardsPageVisibilityMessage>(SetCategoryTreePanelVivibility);
     }
 
-    void DrawerToggle() => _drawerOpen = !_drawerOpen;
+    private void DrawerToggle() => _drawerOpen = !_drawerOpen;
 
     private void NavigateToHomePage() => NavigationManager.NavigateTo("/");
 
 	private void OpenProfile() => NavigationManager.NavigateTo("/profile");
+    
+	    private void SetCategoryTreePanelVivibility(object? sender, ResourceCardsPageVisibilityMessage message)
+    {
+        _categoryTreeSidePanelHidden = !message.IsVisible;
+        StateHasChanged();
+    }
+
+	public void Dispose()
+    {
+        SimpleMessageBus.Unsubscribe<ResourceCardsPageVisibilityMessage>(SetCategoryTreePanelVivibility);
+    }	
 }
 

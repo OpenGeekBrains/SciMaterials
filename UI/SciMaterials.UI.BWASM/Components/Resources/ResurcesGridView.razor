@@ -1,0 +1,47 @@
+﻿@using SciMaterials.Contracts.Enums;
+@using SciMaterials.Contracts.API.DTO.Resources;
+@using SciMaterials.Contracts.WebApi.Clients.Resources; 
+@if (_resources is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+<MudGrid Spacing="3" Justify="Justify.FlexStart" Class="pb-5">
+	@foreach (GetResourceResponse resource in _resources)
+	{
+            <ResurcesCard Name="@resource.Name" ResourceType="@resource.ResourceType" ShortInfo="@resource.ShortInfo" />
+	}
+</MudGrid>
+}
+
+@code {
+	[Parameter] public int PageNumber{get;set;}
+	[Parameter] public Action<int> TotalPagesCountChanged{get; set;}
+
+	@* [Parameter] public int TotalPagesCount{get;set;} *@
+    @* [Parameter] public EventCallback<int> TotalPagesCountChanged { get; set; } *@
+
+	[Inject] private IResourcesClient _resourcesClient { get; set; }
+	private const int m_pageSize = 24;
+	private IEnumerable<GetResourceResponse>? _resources = null;
+
+	public async Task ServerLoadAsync()
+	{
+		_resources = null;
+		await Task.Delay(20);
+		var result = await _resourcesClient.GetPageAsync(PageNumber, m_pageSize);
+		if (result.Succeeded && result.Data is { })
+		{
+			_resources = result.Data;
+			TotalPagesCountChanged(result.TotalPages);
+			@* await TotalPagesCountChanged.InvokeAsync(100); *@
+		}
+	}
+
+    protected override async Task OnInitializedAsync()
+	{
+        await base.OnInitializedAsync();
+		await ServerLoadAsync();
+	}
+}

@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 using SciMaterials.DAL.Contracts.Entities;
+using SciMaterials.DAL.Contracts.Enums;
 
 namespace SciMaterials.DAL.Resources.Contracts.Entities;
 
@@ -12,6 +13,7 @@ public class Resource : NamedModel
     public Guid AuthorId { get; set; }
     public DateTime CreatedAt { get; set; }
     public Author Author { get; set; } = null!;
+    public virtual ResourceType ResourceType { get; }
 
     public ICollection<Comment>? Comments { get; set; } = new HashSet<Comment>();
     public ICollection<Tag>? Tags { get; set; } = new HashSet<Tag>();
