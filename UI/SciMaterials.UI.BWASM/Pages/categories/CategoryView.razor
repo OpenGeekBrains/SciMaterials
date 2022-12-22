@@ -1,7 +1,7 @@
-@page "/categories_storage/{id:guid}"
+@page "/categories_storage/{CategoryId:guid}"
 @using SciMaterials.Contracts.API.DTO.Files
 
-<ItemsView IsLoading="@_IsLoading" OnBackClick="@OnBackClick">
+<ItemsView IsLoading="@_IsLoading" OnDeleteClick="@OnDeleteClickAsync" OnEditClick="@OnEditClickAsync" OnBackClick="@OnBackClick">
     <SkeletonTemplate>
         <MudText Align="Align.Center" Typo="Typo.h4">Loading...</MudText>
     </SkeletonTemplate>
@@ -14,8 +14,8 @@
     <ChildContent>
         <div>
             <MudTabs Color="Color.Transparent" Rounded="true" AlwaysShowScrollButtons="true" Class="header-tabpanel-description mt-4">
-                <MudTabPanel Text="@State.Value.Categories.FirstOrDefault(x => x.Id.Equals(_CurrentCategory.ParentId))?.Name"
-                             OnClick="() => OnCategoryClick(_CurrentCategory.ParentId)"/>
+                <MudTabPanel Text="@_State.Value.Categories.FirstOrDefault(x => x.Id.Equals(_CurrentCategory.ParentId))?.Name"
+                             OnClick="() => OnCategoryClickAsync(_CurrentCategory.ParentId)"/>
             </MudTabs>
         </div>
         
@@ -27,12 +27,24 @@
                               AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
             </ToolBarContent>
             <Columns>
-                <SelectColumn T="GetFileResponse" />
+                <HierarchyColumn T="GetFileResponse"/>
                 <Column T="GetFileResponse" FieldType="@typeof(string)" Field="Name" Title="Name" Sortable="true"/>
                 <Column T="GetFileResponse" FieldType="@typeof(string)" Field="Description" Title="Description" Sortable="true"/>
                 <Column T="GetFileResponse" FieldType="@typeof(string)" Field="Categories" Title="Categories" Sortable="false"/>
-                <Column T="GetFileResponse" FieldType="@typeof(int)" Field="Size" Title="Size" Sortable="false" />
+                <Column T="GetFileResponse" FieldType="@typeof(int)" Field="Size" Title="Size" Sortable="false"/>
             </Columns>
+            <ChildRowContent>
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">@context.Item.Id</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudLink OnClick="() => OnLinkClickAsync(context.Item.Id)">Go to Resource</MudLink>
+                    </MudCardContent>
+                </MudCard>
+            </ChildRowContent>
             <NoRecordsContent>
                 <MudText>No matching records found</MudText>
             </NoRecordsContent>

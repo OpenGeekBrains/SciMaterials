@@ -5,57 +5,57 @@ using SciMaterials.Contracts.Result;
 
 namespace SciMaterials.Contracts.Identity.API;
 
-/// <summary> Контракт апи пользователей </summary>
+/// <summary> РљРѕРЅС‚СЂР°РєС‚ Р°РїРё РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ </summary>
 public interface IUsersApi
 {
-    /// <summary> Метод апи для регистрации пользователя в Identity </summary>
-    /// <param name="RegisterRequest"> Запрос на регистрацию </param>
-    /// <param name="Cancel"> Токен отмены </param>
-    /// <returns> Результат выполнения операции </returns>
+    /// <summary> РњРµС‚РѕРґ Р°РїРё РґР»СЏ СЂРµРіРёСЃС‚СЂР°С†РёРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ Identity </summary>
+    /// <param name="RegisterRequest"> Р—Р°РїСЂРѕСЃ РЅР° СЂРµРіРёСЃС‚СЂР°С†РёСЋ </param>
+    /// <param name="Cancel"> РўРѕРєРµРЅ РѕС‚РјРµРЅС‹ </param>
+    /// <returns> Р РµР·СѓР»СЊС‚Р°С‚ РІС‹РїРѕР»РЅРµРЅРёСЏ РѕРїРµСЂР°С†РёРё </returns>
     Task<Result<RegisterUserResponse>> RegisterUserAsync(RegisterRequest RegisterRequest, CancellationToken Cancel = default);
 
-    /// <summary> Метод апи для авторизации пользователя в Identity </summary>
-    /// <param name="LoginRequest"> Запрос на авторизацию </param>
-    /// <param name="Cancel"> Токен отмены </param>
-    /// <returns> Результат выполнения операции и при удачном стечении токен сессии </returns>
+    /// <summary> РњРµС‚РѕРґ Р°РїРё РґР»СЏ Р°РІС‚РѕСЂРёР·Р°С†РёРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ Identity </summary>
+    /// <param name="LoginRequest"> Р—Р°РїСЂРѕСЃ РЅР° Р°РІС‚РѕСЂРёР·Р°С†РёСЋ </param>
+    /// <param name="Cancel"> РўРѕРєРµРЅ РѕС‚РјРµРЅС‹ </param>
+    /// <returns> Р РµР·СѓР»СЊС‚Р°С‚ РІС‹РїРѕР»РЅРµРЅРёСЏ РѕРїРµСЂР°С†РёРё Рё РїСЂРё СѓРґР°С‡РЅРѕРј СЃС‚РµС‡РµРЅРёРё С‚РѕРєРµРЅ СЃРµСЃСЃРёРё </returns>
     Task<Result<LoginUserResponse>> LoginUserAsync(LoginRequest LoginRequest, CancellationToken Cancel = default);
 
-    /// <summary> Метод апи для выхода пользователя из системы Identity </summary>
-    /// <param name="Cancel"> Токен отмены </param>
-    /// <returns> Результат выполнения операции </returns>
+    /// <summary> РњРµС‚РѕРґ Р°РїРё РґР»СЏ РІС‹С…РѕРґР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёР· СЃРёСЃС‚РµРјС‹ Identity </summary>
+    /// <param name="Cancel"> РўРѕРєРµРЅ РѕС‚РјРµРЅС‹ </param>
+    /// <returns> Р РµР·СѓР»СЊС‚Р°С‚ РІС‹РїРѕР»РЅРµРЅРёСЏ РѕРїРµСЂР°С†РёРё </returns>
     Task<Result.Result> LogoutUserAsync(CancellationToken Cancel = default);
 
-    /// <summary> Метод клиента для получения информации о пользователе по email в Identity </summary>
-    /// <param name="Email"> Email пользователя </param>
-    /// <param name="Cancel"> Токен отмены </param>
-    /// <returns> Результат выполнения операции и при удачном стечении данные Identity о пользователе </returns>
+    /// <summary> РњРµС‚РѕРґ РєР»РёРµРЅС‚Р° РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»Рµ РїРѕ email РІ Identity </summary>
+    /// <param name="Email"> Email РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ </param>
+    /// <param name="Cancel"> РўРѕРєРµРЅ РѕС‚РјРµРЅС‹ </param>
+    /// <returns> Р РµР·СѓР»СЊС‚Р°С‚ РІС‹РїРѕР»РЅРµРЅРёСЏ РѕРїРµСЂР°С†РёРё Рё РїСЂРё СѓРґР°С‡РЅРѕРј СЃС‚РµС‡РµРЅРёРё РґР°РЅРЅС‹Рµ Identity Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»Рµ </returns>
     Task<Result<AuthUser>> GetUserByEmailAsync(string Email, CancellationToken Cancel = default);
 
-    /// <summary> Метод апи для смены пароля в Identity </summary>
-    /// <param name="ChangePasswordRequest"> Запрос на смену пароля </param>
-    /// <param name="Cancel"> Токен отмены </param>
-    /// <returns> Результат выполнения операции </returns>
+    /// <summary> РњРµС‚РѕРґ Р°РїРё РґР»СЏ СЃРјРµРЅС‹ РїР°СЂРѕР»СЏ РІ Identity </summary>
+    /// <param name="ChangePasswordRequest"> Р—Р°РїСЂРѕСЃ РЅР° СЃРјРµРЅСѓ РїР°СЂРѕР»СЏ </param>
+    /// <param name="Cancel"> РўРѕРєРµРЅ РѕС‚РјРµРЅС‹ </param>
+    /// <returns> Р РµР·СѓР»СЊС‚Р°С‚ РІС‹РїРѕР»РЅРµРЅРёСЏ РѕРїРµСЂР°С†РёРё </returns>
     Task<Result.Result> ChangePasswordAsync(ChangePasswordRequest ChangePasswordRequest, CancellationToken Cancel = default);
 
-    /// <summary> Метод клиента для изменения имени (ник нейма) пользователя в Identity </summary>
-    /// <param name="editUserRequest"> Запрос на изменение имени </param>
-    /// <param name="Cancel"> Токен отмены </param>
-    /// <returns> Результат выполнения операции и при удачном стечении обновлённый токен сессии </returns>
+    /// <summary> РњРµС‚РѕРґ РєР»РёРµРЅС‚Р° РґР»СЏ РёР·РјРµРЅРµРЅРёСЏ РёРјРµРЅРё (РЅРёРє РЅРµР№РјР°) РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ Identity </summary>
+    /// <param name="editUserRequest"> Р—Р°РїСЂРѕСЃ РЅР° РёР·РјРµРЅРµРЅРёРµ РёРјРµРЅРё </param>
+    /// <param name="Cancel"> РўРѕРєРµРЅ РѕС‚РјРµРЅС‹ </param>
+    /// <returns> Р РµР·СѓР»СЊС‚Р°С‚ РІС‹РїРѕР»РЅРµРЅРёСЏ РѕРїРµСЂР°С†РёРё Рё РїСЂРё СѓРґР°С‡РЅРѕРј СЃС‚РµС‡РµРЅРёРё РѕР±РЅРѕРІР»С‘РЅРЅС‹Р№ С‚РѕРєРµРЅ СЃРµСЃСЃРёРё </returns>
     Task<Result<EditUserNameResponse>> EditUserNameByEmailAsync(EditUserNameByEmailRequest editUserRequest, CancellationToken Cancel = default);
 
-    /// <summary> Метод клиента для получения информации о всех пользователях в Identity </summary>
-    /// <param name="Cancel"> Токен отмены </param>
-    /// <returns> Результат выполнения операции и при удачном стечении список пользователей записанных в системе Identity </returns>
+    /// <summary> РњРµС‚РѕРґ РєР»РёРµРЅС‚Р° РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РІСЃРµС… РїРѕР»СЊР·РѕРІР°С‚РµР»СЏС… РІ Identity </summary>
+    /// <param name="Cancel"> РўРѕРєРµРЅ РѕС‚РјРµРЅС‹ </param>
+    /// <returns> Р РµР·СѓР»СЊС‚Р°С‚ РІС‹РїРѕР»РЅРµРЅРёСЏ РѕРїРµСЂР°С†РёРё Рё РїСЂРё СѓРґР°С‡РЅРѕРј СЃС‚РµС‡РµРЅРёРё СЃРїРёСЃРѕРє РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ Р·Р°РїРёСЃР°РЅРЅС‹С… РІ СЃРёСЃС‚РµРјРµ Identity </returns>
     Task<Result<IEnumerable<AuthUser>>> GetAllUsersAsync(CancellationToken Cancel = default);
 
-    /// <summary> Метод клиента для удаления пользователя по email в Identity </summary>
-    /// <param name="Email"> Email пользователя </param>
-    /// <param name="Cancel"> Токен отмены </param>
-    /// <returns> Результат выполнения операции </returns>
+    /// <summary> РњРµС‚РѕРґ РєР»РёРµРЅС‚Р° РґР»СЏ СѓРґР°Р»РµРЅРёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїРѕ email РІ Identity </summary>
+    /// <param name="Email"> Email РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ </param>
+    /// <param name="Cancel"> РўРѕРєРµРЅ РѕС‚РјРµРЅС‹ </param>
+    /// <returns> Р РµР·СѓР»СЊС‚Р°С‚ РІС‹РїРѕР»РЅРµРЅРёСЏ РѕРїРµСЂР°С†РёРё </returns>
     Task<Result.Result> DeleteUserByEmailAsync(string Email, CancellationToken Cancel = default);
 
-    /// <summary>  Метод клиента для получения Refresh токена из системы Identity для текущего авторизованного пользователя </summary>
-    /// <param name="Cancel"> Токен отмены </param>
-    /// <returns> Результат выполнения операции и при удачном стечении обновлённый Refresh токен </returns>
+    /// <summary>  РњРµС‚РѕРґ РєР»РёРµРЅС‚Р° РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ Refresh С‚РѕРєРµРЅР° РёР· СЃРёСЃС‚РµРјС‹ Identity РґР»СЏ С‚РµРєСѓС‰РµРіРѕ Р°РІС‚РѕСЂРёР·РѕРІР°РЅРЅРѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ </summary>
+    /// <param name="Cancel"> РўРѕРєРµРЅ РѕС‚РјРµРЅС‹ </param>
+    /// <returns> Р РµР·СѓР»СЊС‚Р°С‚ РІС‹РїРѕР»РЅРµРЅРёСЏ РѕРїРµСЂР°С†РёРё Рё РїСЂРё СѓРґР°С‡РЅРѕРј СЃС‚РµС‡РµРЅРёРё РѕР±РЅРѕРІР»С‘РЅРЅС‹Р№ Refresh С‚РѕРєРµРЅ </returns>
     Task<Result<RefreshTokenResponse>> GetRefreshTokenAsync(CancellationToken Cancel = default);
 }

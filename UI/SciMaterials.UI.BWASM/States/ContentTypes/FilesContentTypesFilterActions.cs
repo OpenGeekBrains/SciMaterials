@@ -11,8 +11,8 @@ public static class FilesContentTypesFilterActions
     public record struct UpdateContentTypesFilterAction(ImmutableArray<ContentTypeState> Selected);
 
     public static LoadContentTypesAction LoadContentTypes() => new();
-    public static LoadContentTypesAction ForceReloadContentTypes() => new();
-    public static LoadContentTypesAction LoadContentTypesStart() => new();
+    public static ForceReloadContentTypesAction ForceReloadContentTypes() => new();
+    public static LoadContentTypesStartAction LoadContentTypesStart() => new();
     public static LoadContentTypesResultAction LoadContentTypesResult(ImmutableArray<ContentTypeState> contentTypes) => new(contentTypes);
     public static UpdateContentTypesFilterAction UpdateFilter(ImmutableArray<ContentTypeState> selected) => new(selected);
 }

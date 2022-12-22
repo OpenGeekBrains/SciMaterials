@@ -1,0 +1,18 @@
+<EditForm Model="@DeleteTagsModel" OnValidSubmit="@OnDeleteSaveClickAsync">
+    <MudDialog>
+        <TitleContent>
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.Delete" Class="mr-3 mb-n1" />
+                Delete current Tag
+            </MudText>
+        </TitleContent>
+        <DialogContent>
+            <MudGrid>
+            </MudGrid>
+        </DialogContent>
+        <DialogActions>
+            <MudButton DisableElevation Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Warning" OnClick="OnCancelClick">Cancel</MudButton>
+            <MudButton DisableElevation Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Error">Delete</MudButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>
