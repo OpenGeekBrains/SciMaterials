@@ -23,6 +23,8 @@ services.AddHttpContextAccessor();
 
 var serverUrl = builder.WebHost.GetSetting(WebHostDefaults.ServerUrlsKey);
 
+services.AddMediator();
+
 services
     .ConfigureFilesUploadSupport(config)
     .AddResourcesDatabaseProviders(config)
