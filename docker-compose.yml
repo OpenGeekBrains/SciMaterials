@@ -6,53 +6,60 @@ services:
     image: scimaterialsuimvc:latest
     restart: on-failure
     depends_on:
-      - postgres_db
-      - mssql_db
+    #- postgres_db
+    - mssql_db
     build:
       context: .
       dockerfile: UI/SciMaterials.UI.MVC/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-      - IdentityDatabase__Provider=SQLite
-      - IdentityDatabase__RemoveAtStart=false
-      - IdentityDatabase__UseDataSeeder=false
-      - ResourcesDatabase__Provider=SqlServer.Docker
-      - ResourcesDatabase__RemoveAtStart=false
-      - ResourcesDatabase__UseDataSeeder=false
+    - ASPNETCORE_ENVIRONMENT=Development
+    - ASPNETCORE_URLS=http://+:80
+    - IdentityDatabase__Provider=SQLite
+    - IdentityDatabase__RemoveAtStart=false
+    - IdentityDatabase__UseDataSeeder=false
+    - ResourcesDatabase__Provider=SqlServer.Docker
+    - ResourcesDatabase__RemoveAtStart=false
+    - ResourcesDatabase__UseDataSeeder=false
     ports:
-      - "5003:80"
+    - "5003:80"
     volumes:
-      - mvc:/var/lib/mvc/data/
+    - mvc:/var/lib/mvc/data/
     networks:
-      - scimaterials_network
+    - scimaterials_network
   
-  postgres_db:
-    container_name: postgres_db
-    image: postgres:latest
-    restart: on-failure
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-    #ports:
-    #  - "5432:5432"
-    volumes:
-      - db:/var/lib/postgresql_auth/data/
-    networks:
-      - scimaterials_network
+  #postgres_db:
+  #  container_name: postgres_db
+  #  image: postgres:latest
+  #  restart: on-failure
+  #  environment:
+  #  - POSTGRES_USER=postgres
+  #  - POSTGRES_PASSWORD=password
+  #  #ports:
+  #  #- "5432:5432"
+  #  volumes:
+  #  - postgres_db:/var/lib/postgresql_auth/data/
+  #  networks:
+  #  - scimaterials_network
 
   mssql_db:
     container_name: MSSQL
-    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=yourStrong1_2Password
-      - MSSQL_PID=Express
+    - ACCEPT_EULA=Y
+    - SA_PASSWORD=yourStrong1_2Password
+    - MSSQL_PID=Express
+    volumes:
+    - mssql_db:/var/opt/mssql/data
+    - mssql_db_logs:/var/opt/mssql/log
+    - mssql_db_secrets:/var/opt/mssql/secrets
     networks:
-      - scimaterials_network
+    - scimaterials_network
 
 volumes:
-    db:
+    #postgres_db:
+    mssql_db:
+    mssql_db_logs:
+    mssql_db_secrets:
     mvc:
 
 networks:
