@@ -1,5 +1,6 @@
 using Fluxor;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using SciMaterials.Contracts.API.DTO.Categories;
 using SciMaterials.Contracts.API.DTO.Files;
 using SciMaterials.Contracts.WebApi.Clients.Categories;
@@ -10,31 +11,32 @@ namespace SciMaterials.UI.BWASM.Pages.categories
 {
     public partial class CategoryView
     {
-        [Parameter] public Guid Id { get; set; }
-        [Inject] private ICategoriesClient CategoriesClient { get; set; }
-        [Inject] private IFilesClient FilesClient { get; set; }
-        [Inject] private IDispatcher Dispatcher { get; set; }
-        [Inject] private IState<FilesCategoriesState> State { get; set; }
-        [Inject] private NavigationManager NavigationManager { get; set; }
-        
+        [Parameter] public Guid CategoryId { get; set; }
+        [Inject] private ICategoriesClient _CategoriesClient { get; set; }
+        [Inject] private IFilesClient _FilesClient { get; set; }
+        [Inject] private IDispatcher _Dispatcher { get; set; }
+        [Inject] private IState<FilesCategoriesState> _State { get; set; }
+        [Inject] private IDialogService _DialogService { get; set; }
+        [Inject] private NavigationManager _NavigationManager { get; set; }
+
         private IEnumerable<GetFileResponse>? _Files = new List<GetFileResponse>();
         private GetCategoryResponse? _CurrentCategory { get; set; }
         private string? _Icon_CSharp = "icons/c_sharp.png";
         private string? _SearchString { get; set; }
         private bool _IsLoading = true;
-
-        protected override async Task OnInitializedAsync()
+        
+        protected override async Task OnParametersSetAsync()
         {
-            base.OnInitializedAsync();
+            base.OnParametersSetAsync();
             
-            Dispatcher.Dispatch(new FilesCategoriesActions.LoadCategoriesAction());
+            _Dispatcher.Dispatch(FilesCategoriesActions.LoadCategories());
             
-            var categoriesResult = await CategoriesClient.GetByIdAsync(Id).ConfigureAwait(false);
+            var categoriesResult = await _CategoriesClient.GetByIdAsync(CategoryId).ConfigureAwait(false);
             if (categoriesResult.Succeeded)
             {
                 _CurrentCategory = categoriesResult.Data;
                 
-                var filesResult = await FilesClient.GetAllAsync().ConfigureAwait(false);
+                var filesResult = await _FilesClient.GetAllAsync().ConfigureAwait(false);
                 if (filesResult.Succeeded)
                 {
                     _Files = filesResult.Data;
@@ -43,30 +45,60 @@ namespace SciMaterials.UI.BWASM.Pages.categories
                 }
             }
         }
-        
-        protected override async Task OnParametersSetAsync()
+
+        private async Task OnLinkClickAsync(Guid? FileId)
         {
-            base.OnParametersSetAsync();
-            
-            Dispatcher.Dispatch(new FilesCategoriesActions.LoadCategoriesAction());
-            
-            var result = await CategoriesClient.GetByIdAsync(Id).ConfigureAwait(false);
-            if (result.Succeeded)
-            {
-                _CurrentCategory = result.Data;
-            }
+            _NavigationManager.NavigateTo($"/filedetails/{FileId}");
         }
-        
-        private async Task OnCategoryClick(Guid? CategoryId)
+
+        private async Task OnCategoryClickAsync(Guid? CategoryId)
         {
-            NavigationManager.NavigateTo($"/categories_storage/{CategoryId}");
+            _NavigationManager.NavigateTo($"/categories_storage/{CategoryId}");
         }
 
         private void OnBackClick()
         {
-            NavigationManager.NavigateTo("/categories_storage");
+            _NavigationManager.NavigateTo("/categories_storage");
         }
+        
+        private async Task OnEditClickAsync()
+        {
+            var options = new DialogOptions()
+            {
+                CloseOnEscapeKey     = true,
+                MaxWidth             = MaxWidth.Medium, 
+                FullWidth            = true, 
+                DisableBackdropClick = true
+            };
 
+            var parameters = new DialogParameters();
+            parameters.Add(nameof(CategoriesEditDialog.EditCategoriesModel), new EditCategoryRequest() {Id = CategoryId});
+            
+            await _DialogService.ShowAsync<CategoriesEditDialog>(
+                title: "Edit category name and description",
+                options: options,
+                parameters: parameters).ConfigureAwait(false);
+        }
+        
+        private async Task OnDeleteClickAsync()
+        {
+            var options = new DialogOptions()
+            {
+                CloseOnEscapeKey     = true,
+                MaxWidth             = MaxWidth.Medium, 
+                FullWidth            = true, 
+                DisableBackdropClick = true
+            };
+
+            var parameters = new DialogParameters();
+            parameters.Add(nameof(CategoriesDeleteDialog.DeleteCategoriesModel), new EditCategoryRequest() {Id = CategoryId});
+            
+            await _DialogService.ShowAsync<CategoriesDeleteDialog>(
+                title: "Delete category",
+                options: options,
+                parameters: parameters).ConfigureAwait(false);
+        }
+        
         private Func<GetFileResponse, bool> _QuickSearch => (x) => 
         {
             if (string.IsNullOrWhiteSpace(_SearchString))

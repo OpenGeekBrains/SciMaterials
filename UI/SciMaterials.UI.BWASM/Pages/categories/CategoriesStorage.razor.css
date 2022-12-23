@@ -1,6 +1,5 @@
-﻿::deep .refresh_button-description {
-    margin-top: 15px;
-    margin-bottom: 15px;
+﻿::deep .control-buttons-description {
+    margin: 15px 70px 15px;
 }
 
 ::deep .search_element-description  {

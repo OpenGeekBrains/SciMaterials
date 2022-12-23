@@ -12,9 +12,14 @@
             <MudText Align="Align.Start" Typo="Typo.h6">Manage Categories</MudText>
 
             <div>
-            <MudTooltip Text="Back">
-                <MudFab class="refresh_button-description" Color="Color.Tertiary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Refresh" OnClick="OnRefreshClickAsync"/>
-            </MudTooltip>
+                <MudStack class="control-buttons-description" Row="true" Justify="Justify.SpaceAround">
+                    <MudTooltip Text="Back">
+                        <MudFab Color="Color.Tertiary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Refresh" OnClick="OnRefreshClickAsync"/>
+                    </MudTooltip>
+                    <MudTooltip Text="Add">
+                        <MudFab Color="Color.Primary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Add" OnClick="OnAddClickAsync"/>
+                    </MudTooltip>
+                </MudStack>
             </div>
             <div>
                 <MudTextField class="search_element-description" T="string" ValueChanged="@OnSearchAsync" Placeholder="Search category" Adornment="Adornment.Start"
