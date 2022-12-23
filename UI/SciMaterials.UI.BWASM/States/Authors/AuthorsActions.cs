@@ -10,7 +10,7 @@ public static class AuthorsActions
     public record struct LoadAuthorsResultAction(ImmutableArray<AuthorState> Authors);
 
     public static LoadAuthorsAction LoadAuthors() => new();
-    public static LoadAuthorsAction ForceReloadAuthors() => new();
-    public static LoadAuthorsAction LoadAuthorsStart() => new();
+    public static ForceReloadAuthorsAction ForceReloadAuthors() => new();
+    public static LoadAuthorsStartAction LoadAuthorsStart() => new();
     public static LoadAuthorsResultAction LoadAuthorsResult(ImmutableArray<AuthorState> authors) => new(authors);
 }

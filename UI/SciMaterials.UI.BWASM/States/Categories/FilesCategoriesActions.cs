@@ -12,7 +12,7 @@ public static class FilesCategoriesActions
 
     public static BuildTreeResultAction BuildTreeResult(HashSet<TreeFileCategory> tree) => new(tree);
     public static LoadCategoriesAction LoadCategories() => new();
-    public static LoadCategoriesAction ForceReloadCategories() => new();
-    public static LoadCategoriesAction LoadCategoriesStart() => new();
+    public static ForceReloadCategoriesAction ForceReloadCategories() => new();
+    public static LoadCategoriesStartAction LoadCategoriesStart() => new();
     public static LoadCategoriesResultAction LoadCategoriesResult(ImmutableArray<FileCategory> categories) => new(categories);
 }

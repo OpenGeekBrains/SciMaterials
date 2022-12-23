@@ -1,6 +1,7 @@
 @using System.Diagnostics.CodeAnalysis
 @using System.Linq.Expressions
 @using System.Runtime.InteropServices
+@using SciMaterials.Contracts.API.DTO.Files
 
 @if (IsLoading)
 {
@@ -15,14 +16,11 @@ else
             <MudTooltip Text="Back">
                 <MudFab Color="Color.Tertiary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.ArrowBack" OnClick="@OnBackClick"/>
             </MudTooltip>
-            <MudTooltip Text="Add">
-                <MudFab Color="Color.Primary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Add"/>
-            </MudTooltip>
             <MudTooltip Text="Edit">
-                <MudFab Color="Color.Primary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Edit"/>
+                <MudFab Color="Color.Primary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Edit" OnClick="@OnEditClick"/>
             </MudTooltip>
             <MudTooltip Text="Delete">
-                <MudFab Color="Color.Primary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Delete"/>
+                <MudFab Color="Color.Primary" DisableElevation="true" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Delete" OnClick="@OnDeleteClick"/>
             </MudTooltip>
         </MudStack>
     </div>
@@ -32,18 +30,17 @@ else
 
 @code {
     
-    [Parameter]
-    public RenderFragment? SkeletonTemplate { get; set; }
+    [Parameter] public RenderFragment? SkeletonTemplate { get; set; }
     
-    [Parameter]
-    public RenderFragment? HeaderContent { get; set; }
+    [Parameter] public RenderFragment? HeaderContent { get; set; }
 
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    [Parameter]
-    public bool IsLoading { get; set; }
+    [Parameter] public bool IsLoading { get; set; }
     
-    [Parameter]
-    public EventCallback<MouseEventArgs> OnBackClick { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnBackClick { get; set; }
+
+    [Parameter] public EventCallback<MouseEventArgs> OnEditClick { get; set; }
+
+    [Parameter] public EventCallback<MouseEventArgs> OnDeleteClick { get; set; }
 }

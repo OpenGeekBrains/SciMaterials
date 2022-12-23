@@ -25,7 +25,7 @@ public class FilesCategoriesEffects
         await ForceReloadCategories(dispatcher);
     }
 
-    [EffectMethod(typeof(FilesCategoriesActions.LoadCategoriesAction))]
+    [EffectMethod(typeof(FilesCategoriesActions.ForceReloadCategoriesAction))]
     public async Task ForceReloadCategories(IDispatcher dispatcher)
     {
         dispatcher.Dispatch(FilesCategoriesActions.LoadCategoriesStart());

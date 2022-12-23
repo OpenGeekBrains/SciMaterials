@@ -1,5 +1,5 @@
 namespace SciMaterials.Contracts.Identity.API;
 
-/// <summary> �������� ��� Identity </summary>
+/// <summary> контракт Identity </summary>
 public interface IIdentityApi : IUsersApi, IRolesApi
 { }

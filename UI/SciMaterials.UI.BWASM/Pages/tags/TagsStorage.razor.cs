@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using SciMaterials.Contracts.API.DTO.Tags;
 using SciMaterials.Contracts.WebApi.Clients.Tags;
 
@@ -6,8 +7,9 @@ namespace SciMaterials.UI.BWASM.Pages.tags
 {
     public partial class TagsStorage
     {
-        [Inject] private ITagsClient TagsClient { get; set; }
-        [Inject] private NavigationManager NavigationManager { get; set; }
+        [Inject] private ITagsClient _TagsClient { get; set; }
+        [Inject] private NavigationManager _NavigationManager { get; set; }
+        [Inject] private IDialogService _DialogService { get; set; }
         private IEnumerable<GetTagResponse>? _Tags = new List<GetTagResponse>();
         private string? _Icon_HashTag = "icons/hash_tag.png";
         private bool _IsLoading = true;
@@ -16,7 +18,7 @@ namespace SciMaterials.UI.BWASM.Pages.tags
         {
             base.OnInitializedAsync();
             
-            var result = await TagsClient.GetAllAsync().ConfigureAwait(false);
+            var result = await _TagsClient.GetAllAsync().ConfigureAwait(false);
             if (result.Succeeded)
             {
                 _Tags      = result.Data;
@@ -26,7 +28,7 @@ namespace SciMaterials.UI.BWASM.Pages.tags
         
         private async Task OnSearchAsync(string text)
         {
-            var result = await TagsClient.GetAllAsync().ConfigureAwait(false);
+            var result = await _TagsClient.GetAllAsync().ConfigureAwait(false);
             if (result.Succeeded)
             {
                 var data = result.Data;
@@ -44,9 +46,24 @@ namespace SciMaterials.UI.BWASM.Pages.tags
             }
         }
         
-        private void OnTagClick(Guid Id)
+        private async Task OnAddClickAsync()
         {
-            NavigationManager.NavigateTo($"/tags_storage/{Id}");
+            var options = new DialogOptions()
+            {
+                CloseOnEscapeKey     = true,
+                MaxWidth             = MaxWidth.Medium, 
+                FullWidth            = true, 
+                DisableBackdropClick = true
+            };
+            
+            await _DialogService.ShowAsync<TagsAddDialog>(
+                title: "Add new tag",
+                options: options).ConfigureAwait(false);
+        }
+        
+        private void OnTagClick(Guid TagId)
+        {
+            _NavigationManager.NavigateTo($"/tags_storage/{TagId}");
         }
         
         private async Task OnRefreshClickAsync()
