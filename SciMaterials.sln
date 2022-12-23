@@ -59,6 +59,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Services", ".Services", "{
 		.gitignore = .gitignore
 		ClearCache.bat = ClearCache.bat
 		ClearObjBin.bat = ClearObjBin.bat
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
@@ -95,13 +97,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{FD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{8D15183D-07CF-4657-A4CA-09C383F266FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciMaterials.Services.Identity.API", "Services\SciMaterials.Services.Identity.API\SciMaterials.Services.Identity.API.csproj", "{9024956A-6A4D-4135-934D-47C4A9560E95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.Services.Identity.API", "Services\SciMaterials.Services.Identity.API\SciMaterials.Services.Identity.API.csproj", "{9024956A-6A4D-4135-934D-47C4A9560E95}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{C2DBB089-948F-413D-BEA5-5774FB4A2B03}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{0D9E68C6-CABE-4268-8D82-7D1CDF0197B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciMaterials.Identity.Tests", "Tests\SciMaterials.Identity.Tests\SciMaterials.Identity.Tests.csproj", "{AC102EC5-706D-42ED-A799-F6AA0F0893A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.Identity.Tests", "Tests\SciMaterials.Identity.Tests\SciMaterials.Identity.Tests.csproj", "{AC102EC5-706D-42ED-A799-F6AA0F0893A7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{7E05B1FC-8856-4B0B-972D-20C6B8012512}"
 EndProject
@@ -283,8 +285,8 @@ Global
 		{9024956A-6A4D-4135-934D-47C4A9560E95} = {C2DBB089-948F-413D-BEA5-5774FB4A2B03}
 		{C2DBB089-948F-413D-BEA5-5774FB4A2B03} = {7E25424F-B3C1-4CB5-B034-36AF7169CCAA}
 		{0D9E68C6-CABE-4268-8D82-7D1CDF0197B3} = {7E25424F-B3C1-4CB5-B034-36AF7169CCAA}
-		{7E05B1FC-8856-4B0B-972D-20C6B8012512} = {2DCB8316-A1A3-4A2A-9C6E-4C834963DAD1}
 		{AC102EC5-706D-42ED-A799-F6AA0F0893A7} = {7E05B1FC-8856-4B0B-972D-20C6B8012512}
+		{7E05B1FC-8856-4B0B-972D-20C6B8012512} = {2DCB8316-A1A3-4A2A-9C6E-4C834963DAD1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {69CA7005-2892-4D9A-9575-8BCEC07E43F2}
