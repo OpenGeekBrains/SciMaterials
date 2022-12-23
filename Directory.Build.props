@@ -8,6 +8,10 @@
 
   <PropertyGroup>
     <IgnoreWarnings>True</IgnoreWarnings>
+
+    <SourceRevisionId>
+      ^build_date$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss:fffZ"))
+    </SourceRevisionId>
   </PropertyGroup>
 
 </Project>
