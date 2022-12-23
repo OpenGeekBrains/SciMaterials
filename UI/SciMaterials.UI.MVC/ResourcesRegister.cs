@@ -72,27 +72,27 @@ public static class ResourcesRegister
 
     public static IServiceCollection AddResourcesDatabaseProviders(this IServiceCollection services, IConfiguration configuration)
     {
-        var dbSettings = configuration.GetSection("ResourcesDatabase").Get<DatabaseSettings>();
+        var db_settings = configuration.GetSection("ResourcesDatabase").Get<DatabaseSettings>();
 
-        var providerName = dbSettings.GetProviderName();
-        var connectionString = configuration.GetSection("ResourcesDatabase").GetConnectionString(dbSettings.Provider);
+        var provider_name = db_settings.GetProviderName();
+        var connection_string = configuration.GetSection("ResourcesDatabase").GetConnectionString(db_settings.Provider);
 
-        switch (providerName.ToLower())
+        switch (provider_name.ToLower())
         {
             case "sqlserver":
-                services.AddSciMaterialsContextSqlServer(connectionString);
+                services.AddSciMaterialsContextSqlServer(connection_string);
                 break;
             case "postgresql":
-                services.AddSciMaterialsContextPostgreSQL(connectionString);
+                services.AddSciMaterialsContextPostgreSQL(connection_string);
                 break;
             case "mysql":
-                services.AddSciMaterialsContextMySql(connectionString);
+                services.AddSciMaterialsContextMySql(connection_string);
                 break;
             case "sqlite":
-                services.AddSciMaterialsContextSqlite(connectionString);
+                services.AddSciMaterialsContextSqlite(connection_string);
                 break;
             default:
-                throw new Exception($"Unsupported provider: {providerName}");
+                throw new Exception($"Unsupported provider: {provider_name}");
         }
 
         return services;

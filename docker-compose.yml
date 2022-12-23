@@ -43,7 +43,7 @@ services:
 
   mssql_db:
     container_name: MSSQL
-    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
     environment:
     - ACCEPT_EULA=Y
     - SA_PASSWORD=yourStrong1_2Password

@@ -49,6 +49,9 @@ public class ResourcesDatabaseManager : IDatabaseManager
 
         Cancel.ThrowIfCancellationRequested();
 
+        var connection_string = _db.Database.GetConnectionString();
+        _Logger.LogInformation("Using connection string:{0}", connection_string);
+
         try
         {
             if (_db.Database.IsRelational())
