@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using SciMaterials.Contracts.Identity.API.Requests.Users;
 using SciMaterials.Contracts.Identity.API.Responses.DTO;
 using SciMaterials.Contracts.Identity.API.Responses.User;
 using SciMaterials.Contracts.Result;
+using SciMaterials.Mediator.Identity.Pipelines.UserRegistration;
 
 namespace SciMaterials.UI.MVC.Identity.Controllers;
 
@@ -25,6 +27,7 @@ public class AccountController : Controller, IIdentityApi
     private readonly IHttpContextAccessor _ContextAccessor;
     private readonly IAuthUtils _authUtilits;
     private readonly ILogger<AccountController> _Logger;
+    private readonly IMediator _Mediator;
 
     public AccountController(
         UserManager<IdentityUser> UserManager,
@@ -32,60 +35,24 @@ public class AccountController : Controller, IIdentityApi
         RoleManager<IdentityRole> RoleManager,
         IHttpContextAccessor ContextAccessor,
         IAuthUtils authUtilits,
-        ILogger<AccountController> Logger)
+        ILogger<AccountController> Logger,
+        IMediator Mediator)
     {
-        _UserManager = UserManager;
-        _SignInManager = SignInManager;
-        _RoleManager = RoleManager;
-        _Logger = Logger;
+        _UserManager     = UserManager;
+        _SignInManager   = SignInManager;
+        _RoleManager     = RoleManager;
+        _Logger          = Logger;
+        _Mediator   = Mediator;
         _ContextAccessor = ContextAccessor;
-        _authUtilits = authUtilits;
+        _authUtilits     = authUtilits;
     }
     
     [AllowAnonymous]
     [HttpPost(AuthApiRoute.Register)]
-    public async Task<Result<RegisterUserResponse>> RegisterUserAsync([FromBody] RegisterRequest RegisterRequest, CancellationToken Cancel = default)
+    public async Task<Result> RegisterUserAsync([FromBody] RegisterRequest RegisterRequest, CancellationToken Cancel = default)
     {
-        try
-        {
-            Cancel.ThrowIfCancellationRequested();
-
-            var identity_user = new IdentityUser { Email = RegisterRequest.Email, UserName = RegisterRequest.NickName };
-            var identity_result = await _UserManager.CreateAsync(identity_user, RegisterRequest.Password);
-
-            Cancel.ThrowIfCancellationRequested();
-
-            if (identity_result.Succeeded)
-            {
-                await _UserManager.AddToRoleAsync(identity_user, AuthApiRoles.User);
-                var email_confirm_token = await _UserManager.GenerateEmailConfirmationTokenAsync(identity_user);
-
-                var callback_url = Url.Action(
-                    action: "ConfirmEmail",
-                    controller: "Accounts",
-                    values: new { UserId = identity_user.Id, ConfirmToken = email_confirm_token },
-                    protocol: HttpContext.Request.Scheme);
-
-                return Result<RegisterUserResponse>.Success(new RegisterUserResponse(callback_url));
-            }
-
-            var errors = identity_result.Errors.Select(e => e.Description).ToArray();
-            _Logger.LogInformation(
-                "Не удалось зарегистрировать пользователя {Email}: {errors}",
-                RegisterRequest.Email,
-                string.Join(",", errors));
-
-            return Result<RegisterUserResponse>.Failure(Errors.Identity.Register.Fail);
-        }
-        catch (OperationCanceledException)
-        {
-            return Result<RegisterUserResponse>.Failure(Errors.App.OperationCanceled);
-        }
-        catch (Exception ex)
-        {
-            _Logger.LogError("Пользователя не удалось зарегистрировать {Ex}", ex);
-            return Result<RegisterUserResponse>.Failure(Errors.Identity.Register.Unhandled);
-        }
+        var result = await _Mediator.Send(new RegisterUser(RegisterRequest.Email, RegisterRequest.NickName, RegisterRequest.Password), Cancel);
+        return result;
     }
     
     [AllowAnonymous]

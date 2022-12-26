@@ -5,7 +5,7 @@ using SciMaterials.Contracts.Result;
 
 namespace SciMaterials.Mediator.Identity.Pipelines.UserRegistration;
 
-public sealed record RegisterUser(RegisterRequest Request) : IRequest<Result<RegisterUserResponse>>;
+public sealed record RegisterUser(string Email, string UserName, string Password) : IRequest<Result>;
 
 
 public sealed class RegisterUserHandler : IRequestHandler<RegisterUser, Result<RegisterUserResponse>>
