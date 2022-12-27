@@ -27,7 +27,7 @@ public class IdentityClientOperationDecorator : IIdentityApi
         _Logger                         = Logger;
         _IdentityApiImplementation = IdentityApiImplementation;
     }
-    public async Task<Result<RegisterUserResponse>> RegisterUserAsync(RegisterRequest RegisterRequest, CancellationToken cancel = default)
+    public async Task<Result> RegisterUserAsync(RegisterRequest RegisterRequest, CancellationToken cancel = default)
     {
         var result = await HandleOperation(_IdentityApiImplementation.RegisterUserAsync(RegisterRequest, cancel));
         return result;

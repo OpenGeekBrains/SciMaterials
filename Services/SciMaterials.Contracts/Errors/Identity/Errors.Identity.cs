@@ -11,6 +11,7 @@ public static partial class Errors
         {
             public static readonly Error Unhandled = new("IDEN000", "Пользователя не удалось зарегистрировать");
             public static readonly Error Fail = new("IDEN001", "Не удалось зарегистрировать пользователя");
+            public static readonly Error FailToRegisterInServices = new("IDEN002", "Не удалось зарегистрировать пользователя в сервисах");
         }
 
         public static class Login

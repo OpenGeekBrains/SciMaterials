@@ -90,7 +90,7 @@ public class AccountControllerTests : IAsyncLifetime
 
         var result = await response.EnsureSuccessStatusCode()
            .Content
-           .ReadFromJsonAsync<Result<RegisterUserResponse>>();
+           .ReadFromJsonAsync<Result>();
 
         Assert.NotNull(result);
         Assert.Equal(string.Empty, result.Code);

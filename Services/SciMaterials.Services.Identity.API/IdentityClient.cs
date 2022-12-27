@@ -34,16 +34,16 @@ public class IdentityClient : IIdentityApi
     // TODO: Убрать, это не задача клиента устанавливать токен авторизации при запросе, к тому же эта операция не конкурентна
     private static AuthenticationHeaderValue? AuthorizationHeader { get; set; }
 
-    public async Task<Result<RegisterUserResponse>> RegisterUserAsync(RegisterRequest RegisterRequest, CancellationToken Cancel = default)
+    public async Task<Result> RegisterUserAsync(RegisterRequest RegisterRequest, CancellationToken Cancel = default)
     {
         _Logger.Log(LogLevel.Information, "RegisterUser {Email}", RegisterRequest.Email);
         var content = JsonSerializer.Serialize(RegisterRequest, _Options);
         var body_content = new StringContent(content, Encoding.UTF8, "application/json");
 
         var registration_result = await _Client.PostAsync($"{ApiRoot}{AuthApiRoute.Register}", body_content, Cancel);
-        var result = await registration_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<Result<RegisterUserResponse>>(cancellationToken: Cancel);
+        var result = await registration_result.EnsureSuccessStatusCode().Content.ReadFromJsonAsync<Result>(cancellationToken: Cancel);
 
-        return result ?? Result<RegisterUserResponse>.Failure(Errors.App.ParseFailure);
+        return result ?? Result.Failure(Errors.App.ParseFailure);
     }
     
     public async Task<Result<LoginUserResponse>> LoginUserAsync(LoginRequest loginRegister, CancellationToken Cancel = default)

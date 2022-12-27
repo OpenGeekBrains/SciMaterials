@@ -22,7 +22,7 @@ public class AccountTestController : Controller
         CancellationToken Cancel = default)
     {
         var response = await _IdentityApi.RegisterUserAsync(RegisterRequest, Cancel);
-        return Ok(response.Data?.ConfirmEmail);
+        return Ok(response);
     }
     
     [HttpPost(AuthApiRoute.Login)]
