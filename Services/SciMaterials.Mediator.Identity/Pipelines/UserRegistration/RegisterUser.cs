@@ -49,12 +49,14 @@ public sealed class RegisterUserHandler : IRequestHandler<RegisterUser, Result>
             var result = await _Mediator.Send(new RegisterUserInServices(identity_user.Id, Request.UserName, Request.Email), Cancel);
             if (result.IsFaulted)
             {
-                // Send notification to moderators to handle failure on registration
                 _Logger.LogWarning(
                     "Не удалось зарегистрировать пользователя {Email} в сервисах: {ErrorCode}",
                     Request.Email,
                     result.Code);
-                return Result.Failure(Errors.Identity.Register.FailToRegisterInServices);
+                var error = Errors.Identity.Register.FailToRegisterInServices;
+                // Send notification to moderators to handle failure on registration
+                await _Mediator.Publish(new NotifyModeratorsAboutProblem(error), Cancel);
+                return Result.Failure(error);
             }
 
             await _Mediator.Send(new SendConfirmationLinkToEmail(identity_user.Id, email_confirm_token), Cancel);
