@@ -1,10 +1,8 @@
 ﻿using System.Text;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-
 using SciMaterials.Contracts.Identity.API;
 using SciMaterials.DAL.AUTH.Context;
 using SciMaterials.DAL.AUTH.Contracts;
@@ -127,15 +125,22 @@ public static class IdentityRegister
         return Services.AddSingleton<IAuthUtils, AuthUtils>();
     }
     
+    /// <summary>Метод расширения для Identity клиента</summary>
+    /// <param name="services">Сервисы</param>
+    /// <param name="serverUrl">Url сервера</param>
+    /// <returns></returns>
     public static IServiceCollection AddIdentityClients(this IServiceCollection services, string serverUrl)
     {
         services.AddHttpClient<IIdentityApi, IdentityClient>("IdentityApi", c =>
         {
             c.BaseAddress = new Uri(serverUrl);
         });
+        
         return services;
     }
-
+    
+    /// <summary>Метод расширения для инициализации базы данных Identity</summary>
+    /// <param name="app">Интерфес IApplicationBuilder</param>
     public static async Task InitializeIdentityDatabaseAsync(this IApplicationBuilder app)
     {
         await using var scope = app.ApplicationServices.CreateAsyncScope();

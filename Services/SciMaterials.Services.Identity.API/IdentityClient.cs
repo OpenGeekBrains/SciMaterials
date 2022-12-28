@@ -2,9 +2,7 @@
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-
 using Microsoft.Extensions.Logging;
-
 using SciMaterials.Contracts;
 using SciMaterials.Contracts.Identity.API;
 using SciMaterials.Contracts.Identity.API.Requests.Roles;
@@ -18,7 +16,8 @@ namespace SciMaterials.Services.Identity.API;
 /// <summary> Имплементация зеркала <see cref="IIdentityApi"/> для общения с сервером на стороне клиента операций </summary>
 public class IdentityClient : IIdentityApi
 {
-    private readonly HttpClient _Client;
+    private HttpClient _Client;
+    private readonly IHttpClientFactory _HttpClientFactory;
     private readonly JsonSerializerOptions _Options;
     private readonly ILogger<IdentityClient> _Logger;
 
