@@ -7,6 +7,7 @@ services:
     restart: on-failure
     depends_on:
       - postgres_db
+      - sqlserver_db
     build:
       context: .
       dockerfile: UI/SciMaterials.UI.MVC/Dockerfile
@@ -34,10 +35,24 @@ services:
       - db:/var/lib/postgresql_auth/data/
     networks:
       - scimaterials_network
+  
+  sqlserver_db:
+    container_name: sqlserver2019_db
+    image: mcr.microsoft.com/mssql/server:2019-CU14-ubuntu-20.04
+    restart: on-failure
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=veryStrongPassword123
+    ports:
+      - "1433:1433"
+    volumes:
+      - db:/var/lib/sqlserver2019/data/
+    networks:
+      - scimaterials_network
 
 volumes:
-    db:
-    mvc:
+  db:
+  mvc:
 
 networks:
   scimaterials_network:

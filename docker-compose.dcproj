@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>d9906eb7-cfa8-4858-96d6-73dadd62c3d3</ProjectGuid>
+    <ProjectGuid>fcfd9f40-1152-490c-91c5-afe91ce8fc73</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>scimaterials.ui.mvc</DockerServiceName>
