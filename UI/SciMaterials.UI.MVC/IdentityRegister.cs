@@ -28,18 +28,22 @@ public static class IdentityRegister
     /// <exception cref="Exception"></exception>
     public static IServiceCollection AddIdentityDatabase(this IServiceCollection Services, IConfiguration Configuration)
     {
-        var providerName = Configuration.GetSection("IdentityDatabase").GetValue<string>(nameof(DatabaseSettings.Provider));
-
+        // var providerName = Configuration.GetSection("IdentityDatabase").GetValue<string>(nameof(DatabaseSettings.Provider));
+        
+        var dbSettings       = Configuration.GetSection("IdentityDatabase").Get<DatabaseSettings>();
+        var providerName     = dbSettings.GetProviderName();
+        var connectionString = Configuration.GetSection("IdentityDatabase").GetValue<string>(nameof(DatabaseSettings.Provider));
+        
         switch (providerName.ToLower())
         {
             case "postgressql":
-                Services.AddIdentityPostgres();
+                Services.AddIdentityPostgres(connectionString);
                 break;
             case "mysql":
-                Services.AddIdentityMySql();
+                Services.AddIdentityMySql(connectionString);
                 break;
             case "sqlite":
-                Services.AddIdentitySQLite();
+                Services.AddIdentitySQLite(connectionString);
                 break;
             default:
                 throw new Exception($"Unsupported provider: {providerName}");
