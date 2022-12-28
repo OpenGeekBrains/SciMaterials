@@ -10,10 +10,10 @@ namespace SciMaterials.Postgres.Auth.Migrations;
 
 public static class Registrator
 {
-    public static void AddIdentityPostgres(this IServiceCollection services) =>
-        services.AddDbContext<AuthDbContext>(
+    public static void AddIdentityPostgres(this IServiceCollection Services, string ConnectionString) =>
+        Services.AddDbContext<AuthDbContext>(
             (p, opt) => opt.UseNpgsql(
-                BuildConnectionString(p.GetRequiredService<IConfiguration>().GetSection("IdentityDatabase:ConnectionStrings:PostgresSQL")),
+                BuildConnectionString(p.GetRequiredService<IConfiguration>().GetSection($"IdentityDatabase:ConnectionStrings:{ConnectionString}")),
                 o => o.MigrationsAssembly(typeof(Registrator).Assembly.FullName)));
 
     /// <summary>

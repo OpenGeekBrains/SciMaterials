@@ -8,7 +8,7 @@ namespace SciMaterials.Identity.Tests.MockServices
     {
         public RoleManagerMock() : base(
             new Mock<IRoleStore<IdentityRole>>().Object, 
-            Array.Empty<IRoleValidator<IdentityRole>>(),
+            new IRoleValidator<IdentityRole>[0],
             new Mock<ILookupNormalizer>().Object, 
             new Mock<IdentityErrorDescriber>().Object, 
             new Mock<ILogger<RoleManager<IdentityRole>>>().Object)

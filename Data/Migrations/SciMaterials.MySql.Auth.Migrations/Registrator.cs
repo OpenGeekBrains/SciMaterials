@@ -10,11 +10,11 @@ namespace SciMaterials.MySql.Auth.Migrations;
 
 public static class Registrator
 {
-    public static void AddIdentityMySql(this IServiceCollection services) =>
+    public static void AddIdentityMySql(this IServiceCollection services, string ConnectionString) =>
         services.AddDbContext<AuthDbContext>(
             (p, opt) =>
             {
-                var mySqlConfigurationSection = p.GetRequiredService<IConfiguration>().GetSection("IdentityDatabase:ConnectionStrings:MySQL");
+                var mySqlConfigurationSection = p.GetRequiredService<IConfiguration>().GetSection($"IdentityDatabase:ConnectionStrings:{ConnectionString}");
 
                 opt.UseMySql(
                     BuildConnectionString(mySqlConfigurationSection),

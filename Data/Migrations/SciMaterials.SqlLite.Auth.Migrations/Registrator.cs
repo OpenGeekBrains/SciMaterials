@@ -8,10 +8,10 @@ namespace SciMaterials.SqlLite.Auth.Migrations;
 
 public static class Registrator
 {
-    public static void AddIdentitySQLite(this IServiceCollection services) =>
+    public static void AddIdentitySQLite(this IServiceCollection services, string ConnectionString) =>
         services.AddDbContext<AuthDbContext>(
             (p, opt) => opt.UseSqlite(
-                BuildConnectionString(p.GetRequiredService<IConfiguration>().GetSection("IdentityDatabase:ConnectionStrings:SQLite")),
+                BuildConnectionString(p.GetRequiredService<IConfiguration>().GetSection($"IdentityDatabase:ConnectionStrings:{ConnectionString}")),
                 o => o.MigrationsAssembly(typeof(Registrator).Assembly.FullName)));
 
     /// <summary>

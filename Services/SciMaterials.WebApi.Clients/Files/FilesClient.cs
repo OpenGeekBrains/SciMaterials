@@ -74,8 +74,8 @@ public class FilesClient :
                 ?? throw new InvalidOperationException("No response received from the server.");
 
             return new FileStreamInfo(
-                response.Content.Headers.ContentDisposition.FileName ?? throw new InvalidOperationException("Значение имени файла было пустой ссылкой"),
-                response.Content.Headers.ContentType.MediaType!,
+                response.Content.Headers.ContentDisposition.FileName,
+                response.Content.Headers.ContentType.MediaType,
                 stream);
         }
 
