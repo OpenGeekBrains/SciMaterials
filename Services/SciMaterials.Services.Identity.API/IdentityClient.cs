@@ -17,7 +17,6 @@ namespace SciMaterials.Services.Identity.API;
 public class IdentityClient : IIdentityApi
 {
     private HttpClient _Client;
-    private readonly IHttpClientFactory _HttpClientFactory;
     private readonly JsonSerializerOptions _Options;
     private readonly ILogger<IdentityClient> _Logger;
 
