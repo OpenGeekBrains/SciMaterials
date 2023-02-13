@@ -30,6 +30,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\SciMaterials.Contracts\SciMaterials.Contracts.csproj" />
+    <ProjectReference Include="..\..\Identity\Libraries\SciMaterials.Services.Identity.API\SciMaterials.Services.Identity.API.csproj" />
+    <ProjectReference Include="..\..\Materials\Libraries\SciMaterials.Contracts.API\SciMaterials.Contracts.API.csproj" />
+    <ProjectReference Include="..\..\Materials\Libraries\SciMaterials.Contracts.WebApi.Clients\SciMaterials.Contracts.WebApi.Clients.csproj" />
+    <ProjectReference Include="..\..\Materials\Libraries\SciMaterials.WebApi.Clients\SciMaterials.WebApi.Clients.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="Pages\categories\CategoriesStorage.razor.css">
       <DependentUpon>CategoriesStorage.razor</DependentUpon>
     </Content>
