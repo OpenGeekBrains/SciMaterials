@@ -36,15 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Data\Migrations\SciMaterials.Data.MySqlMigrations\SciMaterials.Data.MySqlMigrations.csproj" />
-    <ProjectReference Include="..\..\Data\Migrations\SciMaterials.MsSqlServerMigrations\SciMaterials.MsSqlServerMigrations.csproj" />
-    <ProjectReference Include="..\..\Data\Migrations\SciMaterials.MySql.Auth.Migrations\SciMaterials.MySql.Auth.Migrations.csproj" />
-    <ProjectReference Include="..\..\Data\Migrations\SciMaterials.Postgres.Auth.Migrations\SciMaterials.Postgres.Auth.Migrations.csproj" />
-    <ProjectReference Include="..\..\Data\Migrations\SciMaterials.PostgresqlMigrations\SciMaterials.PostgresqlMigrations.csproj" />
-    <ProjectReference Include="..\..\Data\Migrations\SciMaterials.SQLiteMigrations\SciMaterials.SQLiteMigrations.csproj" />
-    <ProjectReference Include="..\..\Data\Migrations\SciMaterials.SqlLite.Auth.Migrations\SciMaterials.SqlLite.Auth.Migrations.csproj" />
-    <ProjectReference Include="..\..\Services\SciMaterials.Services.API\SciMaterials.Services.API.csproj" />
-    <ProjectReference Include="..\..\Services\SciMaterials.Services.ShortLinks\SciMaterials.Services.ShortLinks.csproj" />
     <ProjectReference Include="..\SciMaterials.UI.BWASM\SciMaterials.UI.BWASM.csproj" />
   </ItemGroup>
 

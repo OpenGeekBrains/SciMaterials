@@ -30,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SciMaterials.DAL.Contracts\SciMaterials.DAL.Contracts.csproj" />
     <ProjectReference Include="..\SciMaterials.DAL.Resources.Contracts\SciMaterials.DAL.Resources.Contracts.csproj" />
   </ItemGroup>
 

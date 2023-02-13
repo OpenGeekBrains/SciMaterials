@@ -32,8 +32,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Data\SciMaterials.DAL.Resources\SciMaterials.DAL.Resources.csproj" />
-  </ItemGroup>
-
 </Project>

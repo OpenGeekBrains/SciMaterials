@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SciMaterials.DAL.Contracts\SciMaterials.DAL.Contracts.csproj" />
-  </ItemGroup>
-
 </Project>

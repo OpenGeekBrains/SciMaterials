@@ -10,8 +10,4 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SciMaterials.Contracts\SciMaterials.Contracts.csproj" />
-  </ItemGroup>
-
 </Project>
