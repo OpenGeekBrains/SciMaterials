@@ -50,7 +50,9 @@ using SciMaterials.DAL.Resources.Repositories.Ratings;
 using SciMaterials.DAL.Resources.Repositories.Users;
 using File = SciMaterials.DAL.Resources.Contracts.Entities.File;
 using SciMaterials.Contracts.API.Services.Resources;
+using SciMaterials.Contracts.WebApi.Clients.Authors;
 using SciMaterials.Services.API.Services.Resources;
+using SciMaterials.WebApi.Clients.Authors;
 
 namespace SciMaterials.UI.MVC;
 
@@ -58,13 +60,13 @@ public static class ResourcesRegister
 {
     public static IServiceCollection AddApiClients(this IServiceCollection services, string serverUrl)
     {
-        Uri apiAddress = new Uri(serverUrl);
-        services.AddHttpClient<IFilesClient, FilesClient>("FilesClient", c => c.BaseAddress = apiAddress);
-        services.AddHttpClient<ICategoriesClient, CategoriesClient>("CategoriesClient", c => c.BaseAddress = apiAddress);
-        services.AddHttpClient<ICommentsClient, CommentsClient>("CommentClient", c => c.BaseAddress = apiAddress);
-        services.AddHttpClient<IContentTypesClient, ContentTypesClient>("ContentTypesClient", c => c.BaseAddress = apiAddress);
-        services.AddHttpClient<ITagsClient, TagsClient>("TagsClient", c => c.BaseAddress = apiAddress);
-        services.AddHttpClient<IUrlsClient, UrlsClient>("UrlsClient", c => c.BaseAddress = apiAddress);
+        services.AddHttpClient<IFilesClient, FilesClient>("FilesClient", c => c.BaseAddress                      = new Uri(serverUrl));
+        services.AddHttpClient<ICategoriesClient, CategoriesClient>("CategoriesClient", c => c.BaseAddress       = new Uri(serverUrl));
+        services.AddHttpClient<ICommentsClient, CommentsClient>("CommentClient", c => c.BaseAddress              = new Uri(serverUrl));
+        services.AddHttpClient<IContentTypesClient, ContentTypesClient>("ContentTypesClient", c => c.BaseAddress = new Uri(serverUrl));
+        services.AddHttpClient<ITagsClient, TagsClient>("TagsClient", c => c.BaseAddress                         = new Uri(serverUrl));
+        services.AddHttpClient<IUrlsClient, UrlsClient>("UrlsClient", c => c.BaseAddress                         = new Uri(serverUrl));
+        services.AddHttpClient<IResourcesUsersClient, ResourcesUsersClient>(c => c.BaseAddress                   = new Uri(serverUrl));
         return services;
     }
 

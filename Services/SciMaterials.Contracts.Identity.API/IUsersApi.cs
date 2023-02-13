@@ -12,7 +12,7 @@ public interface IUsersApi
     /// <param name="RegisterRequest"> Запрос на регистрацию </param>
     /// <param name="Cancel"> Токен отмены </param>
     /// <returns> Результат выполнения операции </returns>
-    Task<Result<RegisterUserResponse>> RegisterUserAsync(RegisterRequest RegisterRequest, CancellationToken Cancel = default);
+    Task<Result.Result> RegisterUserAsync(RegisterRequest RegisterRequest, CancellationToken Cancel = default);
 
     /// <summary> Метод апи для авторизации пользователя в Identity </summary>
     /// <param name="LoginRequest"> Запрос на авторизацию </param>

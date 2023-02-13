@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using HttpContextMoq;
 using HttpContextMoq.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,7 @@ namespace SciMaterials.Identity.Tests.ControllerTest
         private Mock<IAuthUtils> _AuthUtilitsMock;
         private Mock<ILogger<AccountController>> _LoggerMock;
         private HttpContextMock _HttpContextMock;
+        private Mock<IMediator> _MediatorMock;
 
         public AccountControllerTest()
         {
@@ -41,13 +43,16 @@ namespace SciMaterials.Identity.Tests.ControllerTest
             _AuthUtilitsMock = new Mock<IAuthUtils>();
             _LoggerMock      = new Mock<ILogger<AccountController>>();
 
+            _MediatorMock = new Mock<IMediator>();
+
             _AccountController = new AccountController(
                 _UserManagerMock.Object,
                 _SignInManagerMock.Object,
                 _RoleManagerMock.Object,
                 _ContextAccessorMock.Object,
                 _AuthUtilitsMock.Object,
-                _LoggerMock.Object);
+                _LoggerMock.Object,
+                _MediatorMock.Object);
         }
 
         [Fact]
@@ -96,14 +101,16 @@ namespace SciMaterials.Identity.Tests.ControllerTest
 
             //Act
             var result = await _AccountController.RegisterUserAsync(request);
-            var actionResultObj = Assert.IsType<Result<RegisterUserResponse>>(result);
-            var okResult = Assert.IsAssignableFrom<Result<RegisterUserResponse>>(actionResultObj);
+            var actionResultObj = Assert.IsType<Result>(result);
+            var okResult = Assert.IsAssignableFrom<Result>(actionResultObj);
 
             //Assert
-            Assert.NotNull(okResult.Data);
+            Assert.NotNull(okResult);
             Assert.True(okResult.Succeeded);
-            Assert.NotEmpty(okResult.Data.ConfirmEmail);
-            Assert.Equal(expected_callback_url, okResult.Data.ConfirmEmail);
+
+            //TODO: Confirmation email now handled in pipeline, check it in other way
+            //Assert.NotEmpty(okResult.Data.ConfirmEmail);
+            //Assert.Equal(expected_callback_url, okResult.Data.ConfirmEmail);
             
             //*-----------------------------------------------------*//
             // urlHelperMock.Verify(url => url.Action(It.Is<UrlActionContext>(ctx => ctx.Action == expected_action)));
