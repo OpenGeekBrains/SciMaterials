@@ -9,9 +9,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Materials", "Materials", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{C4B28EDE-F9FD-478B-90B2-212D9224AB21}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{F88EB74B-A298-4715-BDD2-8FE6DD7EFCC2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{D5E202AB-8A5B-4C21-BCEB-204725886277}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{9EB7AA3F-D4B6-4FBE-A77D-EC5ACDFB3DCA}"
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F88EB74B-A298-4715-BDD2-8FE6DD7EFCC2} = {2628C1F7-3DCD-4B27-8B05-9D4B649E7ABC}
+		{D5E202AB-8A5B-4C21-BCEB-204725886277} = {F90B51A6-59E4-4026-96D7-76A0BECC2BE6}
+		{9EB7AA3F-D4B6-4FBE-A77D-EC5ACDFB3DCA} = {C4B28EDE-F9FD-478B-90B2-212D9224AB21}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {69CA7005-2892-4D9A-9575-8BCEC07E43F2}
