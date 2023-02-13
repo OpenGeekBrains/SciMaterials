@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SciMaterials.Contracts.API\SciMaterials.Contracts.API.csproj" />
+    <ProjectReference Include="..\SciMaterials.DAL.Resources.Contracts\SciMaterials.DAL.Resources.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
