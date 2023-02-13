@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\SciMaterials.Contracts\SciMaterials.Contracts.csproj" />
     <ProjectReference Include="..\SciMaterials.Contracts.Identity.API\SciMaterials.Contracts.Identity.API.csproj" />
   </ItemGroup>
 
