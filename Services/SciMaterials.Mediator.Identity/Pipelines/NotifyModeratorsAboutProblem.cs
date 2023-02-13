@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using SciMaterials.Contracts.Result;
 
@@ -15,7 +15,7 @@ public sealed class NotifyModeratorsAboutProblemHandler : INotificationHandler<N
         _Logger = Logger;
     }
 
-    public async ValueTask Handle(NotifyModeratorsAboutProblem Notification, CancellationToken Cancel)
+    public async Task Handle(NotifyModeratorsAboutProblem Notification, CancellationToken Cancel)
     {
         _Logger.LogInformation(
             101,

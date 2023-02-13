@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using SciMaterials.Contracts;
 using SciMaterials.Contracts.Result;
 using SciMaterials.Contracts.WebApi.Clients.Authors;
@@ -16,7 +16,7 @@ public sealed class RegisterUserInServicesHandler : IRequestHandler<RegisterUser
         _ResourcesUsersClient = ResourcesUsersClient;
     }
 
-    public async ValueTask<Result> Handle(RegisterUserInServices Request, CancellationToken Cancel)
+    public async Task<Result> Handle(RegisterUserInServices Request, CancellationToken Cancel)
     {
         if (!Guid.TryParse(Request.UserId, out var user_id))
         {

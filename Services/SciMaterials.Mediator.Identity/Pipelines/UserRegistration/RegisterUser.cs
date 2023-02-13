@@ -1,4 +1,4 @@
-﻿using Mediator;
+﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SciMaterials.Contracts;
@@ -23,7 +23,7 @@ public sealed class RegisterUserHandler : IRequestHandler<RegisterUser, Result>
         _Mediator = Mediator;
     }
 
-    public async ValueTask<Result> Handle(RegisterUser Request, CancellationToken Cancel)
+    public async Task<Result> Handle(RegisterUser Request, CancellationToken Cancel)
     {
         try
         {

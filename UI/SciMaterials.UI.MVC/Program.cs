@@ -1,7 +1,9 @@
+using MediatR;
 using SciMaterials.UI.MVC.API.Middlewares;
 using SciMaterials.Contracts.ShortLinks;
 using SciMaterials.UI.MVC;
 using Microsoft.OpenApi.Models;
+using SciMaterials.Mediator.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,13 +25,14 @@ services.AddHttpContextAccessor();
 
 var serverUrl = builder.WebHost.GetSetting(WebHostDefaults.ServerUrlsKey);
 
-services.AddMediator();
+services.AddMediatR(typeof(IIdentityMediatRMark));
 
 services
     .ConfigureFilesUploadSupport(config)
     .AddResourcesDatabaseProviders(config)
     .AddResourcesDataLayer()
-    .AddResourcesApiServices(config);
+    .AddResourcesApiServices(config)
+    .AddApiClients(serverUrl);
 
 services
     .AddIdentityDatabase(config)
