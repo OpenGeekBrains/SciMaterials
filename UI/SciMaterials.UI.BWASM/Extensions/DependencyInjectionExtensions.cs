@@ -1,4 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+using Polly;
+using Polly.Extensions.Http;
+using SciMaterials.UI.BWASM.Extensions;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection;
@@ -12,11 +15,13 @@ public static class DependencyInjectionExtensions
         where TClient : class
         where TImplementation : class, TClient
     {
-        var builder = services.AddHttpClient<TClient, TImplementation>(c => c.BaseAddress = new Uri(routeBase));
+        var builder = services.AddHttpClient<TClient, TImplementation>(c => c.BaseAddress = new Uri(routeBase))
+           .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+           .AddPolicyHandler(HttpPoliciesExtension.GetRetryPolicy());
         clientConfiguration?.Invoke(builder);
         return services;
     }
-
+    
     public static IServiceCollection AddApiClient<TClient>(
         this IServiceCollection services,
         string routeBase,
