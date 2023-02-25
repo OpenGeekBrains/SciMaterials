@@ -35,10 +35,6 @@ using SciMaterials.DAL.Resources.Contracts.Repositories;
 using SciMaterials.DAL.Resources.Repositories.Files;
 using SciMaterials.DAL.Resources.Services;
 using SciMaterials.DAL.Resources.UnitOfWork;
-using SciMaterials.Data.MySqlMigrations;
-using SciMaterials.MsSqlServerMigrations;
-using SciMaterials.PostgresqlMigrations;
-using SciMaterials.SQLiteMigrations;
 using SciMaterials.WebApi.Clients.Categories;
 using SciMaterials.WebApi.Clients.Comments;
 using SciMaterials.WebApi.Clients.ContentTypes;
@@ -50,6 +46,7 @@ using SciMaterials.DAL.Resources.Repositories.Ratings;
 using SciMaterials.DAL.Resources.Repositories.Users;
 using File = SciMaterials.DAL.Resources.Contracts.Entities.File;
 using SciMaterials.Contracts.API.Services.Resources;
+using SciMaterials.DAL.SqlServer.Migrations;
 using SciMaterials.Services.API.Services.Resources;
 
 namespace SciMaterials.UI.MVC;
@@ -77,17 +74,8 @@ public static class ResourcesRegister
 
         switch (providerName.ToLower())
         {
-            case "sqlserver":
-                services.AddSciMaterialsContextSqlServer(connectionString);
-                break;
-            case "postgresql":
-                services.AddSciMaterialsContextPostgreSQL(connectionString);
-                break;
-            case "mysql":
-                services.AddSciMaterialsContextMySql(connectionString);
-                break;
-            case "sqlite":
-                services.AddSciMaterialsContextSqlite(connectionString);
+            case "sqlserver.debug":
+                services.AddDbContextSqlServer(connectionString);
                 break;
             default:
                 throw new Exception($"Unsupported provider: {providerName}");
