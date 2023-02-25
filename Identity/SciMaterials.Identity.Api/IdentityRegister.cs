@@ -100,7 +100,7 @@ public static class IdentityRegister
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(
-                        Configuration.GetValue<string>("IdentitySettings:SecretTokenKey"))),
+                        Configuration.GetValue<string>("SecretTokenKey"))),
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     ValidateLifetime = true,
@@ -122,7 +122,7 @@ public static class IdentityRegister
 
         var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
-        var db_setting = configuration.GetSection("IdentityDatabase").Get<DatabaseSettings>();
+        var db_setting = configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
 
         var manager = scope.ServiceProvider.GetRequiredService<IdentityDatabaseManager>();
 
