@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Options;
-
 using SciMaterials.Contracts.API.Mapping;
 using SciMaterials.Contracts.API.Services.Authors;
 using SciMaterials.Contracts.API.Services.Categories;
 using SciMaterials.Contracts.API.Services.Comments;
 using SciMaterials.Contracts.API.Services.ContentTypes;
 using SciMaterials.Contracts.API.Services.Files;
+using SciMaterials.Contracts.API.Services.Resources;
 using SciMaterials.Contracts.API.Services.Tags;
 using SciMaterials.Contracts.API.Services.Urls;
 using SciMaterials.Contracts.API.Settings;
@@ -19,22 +19,26 @@ using SciMaterials.Contracts.WebApi.Clients.Files;
 using SciMaterials.Contracts.WebApi.Clients.Tags;
 using SciMaterials.Contracts.WebApi.Clients.Urls;
 using SciMaterials.DAL.Contracts.Configuration;
-using SciMaterials.Services.API.Services.Authors;
-using SciMaterials.Services.API.Services.Categories;
-using SciMaterials.Services.API.Services.Comments;
-using SciMaterials.Services.API.Services.ContentTypes;
-using SciMaterials.Services.API.Services.Files.Stores;
-using SciMaterials.Services.API.Services.Files;
-using SciMaterials.Services.API.Services.Tags;
-using SciMaterials.Services.API.Services.Urls;
-using SciMaterials.Services.ShortLinks;
-using SciMaterials.UI.MVC.API.Filters;
 using SciMaterials.DAL.Resources.Contexts;
 using SciMaterials.DAL.Resources.Contracts.Entities;
 using SciMaterials.DAL.Resources.Contracts.Repositories;
 using SciMaterials.DAL.Resources.Repositories.Files;
+using SciMaterials.DAL.Resources.Repositories.Ratings;
+using SciMaterials.DAL.Resources.Repositories.Users;
 using SciMaterials.DAL.Resources.Services;
 using SciMaterials.DAL.Resources.UnitOfWork;
+using SciMaterials.Materials.Api.Filters;
+using SciMaterials.Materials.DAL.SqlServer.Migrations;
+using SciMaterials.Services.API.Services.Authors;
+using SciMaterials.Services.API.Services.Categories;
+using SciMaterials.Services.API.Services.Comments;
+using SciMaterials.Services.API.Services.ContentTypes;
+using SciMaterials.Services.API.Services.Files;
+using SciMaterials.Services.API.Services.Files.Stores;
+using SciMaterials.Services.API.Services.Resources;
+using SciMaterials.Services.API.Services.Tags;
+using SciMaterials.Services.API.Services.Urls;
+using SciMaterials.Services.ShortLinks;
 using SciMaterials.WebApi.Clients.Categories;
 using SciMaterials.WebApi.Clients.Comments;
 using SciMaterials.WebApi.Clients.ContentTypes;
@@ -42,14 +46,9 @@ using SciMaterials.WebApi.Clients.Files;
 using SciMaterials.WebApi.Clients.Tags;
 using SciMaterials.WebApi.Clients.Urls;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using SciMaterials.DAL.Resources.Repositories.Ratings;
-using SciMaterials.DAL.Resources.Repositories.Users;
 using File = SciMaterials.DAL.Resources.Contracts.Entities.File;
-using SciMaterials.Contracts.API.Services.Resources;
-using SciMaterials.Materials.DAL.SqlServer.Migrations;
-using SciMaterials.Services.API.Services.Resources;
 
-namespace SciMaterials.UI.MVC;
+namespace SciMaterials.Materials.Api;
 
 public static class ResourcesRegister
 {

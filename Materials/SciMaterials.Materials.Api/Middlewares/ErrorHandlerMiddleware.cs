@@ -1,8 +1,7 @@
-﻿using SciMaterials.Contracts.Result;
-using SciMaterials.Contracts;
-using Microsoft.Extensions.Logging;
+﻿using SciMaterials.Contracts;
+using SciMaterials.Contracts.Result;
 
-namespace SciMaterials.UI.MVC.API.Middlewares;
+namespace SciMaterials.Materials.Api.Middlewares;
 
 public class ErrorHandlerMiddleware
 {

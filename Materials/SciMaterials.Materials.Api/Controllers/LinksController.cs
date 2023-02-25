@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
 using SciMaterials.Contracts.API.Constants;
 using SciMaterials.Contracts.ShortLinks;
 
-namespace SciMaterials.UI.MVC.API.Controllers;
+namespace SciMaterials.Materials.Api.Controllers;
 
 /// <summary> Service for working with short links. </summary>
 [ApiController]

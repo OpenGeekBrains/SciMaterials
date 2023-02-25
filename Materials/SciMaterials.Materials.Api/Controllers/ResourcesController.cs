@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SciMaterials.Contracts.API.Constants;
-using SciMaterials.Contracts.Result;
-using SciMaterials.Contracts.API.Services.Resources;
-using SciMaterials.Contracts.API.DTO.Resources;
 using SciMaterials.Contracts;
+using SciMaterials.Contracts.API.Constants;
+using SciMaterials.Contracts.API.DTO.Resources;
+using SciMaterials.Contracts.API.Services.Resources;
+using SciMaterials.Contracts.Result;
 
-namespace SciMaterials.UI.MVC.API.Controllers;
+namespace SciMaterials.Materials.Api.Controllers;
 
 /// <summary> Service for working with resources. </summary>
 [ApiController]

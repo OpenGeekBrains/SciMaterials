@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SciMaterials.Contracts.API.Constants;
 using SciMaterials.Contracts.API.DTO.Urls;
-using SciMaterials.Contracts.API.DTO.Categories;
 using SciMaterials.Contracts.API.Services.Urls;
 using SciMaterials.Contracts.Result;
 
-namespace SciMaterials.UI.MVC.API.Controllers;
+namespace SciMaterials.Materials.Api.Controllers;
 
 /// <summary> Service for working with authors. </summary>
 [ApiController]

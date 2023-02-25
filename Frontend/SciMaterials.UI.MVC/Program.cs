@@ -1,54 +1,13 @@
-using SciMaterials.UI.MVC.API.Middlewares;
-using SciMaterials.Contracts.ShortLinks;
-using SciMaterials.UI.MVC;
-using Microsoft.OpenApi.Models;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("appsettings.Logging.json", true);
 
-var config = builder.Configuration;
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
-builder.WebHost.ConfigureKestrel(opt =>
-{
-    opt.Limits.MaxRequestBodySize = config.GetValue<long>("FilesApiSettings:MaxFileSize");
-});
-
-var services = builder.Services;
-
-services.AddControllersWithViews();
-services.AddRazorPages();
-
-services.AddHttpContextAccessor();
-
-services
-    .ConfigureFilesUploadSupport(config)
-    .AddResourcesDatabaseProviders(config)
-    .AddResourcesDataLayer()
-    .AddResourcesApiServices(config);
-
-
-
-builder.Services
-    .AddEndpointsApiExplorer()
-    .AddSwaggerGen(o =>
-    {
-        o.SwaggerDoc("v1", new OpenApiInfo
-        {
-            Title = "SciMaterials",
-            Version = "v1.1",
-        });
-
-        o.AddFileUploadFilter();
-        o.AddOptionalRouteParameterOperationFilter();
-        
-    });
-
+builder.Services.AddEndpointsApiExplorer().AddSwaggerGen();
 
 var app = builder.Build();
-
-await app.InitializeResourcesDatabaseAsync();
-
 
 if (app.Environment.IsDevelopment())
 {
@@ -69,19 +28,10 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseMiddleware<ErrorHandlerMiddleware>();
-
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
 app.MapControllerRoute("default", "{controller}/{action=index}/{id?}");
-
-app.MapPut("replace-link",
-    async (string text, ILinkReplaceService linkReplaceService, LinkGenerator linkGenerator, IHttpContextAccessor context) =>
-    {
-        var result = await linkReplaceService.ShortenLinksAsync(text);
-        return result;
-    });
 
 app.Run();
 

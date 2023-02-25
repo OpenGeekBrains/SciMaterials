@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace SciMaterials.UI.MVC.API.Filters;
+namespace SciMaterials.Materials.Api.Filters;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class DisableFormValueModelBindingAttribute : Attribute, IResourceFilter

@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
 using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Mvc;
 
-namespace SciMaterials.UI.MVC.API.Controllers;
+namespace SciMaterials.Materials.Api.Controllers;
 
 [ApiController]
 public abstract class ApiBaseController<T> : ControllerBase

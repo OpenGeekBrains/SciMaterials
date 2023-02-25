@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace SciMaterials.UI.MVC.API.Filters;
+namespace SciMaterials.Materials.Api.Filters;
 
 public class FileUploadFilter : IOperationFilter
 {

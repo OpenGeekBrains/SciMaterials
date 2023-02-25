@@ -1,68 +1,69 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SciMaterials.Contracts.API.Constants;
-using SciMaterials.Contracts.API.DTO.Comments;
-using SciMaterials.Contracts.API.DTO.ContentTypes;
-using SciMaterials.Contracts.API.Services.ContentTypes;
+using SciMaterials.Contracts.API.DTO.Authors;
+using SciMaterials.Contracts.API.Services.Authors;
 using SciMaterials.Contracts.Result;
+using SciMaterials.Contracts.ShortLinks;
 
-namespace SciMaterials.UI.MVC.API.Controllers;
+namespace SciMaterials.Materials.Api.Controllers;
 
 /// <summary> Service for working with authors. </summary>
 [ApiController]
-[Route(WebApiRoute.ContentTypes)]
-public class ContentTypesController : ApiBaseController<ContentTypesController>
+[Route(WebApiRoute.Authors)]
+public class AuthorsController : ApiBaseController<AuthorsController>
 {
-    private readonly IContentTypeService _authorService;
+    private readonly IAuthorService _authorService;
 
-    public ContentTypesController(IContentTypeService authorService)
+    public AuthorsController(IAuthorService authorService, ILinkReplaceService link)
     {
         _authorService = authorService;
     }
 
-    /// <summary> Get All ContentTypes. </summary>
+    /// <summary> Get All Authors. </summary>
     /// <returns> Status 200 OK. </returns>
     [HttpGet]
-    [ProducesDefaultResponseType(typeof(Result<IEnumerable<GetContentTypeResponse>>))]
+    [ProducesDefaultResponseType(typeof(Result<IEnumerable<GetAuthorResponse>>))]
     public async Task<IActionResult> GetAllAsync()
     {
+        _logger.LogInformation("Get all");
         var сategories = await _authorService.GetAllAsync();
         return Ok(сategories);
     }
 
-    /// <summary> Get ContentType by Id. </summary>
-    /// <param name="id"> ContentType Id. </param>
+    /// <summary> Get Author by Id. </summary>
+    /// <param name="id"> Author Id. </param>
     [HttpGet("{id}")]
-    [ProducesDefaultResponseType(typeof(Result<GetContentTypeResponse>))]
+    [ProducesDefaultResponseType(typeof(Result<GetAuthorResponse>))]
     public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
     {
         var products = await _authorService.GetByIdAsync(id);
         return Ok(products);
     }
 
-    /// <summary> Add a ContentType. </summary>
+    /// <summary> Add a Author. </summary>
     /// <param name="request"> Add Request DTO. </param>
     /// <returns> Status 200 OK. </returns>
     [HttpPost("Add")]
     [ProducesDefaultResponseType(typeof(Guid))]
-    public async Task<IActionResult> AddAsync([FromBody] AddContentTypeRequest request)
+    public async Task<IActionResult> AddAsync([FromBody] AddAuthorRequest request)
     {
         var result = await _authorService.AddAsync(request);
         return Ok(result);
     }
 
-    /// <summary> Edit a ContentType. </summary>
+    /// <summary> Edit a Author. </summary>
     /// <param name="request"> Edit Request DTO. </param>
     /// <returns> Status 200 OK. </returns>
     [HttpPut("Edit")]
     [ProducesDefaultResponseType(typeof(Guid))]
-    public async Task<IActionResult> EditAsync([FromBody] EditContentTypeRequest request)
+    public async Task<IActionResult> EditAsync([FromBody] EditAuthorRequest request)
     {
         var result = await _authorService.EditAsync(request);
         return Ok(result);
     }
 
-    /// <summary> Delete a ContentType. </summary>
-    /// <param name="id"> ContentType Id. </param>
+    /// <summary> Delete a Author. </summary>
+    /// <param name="id"> Author Id. </param>
     /// <returns> Status 200 OK response. </returns>
     [HttpDelete("{id}")]
     [ProducesDefaultResponseType(typeof(Guid))]

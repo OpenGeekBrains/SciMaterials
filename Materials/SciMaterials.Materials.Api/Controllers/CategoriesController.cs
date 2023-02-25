@@ -4,7 +4,7 @@ using SciMaterials.Contracts.API.DTO.Categories;
 using SciMaterials.Contracts.API.Services.Categories;
 using SciMaterials.Contracts.Result;
 
-namespace SciMaterials.UI.MVC.API.Controllers;
+namespace SciMaterials.Materials.Api.Controllers;
 
 /// <summary> Service for working with categories. </summary>
 [ApiController]
