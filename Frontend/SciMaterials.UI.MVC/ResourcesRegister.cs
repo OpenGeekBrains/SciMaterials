@@ -46,7 +46,7 @@ using SciMaterials.DAL.Resources.Repositories.Ratings;
 using SciMaterials.DAL.Resources.Repositories.Users;
 using File = SciMaterials.DAL.Resources.Contracts.Entities.File;
 using SciMaterials.Contracts.API.Services.Resources;
-using SciMaterials.DAL.SqlServer.Migrations;
+using SciMaterials.Materials.DAL.SqlServer.Migrations;
 using SciMaterials.Services.API.Services.Resources;
 
 namespace SciMaterials.UI.MVC;

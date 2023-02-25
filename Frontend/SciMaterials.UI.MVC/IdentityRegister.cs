@@ -8,7 +8,7 @@ using SciMaterials.DAL.AUTH.Context;
 using SciMaterials.DAL.AUTH.Contracts;
 using SciMaterials.DAL.AUTH.InitializationDb;
 using SciMaterials.DAL.Contracts.Configuration;
-using SciMaterials.DAL.SqlServer.Migrations;
+using SciMaterials.Identity.DAL.SqlServer.Migrations;
 using SciMaterials.Services.Identity.API;
 using SciMaterials.UI.MVC.Identity.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -28,7 +28,7 @@ public static class IdentityRegister
         
         var dbSettings       = Configuration.GetSection("IdentityDatabase").Get<DatabaseSettings>();
         var providerName     = dbSettings.GetProviderName();
-        var connectionString = Configuration.GetSection("IdentityDatabase").GetValue<string>(nameof(DatabaseSettings.Provider));
+        var connectionString = Configuration.GetSection("IdentityDatabase").GetConnectionString(dbSettings.Provider);
         
         switch (providerName.ToLower())
         {

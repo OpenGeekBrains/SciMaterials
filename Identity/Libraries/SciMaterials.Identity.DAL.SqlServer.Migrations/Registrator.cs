@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SciMaterials.DAL.AUTH.Context;
 
-namespace SciMaterials.DAL.SqlServer.Migrations;
+namespace SciMaterials.Identity.DAL.SqlServer.Migrations;
 
 public static class Registrator
 {

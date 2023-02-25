@@ -53,9 +53,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.UI.MVC", "Fron
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.UI.BWASM", "Frontend\SciMaterials.UI.BWASM\SciMaterials.UI.BWASM.csproj", "{313DAE04-6E73-472C-A3C2-ECBFA4B5BA0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciMaterials.DAL.SqlServer.Migrations", "Identity\Libraries\SciMaterials.DAL.SqlServer.Migrations\SciMaterials.DAL.SqlServer.Migrations.csproj", "{6383DF1E-B115-4BC0-84A2-77E6C5F309A7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciMaterials.Materials.DAL.SqlServer.Migrations", "Materials\Libraries\SciMaterials.Materials.DAL.SqlServer.Migrations\SciMaterials.Materials.DAL.SqlServer.Migrations.csproj", "{708F127E-767C-4787-91BB-B2C3398EF851}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciMaterials.Identity.DAL.SqlServer.Migrations", "Identity\Libraries\SciMaterials.Identity.DAL.SqlServer.Migrations\SciMaterials.Identity.DAL.SqlServer.Migrations.csproj", "{75EE60FB-2813-4C67-962B-77829DC59596}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,14 +135,14 @@ Global
 		{313DAE04-6E73-472C-A3C2-ECBFA4B5BA0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{313DAE04-6E73-472C-A3C2-ECBFA4B5BA0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{313DAE04-6E73-472C-A3C2-ECBFA4B5BA0D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6383DF1E-B115-4BC0-84A2-77E6C5F309A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6383DF1E-B115-4BC0-84A2-77E6C5F309A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6383DF1E-B115-4BC0-84A2-77E6C5F309A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6383DF1E-B115-4BC0-84A2-77E6C5F309A7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{708F127E-767C-4787-91BB-B2C3398EF851}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{708F127E-767C-4787-91BB-B2C3398EF851}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{708F127E-767C-4787-91BB-B2C3398EF851}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{708F127E-767C-4787-91BB-B2C3398EF851}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75EE60FB-2813-4C67-962B-77829DC59596}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75EE60FB-2813-4C67-962B-77829DC59596}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75EE60FB-2813-4C67-962B-77829DC59596}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75EE60FB-2813-4C67-962B-77829DC59596}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -169,8 +169,8 @@ Global
 		{98DC8237-D70F-48D1-8DBF-D881F3136CFA} = {F88EB74B-A298-4715-BDD2-8FE6DD7EFCC2}
 		{15069B30-4DEC-4664-9D6D-59C5DD9FA7A1} = {C4B28EDE-F9FD-478B-90B2-212D9224AB21}
 		{313DAE04-6E73-472C-A3C2-ECBFA4B5BA0D} = {C4B28EDE-F9FD-478B-90B2-212D9224AB21}
-		{6383DF1E-B115-4BC0-84A2-77E6C5F309A7} = {D5E202AB-8A5B-4C21-BCEB-204725886277}
 		{708F127E-767C-4787-91BB-B2C3398EF851} = {F88EB74B-A298-4715-BDD2-8FE6DD7EFCC2}
+		{75EE60FB-2813-4C67-962B-77829DC59596} = {D5E202AB-8A5B-4C21-BCEB-204725886277}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {69CA7005-2892-4D9A-9575-8BCEC07E43F2}
