@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using SciMaterials.Contracts.Identity.API;
 using SciMaterials.DAL.AUTH.Contracts;
 
-namespace SciMaterials.UI.MVC.Identity.Services;
+namespace SciMaterials.Identity.Api;
 
 /// <summary>Утилиты по работе с jwt токенами</summary>
 public class AuthUtils : IAuthUtils
@@ -24,7 +24,7 @@ public class AuthUtils : IAuthUtils
     /// <returns>Возращает токен</returns>
     public string CreateSessionToken(IdentityUser User, IList<string> Roles)
     {
-        var secretKey = _Configuration.GetValue<string>("IdentitySettings:SecretTokenKey");
+        var secretKey = _Configuration.GetValue<string>("SecretTokenKey");
         
         var jwt_security_token_handler = new JwtSecurityTokenHandler();
         
@@ -70,7 +70,7 @@ public class AuthUtils : IAuthUtils
     /// <returns></returns>
     public bool CheckToDeleteSAInRoleAdmin(IdentityUser User, string RoleName)
     {
-        if (User.Email.Equals(_Configuration.GetSection("IdentitySettings:AdminSettings:login").Value) &&
+        if (User.Email.Equals(_Configuration.GetSection("AdminSettings:login").Value) &&
             RoleName.Equals(AuthApiRoles.Admin)) return false;
 
         return true;
@@ -81,7 +81,7 @@ public class AuthUtils : IAuthUtils
     /// <returns></returns>
     public bool CheckToDeleteSA(IdentityUser User)
     {
-        if (User.Email.Equals(_Configuration.GetSection("IdentitySettings:AdminSettings:login").Value)) return false;
+        if (User.Email.Equals(_Configuration.GetSection("AdminSettings:login").Value)) return false;
 
         return true;
     }

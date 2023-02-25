@@ -4,35 +4,35 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SciMaterials.Contracts;
-using SciMaterials.DAL.AUTH.Contracts;
 using SciMaterials.Contracts.Identity.API;
 using SciMaterials.Contracts.Identity.API.Requests.Roles;
 using SciMaterials.Contracts.Identity.API.Requests.Users;
 using SciMaterials.Contracts.Identity.API.Responses.DTO;
 using SciMaterials.Contracts.Identity.API.Responses.User;
 using SciMaterials.Contracts.Result;
+using SciMaterials.DAL.AUTH.Contracts;
 
-namespace SciMaterials.UI.MVC.Identity.Controllers;
+namespace SciMaterials.Identity.Api.Controllers;
 
 /// <summary> Контроллер для регистрации и авторизации в системе аутентификации </summary>
 [ApiController]
 [Route(AuthApiRoute.AuthControllerName)]
-public class AccountController : Controller, IIdentityApi
+public class AccountsController : Controller, IIdentityApi
 {
     private readonly UserManager<IdentityUser> _UserManager;
     private readonly SignInManager<IdentityUser> _SignInManager;
     private readonly RoleManager<IdentityRole> _RoleManager;
     private readonly IHttpContextAccessor _ContextAccessor;
     private readonly IAuthUtils _authUtilits;
-    private readonly ILogger<AccountController> _Logger;
+    private readonly ILogger<AccountsController> _Logger;
 
-    public AccountController(
+    public AccountsController(
         UserManager<IdentityUser> UserManager,
         SignInManager<IdentityUser> SignInManager,
         RoleManager<IdentityRole> RoleManager,
         IHttpContextAccessor ContextAccessor,
         IAuthUtils authUtilits,
-        ILogger<AccountController> Logger)
+        ILogger<AccountsController> Logger)
     {
         _UserManager = UserManager;
         _SignInManager = SignInManager;
@@ -60,11 +60,7 @@ public class AccountController : Controller, IIdentityApi
                 await _UserManager.AddToRoleAsync(identity_user, AuthApiRoles.User);
                 var email_confirm_token = await _UserManager.GenerateEmailConfirmationTokenAsync(identity_user);
 
-                var callback_url = Url.Action(
-                    action: "ConfirmEmail",
-                    controller: "Accounts",
-                    values: new { UserId = identity_user.Id, ConfirmToken = email_confirm_token },
-                    protocol: HttpContext.Request.Scheme);
+                var callback_url = $"http://localhost:5002/Accounts/ConfirmEmail?UserId={identity_user.Id}&ConfirmToken={email_confirm_token}";
 
                 return Result<RegisterUserResponse>.Success(new RegisterUserResponse(callback_url));
             }

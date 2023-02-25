@@ -21,18 +21,13 @@ services.AddRazorPages();
 
 services.AddHttpContextAccessor();
 
-var serverUrl = builder.WebHost.GetSetting(WebHostDefaults.ServerUrlsKey);
-
 services
     .ConfigureFilesUploadSupport(config)
     .AddResourcesDatabaseProviders(config)
     .AddResourcesDataLayer()
     .AddResourcesApiServices(config);
 
-services
-    .AddIdentityDatabase(config)
-    .AddIdentityServices(config)
-    .AddIdentityClients(serverUrl);
+
 
 builder.Services
     .AddEndpointsApiExplorer()
@@ -46,14 +41,14 @@ builder.Services
 
         o.AddFileUploadFilter();
         o.AddOptionalRouteParameterOperationFilter();
-        o.ConfigureIdentityInSwagger();
+        
     });
 
 
 var app = builder.Build();
 
 await app.InitializeResourcesDatabaseAsync();
-await app.InitializeIdentityDatabaseAsync();
+
 
 if (app.Environment.IsDevelopment())
 {

@@ -105,7 +105,7 @@ public class IdentityDatabaseManager : IDatabaseManager
         await CheckRoleAsync("admin").ConfigureAwait(false);
         await CheckRoleAsync("user");
 
-        var admin_settings = _Configuration.GetSection("IdentitySettings:AdminSettings");
+        var admin_settings = _Configuration.GetSection("AdminSettings");
         var admin_email = admin_settings["login"];
         var admin_password = admin_settings["password"];
 

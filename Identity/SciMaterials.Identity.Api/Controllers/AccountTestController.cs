@@ -3,7 +3,7 @@ using SciMaterials.Contracts.Identity.API;
 using SciMaterials.Contracts.Identity.API.Requests.Roles;
 using SciMaterials.Contracts.Identity.API.Requests.Users;
 
-namespace SciMaterials.UI.MVC.Identity.Controllers;
+namespace SciMaterials.Identity.Api.Controllers;
 
 /// <summary>Тестовый контроллер с IdentityApi</summary>
 [ApiController]
