@@ -8,10 +8,8 @@ using SciMaterials.DAL.AUTH.Context;
 using SciMaterials.DAL.AUTH.Contracts;
 using SciMaterials.DAL.AUTH.InitializationDb;
 using SciMaterials.DAL.Contracts.Configuration;
-using SciMaterials.MySql.Auth.Migrations;
-using SciMaterials.Postgres.Auth.Migrations;
+using SciMaterials.DAL.SqlServer.Migrations;
 using SciMaterials.Services.Identity.API;
-using SciMaterials.SqlLite.Auth.Migrations;
 using SciMaterials.UI.MVC.Identity.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -34,14 +32,8 @@ public static class IdentityRegister
         
         switch (providerName.ToLower())
         {
-            case "postgressql":
-                Services.AddIdentityPostgres(connectionString);
-                break;
-            case "mysql":
-                Services.AddIdentityMySql(connectionString);
-                break;
-            case "sqlite":
-                Services.AddIdentitySQLite(connectionString);
+            case "sqlserver.debug":
+                Services.AddDbContextSqlServer(connectionString);
                 break;
             default:
                 throw new Exception($"Unsupported provider: {providerName}");
