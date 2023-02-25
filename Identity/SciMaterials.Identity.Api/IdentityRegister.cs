@@ -23,13 +23,13 @@ public static class IdentityRegister
     {
         // var providerName = Configuration.GetSection("IdentityDatabase").GetValue<string>(nameof(DatabaseSettings.Provider));
         
-        var dbSettings       = Configuration.GetSection("IdentityDatabase").Get<DatabaseSettings>();
+        var dbSettings       = Configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
         var providerName     = dbSettings.GetProviderName();
-        var connectionString = Configuration.GetSection("IdentityDatabase").GetConnectionString(dbSettings.Provider);
+        var connectionString = Configuration.GetConnectionString(dbSettings.Provider);
         
         switch (providerName.ToLower())
         {
-            case "sqlserver.debug":
+            case "sqlserver":
                 Services.AddDbContextSqlServer(connectionString);
                 break;
             default:
