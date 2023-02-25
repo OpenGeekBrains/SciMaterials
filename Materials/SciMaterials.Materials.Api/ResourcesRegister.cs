@@ -66,14 +66,14 @@ public static class ResourcesRegister
 
     public static IServiceCollection AddResourcesDatabaseProviders(this IServiceCollection services, IConfiguration configuration)
     {
-        var dbSettings = configuration.GetSection("ResourcesDatabase").Get<DatabaseSettings>();
+        var dbSettings = configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
 
         var providerName = dbSettings.GetProviderName();
-        var connectionString = configuration.GetSection("ResourcesDatabase").GetConnectionString(dbSettings.Provider);
+        var connectionString = configuration.GetConnectionString(dbSettings.Provider);
 
         switch (providerName.ToLower())
         {
-            case "sqlserver.debug":
+            case "sqlserver":
                 services.AddDbContextSqlServer(connectionString);
                 break;
             default:
@@ -89,7 +89,7 @@ public static class ResourcesRegister
 
         var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
-        var db_setting = configuration.GetSection("ResourcesDatabase").Get<DatabaseSettings>();
+        var db_setting = configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
 
         var manager = scope.ServiceProvider.GetRequiredService<ResourcesDatabaseManager>();
 
