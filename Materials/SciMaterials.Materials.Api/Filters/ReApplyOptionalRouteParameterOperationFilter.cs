@@ -8,7 +8,7 @@ public class ReApplyOptionalRouteParameterOperationFilter : IOperationFilter
 
 	public void Apply(OpenApiOperation operation, OperationFilterContext context)
 	{
-		var httpMethodAttributes = context.MethodInfo
+		var httpMethodAttributes = context.MethodInfo?
 			.GetCustomAttributes(true)
 			.OfType<Microsoft.AspNetCore.Mvc.Routing.HttpMethodAttribute>();
 

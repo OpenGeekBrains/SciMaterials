@@ -5,6 +5,7 @@ using SciMaterials.Materials.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer().AddSwaggerGen(o =>
 {
 	o.SwaggerDoc("v1", new OpenApiInfo
@@ -49,4 +50,5 @@ app.MapPut("replace-link",
 		var result = await linkReplaceService.ShortenLinksAsync(text);
 		return result;
 	});
+app.MapControllers();
 app.Run();

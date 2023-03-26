@@ -22,7 +22,7 @@ public class FileUploadFilter : IOperationFilter
             // NOT required for form type
             return;
         }
-        if (context.MethodInfo.Name.Equals("UploadAsync"))
+        if (context.MethodInfo?.Name.Equals("UploadAsync") is true)
         {
             var uploadFileMediaType = new OpenApiMediaType
             {
