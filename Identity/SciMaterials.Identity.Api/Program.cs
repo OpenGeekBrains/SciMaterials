@@ -1,7 +1,6 @@
 using Microsoft.OpenApi.Models;
 
 using SciMaterials.Identity.Api;
-using SciMaterials.Services.Identity.API;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,12 +17,9 @@ builder.Services.AddEndpointsApiExplorer().AddSwaggerGen(o =>
 
 	o.ConfigureIdentityInSwagger();
 });
-var serverUrl = builder.WebHost.GetSetting(WebHostDefaults.ServerUrlsKey);
-
 builder.Services
 	.AddIdentityDatabase(config)
-	.AddIdentityServices(config)
-	.AddIdentityClients(serverUrl);
+	.AddIdentityServices(config);
 
 var app = builder.Build();
 

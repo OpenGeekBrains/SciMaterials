@@ -1,3 +1,5 @@
+using SciMaterials.Services.Identity.API;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("appsettings.Logging.json", true);
@@ -6,6 +8,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 builder.Services.AddEndpointsApiExplorer().AddSwaggerGen();
+
+builder.Services.AddIdentityClients(builder.Configuration["IdentityApi"]);
 
 var app = builder.Build();
 

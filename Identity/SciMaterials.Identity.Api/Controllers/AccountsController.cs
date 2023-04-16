@@ -27,48 +27,48 @@ public class AccountsController : Controller, IIdentityApi
     private readonly ILogger<AccountsController> _Logger;
 
     public AccountsController(
-        UserManager<IdentityUser> UserManager,
-        SignInManager<IdentityUser> SignInManager,
-        RoleManager<IdentityRole> RoleManager,
-        IHttpContextAccessor ContextAccessor,
+        UserManager<IdentityUser> userManager,
+        SignInManager<IdentityUser> signInManager,
+        RoleManager<IdentityRole> roleManager,
+        IHttpContextAccessor contextAccessor,
         IAuthUtils authUtilits,
-        ILogger<AccountsController> Logger)
+        ILogger<AccountsController> logger)
     {
-        _UserManager = UserManager;
-        _SignInManager = SignInManager;
-        _RoleManager = RoleManager;
-        _Logger = Logger;
-        _ContextAccessor = ContextAccessor;
+        _UserManager = userManager;
+        _SignInManager = signInManager;
+        _RoleManager = roleManager;
+        _Logger = logger;
+        _ContextAccessor = contextAccessor;
         _authUtilits = authUtilits;
     }
     
     [AllowAnonymous]
     [HttpPost(AuthApiRoute.Register)]
-    public async Task<Result<RegisterUserResponse>> RegisterUserAsync([FromBody] RegisterRequest RegisterRequest, CancellationToken Cancel = default)
+    public async Task<Result<RegisterUserResponse>> RegisterUserAsync([FromBody] RegisterRequest registerRequest, CancellationToken cancel = default)
     {
         try
         {
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var identity_user = new IdentityUser { Email = RegisterRequest.Email, UserName = RegisterRequest.NickName };
-            var identity_result = await _UserManager.CreateAsync(identity_user, RegisterRequest.Password);
+            var identityUser = new IdentityUser { Email = registerRequest.Email, UserName = registerRequest.NickName };
+            var identityResult = await _UserManager.CreateAsync(identityUser, registerRequest.Password);
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            if (identity_result.Succeeded)
+            if (identityResult.Succeeded)
             {
-                await _UserManager.AddToRoleAsync(identity_user, AuthApiRoles.User);
-                var email_confirm_token = await _UserManager.GenerateEmailConfirmationTokenAsync(identity_user);
+                await _UserManager.AddToRoleAsync(identityUser, AuthApiRoles.User);
+                var emailConfirmToken = await _UserManager.GenerateEmailConfirmationTokenAsync(identityUser);
 
-                var callback_url = $"http://localhost:5002/Accounts/ConfirmEmail?UserId={identity_user.Id}&ConfirmToken={email_confirm_token}";
+                var callbackUrl = $"http://localhost:5002/Accounts/ConfirmEmail?UserId={identityUser.Id}&ConfirmToken={emailConfirmToken}";
 
-                return Result<RegisterUserResponse>.Success(new RegisterUserResponse(callback_url));
+                return Result<RegisterUserResponse>.Success(new RegisterUserResponse(callbackUrl));
             }
 
-            var errors = identity_result.Errors.Select(e => e.Description).ToArray();
+            var errors = identityResult.Errors.Select(e => e.Description).ToArray();
             _Logger.LogInformation(
                 "Не удалось зарегистрировать пользователя {Email}: {errors}",
-                RegisterRequest.Email,
+                registerRequest.Email,
                 string.Join(",", errors));
 
             return Result<RegisterUserResponse>.Failure(Errors.Identity.Register.Fail);
@@ -86,46 +86,46 @@ public class AccountsController : Controller, IIdentityApi
     
     [AllowAnonymous]
     [HttpPost(AuthApiRoute.Login)]
-    public async Task<Result<LoginUserResponse>> LoginUserAsync([FromBody] LoginRequest? LoginRequest, CancellationToken Cancel = default)
+    public async Task<Result<LoginUserResponse>> LoginUserAsync([FromBody] LoginRequest loginRequest, CancellationToken cancel = default)
     {
         try
         {
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var identity_user = await _UserManager.FindByEmailAsync(LoginRequest.Email);
-            if (identity_user is null)
+            var identityUser = await _UserManager.FindByEmailAsync(loginRequest.Email);
+            if (identityUser is null)
             {
                 _Logger.LogWarning(
                     "Некорректно введены данные {Email}, {Password}",
-                    LoginRequest.Email,
-                    LoginRequest.Password);
+                    loginRequest.Email,
+                    loginRequest.Password);
                 return Result<LoginUserResponse>.Failure(Errors.Identity.Login.UserNotFound);
             }
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            if (!await CheckIsEmailConfirmedAsync(identity_user))
+            if (!await CheckIsEmailConfirmedAsync(identityUser))
             {
-                _Logger.LogWarning("Email не подтверждён {Email}", LoginRequest.Email);
+                _Logger.LogWarning("Email не подтверждён {Email}", loginRequest.Email);
                 return Result<LoginUserResponse>.Failure(Errors.Identity.Login.EmailNotConfirmed);
             }
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var sign_in_result = await _SignInManager.PasswordSignInAsync(
-            userName: identity_user.UserName,
-            password: LoginRequest.Password,
+            var signInResult = await _SignInManager.PasswordSignInAsync(
+            userName: identityUser.UserName,
+            password: loginRequest.Password,
             isPersistent: true,
             lockoutOnFailure: false);
 
-            if (sign_in_result.Succeeded)
+            if (signInResult.Succeeded)
             {
-                var identity_roles = await _UserManager.GetRolesAsync(identity_user);
-                var session_token = _authUtilits.CreateSessionToken(identity_user, identity_roles);
-                return Result<LoginUserResponse>.Success(new LoginUserResponse(session_token));
+                var identityRoles = await _UserManager.GetRolesAsync(identityUser);
+                var sessionToken = _authUtilits.CreateSessionToken(identityUser, identityRoles);
+                return Result<LoginUserResponse>.Success(new LoginUserResponse(sessionToken));
             }
 
-            _Logger.LogWarning("Не удалось авторизовать пользователя {Email}", LoginRequest.Email);
+            _Logger.LogWarning("Не удалось авторизовать пользователя {Email}", loginRequest.Email);
             return Result<LoginUserResponse>.Failure(Errors.Identity.Login.Fail);
         }
         catch (OperationCanceledException)
@@ -140,11 +140,11 @@ public class AccountsController : Controller, IIdentityApi
     }
     
     [HttpPost(AuthApiRoute.Logout)]
-    public async Task<Result> LogoutUserAsync(CancellationToken Cancel = default)
+    public async Task<Result> LogoutUserAsync(CancellationToken cancel = default)
     {
         try
         {
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
             await _SignInManager.SignOutAsync();
             return Result.Success();
@@ -162,52 +162,52 @@ public class AccountsController : Controller, IIdentityApi
     
     [Authorize(Roles = AuthApiRoles.Admin)]
     [HttpPost(AuthApiRoute.ChangePassword)]
-    public async Task<Result> ChangePasswordAsync([FromBody] ChangePasswordRequest ChangePasswordRequest, CancellationToken Cancel = default)
+    public async Task<Result> ChangePasswordAsync([FromBody] ChangePasswordRequest changePasswordRequest, CancellationToken cancel = default)
     {
         try
         {
-            var current_user_name = _ContextAccessor.HttpContext?.User.Identity?.Name;
-            if (current_user_name is not { Length: > 0 })
+            var currentUserName = _ContextAccessor.HttpContext?.User.Identity?.Name;
+            if (currentUserName is not { Length: > 0 })
             {
                 _Logger.LogWarning("Change password request called without authorization data");
                 return Result.Failure(Errors.Identity.ChangePassword.MissAuthorizationData);
             }
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var identity_user = await _UserManager.FindByNameAsync(current_user_name);
-            if (identity_user is null)
+            var identityUser = await _UserManager.FindByNameAsync(currentUserName);
+            if (identityUser is null)
             {
-                _Logger.LogWarning("Некорректно введены данные {Email}", current_user_name);
+                _Logger.LogWarning("Некорректно введены данные {Email}", currentUserName);
                 return Result.Failure(Errors.Identity.ChangePassword.NotFound);
             }
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            if (!await CheckIsEmailConfirmedAsync(identity_user))
+            if (!await CheckIsEmailConfirmedAsync(identityUser))
             {
-                _Logger.LogWarning("Email не подтверждён {Email}", identity_user.Email);
+                _Logger.LogWarning("Email не подтверждён {Email}", identityUser.Email);
                 return Result.Failure(Errors.Identity.ChangePassword.EmailNotConfirmed);
             }
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var identity_result = await _UserManager.ChangePasswordAsync(
-                identity_user,
-                ChangePasswordRequest.CurrentPassword,
-                ChangePasswordRequest.NewPassword);
+            var identityResult = await _UserManager.ChangePasswordAsync(
+                identityUser,
+                changePasswordRequest.CurrentPassword,
+                changePasswordRequest.NewPassword);
 
-            if (identity_result.Succeeded)
+            if (identityResult.Succeeded)
             {
-                await _SignInManager.RefreshSignInAsync(identity_user);
+                await _SignInManager.RefreshSignInAsync(identityUser);
 
                 return Result.Success();
             }
 
             _Logger.LogWarning(
                 "Не удалось изменить пароль {CurrentPassword}, {NewPassword}",
-                ChangePasswordRequest.CurrentPassword,
-                ChangePasswordRequest.NewPassword);
+                changePasswordRequest.CurrentPassword,
+                changePasswordRequest.NewPassword);
             return Result.Failure(Errors.Identity.ChangePassword.Fail);
         }
         catch (OperationCanceledException)
@@ -222,11 +222,11 @@ public class AccountsController : Controller, IIdentityApi
     }
     
     [HttpGet(AuthApiRoute.RefreshToken)]
-    public async Task<Result<RefreshTokenResponse>> GetRefreshTokenAsync(CancellationToken Cancel = default)
+    public async Task<Result<RefreshTokenResponse>> GetRefreshTokenAsync(CancellationToken cancel = default)
     {
         try
         {
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
             // TODO: Не обращай внимание, я тут буду править.
             var headersAuthorization = (string?)_ContextAccessor.HttpContext?.Request.Headers.Authorization;
@@ -238,19 +238,19 @@ public class AccountsController : Controller, IIdentityApi
             var userEmail = (string)token.Payload.First(x => x.Key.Equals("email")).Value;
             // TODO: validation
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var identity_user = await _UserManager.FindByEmailAsync(userEmail);
+            var identityUser = await _UserManager.FindByEmailAsync(userEmail);
             // TODO: validation
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var identity_roles = await _UserManager.GetRolesAsync(identity_user);
-            var new_session_token = _authUtilits.CreateSessionToken(identity_user, identity_roles);
+            var identityRoles = await _UserManager.GetRolesAsync(identityUser);
+            var newSessionToken = _authUtilits.CreateSessionToken(identityUser, identityRoles);
 
-            if (!string.IsNullOrEmpty(new_session_token))
+            if (!string.IsNullOrEmpty(newSessionToken))
             {
-                return Result<RefreshTokenResponse>.Success(new RefreshTokenResponse(new_session_token));
+                return Result<RefreshTokenResponse>.Success(new RefreshTokenResponse(newSessionToken));
             }
 
             _Logger.LogWarning("Не удалось обновить токен пользователя");
@@ -270,14 +270,14 @@ public class AccountsController : Controller, IIdentityApi
     
     [Authorize(Roles = AuthApiRoles.Admin)]
     [HttpPost(AuthApiRoute.CreateRole)]
-    public async Task<Result> CreateRoleAsync([FromBody] CreateRoleRequest CreateRoleRequest, CancellationToken Cancel = default)
+    public async Task<Result> CreateRoleAsync([FromBody] CreateRoleRequest createRoleRequest, CancellationToken cancel = default)
     {
         try
         {
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var identity_result = await _RoleManager.CreateAsync(new IdentityRole(CreateRoleRequest.RoleName.ToLower()));
-            if (identity_result.Succeeded)
+            var identityResult = await _RoleManager.CreateAsync(new IdentityRole(createRoleRequest.RoleName.ToLower()));
+            if (identityResult.Succeeded)
             {
                 return Result.Success();
             }
@@ -298,12 +298,12 @@ public class AccountsController : Controller, IIdentityApi
     
     [Authorize(Roles = AuthApiRoles.Admin)]
     [HttpGet(AuthApiRoute.GetAllRoles)]
-    public async Task<Result<IEnumerable<AuthRole>>> GetAllRolesAsync(CancellationToken Cancel = default)
+    public async Task<Result<IEnumerable<AuthRole>>> GetAllRolesAsync(CancellationToken cancel = default)
     {
         try
         {
-            var identity_roles_list = await _RoleManager.Roles.ToListAsync(cancellationToken: Cancel);
-            var roles = identity_roles_list
+            var identityRolesList = await _RoleManager.Roles.ToListAsync(cancellationToken: cancel);
+            var roles = identityRolesList
                .Select(role => new AuthRole()
                {
                    Id = role.Id,
@@ -325,21 +325,21 @@ public class AccountsController : Controller, IIdentityApi
     }
     
     [Authorize(Roles = AuthApiRoles.Admin)]
-    [HttpGet($"{AuthApiRoute.GetRoleById}/" + "{RoleId}")]
-    public async Task<Result<AuthRole>> GetRoleByIdAsync([FromRoute] string RoleId, CancellationToken Cancel = default)
+    [HttpGet($"{AuthApiRoute.GetRoleById}/{{roleId}}")]
+    public async Task<Result<AuthRole>> GetRoleByIdAsync([FromRoute] string roleId, CancellationToken cancel = default)
     {
         try
         {
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var identity_role = await _RoleManager.FindByIdAsync(RoleId);
-            if (identity_role is null)
+            var identityRole = await _RoleManager.FindByIdAsync(roleId);
+            if (identityRole is null)
             {
                 _Logger.LogWarning("Не удалось получить роль");
                 return Result<AuthRole>.Failure(Errors.Identity.GetRoleById.NotFound);
             }
 
-            var role = new AuthRole { Id = identity_role.Id, RoleName = identity_role.Name };
+            var role = new AuthRole { Id = identityRole.Id, RoleName = identityRole.Name };
             return Result<AuthRole>.Success(role);
         }
         catch (OperationCanceledException)
@@ -355,26 +355,26 @@ public class AccountsController : Controller, IIdentityApi
     
     [Authorize(Roles = AuthApiRoles.Admin)]
     [HttpPut(AuthApiRoute.EditRoleNameById)]
-    public async Task<Result> EditRoleNameByIdAsync([FromBody] EditRoleNameByIdRequest EditRoleRequest, CancellationToken Cancel = default)
+    public async Task<Result> EditRoleNameByIdAsync([FromBody] EditRoleNameByIdRequest editRoleRequest, CancellationToken cancel = default)
     {
         try
         {
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var identity_role = await _RoleManager.FindByIdAsync(EditRoleRequest.RoleId);
-            if (identity_role is null)
+            var identityRole = await _RoleManager.FindByIdAsync(editRoleRequest.RoleId);
+            if (identityRole is null)
             {
-                _Logger.LogWarning("Не удалось найти роль {RoleId}", EditRoleRequest.RoleId);
+                _Logger.LogWarning("Не удалось найти роль {RoleId}", editRoleRequest.RoleId);
                 return Result.Failure(Errors.Identity.EditRoleNameById.NotFound);
             }
 
-            identity_role.Name = EditRoleRequest.RoleName.ToLower();
-            identity_role.NormalizedName = EditRoleRequest.RoleName.ToUpper();
+            identityRole.Name = editRoleRequest.RoleName.ToLower();
+            identityRole.NormalizedName = editRoleRequest.RoleName.ToUpper();
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var identity_result = await _RoleManager.UpdateAsync(identity_role);
-            if (identity_result.Succeeded)
+            var identityResult = await _RoleManager.UpdateAsync(identityRole);
+            if (identityResult.Succeeded)
             {
                 return Result.Success();
             }
@@ -394,33 +394,33 @@ public class AccountsController : Controller, IIdentityApi
     }
     
     [Authorize(Roles = AuthApiRoles.Admin)]
-    [HttpDelete($"{AuthApiRoute.DeleteRoleById}/" + "{RoleId}")]
-    public async Task<Result> DeleteRoleByIdAsync([FromRoute] string RoleId, CancellationToken Cancel = default)
+    [HttpDelete($"{AuthApiRoute.DeleteRoleById}/{{roleId}}")]
+    public async Task<Result> DeleteRoleByIdAsync([FromRoute] string roleId, CancellationToken cancel = default)
     {
         try
         {
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var identity_role = await _RoleManager.FindByIdAsync(RoleId);
-            if (identity_role is null)
+            var identityRole = await _RoleManager.FindByIdAsync(roleId);
+            if (identityRole is null)
             {
                 _Logger.LogWarning("Не удалось найти роль");
                 return Result.Failure(Errors.Identity.DeleteRoleById.NotFound);
             }
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
             // check that user not try to delete ADMIN or USER roles
-            if (!_authUtilits.CheckToDeleteAdminOrUserRoles(identity_role))
+            if (!_authUtilits.CheckToDeleteAdminOrUserRoles(identityRole))
             {
                 _Logger.LogWarning("Не удалось найти роль");
                 return Result.Failure(Errors.Identity.DeleteRoleById.TryToDeleteSystemRoles);
             }
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var identity_result = await _RoleManager.DeleteAsync(identity_role);
-            if (identity_result.Succeeded)
+            var identityResult = await _RoleManager.DeleteAsync(identityRole);
+            if (identityResult.Succeeded)
             {
                 return Result.Success();
             }
@@ -441,37 +441,37 @@ public class AccountsController : Controller, IIdentityApi
     
     [Authorize(Roles = AuthApiRoles.Admin)]
     [HttpPost(AuthApiRoute.AddRoleToUser)]
-    public async Task<Result> AddRoleToUserAsync([FromBody] AddRoleToUserRequest AddRoleToUserRequest, CancellationToken Cancel = default)
+    public async Task<Result> AddRoleToUserAsync([FromBody] AddRoleToUserRequest addRoleToUserRequest, CancellationToken cancel = default)
     {
         try
         {
-            var normalized_role_name = AddRoleToUserRequest.RoleName.ToLowerInvariant();
+            var normalizedRoleName = addRoleToUserRequest.RoleName.ToLowerInvariant();
 
-            if (await _RoleManager.Roles.AnyAsync(x => x.Name == normalized_role_name, cancellationToken: Cancel))
+            if (await _RoleManager.Roles.AnyAsync(x => x.Name == normalizedRoleName, cancellationToken: cancel))
             {
-                _Logger.LogWarning("Роль не зарегистрированна {Role}", AddRoleToUserRequest.RoleName);
+                _Logger.LogWarning("Роль не зарегистрированна {Role}", addRoleToUserRequest.RoleName);
                 return Result.Failure(Errors.Identity.AddRoleToUser.RoleNotFound);
             }
 
-            var identity_user = await _UserManager.FindByEmailAsync(AddRoleToUserRequest.Email);
-            if (identity_user is null)
+            var identityUser = await _UserManager.FindByEmailAsync(addRoleToUserRequest.Email);
+            if (identityUser is null)
             {
-                _Logger.LogWarning("Пользователь не найден {User}", AddRoleToUserRequest.Email);
+                _Logger.LogWarning("Пользователь не найден {User}", addRoleToUserRequest.Email);
                 return Result.Failure(Errors.Identity.AddRoleToUser.UserNotFound);
             }
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            if (await _UserManager.IsInRoleAsync(identity_user, normalized_role_name))
+            if (await _UserManager.IsInRoleAsync(identityUser, normalizedRoleName))
             {
-                _Logger.LogWarning("Пользователь {User} уже имеет данную роль {Role}", AddRoleToUserRequest.Email, AddRoleToUserRequest.RoleName);
+                _Logger.LogWarning("Пользователь {User} уже имеет данную роль {Role}", addRoleToUserRequest.Email, addRoleToUserRequest.RoleName);
                 return Result.Failure(Errors.Identity.AddRoleToUser.UserAlreadyInRole);
             }
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var role_added_result = await _UserManager.AddToRoleAsync(identity_user, normalized_role_name);
-            if (role_added_result.Succeeded)
+            var roleAddedResult = await _UserManager.AddToRoleAsync(identityUser, normalizedRoleName);
+            if (roleAddedResult.Succeeded)
             {
                 // TODO: Schedule system to user update token when he will be signed in
                 return Result.Success();
@@ -492,52 +492,52 @@ public class AccountsController : Controller, IIdentityApi
     }
     
     [Authorize(Roles = AuthApiRoles.Admin)]
-    [HttpDelete($"{AuthApiRoute.DeleteUserRoleByEmail}/" + "{Email}/{RoleName}")]
-    public async Task<Result> DeleteUserRoleByEmailAsync([FromRoute] string Email, [FromRoute] string RoleName, CancellationToken Cancel = default)
+    [HttpDelete($"{AuthApiRoute.DeleteUserRoleByEmail}/{{email}}/{{RoleName}}")]
+    public async Task<Result> DeleteUserRoleByEmailAsync([FromRoute] string email, [FromRoute] string roleName, CancellationToken cancel = default)
     {
         try
         {
-            var normalized_role_name = RoleName.ToLowerInvariant();
-            if (await _RoleManager.Roles.AnyAsync(x => x.Name == normalized_role_name, cancellationToken: Cancel))
+            var normalizedRoleName = roleName.ToLowerInvariant();
+            if (await _RoleManager.Roles.AnyAsync(x => x.Name == normalizedRoleName, cancellationToken: cancel))
             {
-                _Logger.LogWarning("Роль не зарегистрированна {Role}", RoleName);
+                _Logger.LogWarning("Роль не зарегистрированна {Role}", roleName);
                 return Result.Failure(Errors.Identity.RemoveRoleFromUserByEmail.RoleNotFound);
             }
 
-            var identity_user = await _UserManager.FindByEmailAsync(Email);
-            if (identity_user is null)
+            var identityUser = await _UserManager.FindByEmailAsync(email);
+            if (identityUser is null)
             {
-                _Logger.LogWarning("Пользователь не найден {User}", Email);
+                _Logger.LogWarning("Пользователь не найден {User}", email);
                 return Result.Failure(Errors.Identity.RemoveRoleFromUserByEmail.UserNotFound);
             }
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            if (!await _UserManager.IsInRoleAsync(identity_user, normalized_role_name))
+            if (!await _UserManager.IsInRoleAsync(identityUser, normalizedRoleName))
             {
-                _Logger.LogWarning("Пользователь {User} не имеет данную роль {Role}", Email, RoleName);
+                _Logger.LogWarning("Пользователь {User} не имеет данную роль {Role}", email, roleName);
                 return Result.Failure(Errors.Identity.RemoveRoleFromUserByEmail.UserNotInRole);
             }
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
             // check that user not trying to remove super admin from admin role
-            if (!_authUtilits.CheckToDeleteSAInRoleAdmin(identity_user, RoleName.ToLower()))
+            if (!_authUtilits.CheckToDeleteSAInRoleAdmin(identityUser, roleName.ToLower()))
             {
                 _Logger.LogWarning("Попытка понизить супер админа в должности");
                 return Result.Failure(Errors.Identity.RemoveRoleFromUserByEmail.TryToDownSuperAdmin);
             }
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var role_removed_result = await _UserManager.RemoveFromRoleAsync(identity_user, RoleName.ToLower());
-            if (role_removed_result.Succeeded)
+            var roleRemovedResult = await _UserManager.RemoveFromRoleAsync(identityUser, roleName.ToLower());
+            if (roleRemovedResult.Succeeded)
             {
                 // TODO: Schedule system to user update token when he will be signed in
                 return Result.Success();
             }
 
-            _Logger.LogWarning("Некорректно введены данные {Email}, {RoleName}", Email, RoleName);
+            _Logger.LogWarning("Некорректно введены данные {Email}, {RoleName}", email, roleName);
             return Result.Failure(Errors.Identity.RemoveRoleFromUserByEmail.Fail);
         }
         catch (OperationCanceledException)
@@ -552,21 +552,21 @@ public class AccountsController : Controller, IIdentityApi
     }
     
     [Authorize(Roles = AuthApiRoles.Admin)]
-    [HttpGet($"{AuthApiRoute.GetAllUserRolesByEmail}/" + "{Email}")]
-    public async Task<Result<IEnumerable<AuthRole>>> GetUserRolesAsync([FromRoute] string Email, CancellationToken Cancel = default)
+    [HttpGet($"{AuthApiRoute.GetAllUserRolesByEmail}/{{email}}")]
+    public async Task<Result<IEnumerable<AuthRole>>> GetUserRolesAsync([FromRoute] string email, CancellationToken cancel = default)
     {
         try
         {
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var identity_user = await _UserManager.FindByEmailAsync(Email);
-            if (identity_user is null)
+            var identityUser = await _UserManager.FindByEmailAsync(email);
+            if (identityUser is null)
             {
-                _Logger.LogWarning("Пользователь не найден {User}", Email);
+                _Logger.LogWarning("Пользователь не найден {User}", email);
                 return Result<IEnumerable<AuthRole>>.Failure(Errors.Identity.GetUserRoles.UserNotFound);
             }
             
-            var roles = await GetUserRolesAsync(identity_user, Cancel);
+            var roles = await GetUserRolesAsync(identityUser, cancel);
 
             return Result<IEnumerable<AuthRole>>.Success(roles);
         }
@@ -582,27 +582,27 @@ public class AccountsController : Controller, IIdentityApi
     }
     
     [Authorize(Roles = AuthApiRoles.Admin)]
-    [HttpGet($"{AuthApiRoute.GetUserByEmail}/" + "{Email}")]
-    public async Task<Result<AuthUser>> GetUserByEmailAsync([FromRoute] string Email, CancellationToken Cancel = default)
+    [HttpGet($"{AuthApiRoute.GetUserByEmail}/{{email}}")]
+    public async Task<Result<AuthUser>> GetUserByEmailAsync([FromRoute] string email, CancellationToken cancel = default)
     {
         try
         {
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var identity_user = await _UserManager.FindByEmailAsync(Email);
-            if (identity_user is null)
+            var identityUser = await _UserManager.FindByEmailAsync(email);
+            if (identityUser is null)
             {
                 _Logger.LogWarning("Не удалось получить информации о пользователе");
                 return Result<AuthUser>.Failure(Errors.Identity.GetUserByEmail.NotFound);
             }
 
-            var roles = await GetUserRolesAsync(identity_user, Cancel);
+            var roles = await GetUserRolesAsync(identityUser, cancel);
 
             AuthUser user = new()
             {
-                Id = identity_user.Id,
-                Email = Email,
-                UserName = identity_user.UserName,
+                Id = identityUser.Id,
+                Email = email,
+                UserName = identityUser.UserName,
                 UserRoles = roles,
             };
             return Result<AuthUser>.Success(user);
@@ -620,15 +620,15 @@ public class AccountsController : Controller, IIdentityApi
     
     [Authorize(Roles = AuthApiRoles.Admin)]
     [HttpGet(AuthApiRoute.GetAllUsers)]
-    public async Task<Result<IEnumerable<AuthUser>>> GetAllUsersAsync(CancellationToken Cancel = default)
+    public async Task<Result<IEnumerable<AuthUser>>> GetAllUsersAsync(CancellationToken cancel = default)
     {
         try
         {
-            var list_of_all_users = await _UserManager.Users.ToListAsync(cancellationToken: Cancel);
+            var listOfAllUsers = await _UserManager.Users.ToListAsync(cancellationToken: cancel);
             var users             = new List<AuthUser>();
-            foreach (var user in list_of_all_users)
+            foreach (var user in listOfAllUsers)
             {
-                var roles = await GetUserRolesAsync(user, Cancel);
+                var roles = await GetUserRolesAsync(user, cancel);
                 users.Add(new AuthUser
                 {
                     Id = user.Id,
@@ -653,31 +653,31 @@ public class AccountsController : Controller, IIdentityApi
     
     [Authorize(Roles = AuthApiRoles.Admin)]
     [HttpPut(AuthApiRoute.EditUserByEmail)]
-    public async Task<Result<EditUserNameResponse>> EditUserNameByEmailAsync([FromBody] EditUserNameByEmailRequest EditUserRequest, CancellationToken Cancel = default)
+    public async Task<Result<EditUserNameResponse>> EditUserNameByEmailAsync([FromBody] EditUserNameByEmailRequest editUserRequest, CancellationToken cancel = default)
     {
         try
         {
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var identity_user = await _UserManager.FindByEmailAsync(EditUserRequest.UserEmail);
-            if (identity_user is null)
+            var identityUser = await _UserManager.FindByEmailAsync(editUserRequest.UserEmail);
+            if (identityUser is null)
             {
-                _Logger.LogWarning("Не удалось найти пользователя {Email}", EditUserRequest.UserEmail);
+                _Logger.LogWarning("Не удалось найти пользователя {Email}", editUserRequest.UserEmail);
                 return Result<EditUserNameResponse>.Failure(Errors.Identity.EditUserName.NotFound);
             }
 
-            identity_user.UserName = EditUserRequest.EditUserNickName;
+            identityUser.UserName = editUserRequest.EditUserNickName;
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var identity_result = await _UserManager.UpdateAsync(identity_user);
-            if (identity_result.Succeeded)
+            var identityResult = await _UserManager.UpdateAsync(identityUser);
+            if (identityResult.Succeeded)
             {
-                var new_token = _authUtilits.CreateSessionToken(
-                    identity_user,
-                    await _UserManager.GetRolesAsync(identity_user));
+                var newToken = _authUtilits.CreateSessionToken(
+                    identityUser,
+                    await _UserManager.GetRolesAsync(identityUser));
 
-                return Result<EditUserNameResponse>.Success(new EditUserNameResponse(new_token));
+                return Result<EditUserNameResponse>.Success(new EditUserNameResponse(newToken));
             }
 
             _Logger.LogWarning("Не удалось обновить информацию пользователя");
@@ -695,32 +695,32 @@ public class AccountsController : Controller, IIdentityApi
     }
     
     [Authorize(Roles = AuthApiRoles.Admin)]
-    [HttpDelete($"{AuthApiRoute.DeleteUserByEmail}/" + "{Email}")]
-    public async Task<Result> DeleteUserByEmailAsync([FromRoute] string Email, CancellationToken Cancel = default)
+    [HttpDelete($"{AuthApiRoute.DeleteUserByEmail}/{{email}}")]
+    public async Task<Result> DeleteUserByEmailAsync([FromRoute] string email, CancellationToken cancel = default)
     {
         try
         {
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var identity_user = await _UserManager.FindByEmailAsync(Email.ToLower());
-            if (identity_user is null)
+            var identityUser = await _UserManager.FindByEmailAsync(email.ToLower());
+            if (identityUser is null)
             {
-                _Logger.LogWarning("Не удалось получить информацию о пользователе {Email}", Email);
+                _Logger.LogWarning("Не удалось получить информацию о пользователе {Email}", email);
                 return Result.Failure(Errors.Identity.DeleteUser.NotFound);
             }
 
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            if (_authUtilits.CheckToDeleteSA(identity_user))
+            if (_authUtilits.CheckToDeleteSA(identityUser))
             {
-                var identity_result = await _UserManager.DeleteAsync(identity_user);
-                if (identity_result.Succeeded)
+                var identityResult = await _UserManager.DeleteAsync(identityUser);
+                if (identityResult.Succeeded)
                 {
                     return Result.Success();
                 }
             }
 
-            _Logger.LogWarning("Не удалось удалить пользователя {Email}", Email);
+            _Logger.LogWarning("Не удалось удалить пользователя {Email}", email);
             return Result.Failure(Errors.Identity.DeleteUser.Fail);
         }
         catch (OperationCanceledException)
@@ -734,21 +734,21 @@ public class AccountsController : Controller, IIdentityApi
         }
     }
 
-    private async Task<List<AuthRole>> GetUserRolesAsync(IdentityUser IdentityUser, CancellationToken Cancel = default)
+    private async Task<List<AuthRole>> GetUserRolesAsync(IdentityUser identityUser, CancellationToken cancel = default)
     {
         try
         {
-            Cancel.ThrowIfCancellationRequested();
+            cancel.ThrowIfCancellationRequested();
 
-            var user_roles = (await _UserManager.GetRolesAsync(IdentityUser)).ToHashSet();
+            var userRoles = (await _UserManager.GetRolesAsync(identityUser)).ToHashSet();
             var roles = await _RoleManager.Roles
-               .Where(x => user_roles.Contains(x.Name))
+               .Where(x => userRoles.Contains(x.Name))
                .Select(x => new AuthRole()
                 {
                     Id       = x.Id,
                     RoleName = x.Name,
                 })
-               .ToListAsync(cancellationToken: Cancel);
+               .ToListAsync(cancellationToken: cancel);
             return roles;
         }
         catch (Exception ex)
