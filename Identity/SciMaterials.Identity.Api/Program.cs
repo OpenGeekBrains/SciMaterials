@@ -6,6 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var config = builder.Configuration;
 
+builder.Services.AddCors(o => o.AddPolicy("client", b => b.WithOrigins(builder.Configuration["ClientApp"]).AllowCredentials().AllowAnyHeader().AllowAnyMethod()));
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer().AddSwaggerGen(o =>
 {
@@ -29,6 +31,8 @@ if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger().UseSwaggerUI();
 }
+
+app.UseCors("client");
 
 app.UseAuthentication().UseAuthorization();
 

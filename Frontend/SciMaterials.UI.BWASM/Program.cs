@@ -36,6 +36,9 @@ using SciMaterials.WebApi.Clients.Urls;
 using SciMaterials.WebApi.Clients.Resources;
 using SciMaterials.Contracts.WebApi.Clients.Resources;
 
+const string materialsApiRoot = "http://localhost:5048";
+const string identityApiRoot = "http://localhost:5294";
+
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
@@ -46,21 +49,19 @@ builder.Services
     .AddBlazoredLocalStorage();
 
 // Api
-string apiRoot = builder.HostEnvironment.BaseAddress;
-
 builder.Services
     .AddScoped<JwtAuthenticationHandler>()
 
-    .AddApiClient<IFilesClient, FilesClient>(apiRoot)
-    .AddApiClient<ICategoriesClient, CategoriesClient>(apiRoot)
-    .AddApiClient<ICommentsClient, CommentsClient>(apiRoot)
-    .AddApiClient<IContentTypesClient, ContentTypesClient>(apiRoot)
-    .AddApiClient<ITagsClient, TagsClient>(apiRoot)
-    .AddApiClient<IAuthorsClient, AuthorsClient>(apiRoot)
-    .AddApiClient<IUrlsClient, UrlsClient>(apiRoot)
-    .AddApiClient<IResourcesClient, ResourcesClient>(apiRoot)
+    .AddApiClient<IFilesClient, FilesClient>(materialsApiRoot)
+    .AddApiClient<ICategoriesClient, CategoriesClient>(materialsApiRoot)
+    .AddApiClient<ICommentsClient, CommentsClient>(materialsApiRoot)
+    .AddApiClient<IContentTypesClient, ContentTypesClient>(materialsApiRoot)
+    .AddApiClient<ITagsClient, TagsClient>(materialsApiRoot)
+    .AddApiClient<IAuthorsClient, AuthorsClient>(materialsApiRoot)
+    .AddApiClient<IUrlsClient, UrlsClient>(materialsApiRoot)
+    .AddApiClient<IResourcesClient, ResourcesClient>(materialsApiRoot)
 
-    .AddApiClient<IdentityClient>(apiRoot, ClientConfiguration)
+    .AddApiClient<IdentityClient>(identityApiRoot, ClientConfiguration)
     .AddScoped<IIdentityApi, IdentityClientOperationDecorator>()
     .AddScoped<IUsersApi, IdentityClientOperationDecorator>()
     .AddScoped<IRolesApi, IdentityClientOperationDecorator>();
