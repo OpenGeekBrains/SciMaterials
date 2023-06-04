@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Libraries\SciMaterials.Contracts.Identity.API\SciMaterials.Contracts.Identity.API.csproj" />
+    <ProjectReference Include="..\Libraries\SciMaterials.DAL.AUTH.Contracts\SciMaterials.DAL.AUTH.Contracts.csproj" />
+    <ProjectReference Include="..\Libraries\SciMaterials.Identity.DAL.SqlServer.Migrations\SciMaterials.Identity.DAL.SqlServer.Migrations.csproj" />
+    <ProjectReference Include="..\Libraries\SciMaterials.Services.Identity.API\SciMaterials.Services.Identity.API.csproj" />
+  </ItemGroup>
+
+</Project>
