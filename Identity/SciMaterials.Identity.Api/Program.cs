@@ -6,7 +6,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 var config = builder.Configuration;
 
-builder.Services.AddCors(o => o.AddPolicy("client", b => b.WithOrigins(builder.Configuration["ClientApp"]).AllowCredentials().AllowAnyHeader().AllowAnyMethod()));
+builder.Services.AddCors(o => o.AddPolicy("client", b =>
+	b.WithOrigins(builder.Configuration.GetValue<string>("ClientApps")?.Split(',', StringSplitOptions.TrimEntries) ?? throw new InvalidOperationException("You not setup ClientApps url's in settings file"))
+	.AllowCredentials()
+	.AllowAnyHeader()
+	.AllowAnyMethod()));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer().AddSwaggerGen(o =>

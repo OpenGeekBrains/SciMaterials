@@ -53,13 +53,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.UI.MVC", "Fron
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.UI.BWASM", "Frontend\SciMaterials.UI.BWASM\SciMaterials.UI.BWASM.csproj", "{313DAE04-6E73-472C-A3C2-ECBFA4B5BA0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciMaterials.Materials.DAL.SqlServer.Migrations", "Materials\Libraries\SciMaterials.Materials.DAL.SqlServer.Migrations\SciMaterials.Materials.DAL.SqlServer.Migrations.csproj", "{708F127E-767C-4787-91BB-B2C3398EF851}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.Materials.DAL.SqlServer.Migrations", "Materials\Libraries\SciMaterials.Materials.DAL.SqlServer.Migrations\SciMaterials.Materials.DAL.SqlServer.Migrations.csproj", "{708F127E-767C-4787-91BB-B2C3398EF851}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciMaterials.Identity.DAL.SqlServer.Migrations", "Identity\Libraries\SciMaterials.Identity.DAL.SqlServer.Migrations\SciMaterials.Identity.DAL.SqlServer.Migrations.csproj", "{75EE60FB-2813-4C67-962B-77829DC59596}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.Identity.DAL.SqlServer.Migrations", "Identity\Libraries\SciMaterials.Identity.DAL.SqlServer.Migrations\SciMaterials.Identity.DAL.SqlServer.Migrations.csproj", "{75EE60FB-2813-4C67-962B-77829DC59596}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciMaterials.Identity.Api", "Identity\SciMaterials.Identity.Api\SciMaterials.Identity.Api.csproj", "{6C4DB170-F3D8-4386-8E23-CE292546AE25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.Identity.Api", "Identity\SciMaterials.Identity.Api\SciMaterials.Identity.Api.csproj", "{6C4DB170-F3D8-4386-8E23-CE292546AE25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciMaterials.Materials.Api", "Materials\SciMaterials.Materials.Api\SciMaterials.Materials.Api.csproj", "{8A2B273F-0BD5-49DC-9416-2389056CD3A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.Materials.Api", "Materials\SciMaterials.Materials.Api\SciMaterials.Materials.Api.csproj", "{8A2B273F-0BD5-49DC-9416-2389056CD3A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6CD0A4FB-1B0F-4668-89DC-F924DAA78472}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
