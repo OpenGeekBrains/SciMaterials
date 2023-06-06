@@ -7,4 +7,9 @@ public class UrlDetails
 	public string FullUrl { get; set; } = string.Empty;
 	[Id(1)]
 	public string ShortenedRouteSegment { get; set; } = string.Empty;
+
+	[Id(2)]
+	public int AccessCount { get; set; }
+	[Id(3)]
+	public DateTime? LastAccess { get; set; }
 }

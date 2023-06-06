@@ -21,8 +21,12 @@ public class UrlShortenerGrain : Grain, IUrlShortenerGrain
 		await _state.WriteStateAsync();
 	}
 
-	public Task<string> GetUrl()
+	public async Task<string> GetUrl()
 	{
-		return Task.FromResult(_state.State.FullUrl);
+		_state.State.AccessCount++;
+		_state.State.LastAccess = DateTime.UtcNow;
+		await _state.WriteStateAsync();
+
+		return _state.State.FullUrl;
 	}
 }
