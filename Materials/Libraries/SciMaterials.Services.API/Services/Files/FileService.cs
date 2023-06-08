@@ -7,12 +7,12 @@ using SciMaterials.Contracts.API.Settings;
 using SciMaterials.Contracts.API.Models;
 using System.Text.Json;
 using SciMaterials.Contracts;
-using SciMaterials.Contracts.ShortLinks;
 using SciMaterials.DAL.Resources.Contexts;
 using SciMaterials.DAL.Resources.Contracts.Entities;
 using SciMaterials.DAL.Resources.Extensions;
 using SciMaterials.DAL.Resources.UnitOfWork;
 using File = SciMaterials.DAL.Resources.Contracts.Entities.File;
+using SciMaterials.UrlShortener.Contracts;
 
 namespace SciMaterials.Services.API.Services.Files;
 

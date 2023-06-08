@@ -1,7 +1,8 @@
 using Microsoft.OpenApi.Models;
-using SciMaterials.Contracts.ShortLinks;
+
 using SciMaterials.Materials.Api;
 using SciMaterials.Materials.Api.Middlewares;
+using SciMaterials.UrlShortener.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 

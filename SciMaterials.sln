@@ -37,15 +37,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.DAL.Resources.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.Contracts.API.Mapping", "Materials\Libraries\SciMaterials.Contracts.API.Mapping\SciMaterials.Contracts.API.Mapping.csproj", "{1BFEA688-F91E-4E45-94A6-59C4B2F99CF0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.Contracts.ShortLinks", "Materials\Libraries\SciMaterials.Contracts.ShortLinks\SciMaterials.Contracts.ShortLinks.csproj", "{D51A74C4-72E9-4649-A5C2-931628ABEDAE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.Contracts.WebApi.Clients", "Materials\Libraries\SciMaterials.Contracts.WebApi.Clients\SciMaterials.Contracts.WebApi.Clients.csproj", "{65F8012B-C950-4B55-860E-24A6994C8B1C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.Services", "Materials\Libraries\SciMaterials.Services\SciMaterials.Services.csproj", "{47BC8045-71F4-44C0-AD72-9D5DE06FA66C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.Services.API", "Materials\Libraries\SciMaterials.Services.API\SciMaterials.Services.API.csproj", "{38D55D79-5587-4982-B0B7-CD109A4C3114}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.Services.ShortLinks", "Materials\Libraries\SciMaterials.Services.ShortLinks\SciMaterials.Services.ShortLinks.csproj", "{CF06E25A-3830-40CE-97E5-61C879DC44D1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.WebApi.Clients", "Materials\Libraries\SciMaterials.WebApi.Clients\SciMaterials.WebApi.Clients.csproj", "{98DC8237-D70F-48D1-8DBF-D881F3136CFA}"
 EndProject
@@ -73,7 +69,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.UrlShortener.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.UrlShortener.Contracts", "UrlShortener\SciMaterials.UrlShortener.Contracts\SciMaterials.UrlShortener.Contracts.csproj", "{F4BE2912-8EA4-43E1-B9FB-3C4AF8FEE7F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SciMaterials.UrlShortener.Domain", "UrlShortener\SciMaterials.UrlShortener.Domain\SciMaterials.UrlShortener.Domain.csproj", "{9C4B92CE-CC22-41B0-A59F-F86DB52AAFC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SciMaterials.UrlShortener.Domain", "UrlShortener\SciMaterials.UrlShortener.Domain\SciMaterials.UrlShortener.Domain.csproj", "{9C4B92CE-CC22-41B0-A59F-F86DB52AAFC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,10 +117,6 @@ Global
 		{1BFEA688-F91E-4E45-94A6-59C4B2F99CF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BFEA688-F91E-4E45-94A6-59C4B2F99CF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BFEA688-F91E-4E45-94A6-59C4B2F99CF0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D51A74C4-72E9-4649-A5C2-931628ABEDAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D51A74C4-72E9-4649-A5C2-931628ABEDAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D51A74C4-72E9-4649-A5C2-931628ABEDAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D51A74C4-72E9-4649-A5C2-931628ABEDAE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{65F8012B-C950-4B55-860E-24A6994C8B1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{65F8012B-C950-4B55-860E-24A6994C8B1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65F8012B-C950-4B55-860E-24A6994C8B1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -137,10 +129,6 @@ Global
 		{38D55D79-5587-4982-B0B7-CD109A4C3114}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38D55D79-5587-4982-B0B7-CD109A4C3114}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38D55D79-5587-4982-B0B7-CD109A4C3114}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF06E25A-3830-40CE-97E5-61C879DC44D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF06E25A-3830-40CE-97E5-61C879DC44D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF06E25A-3830-40CE-97E5-61C879DC44D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF06E25A-3830-40CE-97E5-61C879DC44D1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{98DC8237-D70F-48D1-8DBF-D881F3136CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{98DC8237-D70F-48D1-8DBF-D881F3136CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98DC8237-D70F-48D1-8DBF-D881F3136CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -199,11 +187,9 @@ Global
 		{D18553E3-BC98-4C8B-B054-9DD9265CFC6C} = {F88EB74B-A298-4715-BDD2-8FE6DD7EFCC2}
 		{D4783AF5-E830-4F2A-BD51-C6D797B159C3} = {F88EB74B-A298-4715-BDD2-8FE6DD7EFCC2}
 		{1BFEA688-F91E-4E45-94A6-59C4B2F99CF0} = {F88EB74B-A298-4715-BDD2-8FE6DD7EFCC2}
-		{D51A74C4-72E9-4649-A5C2-931628ABEDAE} = {F88EB74B-A298-4715-BDD2-8FE6DD7EFCC2}
 		{65F8012B-C950-4B55-860E-24A6994C8B1C} = {F88EB74B-A298-4715-BDD2-8FE6DD7EFCC2}
 		{47BC8045-71F4-44C0-AD72-9D5DE06FA66C} = {F88EB74B-A298-4715-BDD2-8FE6DD7EFCC2}
 		{38D55D79-5587-4982-B0B7-CD109A4C3114} = {F88EB74B-A298-4715-BDD2-8FE6DD7EFCC2}
-		{CF06E25A-3830-40CE-97E5-61C879DC44D1} = {F88EB74B-A298-4715-BDD2-8FE6DD7EFCC2}
 		{98DC8237-D70F-48D1-8DBF-D881F3136CFA} = {F88EB74B-A298-4715-BDD2-8FE6DD7EFCC2}
 		{15069B30-4DEC-4664-9D6D-59C5DD9FA7A1} = {C4B28EDE-F9FD-478B-90B2-212D9224AB21}
 		{313DAE04-6E73-472C-A3C2-ECBFA4B5BA0D} = {C4B28EDE-F9FD-478B-90B2-212D9224AB21}

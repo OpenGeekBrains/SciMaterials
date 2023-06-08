@@ -10,10 +10,10 @@
   </PropertyGroup>-->
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\UrlShortener\SciMaterials.UrlShortener.Contracts\SciMaterials.UrlShortener.Contracts.csproj" />
     <ProjectReference Include="..\SciMaterials.Contracts.API.Mapping\SciMaterials.Contracts.API.Mapping.csproj" />
     <ProjectReference Include="..\SciMaterials.Contracts.API\SciMaterials.Contracts.API.csproj" />
     <ProjectReference Include="..\SciMaterials.DAL.Resources\SciMaterials.DAL.Resources.csproj" />
-    <ProjectReference Include="..\SciMaterials.Services.ShortLinks\SciMaterials.Services.ShortLinks.csproj" />
     <ProjectReference Include="..\SciMaterials.Services\SciMaterials.Services.csproj" />
     <ProjectReference Include="..\SciMaterials.WebApi.Clients\SciMaterials.WebApi.Clients.csproj" />
   </ItemGroup>

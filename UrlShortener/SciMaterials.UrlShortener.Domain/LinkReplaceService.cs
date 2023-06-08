@@ -4,41 +4,33 @@ using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 
 using SciMaterials.Contracts.Result;
-using SciMaterials.Contracts.ShortLinks;
+using SciMaterials.UrlShortener.Contracts;
 
 namespace SciMaterials.Services.ShortLinks;
 
 public class LinkReplaceService : ILinkReplaceService
 {
-    private const string sourceLinkPattern = @"((http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?)";
-    private const string hashPattern = @"(\w{5,})";
-    private readonly ILinkShortCutService _linkShortCut;
+    private const string _sourceLinkPattern = @"((http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?)";
+    private const string _hashPattern = @"(\w{5,})";
+    
+    private readonly IUrlShortenerClient _urlShortenerClient;
     private readonly ILogger<LinkReplaceService> _logger;
 
-    public LinkReplaceService(ILinkShortCutService linkShortCut, ILogger<LinkReplaceService> logger)
+    public LinkReplaceService(IUrlShortenerClient urlShortener, ILogger<LinkReplaceService> logger)
     {
-        _linkShortCut = linkShortCut;
+        _urlShortenerClient = urlShortener;
         _logger = logger;
     }
 
     public async Task<string> ShortenLinksAsync(string text, CancellationToken Cancel = default)
     {
-        var result = await ReplaceLinksAsync(
-            text,
-            sourceLinkPattern,
-            async (matchText, Cancel) => await _linkShortCut.AddAsync(matchText, Cancel),
-            Cancel);
+        var result = await ReplaceLinksAsync(text, _sourceLinkPattern, _urlShortenerClient.ShortenAsync, Cancel);
         return result;
     }
     public async Task<string> RestoreLinksAsync(string text, CancellationToken Cancel = default)
     {
-        var shortLinkPattern = _linkShortCut.GetLinkBasePath() + hashPattern;
-        var result = await ReplaceLinksAsync(
-            text,
-            shortLinkPattern,
-            async (matchText, Cancel) =>
-                await _linkShortCut.GetAsync(matchText, false, Cancel),
-            Cancel);
+        var shortLinkPattern = _urlShortenerClient.ShortenedUrlBase + _hashPattern;
+        var result = await ReplaceLinksAsync(text, shortLinkPattern, _urlShortenerClient.GetOriginalUrlAsync, Cancel);
         return result;
     }
 

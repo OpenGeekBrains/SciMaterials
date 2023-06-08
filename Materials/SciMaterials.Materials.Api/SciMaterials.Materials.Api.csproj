@@ -10,12 +10,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\SciMaterials.DAL.Contracts\SciMaterials.DAL.Contracts.csproj" />
+    <ProjectReference Include="..\..\UrlShortener\SciMaterials.UrlShortener.Domain\SciMaterials.UrlShortener.Domain.csproj" />
     <ProjectReference Include="..\Libraries\SciMaterials.Contracts.API.Mapping\SciMaterials.Contracts.API.Mapping.csproj" />
-    <ProjectReference Include="..\Libraries\SciMaterials.Contracts.ShortLinks\SciMaterials.Contracts.ShortLinks.csproj" />
     <ProjectReference Include="..\Libraries\SciMaterials.Contracts.WebApi.Clients\SciMaterials.Contracts.WebApi.Clients.csproj" />
     <ProjectReference Include="..\Libraries\SciMaterials.Materials.DAL.SqlServer.Migrations\SciMaterials.Materials.DAL.SqlServer.Migrations.csproj" />
     <ProjectReference Include="..\Libraries\SciMaterials.Services.API\SciMaterials.Services.API.csproj" />
-    <ProjectReference Include="..\Libraries\SciMaterials.Services.ShortLinks\SciMaterials.Services.ShortLinks.csproj" />
     <ProjectReference Include="..\Libraries\SciMaterials.WebApi.Clients\SciMaterials.WebApi.Clients.csproj" />
   </ItemGroup>
 

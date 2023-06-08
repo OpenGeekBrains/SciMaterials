@@ -24,13 +24,18 @@ public class UrlShortenerClient : IUrlShortenerClient
 
 	public string ShortenedUrlBase => _shortenedUrlBase;
 
-	public async Task<Result<string>> ShortenAsync(string originalUrl)
+	public async Task<Result<string>> ShortenAsync(string originalUrl, CancellationToken cancellationToken)
 	{
 		try
 		{
 			var handler = _urlBase.AppendPathSegment("shorten").SetQueryParam(originalUrl);
-			var response = await handler.GetStringAsync();
+			var response = await handler.GetStringAsync(cancellationToken);
 			return Result<string>.Success(response);
+		}
+		catch (OperationCanceledException ex)
+		{
+			_logger.LogError(ex, "Url shorten was cancelled");
+			return Result<string>.Failure(Errors.App.OperationCanceled);
 		}
 		catch (FlurlHttpException ex)
 		{
@@ -39,13 +44,18 @@ public class UrlShortenerClient : IUrlShortenerClient
 		}
 	}
 
-	public async Task<Result<string>> GetOriginalUrlAsync(string url)
+	public async Task<Result<string>> GetOriginalUrlAsync(string url, CancellationToken cancellationToken)
 	{
 		try
 		{
 			var handler = _urlBase.AppendPathSegment("original").SetQueryParam(url[url.LastIndexOf('/')..]);
-			var response = await handler.GetStringAsync();
+			var response = await handler.GetStringAsync(cancellationToken);
 			return Result<string>.Success(response);
+		}
+		catch(OperationCanceledException ex)
+		{
+			_logger.LogError(ex, "Get original url was cancelled");
+			return Result<string>.Failure(Errors.App.OperationCanceled);
 		}
 		catch (FlurlHttpException ex)
 		{
