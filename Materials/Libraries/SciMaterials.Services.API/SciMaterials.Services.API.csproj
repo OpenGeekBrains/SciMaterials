@@ -10,7 +10,6 @@
   </PropertyGroup>-->
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UrlShortener\SciMaterials.UrlShortener.Contracts\SciMaterials.UrlShortener.Contracts.csproj" />
     <ProjectReference Include="..\SciMaterials.Contracts.API.Mapping\SciMaterials.Contracts.API.Mapping.csproj" />
     <ProjectReference Include="..\SciMaterials.Contracts.API\SciMaterials.Contracts.API.csproj" />
     <ProjectReference Include="..\SciMaterials.DAL.Resources\SciMaterials.DAL.Resources.csproj" />

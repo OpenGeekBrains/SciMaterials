@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\SciMaterials.DAL.Contracts\SciMaterials.DAL.Contracts.csproj" />
-    <ProjectReference Include="..\..\UrlShortener\SciMaterials.UrlShortener.Domain\SciMaterials.UrlShortener.Domain.csproj" />
+    <ProjectReference Include="..\..\UrlsService\SciMaterials.UrlsService.Domain\SciMaterials.UrlsService.Domain.csproj" />
     <ProjectReference Include="..\Libraries\SciMaterials.Contracts.API.Mapping\SciMaterials.Contracts.API.Mapping.csproj" />
     <ProjectReference Include="..\Libraries\SciMaterials.Contracts.WebApi.Clients\SciMaterials.Contracts.WebApi.Clients.csproj" />
     <ProjectReference Include="..\Libraries\SciMaterials.Materials.DAL.SqlServer.Migrations\SciMaterials.Materials.DAL.SqlServer.Migrations.csproj" />

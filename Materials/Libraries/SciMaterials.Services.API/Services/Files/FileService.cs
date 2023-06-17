@@ -12,7 +12,7 @@ using SciMaterials.DAL.Resources.Contracts.Entities;
 using SciMaterials.DAL.Resources.Extensions;
 using SciMaterials.DAL.Resources.UnitOfWork;
 using File = SciMaterials.DAL.Resources.Contracts.Entities.File;
-using SciMaterials.UrlShortener.Contracts;
+using SciMaterials.UrlsService.Contracts;
 
 namespace SciMaterials.Services.API.Services.Files;
 

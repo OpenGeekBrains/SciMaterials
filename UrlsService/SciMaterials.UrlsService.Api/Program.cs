@@ -1,4 +1,4 @@
-using SciMaterials.UrlShortener.Api;
+using SciMaterials.UrlsService.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 

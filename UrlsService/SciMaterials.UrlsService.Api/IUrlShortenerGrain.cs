@@ -1,4 +1,4 @@
-﻿namespace SciMaterials.UrlShortener.Api;
+﻿namespace SciMaterials.UrlsService.Api;
 
 public interface IUrlShortenerGrain : IGrainWithStringKey
 {

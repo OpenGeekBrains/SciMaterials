@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using SciMaterials.Contracts.API.Constants;
-using SciMaterials.UrlShortener.Contracts;
+using SciMaterials.UrlsService.Contracts;
 
 namespace SciMaterials.Materials.Api.Controllers;
 

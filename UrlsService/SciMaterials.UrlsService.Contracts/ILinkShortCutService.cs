@@ -1,6 +1,6 @@
 ﻿using SciMaterials.Contracts.Result;
 
-namespace SciMaterials.UrlShortener.Contracts;
+namespace SciMaterials.UrlsService.Contracts;
 
 public interface ILinkShortCutService
 {

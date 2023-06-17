@@ -1,6 +1,6 @@
 ﻿using Orleans.Runtime;
 
-namespace SciMaterials.UrlShortener.Api;
+namespace SciMaterials.UrlsService.Api;
 
 public class UrlShortenerGrain : Grain, IUrlShortenerGrain
 {

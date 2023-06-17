@@ -1,4 +1,4 @@
-namespace SciMaterials.UrlShortener.Contracts.Settings;
+namespace SciMaterials.UrlsService.Contracts.Settings;
 
 public record LinkShortCutOptions
 (

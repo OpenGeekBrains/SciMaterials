@@ -6,9 +6,9 @@ using Microsoft.Extensions.Logging;
 
 using SciMaterials.Contracts;
 using SciMaterials.Contracts.Result;
-using SciMaterials.UrlShortener.Contracts;
+using SciMaterials.UrlsService.Contracts;
 
-namespace SciMaterials.UrlShortener.Domain;
+namespace SciMaterials.UrlsService.Domain;
 public class UrlShortenerClient : IUrlShortenerClient
 {
 	private readonly string _urlBase;
@@ -52,7 +52,7 @@ public class UrlShortenerClient : IUrlShortenerClient
 			var response = await handler.GetStringAsync(cancellationToken);
 			return Result<string>.Success(response);
 		}
-		catch(OperationCanceledException ex)
+		catch (OperationCanceledException ex)
 		{
 			_logger.LogError(ex, "Get original url was cancelled");
 			return Result<string>.Failure(Errors.App.OperationCanceled);

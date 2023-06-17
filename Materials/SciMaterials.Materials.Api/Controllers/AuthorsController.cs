@@ -4,7 +4,7 @@ using SciMaterials.Contracts.API.Constants;
 using SciMaterials.Contracts.API.DTO.Authors;
 using SciMaterials.Contracts.API.Services.Authors;
 using SciMaterials.Contracts.Result;
-using SciMaterials.UrlShortener.Contracts;
+using SciMaterials.UrlsService.Contracts;
 
 namespace SciMaterials.Materials.Api.Controllers;
 

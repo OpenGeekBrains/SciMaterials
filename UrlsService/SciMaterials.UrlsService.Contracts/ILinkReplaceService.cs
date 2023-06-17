@@ -1,4 +1,4 @@
-namespace SciMaterials.UrlShortener.Contracts;
+namespace SciMaterials.UrlsService.Contracts;
 public interface ILinkReplaceService
 {
 	Task<string> RestoreLinksAsync(string text, CancellationToken Cancel = default);
