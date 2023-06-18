@@ -6,8 +6,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using SciMaterials.DAL.Resources.Contracts.Entities;
-using File = SciMaterials.DAL.Resources.Contracts.Entities.File;
 
 namespace SciMaterials.DAL.Resources.TestData;
 
@@ -161,23 +159,7 @@ internal static class AssemblyResources
         return items ?? throw new InvalidOperationException($"Отсутствуют данные для запрошенного ресурса {ResourceName}");
     }
 
-    public static IEnumerable<User> Users => GetItems<User>();
-
-    public static IEnumerable<Author> Authors => GetItems<Author>();
-
-    public static IEnumerable<ContentType> ContentTypes => GetItems<ContentType>();
-
-    public static IEnumerable<FileGroup> FileGroups => GetItems<FileGroup>();
-
-    public static IEnumerable<File> Files => GetItems<File>();
-
-    public static IEnumerable<Url> Urls => GetItems<Url>();
-
-    public static IEnumerable<Tag> Tags => GetItems<Tag>();
-
-    public static IEnumerable<Category> Categories => GetItems<Category>();
-
-    public static IEnumerable<Comment> Comments => GetItems<Comment>();
-
-    public static IEnumerable<Rating> Ratings => GetItems<Rating>();
+    public static IEnumerable<Link> Links => GetItems<Link>();
 }
+
+internal record Link(string SourceAddress, bool IsDeleted, int AccessCount, DateTime LastAccess, byte[] RowVersion);

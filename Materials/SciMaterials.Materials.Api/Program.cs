@@ -1,5 +1,5 @@
 using Microsoft.OpenApi.Models;
-using SciMaterials.Contracts.ShortLinks;
+
 using SciMaterials.Materials.Api;
 using SciMaterials.Materials.Api.Middlewares;
 
@@ -52,11 +52,6 @@ if (app.Environment.IsDevelopment())
 app.UseCors("client");
 
 app.UseMiddleware<ErrorHandlerMiddleware>();
-app.MapPut("replace-link",
-	async (string text, ILinkReplaceService linkReplaceService, LinkGenerator linkGenerator, IHttpContextAccessor context) =>
-	{
-		var result = await linkReplaceService.ShortenLinksAsync(text);
-		return result;
-	});
+
 app.MapControllers();
 app.Run();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Options;
+
 using SciMaterials.Contracts.API.Mapping;
 using SciMaterials.Contracts.API.Services.Authors;
 using SciMaterials.Contracts.API.Services.Categories;
@@ -10,8 +11,6 @@ using SciMaterials.Contracts.API.Services.Resources;
 using SciMaterials.Contracts.API.Services.Tags;
 using SciMaterials.Contracts.API.Services.Urls;
 using SciMaterials.Contracts.API.Settings;
-using SciMaterials.Contracts.ShortLinks;
-using SciMaterials.Contracts.ShortLinks.Settings;
 using SciMaterials.Contracts.WebApi.Clients.Categories;
 using SciMaterials.Contracts.WebApi.Clients.Comments;
 using SciMaterials.Contracts.WebApi.Clients.ContentTypes;
@@ -38,14 +37,17 @@ using SciMaterials.Services.API.Services.Files.Stores;
 using SciMaterials.Services.API.Services.Resources;
 using SciMaterials.Services.API.Services.Tags;
 using SciMaterials.Services.API.Services.Urls;
-using SciMaterials.Services.ShortLinks;
+using SciMaterials.UrlsService.Contracts;
+using SciMaterials.UrlsService.Domain;
 using SciMaterials.WebApi.Clients.Categories;
 using SciMaterials.WebApi.Clients.Comments;
 using SciMaterials.WebApi.Clients.ContentTypes;
 using SciMaterials.WebApi.Clients.Files;
 using SciMaterials.WebApi.Clients.Tags;
 using SciMaterials.WebApi.Clients.Urls;
+
 using Swashbuckle.AspNetCore.SwaggerGen;
+
 using File = SciMaterials.DAL.Resources.Contracts.Entities.File;
 
 namespace SciMaterials.Materials.Api;
@@ -127,8 +129,7 @@ public static class ResourcesRegister
         services.AddMappings();
 
         services
-            .Configure<LinkShortCutOptions>(configuration.GetSection(LinkShortCutOptions.SectionName))
-            .AddScoped<ILinkShortCutService, LinkShortCutService>()
+            .AddScoped<IUrlShortenerClient, UrlShortenerClient>()
             .AddScoped<ILinkReplaceService, LinkReplaceService>();
 
         services

@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+
 using SciMaterials.Contracts.API.Constants;
 using SciMaterials.Contracts.API.DTO.Authors;
 using SciMaterials.Contracts.API.Services.Authors;
 using SciMaterials.Contracts.Result;
-using SciMaterials.Contracts.ShortLinks;
+using SciMaterials.UrlsService.Contracts;
 
 namespace SciMaterials.Materials.Api.Controllers;
 

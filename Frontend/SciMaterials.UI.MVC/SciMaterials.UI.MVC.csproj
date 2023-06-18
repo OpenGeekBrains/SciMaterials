@@ -38,7 +38,6 @@
     <ProjectReference Include="..\..\Identity\Libraries\SciMaterials.Services.Identity.API\SciMaterials.Services.Identity.API.csproj" />
     <ProjectReference Include="..\..\Materials\Libraries\SciMaterials.Contracts.API.Mapping\SciMaterials.Contracts.API.Mapping.csproj" />
     <ProjectReference Include="..\..\Materials\Libraries\SciMaterials.Contracts.API\SciMaterials.Contracts.API.csproj" />
-    <ProjectReference Include="..\..\Materials\Libraries\SciMaterials.Contracts.ShortLinks\SciMaterials.Contracts.ShortLinks.csproj" />
     <ProjectReference Include="..\..\Materials\Libraries\SciMaterials.Contracts.WebApi.Clients\SciMaterials.Contracts.WebApi.Clients.csproj" />
     <ProjectReference Include="..\..\Materials\Libraries\SciMaterials.DAL.Resources\SciMaterials.DAL.Resources.csproj" />
     <ProjectReference Include="..\..\Materials\Libraries\SciMaterials.Materials.DAL.SqlServer.Migrations\SciMaterials.Materials.DAL.SqlServer.Migrations.csproj" />
