@@ -38,7 +38,6 @@ using SciMaterials.Services.API.Services.Resources;
 using SciMaterials.Services.API.Services.Tags;
 using SciMaterials.Services.API.Services.Urls;
 using SciMaterials.UrlsService.Contracts;
-using SciMaterials.UrlsService.Contracts.Settings;
 using SciMaterials.UrlsService.Domain;
 using SciMaterials.WebApi.Clients.Categories;
 using SciMaterials.WebApi.Clients.Comments;
@@ -130,7 +129,6 @@ public static class ResourcesRegister
         services.AddMappings();
 
         services
-            .Configure<LinkShortCutOptions>(configuration.GetSection(LinkShortCutOptions.SectionName))
             .AddScoped<IUrlShortenerClient, UrlShortenerClient>()
             .AddScoped<ILinkReplaceService, LinkReplaceService>();
 

@@ -1,23 +1,20 @@
 ﻿//using System.Security.Cryptography;
 //using System.Text;
 
-//using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.Routing;
 //using Microsoft.EntityFrameworkCore;
-//using Microsoft.Extensions.Logging;
 //using Microsoft.Extensions.Options;
 
 //using SciMaterials.Contracts;
 //using SciMaterials.Contracts.Result;
-//using SciMaterials.Contracts.ShortLinks;
-//using SciMaterials.Contracts.ShortLinks.Settings;
-//using SciMaterials.DAL.Resources.Contexts;
+//using SciMaterials.UrlsService.Api.Data;
+//using SciMaterials.UrlsService.Api.Settings;
+//using SciMaterials.UrlsService.Contracts;
 
 //namespace SciMaterials.Services.ShortLinks;
 
-//public class LinkShortCutService : ServiceBase, ILinkShortCutService
+//internal class LinkShortCutService : ServiceBase, ILinkShortCutService
 //{
-//    private readonly SciMaterialsContext _db;
+//    private readonly UrlsStorageContext _db;
 //    private readonly LinkGenerator _linkGenerator;
 //    private readonly HttpContext _httpContext;
 
@@ -28,7 +25,7 @@
 //    private readonly int _concurrentTryCount;
 
 //    public LinkShortCutService(
-//        SciMaterialsContext db,
+//		UrlsStorageContext db,
 //        IOptions<LinkShortCutOptions> options,
 //        LinkGenerator linkGenerator,
 //        IHttpContextAccessor httpContextAccessor,

@@ -2,9 +2,20 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
-    <PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="7.1.2" />
-    <PackageReference Include="Microsoft.Orleans.Server" Version="7.1.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
-
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\SciMaterials.DAL.Contracts\SciMaterials.DAL.Contracts.csproj" />
+    <ProjectReference Include="..\..\Materials\Libraries\SciMaterials.Services\SciMaterials.Services.csproj" />
+    <ProjectReference Include="..\SciMaterials.UrlsService.Contracts\SciMaterials.UrlsService.Contracts.csproj" />
+  </ItemGroup>
 </Project>

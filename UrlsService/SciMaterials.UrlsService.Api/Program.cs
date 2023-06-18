@@ -1,17 +1,15 @@
-using SciMaterials.UrlsService.Api;
+using Microsoft.EntityFrameworkCore;
+
+using SciMaterials.UrlsService.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer().AddSwaggerGen();
 
-builder.Host.UseOrleans(sb =>
-{
-	sb.AddAdoNetGrainStorage("urls", options =>
-	{
-		options.Invariant = "System.Data.SqlClient";
-		options.ConnectionString = builder.Configuration.GetConnectionString("SqlServer.Debug");
-	});
-});
+builder.Services.AddDbContext<UrlsStorageContext>(
+			opt => opt.UseSqlServer(
+				builder.Configuration.GetConnectionString("SqlServer.Debug"),
+				o => o.MigrationsAssembly(typeof(UrlsStorageContext).Assembly.FullName)));
 
 var app = builder.Build();
 
@@ -21,42 +19,39 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapGet("/shorten",
-	async (IGrainFactory grains, HttpRequest request, string redirect) =>
+	async (UrlsStorageContext storageContext, HttpRequest request, string redirect) =>
 	{
-		// Create a unique, short ID
-		var shortenedRouteSegment = Guid.NewGuid().GetHashCode().ToString("X");
-
-		// Create and persist a grain with the shortened ID and full URL
-		var shortenerGrain = grains.GetGrain<IUrlShortenerGrain>(shortenedRouteSegment);
-		await shortenerGrain.SetUrl(redirect);
-
+		var entity = await storageContext.Add(redirect);
+		
 		// Return the shortened URL for later use
 		var resultBuilder = new UriBuilder($"{request.Scheme}://{request.Host.Value}")
 		{
-			Path = $"/go/{shortenedRouteSegment}"
+			Path = $"/go/{entity.ShortenedRouteSegment}"
 		};
 
 		return Results.Ok(resultBuilder.Uri);
 	});
 
 app.MapGet("/go/{shortenedRouteSegment}",
-	async (IGrainFactory grains, string shortenedRouteSegment) =>
+	async (UrlsStorageContext storageContext, string shortenedRouteSegment) =>
 	{
-		// Retrieve the grain using the shortened ID and redirect to the original URL        
-		var shortenerGrain = grains.GetGrain<IUrlShortenerGrain>(shortenedRouteSegment);
-		var url = await shortenerGrain.GetUrl();
+		var entity = await storageContext.FindAsync<UrlEntity>(shortenedRouteSegment);
+		if (entity is null) return Results.NotFound();
 
-		return Results.Redirect(url);
+		await storageContext.UpdateLastAccess(entity);
+
+		return Results.Redirect(entity.SourceAddress);
 	});
 
 app.MapGet("/original/{shortenedRouteSegment}",
-	async (IGrainFactory grains, string shortenedRouteSegment) =>
+	async (UrlsStorageContext storageContext, string shortenedRouteSegment) =>
 	{
-		// Retrieve the grain using the shortened ID and redirect to the original URL        
-		var shortenerGrain = grains.GetGrain<IUrlShortenerGrain>(shortenedRouteSegment);
-		var url = await shortenerGrain.GetUrl();
+		var entity = await storageContext.FindAsync<UrlEntity>(shortenedRouteSegment);
+		if (entity is null) return Results.NotFound();
 
-		return Results.Ok(url);
+		await storageContext.UpdateLastAccess(entity);
+
+		return Results.Ok(entity.SourceAddress);
 	});
 
 app.Run();
