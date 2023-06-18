@@ -7,7 +7,6 @@
     <EmbeddedResource Include="TestData\ContentTypes.json" />
     <EmbeddedResource Include="TestData\FileGroups.json" />
     <EmbeddedResource Include="TestData\Files.json" />
-    <EmbeddedResource Include="TestData\Links.json" />
     <EmbeddedResource Include="TestData\Ratings.json" />
     <EmbeddedResource Include="TestData\Tags.json" />
     <EmbeddedResource Include="TestData\Urls.json" />

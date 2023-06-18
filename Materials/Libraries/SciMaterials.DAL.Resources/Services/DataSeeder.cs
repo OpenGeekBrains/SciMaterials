@@ -106,25 +106,6 @@ public static class DataSeeder
             }
         }
 
-        if (!await db.Links.AnyAsync(Cancel))
-        {
-            try
-            {
-                var links = AssemblyResources.Links;
-                //var i     = 0;
-                //foreach (var link in links)
-                //    link.RowVersion = BitConverter.GetBytes(i++);
-
-                await db.Links.AddRangeAsync(AssemblyResources.Links, Cancel);
-                await db.SaveChangesAsync(Cancel);
-            }
-            catch (Exception e)
-            {
-                Logger.LogError(e, "Error loading data Links");
-                throw;
-            }
-        }
-
         if (!await db.Tags.AnyAsync(Cancel))
         {
             try

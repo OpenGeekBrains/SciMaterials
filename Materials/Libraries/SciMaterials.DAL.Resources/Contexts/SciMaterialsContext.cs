@@ -24,17 +24,10 @@ public class SciMaterialsContext : DbContext
     public virtual DbSet<Author> Authors { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
     public virtual DbSet<Rating> Ratings { get; set; } = null!;
-    public virtual DbSet<Link> Links { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<Link>(link =>
-        {
-            link.Property(e => e.AccessCount).IsConcurrencyToken();
-            link.Property(e => e.LastAccess).IsConcurrencyToken();
-            link.Property(e => e.RowVersion).IsRowVersion();
-        });
 
         modelBuilder.Entity<Comment>(entity =>
             entity.HasOne(comment => comment.Author)

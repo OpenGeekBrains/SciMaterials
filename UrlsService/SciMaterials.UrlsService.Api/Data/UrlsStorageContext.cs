@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
+using SciMaterials.DAL.Resources.TestData;
+
 namespace SciMaterials.UrlsService.Api.Data;
 
 internal class UrlsStorageContext : DbContext
@@ -22,22 +24,53 @@ internal class UrlsStorageContext : DbContext
 		});
 	}
 
-	public async ValueTask<UrlEntity> Add(string sourceAddress)
+	public UrlEntity Add(string sourceAddress)
 	{
 		var shortenedRouteSegment = Guid.NewGuid().GetHashCode().ToString("X");
 
 		UrlEntity entity = new() { ShortenedRouteSegment = shortenedRouteSegment, SourceAddress = sourceAddress };
-		await Links.AddAsync(entity);
-		await SaveChangesAsync();
+		Links.Add(entity);
 
 		return entity;
 	}
 
-	public async ValueTask UpdateLastAccess(UrlEntity entity)
+	public static void UpdateLastAccess(UrlEntity entity)
 	{
 		entity.AccessCount++;
 		entity.LastAccess = DateTime.UtcNow;
-		await SaveChangesAsync();
+	}
+
+	public async Task Initialize(ILogger<UrlsStorageContext> logger, CancellationToken cancellationToken)
+	{
+		logger.LogInformation("Инициализация БД тестовыми данными");
+
+		await using var transaction = await Database.BeginTransactionAsync(cancellationToken).ConfigureAwait(false);
+
+		if (!await Links.AnyAsync(cancellationToken))
+		{
+			try
+			{
+				var links = AssemblyResources.Links;
+
+                foreach (var link in links)
+                {
+					Add(link.SourceAddress).SetValues(u =>
+					{
+						u.AccessCount = link.AccessCount;
+						u.LastAccess = link.LastAccess;
+						u.RowVersion = link.RowVersion;
+					});
+                }
+                await SaveChangesAsync(cancellationToken);
+			}
+			catch (Exception e)
+			{
+				logger.LogError(e, "Error loading data Links");
+				throw;
+			}
+		}
+
+		await transaction.CommitAsync(cancellationToken);
 	}
 }
 
@@ -52,3 +85,10 @@ public class UrlEntity
 	public byte[] RowVersion { get; set; } = null!;
 }
 
+static class Extensions
+{
+	public static void SetValues<T>(this T self, Action<T> setter)
+	{
+		setter(self);
+	}
+}

@@ -1,0 +1,107 @@
+[
+  {
+    "SourceAddress": "https://facebook.com",
+    "IsDeleted": false,
+    "AccessCount": 0,
+    "LastAccess": "2022-08-14 09:43:16",
+    "RowVersion": [ 1 ]
+  },
+  {
+    "SourceAddress": "https://naver.com",
+    "IsDeleted": false,
+    "AccessCount": 0,
+    "LastAccess": "2023-03-26 04:49:57",
+    "RowVersion": [ 2 ]
+  },
+  {
+    "SourceAddress": "https://bbc.co.uk",
+    "IsDeleted": false,
+    "AccessCount": 0,
+    "LastAccess": "2022-05-11 19:59:16",
+    "RowVersion": [ 3 ]
+  },
+  {
+    "SourceAddress": "http://netflix.com",
+    "IsDeleted": false,
+    "AccessCount": 0,
+    "LastAccess": "2022-09-02 22:35:03",
+    "RowVersion": [ 4 ]
+  },
+  {
+    "SourceAddress": "https://ebay.com",
+    "IsDeleted": false,
+    "AccessCount": 0,
+    "LastAccess": "2022-09-04 22:49:44",
+    "RowVersion": [ 5 ]
+  },
+  {
+    "SourceAddress": "https://cnn.com",
+    "IsDeleted": false,
+    "AccessCount": 0,
+    "LastAccess": "2023-04-26 23:26:00",
+    "RowVersion": [ 6 ]
+  },
+  {
+    "SourceAddress": "http://yahoo.com",
+    "IsDeleted": false,
+    "AccessCount": 0,
+    "LastAccess": "2022-05-08 04:33:28",
+    "RowVersion": [ 7 ]
+  },
+  {
+    "SourceAddress": "http://cnn.com",
+    "IsDeleted": false,
+    "AccessCount": 0,
+    "LastAccess": "2023-01-03 22:08:41",
+    "RowVersion": [ 8 ]
+  },
+  {
+    "SourceAddress": "http://zoom.us",
+    "IsDeleted": false,
+    "AccessCount": 0,
+    "LastAccess": "2021-11-08 04:17:47",
+    "RowVersion": [ 9 ]
+  },
+  {
+    "SourceAddress": "http://netflix.com",
+    "IsDeleted": false,
+    "AccessCount": 0,
+    "LastAccess": "2022-10-07 02:43:18",
+    "RowVersion": [ 10 ]
+  },
+  {
+    "SourceAddress": "https://facebook.com",
+    "IsDeleted": false,
+    "AccessCount": 0,
+    "LastAccess": "2022-06-11 13:14:31",
+    "RowVersion": [ 11 ]
+  },
+  {
+    "SourceAddress": "http://facebook.com",
+    "IsDeleted": false,
+    "AccessCount": 0,
+    "LastAccess": "2023-09-27 08:34:13",
+    "RowVersion": [ 12 ]
+  },
+  {
+    "SourceAddress": "http://instagram.com",
+    "IsDeleted": true,
+    "AccessCount": 0,
+    "LastAccess": "2022-02-16 17:18:33",
+    "RowVersion": [ 13 ]
+  },
+  {
+    "SourceAddress": "https://dotnet.microsoft.com/en-us/",
+    "IsDeleted": false,
+    "AccessCount": 0,
+    "LastAccess": "2022-10-10 14:44:44",
+    "RowVersion": [ 14 ]
+  },
+  {
+    "SourceAddress": "https://learn.microsoft.com/ru-ru/dotnet/csharp/",
+    "IsDeleted": false,
+    "AccessCount": 0,
+    "LastAccess": "2022-09-07 06:39:21",
+    "RowVersion": [ 15 ]
+  }
+]

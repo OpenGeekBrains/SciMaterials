@@ -21,7 +21,8 @@ if (app.Environment.IsDevelopment())
 app.MapGet("/shorten",
 	async (UrlsStorageContext storageContext, HttpRequest request, string redirect) =>
 	{
-		var entity = await storageContext.Add(redirect);
+		var entity = storageContext.Add(redirect);
+		await storageContext.SaveChangesAsync();
 		
 		// Return the shortened URL for later use
 		var resultBuilder = new UriBuilder($"{request.Scheme}://{request.Host.Value}")
@@ -38,7 +39,8 @@ app.MapGet("/go/{shortenedRouteSegment}",
 		var entity = await storageContext.FindAsync<UrlEntity>(shortenedRouteSegment);
 		if (entity is null) return Results.NotFound();
 
-		await storageContext.UpdateLastAccess(entity);
+		UrlsStorageContext.UpdateLastAccess(entity);
+		await storageContext.SaveChangesAsync();
 
 		return Results.Redirect(entity.SourceAddress);
 	});
@@ -49,9 +51,16 @@ app.MapGet("/original/{shortenedRouteSegment}",
 		var entity = await storageContext.FindAsync<UrlEntity>(shortenedRouteSegment);
 		if (entity is null) return Results.NotFound();
 
-		await storageContext.UpdateLastAccess(entity);
+		UrlsStorageContext.UpdateLastAccess(entity);
+		await storageContext.SaveChangesAsync();
 
 		return Results.Ok(entity.SourceAddress);
 	});
+
+app.MapGet("/database/init", async (UrlsStorageContext storageContext, ILogger<UrlsStorageContext> logger, CancellationToken cancellationToken) =>
+{
+	await storageContext.Initialize(logger, cancellationToken);
+	return Results.Ok();
+});
 
 app.Run();
